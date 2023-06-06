@@ -1,0 +1,94 @@
+
+/* .content{
+    margin: 1px;;
+    background-color: green
+} */
+
+/* custom scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+/* custom scrollbar */
+
+
+
+.custom-bg{
+    background-color: #2f2519;
+    color: #fff;
+}
+
+.display_items{
+    min-height: 510px;
+}
+.item_data{
+    margin:10px;
+    height: 90px;
+    width: 150px;
+    font-size: 14pt;
+    padding: 15px;
+    text-align: center;
+    /* min-height: 60px; */
+    background-color: #2f2519;
+    color: #fff;
+    cursor: pointer;
+}
+
+.biiling-box{
+    padding: 8px;
+    background-color: #fff;
+     min-height:43  0px;
+  } 
+  .category-box{
+    padding: 8px;
+    background-color: #fff;
+     min-height:530px;
+  }
+
+.selected-item{
+    margin: 5px;
+    padding: 15px;
+    font-weight: 600;
+    background-color: #ededed;
+}
+
+.selected-item1{
+    margin: 5px;
+    padding: 15px;
+    font-weight: 800;
+    background-color: #ededed;
+}
+
+.bill_print{
+    margin-top: -13px;
+    background-color: #fff;
+    padding: 1px;
+}
+.total_bill{
+    margin-left: 35px;
+}
+.top_cat{
+    margin-top: 0pt;
+}
+.head_table{
+    margin-top: 0px;
+}
+
+.btn_add_category{
+    margin-left: 48px;
+}
