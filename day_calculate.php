@@ -112,6 +112,7 @@
                                 $rminus=0;
                                 $rplus=0;
                                 $GST=0;
+                                $Final=0;
                                 if(isset($_POST['save']))
                                 {
                                     $fdate = date("Y-m-d",strtotime($_POST['fdate']));
@@ -147,6 +148,7 @@
                                         $total=0;
                                         $disamt=0;
                                         $gndtot=0;
+                                        
                                         while($row4 = mysqli_fetch_assoc($result4)) 
                                         {
                                             $round=round($row4['nettot']);

@@ -100,6 +100,7 @@
                                 $tot_amount=0;
                                 $disamt2=0;
                                 $net1=0;
+                                $net11=0;
                               if(isset($_POST['save']))
                               {
                                   $fdate = date("Y-m-d",strtotime($_POST['fdate']));
@@ -128,14 +129,15 @@
                                   $result = mysqli_query($conn, $sql);
                                   if (mysqli_num_rows($result) > 0) 
                                   {
-                                      $net11=0;
+                                      
                                       while($row = mysqli_fetch_assoc($result)) 
                                       {
 
                                         $amount=round($row['nettot']);
                                         $net11 +=round($row['nettot']);
                                         $disamt1=$row['disamt'];
-                                      ?>
+                                        $disamt2 +=$row['disamt'];
+                                    ?>
                                         
                                             <tr>
                                                 <td><?php echo $row['slno']; ?></td>

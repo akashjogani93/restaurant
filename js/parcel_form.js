@@ -208,6 +208,17 @@ document.addEventListener('keydown', function(event)
                 $(this).find('#clc1').click();
             }
         });
+    }else if (event.altKey && event.keyCode === 84)
+    {
+        $('#tbody tr').each(function()
+        {
+            var td =$(this).find('td:nth-child(2)').text();
+            if(td==table_no)
+            {
+                $('#DirectPrint').val(1);
+                $(this).find('#clc1').click();
+            }
+        });
     }
     else if(event.altKey && event.keyCode === 90)
     {

@@ -4,6 +4,7 @@ $cash_id=$_SESSION['id'];
 $name=$_SESSION['name'];
 ?>
 <h3 class="text-center">Running Table</h3>
+<input type="hidden" id="DirectPrint">
 <table class="table table-bordered table-striped" id="form2" >
     <thead>
         <tr style="background: #ffff; color: #fff; font-weight: 600; display:none;">
@@ -24,21 +25,11 @@ $name=$_SESSION['name'];
         </tr>
         <tr>
             <th class="tbl" style="display: none; width:20%">Select</th>
-            <?php
-                     $sec="Ground";
-                       if($sec=='Ground')
-                           echo "<th>Table No</th>";
-                       else if($sec=='First')
-                           echo "<th>Table No</th>";
-                       else if($sec=='Lodge')
-                            echo "<th>Room No</th>";
-                       else
-                            echo "<th>Parcel No</th>";
-             ?>
+            <th>Table No</th>
             <th style="width:15%">Orders</th>
             <th style="width:20%">Discount</th>
-            <th style="width:30%">Chargeable</th>
-            <th style="width:15%">Print(Alt+c)</th>
+            <th style="width:20%">Charge</th>
+            <th style="width:15%">Print</th>
         </tr>
 
     </thead>
@@ -63,14 +54,14 @@ $name=$_SESSION['name'];
                         <td><?php echo $row3['tabno']; ?></td>
                         <td><button v-on:click="inalItem($event)" class="btn btn-primary btn-sm edit1" data-toggle="modal" data-target="#orderview" id="clc">Order</button></td>
                         <td style="display: none;"><?php echo $row3['capname']; ?></td>
-                        <td><input type="number" min="0" style="width:60%;" id="dis"></td>
+                        <td><input type="text" min="0" style="width:60%;" id="dis" class="disPer"></td>
                         <td>
                             <select class="form-control" name="chargeble" id="chargeble" style="background-color: #4F4557; color: #B0DAFF; width:100%;">
-                                <option style="background-color: #333; color: #B0DAFF;" value="0">Chargeable</option>
+                                <option style="background-color: #333; color: #B0DAFF;" value="0">Charge</option>
                                 <option style="background-color: #333; color: #B0DAFF;" value="1">Non</option>
                             </select>
                         </td>
-                        <td><button v-on:click="finalItem($event)" class="btn btn-danger btn-sm edit1" id="clc1">Print (Alt+c)</button></td>
+                        <td><button v-on:click="finalItem($event)" class="btn btn-danger btn-sm edit1" id="clc1">Print</button></td>
                     </tr>
         <?php  }
            }  ?>
@@ -140,6 +131,7 @@ $name=$_SESSION['name'];
                         success: function(data)
                         {
                             $('#clc1').prop('disabled',true);
+                            var directPrint=$('#DirectPrint').val()
                             var tab = data[0];
                             if(tab==0)
                             {
@@ -156,7 +148,13 @@ $name=$_SESSION['name'];
                                 var date = data[4];
                                 var time = data[5];
                                 var dis1 = data[6];
-                                window.location.href = "singlebill.php?tabno=" + tab + "&capnam=" + capt + "&billno=" + bill + "&discount=" + dis + "&date=" + date + "&time=" + time + "&amt=" +dis1;
+                                if(directPrint!=1)
+                                {
+                                    window.location.href = "singlebill.php?tabno=" + tab + "&capnam=" + capt + "&billno=" + bill + "&discount=" + dis + "&date=" + date + "&time=" + time + "&amt=" +dis1;
+                                }else
+                                {
+                                    window.location='table_form.php';
+                                }
                             }
                             
                             
@@ -274,50 +272,18 @@ function items()
             }
         }
     });
-    // console.log(log);
 }
 
-// var ii=0;
-// document.addEventListener('keydown', function(event) 
-// {
-//         var f7 = $("#tabe").val();
-//         if (event.altKey && event.keyCode === 66)
-//         {
-//             var selectElement = document.getElementById("tabe");
-//             myFunction(selectElement);
-//         }else if (event.altKey && event.keyCode === 86)
-//         {
-//             $('#itemlist').load("current_data.php?x="+f7);
-        
-//         }else if (event.altKey && event.keyCode === 67)
-//         {
-//             // debugger;
-//             // console.log('click');
-        
-//             $('#tbody tr').each(function() 
-//             {
-//                 var td =$(this).find('td:nth-child(2)').text();
-//                 // debugger;
-//                 if(td==f7)
-//                 {
-//                     if(ii<1)
-//                     {
-//                         // debugger;
-//                         $(this).find('#clc1').click();
-//                         // console.log('pass');
-//                     }
-//                     ii++;
-//                     // debugger;
-//                 }
-            
-//             });
-//         }else if (event.altKey && event.keyCode === 90)
-//         {
-//             window.location.href = 'table_form.php';
-//         }
-    
-// });
-
+$(".disPer").keyup(function()
+{
+    var input = $(this).val();
+    var regex = /^[0-9%]*$/;
+    if (!regex.test(input)) 
+    {
+        var sanitizedInput = input.replace(/[^0-9%]/g, '');
+        $(this).val(sanitizedInput);
+    }
+});
 
 function myFunction(selectElement)
 {

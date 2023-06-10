@@ -111,7 +111,8 @@
             "lengthMenu": [
                 [25, 10, 100, -1],
                 [25, 10, 100, "All"]
-            ]
+            ],
+            "order": [[0, "desc"]]
         });
         $('#example2').DataTable({
             "paging": true,

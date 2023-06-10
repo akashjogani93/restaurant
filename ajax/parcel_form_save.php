@@ -82,10 +82,26 @@ if(!empty($tabno))
                     }
                         $final1=$total*$gst/100;
                         $final=($total+$final1);
-                        $dis=($final*$discount)/100;
-                        $final2=$final-$dis;
+                        $percentagePattern = '/^\d+(\.\d+)?%$/';
+                        $amountPattern = '/^\d+$/';
 
-                        $sqltot="INSERT into `tabletot` VALUES('','$total','$gst','$gstamt','$final2','$date','$paymentmode','$capnam','','$discount','$mobno','$current_time','$cash_id','0','$dis','parcel')";
+                        if(preg_match($percentagePattern, $discount)) 
+                        {
+                            $valueWithoutPercentage = str_replace('%', '', $discount);
+                            $disPercentage = (float) $valueWithoutPercentage;
+
+                            $dis=($final*$disPercentage)/100;
+                            $final2=$final-$dis;
+
+                        }else if(preg_match($amountPattern, $discount)) 
+                        {
+                            $disPerc = ($discount / $final) * 100;
+                            $disPercentage = number_format($disPerc, 2);
+                            $dis=$discount;
+                            $final2=$final-$discount;
+                        }
+
+                        $sqltot="INSERT into `tabletot` VALUES('','$total','$gst','$gstamt','$final2','$date','$paymentmode','$capnam','','$disPercentage','$mobno','$current_time','$cash_id','0','$dis','parcel')";
                         $tabletot = mysqli_query($conn, $sqltot);
                         if($tabletot)
                         {
@@ -95,23 +111,23 @@ if(!empty($tabno))
                             $stmtKOT = "DELETE FROM `kot` WHERE `tabno`='$tabno'";
                             mysqli_query($conn,$stmtKOT);
 
-                            $a = array($tabno,$capnam,$cnt,$discount,$date,$current_time,$dis);
+                            $a = array($tabno,$capnam,$cnt,$disPercentage,$date,$current_time,$dis);
                             echo json_encode($a);
                         }
             }else
             {
-                $a = array('0','Not Printed',$tabno,$capnam,$discount);
+                $a = array('0','Not Printed',$tabno,$capnam,$disPercentage);
                 echo json_encode($a);
             }
         }
     }else
     {
-        $a = array('0','Not Printed',$tabno,$capnam,$discount);
+        $a = array('0','Not Printed',$tabno,$capnam,$disPercentage);
         echo json_encode($a);
     }
 }else
 {
-    $a = array('0','Not Printed',$tabno,$capnam,$discount);
+    $a = array('0','Not Printed',$tabno,$capnam,$disPercentage);
     echo json_encode($a);
 }
 // echo '<script>window.location.href="../singlebill.php?tabno='.$tabno.'&capnam='.$capnam.'&billno='.$cnt.'&discount='.$discount.'&date='.$date.'";</script>';

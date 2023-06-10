@@ -90,6 +90,13 @@ if(isset($_POST['tabno'],$_POST['merge'],$_POST['x']))
    
     $table = $_POST['tabno'];
     $merge = $_POST['x'];
+
+    $newtable=$table[0];
+
+    $cf=mysqli_query($conn, "SELECT `capname` FROM `temtable` WHERE `tabno`='$newtable'");
+    $out = mysqli_fetch_array($cf);
+    $capname=$out['capname'];
+
     for($i=0;$i<count($table)-1;$i++)
     {
         $id = $table[$i];
@@ -110,49 +117,23 @@ if(isset($_POST['tabno'],$_POST['merge'],$_POST['x']))
                         $out = mysqli_fetch_array($cf);
                         $qty += $out['qty'];
                         $tot = $prc * $qty;
-                        // $conforms=mysqli_query($conn, "UPDATE `temtable` SET `qty`='$qty',`tot`='$tot' WHERE `itmno`='$itm' AND `tabno`='$id' AND `kot_num`='0';");
-                        // if($conforms)
-                        // {
-                        //     mysqli_query($conn, "UPDATE `kot` SET `qty`='$qty' WHERE `itmnam`='$itmnam' AND `tabno`='$id' AND `kot_num`='0';");
-
-                        //     mysqli_query($conn, "DELETE FROM `temtable` WHERE `itmno`='$itm' AND `tabno`='$id2'AND `kot_num`='0';");
-    
-                        //     mysqli_query($conn, "DELETE FROM `kot` WHERE `itmnam`='$itmnam' AND `tabno`='$id2'AND `kot_num`='0';");
-                        // }   
                        
                 }
             }
         }
-        //     $cmf1=mysqli_query($conn, "SELECT `itmnam`,`qty` FROM `kot` WHERE `tabno`='$id';");
-        //     while($row12=mysqli_fetch_array($cmf1))
-        //     {
-        //         $itm = $row['itmnam'];
-        //         $qty = $row['qty'];
-        //         for($j1=$i+1;$j1<count($table);$j1++)
-        //         {
-        //             $id3 = $table[$j1];
-        //             $cf1=mysqli_query($conn, "SELECT `qty` FROM `kot` WHERE `itmnam`='$itm' AND `tabno`='$id3';");
-        //             if(mysqli_num_rows($cf1)>0)
-        //             {
-        //                 $out1 = mysqli_fetch_array($cf1);
-        //                 $qty += $out1['qty'];
-        //                 mysqli_query($conn, "UPDATE `kot` SET `qty`='$qty' WHERE `itmnam`='$itm' AND `tabno`='$id';");
-        //                 mysqli_query($conn, "DELETE FROM `kot` WHERE `itmnam`='$itm' AND `tabno`='$id3';");
-        //             }
-        //         }
-        //     }
-    }
-    for($i=0;$i<count($table);$i++)
-    {
-        $id = $table[$i];
-        mysqli_query($conn, "UPDATE `temtable` SET `tabno`='$merge' WHERE `tabno` = '$id';");
-        mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge' WHERE `tabno` = '$id';");
     }
     // for($i=0;$i<count($table);$i++)
     // {
-    // $id = $table[$i];
-    // mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge' WHERE `tabno` = '$id';");
+    //     $id = $table[$i];
+    //     mysqli_query($conn, "UPDATE `temtable` SET `tabno`='$merge' WHERE `tabno` = '$id';");
+    //     mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge' WHERE `tabno` = '$id';");
     // }
+    for($i=0;$i<count($table);$i++)
+    {
+        $id = $table[$i];
+        mysqli_query($conn, "UPDATE `temtable` SET `tabno`='$merge',`capname`='$capname' WHERE `tabno` = '$id';");
+        mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge',`capname`='$capname'WHERE `tabno` = '$id';");
+    }
 }
 
 

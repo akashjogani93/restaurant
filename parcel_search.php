@@ -1,5 +1,5 @@
 <h3 class="text-center">Running Table</h3>
-
+<input type="hidden" id="DirectPrint">
 <table class="table table-bordered table-striped" id="form2">
     <thead>
         <tr style="background: #ffff; color: #fff; font-weight: 600;">
@@ -19,17 +19,7 @@
         </tr>
         <tr>
             <th class="tbl" style="display: none;">Select</th>
-            <?php
-                     $sec="Ground";
-                       if($sec=='Ground')
-                           echo "<th>Parcel No</th>";
-                       else if($sec=='First')
-                           echo "<th>Parcel No</th>";
-                       else if($sec=='Lodge')
-                            echo "<th>Room No</th>";
-                       else
-                            echo "<th>Parcel No</th>";
-             ?>
+            <th>Parcel No</th>
             <th>Orders</th>
             <th>Discount</th>
             <th>Print(Alt+c)</th>
@@ -51,7 +41,7 @@
                         <td class="tbl" style="display: none;"><input type="checkbox" name="tableno1" value="<?php echo $row3['tabno']; ?>"></td>
                         <td><?php echo $row3['tabno']; ?></td>
                         <td><button v-on:click="inalItem($event)" class="btn btn-primary btn-sm edit1" data-toggle="modal" data-target="#orderview" id="clc">Order(Alt+V)</button></td>
-                        <td><input type="number" min="0" style="width:60%;" id="dis"></td>
+                        <td><input type="text" min="0" style="width:60%;" id="dis" class="disPer"></td>
                         <td> <button v-on:click="finalItem($event)" class="btn btn-danger btn-sm edit1" id="clc1">Print(Alt+c)</button></td>
                     </tr>
         <?php  }
@@ -98,6 +88,7 @@ $(document).ready(function()
                 var tar = e.currentTarget;
                 var chil = tar.parentElement.parentElement.children;
                 var x = chil[1].innerHTML;
+                var directPrint=$('#DirectPrint').val()
                 var x1 = chil[3].querySelector('input').value;
 
                 // alert(x1);
@@ -128,7 +119,13 @@ $(document).ready(function()
                                 var date = data[4];
                                 var time = data[5];
                                 var dis1 = data[6];
-                                window.location.href = "parcel_print.php?tabno=" + tab + "&capnam=" + capt + "&billno=" + bill + "&discount=" + dis + "&date=" + date + "&time=" + time+ "&amt=" +dis1;
+                                if(directPrint!=1)
+                                {
+                                    window.location.href = "parcel_print.php?tabno=" + tab + "&capnam=" + capt + "&billno=" + bill + "&discount=" + dis + "&date=" + date + "&time=" + time+ "&amt=" +dis1;
+                                }else
+                                {
+                                    window.location='parcel.php';
+                                }
                             }
                         }
                     });
@@ -221,45 +218,16 @@ function myFunction(selectElement)
   selectElement.focus();
 } 
 
-// var ii=0;
-// document.addEventListener('keydown', function(event) 
-// {
-//     // console.log(event.key);
-//     var f7 = $("#tabe").val();
-//     if (event.altKey && event.keyCode === 66)
-//     {
-//         var selectElement = document.getElementById("tabe");
-//         myFunction(selectElement);
-//     }else  if (event.altKey && event.keyCode === 86)
-//     {
-       
-//         $('#itemlist').load("parcel_data.php?x="+f7);
-     
-//     }else if (event.altKey && event.keyCode === 67)
-//     {
-        
-//         $('#tbody tr').each(function() 
-//         {
-            
-//             var td =$(this).find('td:nth-child(2)').text();
-            
-//             if(td==f7)
-//             {
-//                 if(ii<1)
-//                 {
-//                     $(this).find('#clc1').click();
-//                 }
-//                 ii++;
-//             }
-            
-
-//         });
-//     }else if (event.altKey && event.keyCode === 90)
-//     {
-//         window.location.href = 'parcel.php';
-//     }  
-// });
-
+$(".disPer").keyup(function()
+{
+    var input = $(this).val();
+    var regex = /^[0-9%]*$/;
+    if (!regex.test(input)) 
+    {
+        var sanitizedInput = input.replace(/[^0-9%]/g, '');
+        $(this).val(sanitizedInput);
+    }
+});
 
 function items()
 {

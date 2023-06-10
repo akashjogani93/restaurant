@@ -92,6 +92,7 @@
                                 </thead>
                                 <tbody>
                                    <?php 
+                                   $total=0;
                                         require_once("dbcon.php");
                                         if(isset($_POST['save']))
                                         {
@@ -120,7 +121,7 @@
                                         if (mysqli_num_rows($result) > 0) 
                                         {
                                             $sn=1;
-                                            $total=0;
+                                            
                                             while($row = mysqli_fetch_assoc($result)) 
                                             {
                                                 if($row['capnam']=="")

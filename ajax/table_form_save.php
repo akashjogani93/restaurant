@@ -14,10 +14,12 @@ $tabno = $_POST['tabno'];
 $capnam = $_POST['captain'];
 $discount = $_POST['dis'];
 $charge = $_POST['charge'];
+
 if($discount=='')
 {
     $discount=0;
 }
+
 
 if(!empty($tabno) && !empty($capnam) && $discount!='')
 {
@@ -88,11 +90,28 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
                     $total += $row['tot'];
                     }
                 }
-                $final1=$total*$gst/100;
-                $final=($total+$final1);
-                $dis=($final*$discount)/100;
-                $final2=$final-$dis;
-                $sqltot="INSERT into `tabletot` VALUES('','$total','$gst','$gstamt','$final2','$date','$paymentmode','$capnam','$cap_code','$discount','$mobno','$current_time','$cash_id','0','$dis','hotel')";
+                    $final1=$total*$gst/100;
+                    $final=($total+$final1);
+                    $percentagePattern = '/^\d+(\.\d+)?%$/';
+                    $amountPattern = '/^\d+$/';
+
+                    if(preg_match($percentagePattern, $discount)) 
+                    {
+                        $valueWithoutPercentage = str_replace('%', '', $discount);
+                        $disPercentage = (float) $valueWithoutPercentage;
+
+                        $dis=($final*$disPercentage)/100;
+                        $final2=$final-$dis;
+
+                    }else if(preg_match($amountPattern, $discount)) 
+                    {
+                        $disPerc = ($discount / $final) * 100;
+                        $disPercentage = number_format($disPerc, 2);
+                        $dis=$discount;
+                        $final2=$final-$discount;
+                    }
+
+                $sqltot="INSERT into `tabletot` VALUES('','$total','$gst','$gstamt','$final2','$date','$paymentmode','$capnam','$cap_code','$disPercentage','$mobno','$current_time','$cash_id','0','$dis','hotel')";
                 $tabletot = mysqli_query($conn, $sqltot);
                 if($tabletot)
                 {
@@ -107,12 +126,12 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
                         mysqli_query($conn,"UPDATE `tabledata` SET `prc`=0,`tot`=0 WHERE `tabno`='$tabno'");
                     }
 
-                    $a = array($tabno,$cap_code,$cnt,$discount,$date,$current_time,$dis);
+                    $a = array($tabno,$cap_code,$cnt,$disPercentage,$date,$current_time,$dis);
                     echo json_encode($a);
                 }
             }else
             {
-                $a = array('0','Not Printed',$tabno,$capnam,$discount,$cnt);
+                $a = array('0','Not Printed',$tabno,$capnam,$disPercentage,$cnt);
                 echo json_encode($a);
             }
         }
@@ -120,14 +139,14 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
     }
     else
     {
-        $a = array('0','Not Printed',$tabno,$capnam,$discount,$cnt);
+        $a = array('0','Not Printed',$tabno,$capnam,$disPercentage,$cnt);
         echo json_encode($a);
     }
 
 }
 else
 {
-    $a = array('0','Not Printed',$tabno,$capnam,$discount);
+    $a = array('0','Not Printed',$tabno,$capnam,$disPercentage);
     echo json_encode($a);
 }
 

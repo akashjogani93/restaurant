@@ -25,7 +25,7 @@
                             </div>
                             <div class="col-md-2">
                                     <button class="btn btn-info" type="Submit" style="margin-top:25px;">
-                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        
                                             Submit
                                     </button>
                             </div>
@@ -76,7 +76,7 @@
                                                         <!-- <td><a href="add_prodct1.php?id=<?php echo $row['pid'];?> "><button class="btn btn-info" type="submit">
                                                         <i class="ace-icon fa fa-check bigger-110"></i>EDIT</button></td> -->
                                                         <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
-                                                            <i class="fa fa-fw fa-edit"></i>Edit
+                                                            Edit
                                                             </button>
                                                         </td>
 
