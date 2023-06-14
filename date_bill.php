@@ -84,8 +84,8 @@
                                 <th style="width:20%;" class="text-center">Bill Date</th>
                                 <th style="width:5%;" class="text-center">B.No</th>
                                 <th style="width:15%;" class="text-center">B.Amt</th>
-                                <th style="width:15%;" class="text-center">GST(5%)</th>
                                 <th style="width:5%;" class="text-center">Dis%</th>
+                                <th style="width:15%;" class="text-center">GST(5%)</th>
                                 <th style="width:20%;" class="text-center">N.AMT</th>
                                 <th style="width:20%;" class="text-center">Payment</th>
                             </tr>
@@ -116,8 +116,8 @@
                                                 <td><?php echo date("d-M-Y", strtotime( $row['date'])); ?></td>
                                                 <td><?php echo $row['slno']; ?></td>
                                                  <td><?php echo number_format($row['gndtot'],2); ?></td>
-                                                 <td><?php echo number_format($row['gndtot']*5/100,2); ?></td>
-                                                <td><?php echo $row['discount']; ?></td>
+                                                 <td><?php echo $row['disamt']; ?></td>
+                                                 <td><?php echo number_format(($row['gndtot']-$row['disamt'])*5/100,2); ?></td>
                                                 <td><?php echo number_format($net,2); ?></td>
                                                 <td><?php echo $row['paymentmode']; ?></td> 
                                             </tr>

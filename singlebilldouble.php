@@ -165,14 +165,14 @@
                                                         <?php
                                                     }
                                                 }
-                                                $total = number_format($total,2);
+                                                // $total = number_format($total,2);
                                                 // $gstamt = number_format(($total*($gst/100)),2);
-                                                $nettot = $total;
+                                                $nettot = $total-$amt;
 
-                                                $gstmain=$total*2.5/100;
+                                                $gstmain=$nettot*2.5/100;
                                                 $gst=$gstmain*2;
 
-                                                $final=($nettot+$gst)-$amt;
+                                                $final=($nettot+$gst);
                                                 $amount=round($final);
 
                                                 $decimalPart = fmod($final, 1);
@@ -186,16 +186,6 @@
                                                     <th colspan="2" style="font-size:10px;">Sub-Total: </th>
                                                     <td> <?php echo number_format($total,2); ?></td>
                                                 </tr>
-                                                <tr>
-                                                    <th colspan="1"></th>
-                                                    <th colspan="3" style="font-size:10px;"> SGST @ 2.5%: </th>
-                                                    <td><?php echo number_format($gstmain,2); ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th colspan="1"></th>
-                                                    <th colspan="3" style="font-size:10px;">CGST @ 2.5%: </th>
-                                                    <td> <?php echo number_format($gstmain,2); ?></td>
-                                                </tr>
                                                 <?php 
                                                     if($discount!=0 && $discount!='')
                                                     {
@@ -206,6 +196,16 @@
                                                         </tr>';
                                                     }
                                                  ?>
+                                                <tr>
+                                                    <th colspan="1"></th>
+                                                    <th colspan="3" style="font-size:10px;"> SGST @ 2.5%: </th>
+                                                    <td><?php echo number_format($gstmain,2); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="1"></th>
+                                                    <th colspan="3" style="font-size:10px;">CGST @ 2.5%: </th>
+                                                    <td> <?php echo number_format($gstmain,2); ?></td>
+                                                </tr>
                                                  <?php 
                                                         if($decimalPart!=0)
                                                         {

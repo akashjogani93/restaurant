@@ -81,9 +81,9 @@
                             <tr>
                                 <th style="width:10%" class="text-center">Bill</th>
                                 <th style="width:10%" class="text-center">B.Amt</th>
+                                <th style="width:10%" class="text-center">Discount</th>
                                 <th style="width:15%" class="text-center">CGST</th>
                                 <th style="width:15%" class="text-center">SGST</th>
-                              	<th style="width:10%" class="text-center">Discount</th>	
                                 <th style="width:10%" class="text-center">R(-)</th>
                                 <th style="width:10%" class="text-center">R(+)</th>
                                 <th style="width:20%" class="text-center">N.Amt</th>
@@ -116,7 +116,7 @@
                                         $net=$row['nettot'];
 										$disamt= $row['disamt'];
                                       $disc += $row['disamt'];
-                                        $gst=($basic*5)/100;
+                                        $gst=(($basic-$disamt)*5)/100;
                                         $sgst=$gst/2;
 
                                         $decimalPart = fmod($net, 1);
@@ -136,9 +136,9 @@
                                         <tr>
                                             <td class="text-left"><span style="margin-left:5px;"><?php echo $row['slno']; ?></span></td>
                                             <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($basic,2); ?></span></td>
-                                            <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($sgst,2); ?></span></td>
-                                            <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($sgst,2); ?></span></td>
                                             <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($disamt,2); ?></span></td>
+                                            <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($sgst,2); ?></span></td>
+                                            <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($sgst,2); ?></span></td>
                                             <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($negative,2); ?></span></td>
                                             <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($positive,2); ?></span></td>
                                             <td class="text-right"><span style="margin-right:5px;"><?php echo number_format($net11,2); ?></span></td>
@@ -161,9 +161,9 @@
                             <tr>
                                 <td class="text-center"><b><?php echo "Total"; ?></b></td>
                                 <td class="text-right"><b style="margin-right:5px;"><?php echo number_format($basic1,2); ?></b></td>
+                                <td  class="text-right"><b style="margin-right:5px;"><?php echo "Disc"." ".number_format($disc,2); ?></b></td>
                                 <td  class="text-right"><b style="margin-right:5px;"><?php echo "CGST"." ".number_format($gst1/2,2); ?></b></td>
                                 <td  class="text-right"><b style="margin-right:5px;"><?php echo "SGST"." ".number_format($gst1/2,2); ?></b></td>
-                                <td  class="text-right"><b style="margin-right:5px;"><?php echo "Disc"." ".number_format($disc,2); ?></b></td>
                                 <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($rminus,2); ?></b></td>
                                 <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($rplus,2); ?></b></td>
                                 <td class="text-right"><b style="margin-right:5px;"><?php echo number_format(round($net1),2); ?></b></td>

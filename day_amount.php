@@ -76,9 +76,9 @@
                             <tr>
                                 <th>Bill NO</th>
                                 <th>Basic Amount</th>
+                                <th>Discount</th>
                                 <th>CGST 2.5%</th>
                                 <th>SGST 2.5%</th>
-                              	<th>Discount</th>
                                 <th>Round Off(-)</th>
                                 <th>Round Off(+)</th>
                                 <th>Bill Amount</th>
@@ -128,7 +128,7 @@
                                         $net=$row['nettot'];
 										$disamt= $row['disamt'];
                                       $disc += $row['disamt'];
-                                        $gst=($basic*5)/100;
+                                        $gst=(($basic-$disamt)*5)/100;
                                         $sgst=$gst/2;
 
                                         $decimalPart = fmod($net, 1);
@@ -149,9 +149,9 @@
                                             <tr>
                                                 <td><?php echo $row['slno']; ?></td>
                                                 <td><?php echo number_format($row['gndtot'],2); ?></td>
-                                                <td><?php echo number_format($sgst,2); ?></td>
-                                                <td><?php echo number_format($sgst,2); ?></td>
                                                 <td><?php echo number_format($disamt,2); ?></td>
+                                                <td><?php echo number_format($sgst,2); ?></td>
+                                                <td><?php echo number_format($sgst,2); ?></td>
                                                 <td><?php echo number_format($negative,2); ?></td>
                                                 <td><?php echo number_format($positive,2); ?></td>
                                                 <td><?php echo number_format($net11,2); ?></td>
@@ -182,6 +182,12 @@
                                     </h4>
                                 </td>
                                 <td>
+                                    <h4>Total Discount: &nbsp;&nbsp;
+                                     
+                                    <?php echo number_format($disc,2); ?>
+                                    </h4>
+                                </td>
+                                <td>
                                     <h4>Total SGST: &nbsp;&nbsp;
                                      
                                     <?php echo number_format($gst1/2,2); ?>
@@ -191,12 +197,6 @@
                                     <h4>Total CGST: &nbsp;&nbsp;
                                      
                                     <?php echo number_format($gst1/2,2); ?>
-                                    </h4>
-                                </td>
-                              	<td>
-                                    <h4>Total Discount: &nbsp;&nbsp;
-                                     
-                                    <?php echo number_format($disc,2); ?>
                                     </h4>
                                 </td>
                                 <td>

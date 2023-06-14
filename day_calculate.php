@@ -93,9 +93,9 @@
                             <tr>
                                 <th>Bill Date</th>
                                 <th>Basic Amount</th>
+                                <th>Discount</th>
                                 <th>CGST 2.5%</th>
                                 <th>SGST 2.5%</th>
-                                <th>Discount</th>
                                 <th>Round Off(-)</th>
                                 <th>Round Off(+)</th>
                                 <th>Bill Amount</th>
@@ -168,19 +168,21 @@
                                             }
 
                                             $gndtot+= $row4['gndtot'];
+
+
                                         }
                                         $disc += $disamt;
 
-                                        $GST +=($gndtot*5)/100;
-                                        $GST1=($gndtot*5)/100;
+                                        $GST +=(($gndtot-$disamt)*5)/100;
+                                        $GST1=(($gndtot-$disamt)*5)/100;
                                         $sgst=$GST1/2;
                                         ?>
                                         <tr>
                                             <td><?php echo date("d-M-Y", strtotime( $row['date'])); ?></td>
                                             <td><?php echo number_format($gndtot,2); ?></td>
-                                            <td><?php echo number_format($sgst,2); ?></td>
-                                            <td><?php echo number_format($sgst,2); ?></td>
                                             <td><?php echo number_format($disamt,2); ?></td>
+                                            <td><?php echo number_format($sgst,2); ?></td>
+                                            <td><?php echo number_format($sgst,2); ?></td>
                                             <td><?php echo number_format($roundNegative,2); ?></td>
                                             <td><?php echo number_format($roundPositive,2); ?></td>
                                             <td><?php echo number_format($total,2); ?></td>
@@ -200,27 +202,27 @@
                         <table class="table table-bordered table-striped">
                             <tr style="background: #cc4b4b; color: #fff;">
                                 <td>
-                                    <h4>Total Basic Amount: &nbsp;&nbsp;
+                                    <h4>Basic Amount: &nbsp;&nbsp;
                                        
                                     <?php echo number_format($basic1,2); ?>
                                     </h4>
                                 </td>
                                 <td>
-                                    <h4>Total CGST 2.5%: &nbsp;&nbsp;
+                                    <h4>Discount: &nbsp;&nbsp;
+                                     
+                                    <?php echo number_format($disc,2); ?>
+                                    </h4>
+                                </td>
+                                <td>
+                                    <h4>CGST 2.5%: &nbsp;&nbsp;
                                      
                                     <?php echo number_format($gst1,2); ?>
                                     </h4>
                                 </td>
                                 <td>
-                                    <h4>Total SGST 2.5%: &nbsp;&nbsp;
+                                    <h4>SGST 2.5%: &nbsp;&nbsp;
                                      
                                     <?php echo number_format($gst1,2); ?>
-                                    </h4>
-                                </td>
-                             	 <td>
-                                    <h4>Total Discount: &nbsp;&nbsp;
-                                     
-                                    <?php echo number_format($disc,2); ?>
                                     </h4>
                                 </td>
                                 <td>

@@ -99,8 +99,8 @@
                                 <th>Bill Date</th>
                                 <th>Bill No</th>
                                 <th>Grand Amount</th>
-                                <th>GST(5%)</th>
                                 <th>Discount</th>
+                                <th>GST(5%)</th>
                                 <th>Net pay</th>
                                 <th>Payment Mode</th>
                             </tr>
@@ -140,15 +140,15 @@
                                         // output data of each row
                                         while($row = mysqli_fetch_assoc($result)) 
                                         {
-                                            $gst=$row['gndtot']*5/100;
+                                            $gst=($row['gndtot']-$row['disamt'])*5/100;
                                             $net=round($row['nettot']);
                                         ?>
                                             <tr>
                                                 <td><?php echo date("d-M-Y", strtotime( $row['date'])); ?></td>
                                                 <td><?php echo $row['slno']; ?></td>
                                                  <td><?php echo number_format($row['gndtot'],2); ?></td>
+                                                 <td><?php echo number_format($row['disamt'],2); ?></td>
                                                  <td><?php echo number_format($gst,2); ?></td>
-                                                <td><?php echo number_format($row['disamt'],2); ?></td>
                                                 <td><?php echo number_format($net,2); ?></td>
                                                 <td><?php echo $row['paymentmode']; ?></td> 
                                             </tr>

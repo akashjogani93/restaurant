@@ -90,9 +90,10 @@ $(document).ready(function()
                 var x = chil[1].innerHTML;
                 var directPrint=$('#DirectPrint').val()
                 var x1 = chil[3].querySelector('input').value;
-
-                // alert(x1);
-                // exit();
+                if(x1=='%')
+                {
+                    x1=0;
+                }
                 if (x != '')
                 {
                     let log =$.ajax({
@@ -221,11 +222,21 @@ function myFunction(selectElement)
 $(".disPer").keyup(function()
 {
     var input = $(this).val();
-    var regex = /^[0-9%]*$/;
-    if (!regex.test(input)) 
-    {
-        var sanitizedInput = input.replace(/[^0-9%]/g, '');
-        $(this).val(sanitizedInput);
+    var regex = /^(\d+(\.\d*)?|\.\d+)%?$/;
+
+    if (!regex.test(input)) {
+    var sanitizedInput = input.replace(/[^0-9.%]/g, '');
+
+    // Remove multiple consecutive dots
+    sanitizedInput = sanitizedInput.replace(/\.{2,}/g, '.');
+
+    // Remove dots at the end of the input
+    sanitizedInput = sanitizedInput.replace(/\.$/, '');
+
+    // Remove a decimal point if it is followed by a percentage sign
+    sanitizedInput = sanitizedInput.replace(/\.(?=%)/g, '');
+
+    $(this).val(sanitizedInput);
     }
 });
 

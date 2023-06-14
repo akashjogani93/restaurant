@@ -105,6 +105,10 @@ $name=$_SESSION['name'];
                 var chil = tar.parentElement.parentElement.children;
                 var x = chil[1].innerHTML;
                 var x1 = chil[4].querySelector('input').value;
+                if(x1=='%')
+                {
+                    x1=0;
+                }
                 var x2 = chil[5].querySelector('select').value;
                 var captain = chil[3].innerHTML;
                 if(captain=='')
@@ -276,13 +280,27 @@ function items()
 
 $(".disPer").keyup(function()
 {
+
     var input = $(this).val();
-    var regex = /^[0-9%]*$/;
+    var regex = /^(\d+(\.\d*)?|\.\d+)%?$/;
+
+    if (regex.test(input) && input.includes('%')) 
+    {
+        var valueWithoutPercent = input.replace('%', '');
+        if(valueWithoutPercent>100)
+        {
+            $(this).val('100%');
+        }
+    }
+
     if (!regex.test(input)) 
     {
-        var sanitizedInput = input.replace(/[^0-9%]/g, '');
+        var sanitizedInput = input.replace(/[^0-9.%]/g, '');
+        sanitizedInput = sanitizedInput.replace(/\.{2,}/g, '.');
+        sanitizedInput = sanitizedInput.replace(/\.$/, '');
+        sanitizedInput = sanitizedInput.replace(/\.(?=%)/g, '');
         $(this).val(sanitizedInput);
-    }
+     } 
 });
 
 function myFunction(selectElement)

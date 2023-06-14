@@ -80,26 +80,29 @@ if(!empty($tabno))
                             $total += $row['tot'];
                         }   
                     }
-                        $final1=$total*$gst/100;
-                        $final=($total+$final1);
+                        // $final1=$total*$gst/100;
+                        // $final=($total+$final1);
                         $percentagePattern = '/^\d+(\.\d+)?%$/';
-                        $amountPattern = '/^\d+$/';
+                        $amountPattern = '/^\d+(\.\d+)?$/';
 
                         if(preg_match($percentagePattern, $discount)) 
                         {
                             $valueWithoutPercentage = str_replace('%', '', $discount);
                             $disPercentage = (float) $valueWithoutPercentage;
 
-                            $dis=($final*$disPercentage)/100;
-                            $final2=$final-$dis;
+                            $dis=($total*$disPercentage)/100;
+                            // $final2=$final-$dis;
 
                         }else if(preg_match($amountPattern, $discount)) 
                         {
-                            $disPerc = ($discount / $final) * 100;
+                            $disPerc = ($discount / $total) * 100;
                             $disPercentage = number_format($disPerc, 2);
                             $dis=$discount;
-                            $final2=$final-$discount;
+                            // $final2=$final-$discount;
                         }
+                        $final=$total-$dis;
+                        $final1=$final*$gst/100;
+                        $final2=$final1+$final;
 
                         $sqltot="INSERT into `tabletot` VALUES('','$total','$gst','$gstamt','$final2','$date','$paymentmode','$capnam','','$disPercentage','$mobno','$current_time','$cash_id','0','$dis','parcel')";
                         $tabletot = mysqli_query($conn, $sqltot);

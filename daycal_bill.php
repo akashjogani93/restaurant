@@ -80,9 +80,9 @@
                             <tr>
                                 <th style="width:20%" class="text-center">Date</th>
                                 <th style="width:15%" class="text-center">B.Amt</th>
+                                <th style="width:10%" class="text-center">Discount</th>
                                 <th style="width:10%" class="text-center">CGST</th>
                                 <th style="width:10%" class="text-center">SGST</th>
-                              	<th style="width:10%" class="text-center">Discount</th>
                                 <th style="width:10%" class="text-center">R(-)</th>
                                 <th style="width:10%" class="text-center">R(+)</th>
                                 <th style="width:15%" class="text-center">N.Amt</th>
@@ -139,16 +139,16 @@
                                         }
                                         $disc += $disamt;
 
-                                        $GST +=($gndtot*5)/100;
-                                        $GST1=($gndtot*5)/100;
+                                        $GST +=(($gndtot-$disamt)*5)/100;
+                                        $GST1=(($gndtot-$disamt)*5)/100;
                                         $sgst=$GST1/2;
                                         ?>
                                         <tr>
                                             <td><?php echo date("d-M-Y", strtotime( $row['date'])); ?></td>
                                             <td class="text-right"><?php echo number_format($gndtot,2); ?></td>
-                                            <td class="text-right"><?php echo number_format($sgst,2); ?></td>
-                                            <td class="text-right"><?php echo number_format($sgst,2); ?></td>
                                             <td class="text-right"><?php echo number_format($disamt,2); ?></td>
+                                            <td class="text-right"><?php echo number_format($sgst,2); ?></td>
+                                            <td class="text-right"><?php echo number_format($sgst,2); ?></td>
                                             <td class="text-right"><?php echo number_format($roundNegative,2); ?></td>
                                             <td class="text-right"><?php echo number_format($roundPositive,2); ?></td>
                                             <td class="text-right"><?php echo number_format($total,2); ?></td>
@@ -167,9 +167,9 @@
                             <tr>
                                 <td class="text-center"><b><?php echo "Total"; ?></b></td>
                                 <td class="text-right"><b style="margin-right:5px;"><?php echo number_format($basic1,2); ?></b></td>
-                                <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($gst1,2); ?></b></td>
-                                <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($gst1,2); ?></b></td>
                                 <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($disc,2); ?></b></td>
+                                <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($gst1,2); ?></b></td>
+                                <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($gst1,2); ?></b></td>
                                 <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($rminus,2); ?></b></td>
                                 <td  class="text-right"><b style="margin-right:5px;"><?php echo number_format($rplus,2); ?></b></td>
                                 <td class="text-right"><b style="margin-right:5px;"><?php echo number_format(round($Final),2); ?></b></td>
