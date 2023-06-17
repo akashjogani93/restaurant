@@ -256,10 +256,10 @@ function myFunction()
 {
     window.print();
     // window.location.href ="table_form.php";
-    window.onafterprint = function(event)
-    {
+    // window.onafterprint = function(event)
+    // {
          window.location.href ="nc_reports.php";
-    };
+    // };
 }
 
 </script> 

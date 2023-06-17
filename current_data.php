@@ -173,7 +173,7 @@ function shift()
             });
             console.log(log);
             var tabno='<?php echo $cat; ?>';
-            window.location.href = 'table_form.php?statuscancel='+tabno;
+            window.location.href = 'table_form.php?statuscancel='+table;
     }
 }
 </script>

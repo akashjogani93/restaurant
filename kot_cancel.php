@@ -22,5 +22,6 @@
     {
         echo json_encode('Error: ' . mysqli_error($conn ));
     }
+    
     echo '<script>location="table_form.php?statuscancel='.$tab.'"</script>';
 ?>

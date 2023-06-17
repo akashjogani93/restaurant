@@ -3,7 +3,6 @@
 
         <?php
             require_once("header.php"); 
-           
             ?>
 
 <style>
@@ -19,7 +18,6 @@
     .boxx{
         background-color:rgba(255, 255, 255, 0.4);
         margin:20px;
-       
     }
     .box-body1{
         overflow-x:scroll;
@@ -48,6 +46,7 @@
                             <tr>
                                 <th>Sr no</th>
                                 <th>Item name</th>
+                                <!-- <th>Purchase Qty</th> -->
                                 <th>Remaining Qty</th>
                                 <th>Item unit</th>
                                 <th>Price</th>
@@ -79,7 +78,8 @@
                                             </tr>
                                                 <td><?php echo $row['store_id']; ?></td>
                                                 <td><?php echo $row['item_name']; ?></td>
-                                                <td><?php echo $row['item_qty']; ?></td>
+                                                <!-- <td><?php echo $row['']; ?></td> -->
+                                                <td><?php echo $row['remain']; ?></td>
                                                 <td><?php echo ucfirst($row['item_unit']); ?></td>
                                                 <td><?php echo $row['item_rate']; ?></td>
                                                 <td><?php echo $row['item_total']; ?></td>

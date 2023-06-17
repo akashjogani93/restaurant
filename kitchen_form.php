@@ -10,23 +10,7 @@
         </style>
         <?php require_once("header.php"); 
         include("dbcon.php"); ?>
-        <script type="text/javascript">
-            // $(function() {
-            //     $(".pname").autocomplete({
-            //         source: 'product_complete.php'
-            //     });
-            // });
-        </script>
         <div class="content-wrapper">
-            <section class="content-header">
-                <h1>
-                    Kitchen1 Stock Inventary
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="home.php"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <!-- <li><a href="#">Kitchen Master</a></li> -->
-                </ol>
-            </section>
             <?php 
                 $name=$qty=$rqty=$unit=$fid="";
                 if(isset($_GET['del']))
@@ -55,8 +39,6 @@
                                         <div class="form-group col-md-4">
                                             <label for="inputEmail3" class="col-sm-4 control-label">Product Name</label>
                                             <div class="col-sm-8">
-                                                <!-- <input type="text" class="form-control pname" id="sid"
-                                                    onblur="validate1();" name="itmid" placeholder="Search Product" required="required" value="<?php echo $name; ?>"> -->
                                                 <select name="itmid" id="sid" required class="form-control pname" onblur="validate1();">
                                                     <option value="">Select Products</option>
                                                     <?php 
@@ -66,49 +48,33 @@
                                                         {?>
                                                            <option value="<?php echo $loca['item_name']; ?>"><?php echo $loca['item_name']; ?></option>
                                                     <?php } ?>                                         
-                                                    
                                                 </select>
                                                 <input type="hidden" name="fid" id="fid" value="<?php echo $fid; ?>">
                                             </div>
                                         </div>
-
                                         <div class="form-group col-md-4">
                                             <label for="inputPassword3" class="col-sm-4 control-label">Item Unit</label>
                                             <div class="col-sm-8">
                                                 <input type="hidden" class="form-control" name="itmname" id="itmname">
-                                                <input type="text" class="form-control" name="itmunit" id="itmunit"
-                                                    readonly="readonly" placeholder="Quantity" value="<?php echo $unit; ?>">
+                                                <input type="text" class="form-control" name="itmunit" id="itmunit" readonly="readonly" placeholder="Quantity" value="<?php echo $unit; ?>">
                                             </div>
                                         </div>
-
-
                                         <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">Remaining
-                                                Quantity</label>
+                                            <label for="inputEmail3" class="col-sm-4 control-label">Remaining Quantity</label>
                                             <div class="col-sm-8">
-                                                <input type="number" class="form-control" name="remqty" id="itmqty"
-                                                    placeholder="Quantity" readonly  value="<?php echo $rqty; ?>">
-
+                                                <input type="number" class="form-control" name="remqty" id="itmqty" placeholder="Quantity" readonly  value="<?php echo $rqty; ?>">
                                             </div>
                                         </div>
-
                                         <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">Item
-                                                Quantity</label>
+                                            <label for="inputEmail3" class="col-sm-4 control-label">Item Quantity</label>
                                             <div class="col-sm-8">
-                                                <input type="number" class="form-control" name="itmqty"
-                                                    placeholder="Quantity" id="itmqty1" value="<?php echo $qty; ?>" required>
-
+                                                <input type="number" class="form-control" name="itmqty" placeholder="Quantity" id="itmqty1" required>
                                             </div>
                                         </div>
-
-
                                         <div class="form-group col-md-4">
                                             <label for="inputEmail3" class="col-sm-4 control-label">Given Date</label>
                                             <div class="col-sm-8">
-                                                <input type="date" class="form-control" name="gvndate"
-                                                    placeholder="Purchased Date" value="<?php echo date('Y-m-d'); ?>"
-                                                    required>
+                                                <input type="date" class="form-control" name="gvndate" placeholder="Purchased Date" value="<?php echo date('Y-m-d'); ?>" required>
                                             </div>
                                         </div>
                                     </div>
@@ -127,7 +93,6 @@
                                             <?php
                                         }
                                         ?>
-                                        
                                     </center>
                                 </div>
                             </form>
@@ -139,7 +104,7 @@
                         <div class="col-md-12">
                             <div class="box-body">
                                 <div class="row">
-                                    <form class="form-horizontal" method="post" >
+                                    <form class="form-horizontal" method="post" action="kitchen_form.php">
                                         <div class="form-group col-md-4">
                                             <label for="inputEmail3" class="col-sm-4 control-label">From Date</label>
                                             <div class="col-sm-8">
@@ -168,17 +133,15 @@
                                             <tr>
                                                 <th>Sl No</th>
                                                 <th>Item Name</th>
-                                                <!-- <th>Minimum Qty</th> -->
                                                 <th>Finished Qty</th>
                                                 <th>Remaining Qty</th>
                                                 <th>Item Unit</th>
                                                 <th>Given Date</th>
-                                                <th>Edit/Delete</th>
+                                                <!-- <th>Edit</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php 
-                                                
                                                 if(!isset($_POST['view']))
                                                 {
                                                     $query1="SELECT `store_room_finish`.*,`store_room`.`remain` FROM `store_room_finish`,`store_room` WHERE `store_room_finish`.`item_name_finish`=`store_room`.`item_name`";
@@ -189,100 +152,100 @@
                                                         <tr>
                                                             <td><?php echo $row['fid']; ?></td>
                                                             <td><?php echo $row['item_name_finish']; ?></td>
-                                                            <!-- <td><?php echo $row['item_qty']; ?></td> -->
                                                             <td><?php echo $row['f_item_finish_qty']; ?></td>
                                                             <td><?php echo $row['remain']; ?></td>
                                                             <td><?php echo ucfirst($row['f_item_unit']); ?></td>
                                                             <td><?php echo date("d-M-Y", strtotime( $row['given_date'])); ?></td>
-                                                            <td>
+                                                            <!-- <td>
                                                                 <button v-on:click="editItem($event)" class="btn btn-primary btn-sm edit1"
-                                                                    data-toggle="modal" data-target="#myModal"><i
-                                                                        class="fa fa-fw fa-edit"></i>Edit</button>
-                                                                <!-- <a href="kitchen_form.php?del=<?php echo $row['fid'];?>" class="btn btn-primary btn-sm"><i
-                                                                        class="fa fa-fw fa-edit"></i>Update</a> -->
-                                                                <!-- <a href="#?del=<?php echo $row['fid'];?>"
-                                                                    class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash-o"></i>Delete</a> -->
-                                                            </td>
+                                                                    data-toggle="modal" data-target="#myModal">Edit</button>
+                                                            </td> -->
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }else
+                                                {
+                                                    $start=$_POST['from_date'];
+                                                    $end=$_POST['to_date'];
+                                                    $query1="SELECT `store_room_finish`.*,`store_room`.`remain` FROM `store_room_finish`,`store_room` WHERE `store_room_finish`.`item_name_finish`=`store_room`.`item_name` AND `store_room_finish`.`given_date` BETWEEN '$start' AND '$end'";
+                                                    $exc=mysqli_query($conn,$query1);
+                                                    while ($row=mysqli_fetch_array($exc)) 
+                                                    {
+                                                        ?>
+                                                        <tr>
+                                                            <td><?php echo $row['fid']; ?></td>
+                                                            <td><?php echo $row['item_name_finish']; ?></td>
+                                                            <td><?php echo $row['f_item_finish_qty']; ?></td>
+                                                            <td><?php echo $row['remain']; ?></td>
+                                                            <td><?php echo ucfirst($row['f_item_unit']); ?></td>
+                                                            <td><?php echo date("d-M-Y", strtotime( $row['given_date'])); ?></td>
+                                                            <!-- <td>
+                                                                <button v-on:click="editItem($event)" class="btn btn-primary btn-sm edit1"
+                                                                    data-toggle="modal" data-target="#myModal">Edit</button>
+                                                            </td> -->
                                                         </tr>
                                                         <?php
                                                     }
                                                 }
-
                                             ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span></button>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel">Edit</h4>
                                 </div>
-                                <form class="form-horizontal edit" method="post" action="kitchen_edit.php"
-                                    id="editform">
+                                <form class="form-horizontal edit" method="post" action="kitchen_edit.php" id="editform">
                                     <div class="modal-body">
                                         <div class="col-md-12">
                                             <div class="box-body">
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputEmail3" class="col-md-4 control-label">Sl
-                                                        No</label>
+                                                    <label for="inputEmail3" class="col-md-4 control-label">Sl No</label>
                                                     <div class="col-md-4">
-                                                        <input type="number" class="form-control" placeholder="Sl No"
-                                                            name="slno" readonly>
+                                                        <input type="number" class="form-control" placeholder="Sl No" name="slno" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputPassword3" class="col-sm-4 control-label">Item
-                                                        Name</label>
+                                                    <label for="inputPassword3" class="col-sm-4 control-label">Item Name</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="itmname"
-                                                            id="itmname" placeholder="Item Name" required readonly>
+                                                        <input type="text" class="form-control" name="itmname" id="itmname" placeholder="Item Name" required readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputPassword3" class="col-sm-4 control-label">Item
-                                                        Unit</label>
+                                                    <label for="inputPassword3" class="col-sm-4 control-label">Item Unit</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="itmunit"
-                                                            placeholder="Item Name" required readonly>
+                                                        <input type="text" class="form-control" name="itmunit" placeholder="Item Name" required readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputEmail3" class="col-sm-4 control-label">Total
-                                                        QTY</label>
+                                                    <label for="inputEmail3" class="col-sm-4 control-label">Total QTY</label>
                                                     <div class="col-sm-6">
-                                                        <input type="number" readonly="readonly" class="form-control"
-                                                            name="totalqty" placeholder="Remaining" required>
+                                                        <input type="number" readonly="readonly" class="form-control" name="totalqty" placeholder="Remaining" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputEmail3" class="col-sm-4 control-label">Item
-                                                        Remaining QTY</label>
+                                                    <label for="inputEmail3" class="col-sm-4 control-label">Item Remaining QTY</label>
                                                     <div class="col-sm-6">
-                                                        <input type="number" readonly="readonly" class="form-control"
-                                                            name="itm_rem" placeholder="Remaining" required>
+                                                        <input type="number" readonly="readonly" class="form-control" name="itm_rem" placeholder="Remaining" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputPassword3" class="col-sm-4 control-label">Kitchen
-                                                        Quantity</label>
+                                                    <label for="inputPassword3" class="col-sm-4 control-label">Kitchen Quantity</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="itmqty"
-                                                            placeholder="Item Name" required>
-                                                            <input type="text" class="form-control" name="oldrem"
-                                                            placeholder="Item Name">
+                                                        <input type="text" class="form-control" name="itmqty" placeholder="Item Name" required>
+                                                        <input type="text" class="form-control" name="oldrem" placeholder="Item Name">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
                                 </form>
@@ -292,12 +255,8 @@
                     </div>
                 </div>
             </section>
-            <!-- <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script> -->
-
             <script src="cdn/dataTables.buttons.min.js"></script>
             <script src="cdn/buttons.print.min.js"></script>
-            <!-- <script src="cdn/sum().js"></script> -->
             
             <script>
                 $(function() {
@@ -353,16 +312,13 @@
                 form[6].value = (child.children()[2].innerHTML);
             });
 
-            $("#itmqty1").keyup(total);
-            function total()
+            $("#itmqty1").keyup(function()
             {
                 // $('#myButton').prop('disabled', true);
                 var itmqty1 = parseFloat($("#itmqty1").val());
                 var sid = $("#sid").val();
                 var itmqty = parseFloat($("#itmqty").val());
-                // alert(sid)
-                console.log(sid);
-                if (itmqty1 > itmqty)
+                if(itmqty1 > itmqty)
                 {
                     $('#myButton').prop('disabled', true);
                     
@@ -370,9 +326,11 @@
                 {
                     $('#myButton').prop('disabled', true);
                     $("#itmqty1").val(" ")
+                }else
+                {
+                    $('#myButton').prop('disabled', false);
                 }
-                $('#myButton').prop('disabled', false);
-            }
+            });
         </script>
         </div>
     </div>

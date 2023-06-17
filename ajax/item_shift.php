@@ -2,7 +2,7 @@
 if(isset($_POST['item_no']))
 {
     $item_no=$_POST['item_no'];
-
+    $capname1='';
     $table=$_POST['table'];
     $q22="SELECT `capname` FROM `temtable` WHERE `tabno`='$table'";
     $conf11=mysqli_query($conn,$q22);

@@ -139,10 +139,10 @@ margin:0;
 function myFunction()
 {
     window.print();
-    window.onafterprint = function(event)
-    {
+    // window.onafterprint = function(event)
+    // {
         window.location.href ="payment.php";
-    };
+    // };
 }
 
 </script> 

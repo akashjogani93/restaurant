@@ -153,10 +153,10 @@
 function myFunction()
 {
     window.print();
-    window.onafterprint = function(event)
-    {
+    // window.onafterprint = function(event)
+    // {
         window.location.href ="billdate.php";
-    };
+    // };
 }
 
 </script> 

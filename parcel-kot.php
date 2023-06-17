@@ -234,9 +234,9 @@ function myFunction()
    window.print();
    var tab ="<?php echo $tab; ?>";
    var kotnumber ="<?php echo $kotnumber; ?>";
-   window.onafterprint = function(event) {
-    window.location.href ="kot-parcel_cancel.php?tab=" + tab + "&kotnumber=" + kotnumber;
-};
+//    window.onafterprint = function(event) {
+        window.location.href ="kot-parcel_cancel.php?tab=" + tab + "&kotnumber=" + kotnumber;
+    // };
          
 }
 

@@ -220,11 +220,11 @@ function myFunction()
 {
    window.print();
         var tab ="<?php echo $tab; ?>";
-        window.onafterprint = function(event) 
-        {
+        // window.onafterprint = function(event) 
+        // {
             window.location.href ="table_form.php?statuscancel=" + tab ;
 
-        };
+        // };
          
 }
 

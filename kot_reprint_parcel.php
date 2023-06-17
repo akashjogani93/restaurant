@@ -199,11 +199,11 @@ function myFunction()
 {
     window.print();
         var tab ="<?php echo $tab; ?>";
-        window.onafterprint = function(event) 
-        {
+        // window.onafterprint = function(event) 
+        // {
             window.location.href ="parcel.php";
 
-        };
+        // };
 } 
 
 

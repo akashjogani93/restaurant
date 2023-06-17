@@ -56,7 +56,8 @@ else
     $remain=$rem+$qty;
 }
 
-$sql="UPDATE `store_room` SET `item_qty`='$purchase1',`remain`='$remain' WHERE `store_id`='$id' ";
+$total=$purchase1*$prc;
+$sql="UPDATE `store_room` SET `item_qty`='$purchase1',`remain`='$remain',`item_rate`='$prc',`item_total`='$total' WHERE `store_id`='$id' ";
 
 if (!mysqli_query($conn, $sql)) {
     die('Error: ' . mysqli_error($conn ));

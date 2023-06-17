@@ -1,7 +1,7 @@
 <?php session_start();
-$cash_type=$_SESSION['tye'];
-$cash_id=$_SESSION['id'];
-$name=$_SESSION['name'];
+    $cash_type=$_SESSION['tye'];
+    $cash_id=$_SESSION['id'];
+    $name=$_SESSION['name'];
 ?>
 <h3 class="text-center">Running Table</h3>
 <input type="hidden" id="DirectPrint">

@@ -8,41 +8,6 @@
         </style>
         <?php 
         include('dbcon.php'); ?>
-        <script type="text/javascript">
-            // $(function() {
-            //     $(".pname").autocomplete({
-            //         source: 'product_complete.php'
-            //      });
-            // });
-
-            $(function () {
-                // $(".pname").autocomplete({
-                // source: function (request, response){
-                // let log= $.ajax({
-                //     url: "product_complete.php",
-                //     type: "post",
-                //     dataType: "json",
-                //     data: {
-                //         search: request.term,
-                //     },
-                //     success: function (data){
-                //         response(data);
-                //         console.log(data);
-                //     },
-                //     });
-                //     // console.log(log)
-                // },
-                // select: function (event, ui) {
-                //     $(".pname").val(ui.item.label); // display the selected text
-                //     return false;
-                // },
-                // focus: function (event, ui) {
-                //     $(".pname").val(ui.item.label);
-                //     return false;
-                // },
-                // });
-            });
-        </script>
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
@@ -50,7 +15,6 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="home.php"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <!-- <li><a href="#">Stock Master</a></li> -->
                 </ol>
             </section>
             <section class="content">
@@ -63,7 +27,6 @@
                                         <div class="form-group col-md-4">
                                             <label for="inputEmail3" class="col-sm-4 control-label">Product Name</label>
                                             <div class="col-sm-8">
-                                                <!-- <input type="text" class="form-control pname" name="pname" id="pid" placeholder="Search Product" required="required"> -->
                                                 <select name="pname" id="pid" required class="form-control pname">
                                                     <option value="">Select Products</option>
                                                     <?php 
@@ -73,7 +36,6 @@
                                                         {?>
                                                            <option value="<?php echo $loca['pname']; ?>"><?php echo $loca['pname']; ?></option>
                                                     <?php } ?>                                         
-                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -126,7 +88,7 @@
                                     <div class="col-md-12">
                                         <div class="box-body">
                                             <div class="row">
-                                                <form class="form-horizontal" method="post" >
+                                                <form class="form-horizontal" method="post" action="store_form.php">
                                                     <div class="form-group col-md-4">
                                                         <label for="inputEmail3" class="col-sm-4 control-label">From Date</label>
                                                         <div class="col-sm-8">
@@ -163,7 +125,6 @@
                                     <th>Item Name</th>
                                     <th>Purchase Qty</th>
                                     <th>Remain</th>
-                                    <!-- <th>Remaining Quantity</th> -->
                                     <th>Item Unit</th>
                                     <th>Price</th>
                                     <th>Total</th>
@@ -192,9 +153,34 @@
                                                     <td><?php echo $row['item_total']; ?></td>
                                                     <td><?php echo date("d-M-Y", strtotime( $row['item_pur_date'])); ?></td>
                                                     <td>
+                                                        <button v-on:click="editItem($event)" class="btn btn-primary btn-sm edit1" data-toggle="modal" data-target="#myModal">
+                                                        Update</button>
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                        }
+                                    }else
+                                    {
+                                        $start=$_POST['from_date'];
+                                        $end=$_POST['to_date'];
+                                        $qry="SELECT * FROM `store_room` WHERE `item_pur_date` BETWEEN '$start' AND '$end'";
+                                        $exc=mysqli_query($conn,$qry);
+                                        while ($row=mysqli_fetch_array($exc)) 
+                                        {
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $row['store_id']; ?></td>
+                                                    <td><?php echo $row['item_name']; ?></td>
+                                                    <td><?php echo $row['item_qty']; ?></td>
+                                                    <td><?php echo $row['remain']; ?></td>
+                                                    <!-- <td><?php echo $row['item_qty']; ?></td> -->
+                                                    <td><?php echo $row['item_unit']; ?></td>
+                                                    <td><?php echo $row['item_rate']; ?></td>
+                                                    <td><?php echo $row['item_total']; ?></td>
+                                                    <td><?php echo date("d-M-Y", strtotime( $row['item_pur_date'])); ?></td>
+                                                    <td>
                                                     <button v-on:click="editItem($event)" class="btn btn-primary btn-sm edit1" data-toggle="modal" data-target="#myModal">
-                                                        <i class="fa fa-fw fa-edit"></i>Update</button>
-                                                        <!-- <a href="store_edit.php?del=<?php echo $row['store_id'];?>" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash-o"></i>Delete</a> -->
+                                                        Update</button>
                                                     </td>
                                                 </tr>
                                             <?php
@@ -215,92 +201,61 @@
                                 <form class="form-horizontal edit" method="post" action="store_edit.php" id="editform">
                                     <div class="modal-body">
                                         <div class="col-md-12">
-                                            <!-- Horizontal Form -->
-
-                                            <!-- /.box-header -->
-                                            <!-- form start -->
-
                                             <div class="box-body">
-
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputEmail3" class="col-md-4 control-label">Sl
-                                                        No</label>
+                                                    <label for="inputEmail3" class="col-md-4 control-label">Sl No</label>
                                                     <div class="col-md-4">
-                                                        <input type="number" class="form-control" placeholder="Sl No"
-                                                            name="slno" readonly>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group col-md-12">
-                                                    <label for="inputPassword3" class="col-sm-4 control-label">Item
-                                                        Name</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="itmnam"
-                                                            placeholder="Item Name" readonly>
+                                                        <input type="number" class="form-control" placeholder="Sl No" name="slno" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputPassword3" class="col-sm-4 control-label">Remain
-                                                        Quantity</label>
+                                                    <label for="inputPassword3" class="col-sm-4 control-label">Item Name</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="itmqty"
-                                                            placeholder="Item Qty" readonly>
+                                                        <input type="text" class="form-control" name="itmnam" placeholder="Item Name" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputPassword3" class="col-sm-4 control-label">Item
-                                                        Unit</label>
+                                                    <label for="inputPassword3" class="col-sm-4 control-label">Remain Quantity</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="itmunit"
-                                                            placeholder="Item Name" readonly>
+                                                        <input type="text" class="form-control" name="itmqty" placeholder="Item Qty" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="inputPassword3" class="col-sm-4 control-label">Change
-                                                        Quantity</label>
+                                                    <label for="inputPassword3" class="col-sm-4 control-label">Item Unit</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="removed" id="removed"
-                                                            placeholder="Item Qty">
+                                                        <input type="text" class="form-control" name="itmunit" placeholder="Item Name" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label for="inputPassword3" class="col-sm-4 control-label">Change Quantity</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="removed" id="removed" placeholder="Item Qty" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label for="inputEmail3"
                                                         class="col-sm-4 control-label">Change Price</label>
                                                     <div class="col-sm-6">
-                                                        <input type="number" step="0.01" class="form-control"
-                                                            name="itmprc" placeholder="Price" required>
+                                                        <input type="number" step="0.01" class="form-control" name="itmprc" placeholder="Price" required>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="form-group col-md-12">
-                                                    <label for="inputPassword3" class="col-sm-4 control-label">Purchased
-                                                        Date</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="date" class="form-control" name="pur_date" id="d_date"
-                                                            placeholder="Short Name" required>
-
-                                                    </div>
-                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                    </div><!-- /.modal -->
+                    </div>
             </section>
             <script src="js/purchase_item.js"></script>
-            <!-- <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script> -->
 
             <script src="cdn/dataTables.buttons.min.js"></script>
             <script src="cdn/buttons.print.min.js"></script>
-            <!-- <script src="cdn/sum().js"></script> -->
             
             <script>
                 $(function () {
@@ -310,16 +265,12 @@
                             [25, 10, 100, -1],
                             [25, 10, 100, "All"]
                         ],
-                        buttons: [
-                            'print'
-                        ],
                         order: [
                             [6, "desc"]
                         ]
-
                     });
                 });
-        </script>
+            </script>
 
 <script>
     var app = new Vue({
@@ -389,10 +340,10 @@
                     this.slno++;
                 });
             },
-            editItem: function(e) {
+            editItem: function(e) 
+            {
                 var tar = e.currentTarget;
                 var chil = tar.parentElement.parentElement.children;
-                console.log(chil);
                 var form = $("#editform input");
 
                 form[0].value = (chil[0].innerHTML);
