@@ -8,7 +8,7 @@ $result = mysqli_query($conn, $sql);
 while($row = mysqli_fetch_assoc($result)) 
 {
     $tabno=$row['tabno'];
-    $capnam=$row['cap_code'];
+    $capnam=$row['capnam'];
     $cnt=$bill_no;
     $discount=$row['discount'];
     $date=$row['date'];

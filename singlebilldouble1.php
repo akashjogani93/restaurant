@@ -96,7 +96,7 @@
                                     <img src="img/Oyeshava.png" alt="" width="90" height="90">
                                     <h5>1/E, Bauxite Road, B.K, Kangarli, Belagavi, Karnataka 590010</h5>
                                     <h6>GST : 29AYAPC2895D1ZJ</h6>
-
+                                    <h6 style="font-size:8px; margin-top:-8px; font-weight:600;">Contact No : 7676801529</h6>
                                 </center> 
                             </div>
                        </div>
@@ -231,6 +231,29 @@
                                     }
                                 ?>
                                 <center>
+                                    <?php 
+                                        $upiVpa = 'akashjogani93@axl';
+                                        // $amount = 1;
+
+                                        // Generate QR code data
+                                        // $data = "upi://pay?pa=$upiVpa&am=$amount";
+                                        $data = "upi://pay?pa=$upiVpa&am=$amount&pn=MerchantName&mc=123456&tid=987654321&tr=123456789&tn=PaymentDescription&url=https://example.com/callback&ands=googlepay";
+                                        // URL to generate QR code using Google Charts API
+                                        $apiUrl = 'https://chart.googleapis.com/chart';
+
+                                        // API parameters
+                                        $params = array(
+                                            'cht' => 'qr',
+                                            'chs' => '150x150', // QR code image size
+                                            'chl' => $data // QR code data
+                                        );
+
+                                        // Generate the API URL with parameters
+                                        $apiUrl .= '?' . http_build_query($params);
+
+                                        // Output the QR code image
+                                        echo '<img src="' . $apiUrl . '" alt="UPI Amount QR Code">';
+                                    ?>
                                     <h4>- - - - - <b>THANK YOU VISIT AGAIN</b> - - - - -</h4>
                                 </center>
                             </div>
@@ -256,10 +279,10 @@ function myFunction()
 {
     window.print();
     // window.location.href ="table_form.php";
-    // window.onafterprint = function(event)
-    // {
+    window.onafterprint = function(event)
+    {
          window.location.href ="nc_reports.php";
-    // };
+    };
 }
 
 </script> 

@@ -154,10 +154,12 @@ function shift()
     {
         item_no.push($(this).val());
     });
-
     var table=$('#shifttables').val();
+    console.log(table)
+
     if (item_no.length >= 1) 
     {
+        console.log('running')
         let log=$.ajax({
                 url: "ajax/item_shift.php",
                 method: "POST",
@@ -168,12 +170,9 @@ function shift()
                 success: function(data)
                 {
                     alert("Item Shifted");
-                    console.log(data);
+                    window.location.href = 'table_form.php?statuscancel='+table;
                 }
             });
-            console.log(log);
-            var tabno='<?php echo $cat; ?>';
-            window.location.href = 'table_form.php?statuscancel='+table;
     }
 }
 </script>

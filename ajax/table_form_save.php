@@ -129,7 +129,7 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
                         mysqli_query($conn,"UPDATE `tabledata` SET `prc`=0,`tot`=0 WHERE `tabno`='$tabno'");
                     }
 
-                    $a = array($tabno,$cap_code,$cnt,$disPercentage,$date,$current_time,$dis);
+                    $a = array($tabno,$capnam,$cnt,$disPercentage,$date,$current_time,$dis);
                     echo json_encode($a);
                 }
             }else

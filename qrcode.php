@@ -1,25 +1,24 @@
-<?php 
-    require __DIR__.'/vendor/autoload.php';
-    use Endroid\QrCode\QrCode; 
+<?php
 
+$upiVpa = 'akashjogani93@axl';
+$amount = 1;
 
-    // Generate QR code
-    $upiId = 'example@upi'; // Replace with your UPI ID
-    $amount = 100; // Replace with the payment amount
-    $qrCodeText = "upi://pay?pa=" . urlencode($upiId) . "&am=" . $amount;
-    $qrCode = new QrCode($qrCodeText);
-    $qrCode->setSize(200); // Adjust the size of the QR code (in pixels)
-    $qrCodeImage = $qrCode->writeDataUri();
+// Generate QR code data
+$data = "upi://pay?pa=$upiVpa&am=$amount&pn=MerchantName&mc=123456&tid=987654321&tr=123456789&tn=PaymentDescription&url=https://example.com/callback&ands=googlepay";
 
-    // Connect to the thermal printer
-    $printer = printer_open('LPT1'); // Replace 'LPT1' with your printer device
+// URL to generate QR code using Google Charts API
+$apiUrl = 'https://chart.googleapis.com/chart';
 
-    // Set the printer to print graphics
-    printer_set_option($printer, PRINTER_MODE, "RAW");
+// API parameters
+$params = array(
+    'cht' => 'qr',
+    'chs' => '300x300', // QR code image size
+    'chl' => $data // QR code data
+);
 
-    // Send the QR code image to the printer
-    printer_write($printer, base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $qrCodeImage)));
+// Generate the API URL with parameters
+$apiUrl .= '?' . http_build_query($params);
 
-    // Close the printer connection
-    printer_close($printer);
+// Output the QR code image
+echo '<img src="' . $apiUrl . '" alt="UPI Amount QR Code">';
 ?>
