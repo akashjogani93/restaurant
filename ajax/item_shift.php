@@ -15,8 +15,6 @@ if(isset($_POST['item_no']))
     {
         $capname1='';
     }
-
-    // echo $capname1;
     foreach($item_no as $item)
     {
         $q1="SELECT * FROM `temtable` WHERE `slno`='$item'";
@@ -49,11 +47,9 @@ if(isset($_POST['item_no']))
                 }
             }else
             {
-                
                 mysqli_query($conn,"UPDATE `temtable` SET `tabno`='$table',`capname`='$capname1' WHERE `slno`='$item'");
                 mysqli_query($conn,"UPDATE `kot` SET `tabno`='$table',`capname`='$capname1' WHERE `id`='$kot'");
             }
-                
         }        
     }
     
