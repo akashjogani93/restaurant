@@ -99,8 +99,8 @@
                           		$tot_amount=0;
                                 // if(isset($_POST['save']))
                                 // {
-                                    $sql = "SELECT * FROM tabletot WHERE `status`='1' AND date BETWEEN '$fdate' AND '$tdate'";
-                                    $sql2 = "SELECT SUM(gndtot) AS grdtot, discount, SUM(gstamt) AS gsttot, SUM(nettot) AS netprc,SUM(discount) AS dis  FROM tabletot WHERE `status`='1' AND date BETWEEN '$fdate' AND '$tdate'";
+                                    $sql = "SELECT * FROM tabletot WHERE date BETWEEN '$fdate' AND '$tdate'";
+                                    $sql2 = "SELECT SUM(gndtot) AS grdtot, discount, SUM(gstamt) AS gsttot, SUM(nettot) AS netprc,SUM(discount) AS dis  FROM tabletot WHERE  date BETWEEN '$fdate' AND '$tdate'";
                                 // }
                                     $result = mysqli_query($conn, $sql);
                                     $result2= mysqli_query($conn, $sql2);

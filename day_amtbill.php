@@ -100,7 +100,7 @@
                                 $rminus=0;
                                 $rplus=0;
                               $disc=0;
-                                $sql = "SELECT * FROM tabletot WHERE date='$fdate' AND `status`=1";
+                                $sql = "SELECT * FROM tabletot WHERE date='$fdate'";
                                 $sql2 = "SELECT SUM(gndtot) AS grdtot, discount, SUM(gstamt) AS gsttot, SUM(nettot) AS netprc,SUM(discount) AS dis  FROM tabletot WHERE date='$fdate'";
                                 
                                 $result = mysqli_query($conn, $sql);

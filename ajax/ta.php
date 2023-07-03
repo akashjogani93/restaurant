@@ -60,7 +60,6 @@ if(isset($_POST['catsus2']))
         }
     }
     echo json_encode($a1);
-    
 }
 
 if(isset($_POST['catsus1']))
@@ -68,23 +67,32 @@ if(isset($_POST['catsus1']))
     $query="SELECT DISTINCT `tabno` FROM `parcel`;";
     $c=mysqli_query($conn, $query);
     $a = array();
-    if (mysqli_num_rows($c) > 0) {
+    if (mysqli_num_rows($c) > 0) 
+    {
         // output data of each row
         while($row = mysqli_fetch_assoc($c)) { 
             array_push($a,$row['tabno']);
         }
     }
     echo json_encode($a);
-    
 }
 
 if(isset($_POST['table1']))
 {
    $table1=$_POST['table1'];
    $table2=$_POST['table2'];
+
+    if($table2=="none")
+    {
+        $table2=$_POST['latebill'];
+    }else
+    {
+        $table2=$_POST['table2'];
+    }
+
    mysqli_query($conn,"UPDATE `temtable` SET `tabno`='$table2' WHERE `tabno`='$table1'");
    mysqli_query($conn,"UPDATE `kot` SET `tabno`='$table2' WHERE `tabno`='$table1'");
-  echo json_encode('updated');
+    echo json_encode('Table Shifted');
 }
 
 

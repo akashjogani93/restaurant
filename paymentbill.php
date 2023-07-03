@@ -94,7 +94,7 @@ margin:0;
                             <?php
                                 require_once("dbcon.php");
 
-                                $sql = "SELECT * FROM `tabletot` WHERE `date`='$fdate' AND `status`=1;";
+                                $sql = "SELECT * FROM `tabletot` WHERE `date`='$fdate' ";
                                
                                 $result = mysqli_query($conn, $sql);
                                 if (mysqli_num_rows($result) > 0) 

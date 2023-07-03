@@ -63,7 +63,7 @@
                             <?php
                                 require_once("dbcon.php");
                                 $sn=0;
-                                $sql = "SELECT * FROM `tabletot` WHERE `status`='1' ORDER BY `slno` DESC;";
+                                $sql = "SELECT * FROM `tabletot` ORDER BY `slno` DESC;";
                                 $sql2 = "SELECT SUM(gndtot) AS grdtot, SUM(gstamt) AS gsttot, SUM(nettot) AS netprc  FROM tabletot ORDER BY `slno` DESC";
                                 $result = mysqli_query($conn, $sql);
                                 $result2= mysqli_query($conn, $sql2);

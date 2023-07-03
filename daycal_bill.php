@@ -99,7 +99,7 @@
                                 $rminus=0;
                                 $rplus=0;
                                 $GST=0;
-                                $sql3= "SELECT slno, SUM(gndtot) as gndtot, date, SUM(gstamt) AS gsttot, SUM(nettot) AS netprc, SUM(disamt) AS disamt FROM tabletot WHERE date BETWEEN '$fdate' AND '$tdate' AND `status`=1 GROUP BY DAY(date)";
+                                $sql3= "SELECT slno, SUM(gndtot) as gndtot, date, SUM(gstamt) AS gsttot, SUM(nettot) AS netprc, SUM(disamt) AS disamt FROM tabletot WHERE date BETWEEN '$fdate' AND '$tdate' GROUP BY DAY(date)";
                                 
                                 $result = mysqli_query($conn, $sql3);
                                 $result2= mysqli_query($conn, $sql3);
@@ -110,7 +110,7 @@
                                     {
 
                                         $date=$row['date'];
-                                        $sql4="SELECT * FROM `tabletot` WHERE `date`='$date' AND `status`=1";
+                                        $sql4="SELECT * FROM `tabletot` WHERE `date`='$date' ";
                                         $result4 = mysqli_query($conn,$sql4);
                                         $roundNegative=0;
                                         $roundPositive=0;

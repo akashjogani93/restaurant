@@ -115,16 +115,16 @@
                                     <?php
                                     if($payment=='ALL')
                                     {
-                                        $sql = "SELECT * FROM tabletot WHERE date='$fdate' AND `status`=1;";
+                                        $sql = "SELECT * FROM tabletot WHERE date='$fdate'";
                                     }else
                                     {
-                                        $sql = "SELECT * FROM `tabletot` WHERE `paymentmode`='$payment' AND date='$fdate' AND `status`=1;";
+                                        $sql = "SELECT * FROM `tabletot` WHERE `paymentmode`='$payment' AND date='$fdate'";
                                     }
                                   $sql2 = "SELECT SUM(gndtot) AS grdtot, discount, SUM(gstamt) AS gsttot, SUM(nettot) AS netprc,SUM(discount) AS dis  FROM tabletot WHERE date='$fdate'";
                               }
                               else{
                                     $fdate = date("Y-m-d");
-                                    $sql = "SELECT * FROM tabletot WHERE date='$fdate' AND `status`=1;";
+                                    $sql = "SELECT * FROM tabletot WHERE date='$fdate'";
                                   }
                                   $result = mysqli_query($conn, $sql);
                                   if (mysqli_num_rows($result) > 0) 
