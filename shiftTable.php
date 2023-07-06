@@ -81,6 +81,7 @@
         let tabe2=$("#tabe2").val();
         let tabe1=$("#tabe1").val();
         let tabe3='';
+        let tocheck=false;
         if(tabe1=="none")
         {
             tabe3=$("#latebill").val();
@@ -90,32 +91,57 @@
                 exit();
            }else
            {
-                $("#latebill").css('border-color','');
+                let sam=$.ajax({
+                    url: 'ajax/ta.php',
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        tabe3 : tabe3,
+                    },
+                    success: function(data)
+                    {
+                        if(data=='Match found')
+                        {
+                            $("#latebill").css('border-color','red');
+                        }else
+                        {
+                            $("#latebill").css('border-color','');
+                            tocheck=true;
+                            to_check(tocheck)
+                        }
+                    }
+                });
+                console.log(sam);
            }    
         }else
         {
             $("#latebill").css('border-color','');
+            tocheck=true;
+            to_check(tocheck)
         }
         
-        if(tabe2 !='' && tabe1 !='')
+        function to_check()
         {
-            let log = $.ajax({
-            url: 'ajax/ta.php',
-            type: "POST",
-            dataType: 'json',
-            data: {
-                table1 : tabe2,
-                table2 : tabe1,
-                latebill : tabe3,
-            },
-            success: function(data)
+            if(tabe2 !='' && tabe1 !='' && tocheck==true)
             {
-                // alert(data)
-                $('#boxx2').load("shiftTable.php");
-                $('#itemlist').load("current_data.php?x="+tabe1);
-                $('#boxx').load("final_search.php");
+                let log = $.ajax({
+                    url: 'ajax/ta.php',
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        table1 : tabe2,
+                        table2 : tabe1,
+                        latebill : tabe3,
+                    },
+                    success: function(data)
+                    {
+                        // alert(data)
+                        $('#boxx2').load("shiftTable.php");
+                        $('#itemlist').load("current_data.php?x="+tabe1);
+                        $('#boxx').load("final_search.php");
+                    }
+                });
             }
-        });
         }
     }
 </script>

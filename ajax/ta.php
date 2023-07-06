@@ -95,6 +95,16 @@ if(isset($_POST['table1']))
     echo json_encode('Table Shifted');
 }
 
+if(isset($_POST['tabe3']))
+{
+    $tabe3=$_POST['tabe3'];
+    $result = $conn->query("SELECT * FROM `temtable` WHERE `tabno` = '$tabe3'");
+    if ($result->num_rows > 0) {
+        echo json_encode('Match found');
+    } else {
+        echo json_encode('No match found');
+    }
+}
 
 
 if(isset($_POST['search']))
