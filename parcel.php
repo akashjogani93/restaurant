@@ -3,11 +3,10 @@
 </script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <link
-      rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
 
-    <!-- <script src="cdn/jquery.min.js"></script>
+<!-- <script src="cdn/jquery.min.js"></script>
     <link rel="stylesheet" href="cdn/jquery-ui.css">
     <script src="cdn/jquery-ui.min.js"></script> -->
 <style>
@@ -28,6 +27,20 @@ tr:nth-child(even) {
 .boxx{
      height:65%;overflow-y:scroll;
 }
+
+input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    input[type="number"] 
+    {
+    /* For Firefox */
+    -moz-appearance: number-input;
+    /* For other browsers */
+    appearance: textfield;
+    }
 </style>
 </head>
 

@@ -46,47 +46,28 @@
                             <tr>
                                 <th>Sr no</th>
                                 <th>Item name</th>
-                                <!-- <th>Purchase Qty</th> -->
                                 <th>Remaining Qty</th>
                                 <th>Item unit</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                                <th>Purchased date</th>
                             </tr>
                         </thead>
                        <tbody>
                             <?php
                                 require_once("dbcon.php");
-                                    $sql = "SELECT * FROM store_room";
-                                    $result = mysqli_query($conn, $sql);
-                                    if (mysqli_num_rows($result) > 0) 
+                                    $query1 = "SELECT * FROM `stock1`";
+                                    $exc=mysqli_query($conn,$query1);
+                                    $i=0;
+                                    while ($row=mysqli_fetch_array($exc)) 
                                     {
-                                        while($row = mysqli_fetch_assoc($result)) 
-										{
-											$item_name = $row['item_name'];
-											// $m_qty = $row['mqty'];
-                                            $sql1 = "SELECT * FROM `store_room_finish` WHERE fid=(SELECT max(fid) FROM `store_room_finish` WHERE `item_name_finish`='$item_name')";
-											$result1 = mysqli_query($conn, $sql1);
-											if (mysqli_num_rows($result1) > 0) 
-                                            {
-												while($row1= mysqli_fetch_assoc($result1))
-                                                {
-													$r_qty = $row1['f_item_rem_qty'];
-												}
-											}
-									        ?>
-                                            </tr>
-                                                <td><?php echo $row['store_id']; ?></td>
-                                                <td><?php echo $row['item_name']; ?></td>
-                                                <!-- <td><?php echo $row['']; ?></td> -->
-                                                <td><?php echo $row['remain']; ?></td>
-                                                <td><?php echo ucfirst($row['item_unit']); ?></td>
-                                                <td><?php echo $row['item_rate']; ?></td>
-                                                <td><?php echo $row['item_total']; ?></td>
-                                                <td><?php echo date("d-M-Y", strtotime( $row['item_pur_date'])); ?></td>
-                                            </tr>
-                                            <?php
-                                        }
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $i+1; ?></td>
+                                            <td><?php echo $row['pname']; ?></td>
+                                            <td><?php echo $row['qty']; ?></td>
+                                            <td class="td-class"><?php echo $row['unit']; ?></td>
+                                        </tr>
+                                        <!--  -->
+                                        <?php
+                                        $i++;
                                     }
                                 ?>
                        </tbody>

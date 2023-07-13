@@ -59,9 +59,12 @@ $name=$_SESSION['name'];
                                 </a>
                                 <ul class="treeview-menu">
                                     <li><a href="add_prodct1.php"><img class="logos" src="img/circle.png" alt=""> Create Product</a></li>
-                                    <li><a href="store_form.php"><img class="logos" src="img/circle.png" alt=""> Purchase Item</a></li>
-                                    <li><a href="kitchen_form.php"><img class="logos" src="img/circle.png" alt=""> Kitchen Inventory</a></li>
+                                    <!-- <li><a href="store_form.php"><img class="logos" src="img/circle.png" alt=""> Purchase Item</a></li> -->
+                                    <li><a href="purchase_product.php"><img class="logos" src="img/circle.png" alt="">Purchase Item</a></li>
+                                    <!-- <li><a href="kitchen_form.php"><img class="logos" src="img/circle.png" alt=""> Kitchen Inventory</a></li> -->
+                                    <li><a href="kitchen_given.php"><img class="logos" src="img/circle.png" alt=""> Kitchen Inventory</a></li>
                                     <li><a href="stockavilable.php"><img class="logos" src="img/circle.png" alt=""> View Stock</a></li>
+                                    <li><a href="purchaseRecords.php"><img class="logos" src="img/circle.png" alt="">Purchase Records</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">
@@ -81,7 +84,6 @@ $name=$_SESSION['name'];
                                   <span>Reports</span>
                                   <span class="pull-right-container">
                                       <img class="logos" src="img/arrow.png" alt="">
-                                      
                                   </span>
                               </a>
                               <ul class="treeview-menu">

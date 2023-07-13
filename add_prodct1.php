@@ -7,11 +7,11 @@
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    Stock Inventary
+                    Stock Inventory
                 </h1>
-                <ol class="breadcrumb">
+                <!-- <ol class="breadcrumb">
                     <li><a href="home.php"><i class="fa fa-dashboard"></i> Home</a></li>
-                </ol>
+                </ol> -->
             </section>
             <section class="content">
                 <div class="box box-default">
@@ -23,7 +23,7 @@
                                     <input type="text" id="form-field-1"  placeholder="Name of Product"  name="p1" class="form-control" required="required" autocomplete="off"/>
                                 </div>
                                 <div class="col-md-2">
-                                        <button class="btn btn-info" type="Submit" style="margin-top:25px;">
+                                        <button class="btn btn-info" type="Submit" style="margin-top:27px;">
                                             
                                                 Submit
                                         </button>
@@ -98,7 +98,12 @@
             <section>
             <script>
                 $(function () {
-                    $("#dynamic-table").DataTable();
+                    $("#dynamic-table").DataTable({
+                        columnDefs: [
+                            { "orderable": false, "targets": -1 }
+                        ]
+                    });
+
                     $('#example2').DataTable({
                         "paging": true,
                         "lengthChange": false,

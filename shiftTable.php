@@ -3,14 +3,14 @@
     <thead>
         <tr style="background: #ffff; color: #fff; font-weight: 600;">
             <td colspan="2">
-                <label style="color:black;" for="">Table From</label>
+                <label style="color:black;" for="">From</label>
                 <select class="form-control" name="tabe2" id="tabe2" onload="table()">
                    
                 </select>
                 <!-- <input type="text" class="form-control" name="tabe2" id="tabe2" onchange="tab_no(this.value)"/> -->
             </td>
             <td colspan="1">
-                <label style="color:black;" for="">Table To</label>
+                <label style="color:black;" for="">To</label>
                 <select class="form-control" name="tabe1" id="tabe1" onload="tables()">
                    <option value="none">None</option>
                 </select>

@@ -31,6 +31,19 @@
     .col-lg-1, .col-lg-2 {
         padding:2 !important;
     }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    input[type="number"] {
+    /* For Firefox */
+    -moz-appearance: number-input;
+    /* For other browsers */
+    appearance: textfield;
+    }
 </style>
 </head>
 
@@ -185,7 +198,7 @@
                                         <input type="text" class="form-control" name="tot" id="tot" disabled="disabled" readonly>
                                     </div>
                                     <div class="form-group col-md-1">
-                                        <button type="button" class="btn btn-success col-md-12" style="margin-top:25px;" id="add_order" onclick="insert();"> Add</button>
+                                        <button type="button" class="btn btn-success col-md-12" style="margin-top:30px;" id="add_order" onclick="insert();"> Add</button>
                                     </div>
                                 </div>
                             </form>
