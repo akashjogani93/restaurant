@@ -91,7 +91,7 @@
                                     <th>Item Name</th>
                                     <th>Purchase Qty</th>
                                     <th>Item Unit</th>
-                                    <th>Edit/Delete</th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -184,7 +184,7 @@
                     const selectedItem = this.options.find(option => option.pid === this.selectedOption);
                     
                     if (selectedItem) {
-                        if (this.unit && this.qty) 
+                        if (this.unit && this.qty && this.qty > 0) 
                         {
                             const newItem = {
                                 id: this.nextId++,
@@ -205,7 +205,7 @@
                             } else {
                                 document.querySelector('.form-control[name="unit"]').classList.remove('error');
                             }
-                            if (!this.qty) {
+                            if (!this.qty || this.qty <= 0) {
                                 document.querySelector('.form-control[name="qty"]').classList.add('error');
                             } else {
                                 document.querySelector('.form-control[name="qty"]').classList.remove('error');
@@ -261,6 +261,7 @@
                 {
                     this.stockList = [];
                     this.saveData();
+                    this.vendorName='';
                     localStorage.removeItem('stockListData');
                 },
                 submitData() {
@@ -311,12 +312,12 @@
                 },
                 validateVendorName() 
                 {
-                    const regex = /\d/;
-                    if (regex.test(this.vendorName))
-                    {
-                        this.vendorName = this.vendorName.replace(/\d/g, '');
+                    const regex = /[^\p{L}\s]/u;
+                    if (regex.test(this.vendorName)) {
+                        this.vendorName = this.vendorName.replace(regex, '');
                     }
                     this.vendorNameError = !/^[A-Za-z\s]*$/.test(this.vendorName);
+
                 }
 
             }
