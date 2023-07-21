@@ -177,13 +177,13 @@
                                     switch(true)
                                     {
                                         case response==3:
-                                            alert('Mobile Not Alredy Exists');
+                                            alert('Mobile Alredy Exists');
                                             break;
                                         case response==2:
-                                            alert('Vendor Name Already Used');
+                                            alert('Name Already Exists');
                                             break;
                                         case response==1:
-                                            alert('Vendor Name And Mobile Number Already Added');
+                                            alert('Vendor Already Exists');
                                             break;
                                         case response==0:
                                             alert("Vendor Registered Successfully");
@@ -196,7 +196,7 @@
                                     console.error(error);
                                 }
                             });
-                            console.log(log)
+                            // console.log(log)
 
                         } else {
                             $('.form-control').removeClass('error');
@@ -255,13 +255,13 @@
                                     switch(true)
                                     {
                                         case response==3:
-                                            alert('Mobile Not Alredy Exists');
+                                            alert('Mobile Alredy Exists');
                                             break;
                                         case response==2:
-                                            alert('Vendor Name Already Used');
+                                            alert('Name Already Exists');
                                             break;
                                         case response==1:
-                                            alert('Vendor Name And Mobile Number Already Added');
+                                            alert('Vendor Already Exists');
                                             break;
                                         case response==0:
                                             alert("Vendor Updated Successfully");

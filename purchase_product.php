@@ -65,7 +65,7 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Item Quantity</label>
                                         <div class="col-sm-8">
-                                            <input type="number" class="form-control" name="qty" min="1" placeholder="Quantity" v-model="qty">
+                                            <input type="number" class="form-control" name="qty" id="qty" min="1" placeholder="Quantity" v-model="qty">
                                         </div>
                                     </div>
                                 </div>  
@@ -128,13 +128,13 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Total Amount</label>
                                         <div class="col-sm-8">
-                                            <input type="number" class="form-control" name="totamt" placeholder="Total Amount" v-model="totamt" style=" border-color: #0a5f81;" min="1">
+                                            <input type="number" class="form-control" name="totamt" id="totamt" placeholder="Total Amount" v-model="totamt" style=" border-color: #0a5f81;" min="1">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Paid Amount</label>
                                         <div class="col-sm-8">
-                                            <input type="number" class="form-control" name="pamt" placeholder="Paid Amount" v-model="pamt" style=" border-color: #0a5f81;" @input="validatePositiveNumber">
+                                            <input type="number" class="form-control pamt" name="pamt" placeholder="Paid Amount" v-model="pamt" style=" border-color: #0a5f81;" id="pamt">
                                         </div>
                                     </div>
                                 </div></br>
@@ -142,7 +142,8 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Purchase Date</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" name="purdate" placeholder="Purchased Date" value="<?php echo date('Y-m-d'); ?>" style=" border-color: #0a5f81;">
+                                            <input type="date" class="form-control" name="purdate" id="purdate" placeholder="Purchased Date" style=" border-color: #0a5f81;">
+                                            
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
@@ -170,6 +171,34 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     
    <script>
+        $(document).ready(function()
+        {
+            var yourDateValue = new Date();
+            var formattedDate = yourDateValue.toISOString().substr(0, 10)
+            $('#purdate').val(formattedDate);
+            $('#pamt,#totamt,#qty').keypress(function(event)
+            {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if ((keycode < 46 || keycode > 57))
+                {
+                    return false;
+                }else
+                {
+                    return true;
+                }
+            });
+            $('#pamt,#totamt').on('input', function()
+            {
+                var pamt = parseFloat($('#pamt').val());
+                var totamt = parseFloat($('#totamt').val());
+
+                if (!isNaN(pamt) && !isNaN(totamt) && pamt > totamt) 
+                {
+                    $('#pamt').val(totamt)
+                }
+            });
+
+        });
         var app = new Vue({
             el: '#app',
             data: {
@@ -307,9 +336,6 @@
                     const vendorName = $('#ven').val();
 
                     const venItem = this.vens.find(ven => ven.slno === this.vendorName);
-                    // alert(venItem)
-                    // console.log(venItem)
-                    // return;
 
                     const purchasedDate = $('input[name="purdate"]').val();
                     const totamt = $('input[name="totamt"]').val();
@@ -386,22 +412,6 @@
                     this.vendorNameError = !/^[A-Za-z\s]*$/.test(this.vendorName);
 
                 },
-                validatePositiveNumber() 
-                {
-                    let numericValue = parseFloat(this.pamt);
-
-                    if (!isNaN(numericValue) && numericValue >= 0) 
-                    {
-                        // alert(numericValue)
-                        console.log('Numeric');
-                    } else 
-                    {
-                        console.log(this.pamt);
-                    }
-
-
-                }
-
             }
         });
     </script>

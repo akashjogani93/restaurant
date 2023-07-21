@@ -58,7 +58,7 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Given Date</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" name="purdate" id="gdate" placeholder="Purchased Date" value="<?php echo date('Y-m-d'); ?>">
+                                            <input type="date" class="form-control" name="purdate" id="purdate" id="gdate" placeholder="Purchased Date">
                                         </div>
                                     </div>
                                 </div>
@@ -80,13 +80,13 @@
                                         <div class="form-group col-md-4">
                                             <label for="inputEmail3" class="col-sm-4 control-label">From Date</label>
                                             <div class="col-sm-8">
-                                                <input type="date" class="form-control pull-right" name="from_date" value="<?php echo date('Y-m-d'); ?>">
+                                                <input type="date" class="form-control pull-right" name="from_date" id="fdate">
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="inputEmail3" class="col-sm-4 control-label">To Date</label>
                                             <div class="col-sm-8">
-                                                <input type="date" class="form-control pull-right" name="to_date" value="<?php echo date('Y-m-d'); ?>">
+                                                <input type="date" class="form-control pull-right" name="to_date" id="tdate">
                                             </div>
                                         </div>
                                         <div class="form-group col-md-1">
@@ -233,32 +233,17 @@
                         }
                     });
                     console.log(log);
-
                 }
-            </script>
-            </script>
-            <script>
-                // $(function()
-                // {
-                //     $("#example1").DataTable({
-                //         dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",
-                //         "lengthMenu": [
-                //             [25, 10, 100, -1],
-                //             [25, 10, 100, "All"]
-                //         ],
-                //         buttons: [
-                //             'print'
-                //         ],
-                //         order: [
-                //             [6, "desc"]
-                //         ]
-
-                //     });
-                // });
             </script>
     <script>
         $(document).ready(function()
         {
+            var yourDateValue = new Date();
+            var formattedDate = yourDateValue.toISOString().substr(0, 10)
+            $('#purdate').val(formattedDate);
+            $('#fdate').val(formattedDate);
+            $('#tdate').val(formattedDate);
+
             $('#uqty').on('input', function () 
             {
                 let qty=$('#pqty').val();
