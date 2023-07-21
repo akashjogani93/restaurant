@@ -8,7 +8,7 @@
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    Purchase Records
+                    Vendor Payment Calculation
                 </h1>
             </section>
             <!-- <section class="content"> -->
@@ -23,16 +23,18 @@
                                         <tr>                                                        
                                             <th>Id</th>
                                             <th>Vendor Name</th>                                                    
-                                            <th>Purchase Date</th>
+                                            <th>Mobile</th>                                                    
+                                            <!-- <th>Purchase Date</th> -->
                                             <th>Total Amount</th>
                                             <th>Paid Amount</th>
-                                            <th>View Item</th>
+                                            <th>Remain Amount</th>
+                                            <!-- <th>View Item</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php 
                                             include("dbcon.php");
-                                            $sql = "SELECT * FROM purchase_data";
+                                            $sql = "SELECT * FROM vendor";
                                             $retval = mysqli_query($conn,$sql);
                                             if(! $retval )
                                             {
@@ -42,15 +44,16 @@
                                             { 
                                                 ?>
                                                     <tr>                                                    
-                                                        <td><?php echo $row['id']; ?></td>                                                   
+                                                        <td><?php echo $row['slno']; ?></td>                                                   
                                                         <td><?php echo $row['vendor']; ?></td>
-                                                        <td><?php echo $row['purchase_date']; ?></td>
+                                                        <td><?php echo $row['mobile']; ?></td>
                                                         <td><?php echo $row['totalamt']; ?></td>
-                                                        <td><?php echo $row['pamt']; ?></td>
-                                                        <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
+                                                        <td><?php echo $row['paid']; ?></td>
+                                                        <td><?php echo $row['totalamt']-$row['paid']; ?></td>
+                                                        <!-- <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
                                                                 View Products
                                                             </button>
-                                                        </td>
+                                                        </td> -->
                                                     </tr>
                                                 <?php
                                             }

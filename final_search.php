@@ -300,7 +300,7 @@ $(".disPer").keyup(function()
         sanitizedInput = sanitizedInput.replace(/\.$/, '');
         sanitizedInput = sanitizedInput.replace(/\.(?=%)/g, '');
         $(this).val(sanitizedInput);
-     } 
+    } 
 });
 
 function myFunction(selectElement)

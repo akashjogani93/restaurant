@@ -117,15 +117,38 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Vendor Name</label>
                                         <div class="col-sm-8">
-                                            <!-- <input type="text" class="form-control" name="ven" placeholder="Vendor Name"> -->
-                                            <input type="text" class="form-control" name="ven" placeholder="Vendor Name" v-model="vendorName" @input="validateVendorName">
+                                            <!-- <input type="text" class="form-control" name="ven" placeholder="Vendor Name" v-model="vendorName" @input="validateVendorName" style=" border-color: #0a5f81;"> -->
+                                            <select required class="form-control pname" v-model="vendorName" style=" border-color: #0a5f81;" name="ven" id="ven">
+                                                <option value="">Select Vendor</option>
+                                                <option v-for="ven in vens" :value="ven.slno">{{ ven.vendor }}</option>
+                                            </select>
                                             <span v-if="vendorNameError" class="error">Vendor name should only contain letters.</span>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-5 control-label">Purchased Date</label>
-                                        <div class="col-sm-7">
-                                            <input type="date" class="form-control" name="purdate" placeholder="Purchased Date" value="<?php echo date('Y-m-d'); ?>">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Total Amount</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" name="totamt" placeholder="Total Amount" v-model="totamt" style=" border-color: #0a5f81;" min="1">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Paid Amount</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" name="pamt" placeholder="Paid Amount" v-model="pamt" style=" border-color: #0a5f81;" @input="validatePositiveNumber">
+                                        </div>
+                                    </div>
+                                </div></br>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Purchase Date</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control" name="purdate" placeholder="Purchased Date" value="<?php echo date('Y-m-d'); ?>" style=" border-color: #0a5f81;">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Remark</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="remark" placeholder="Remark" style=" border-color: #0a5f81;">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
@@ -151,6 +174,7 @@
             el: '#app',
             data: {
                 options: [],
+                vens: [],
                 selectedOption: '',
                 unit: '',
                 qty: '',
@@ -158,8 +182,10 @@
                 nextId: 1,
                 editMode: false,
                 index: null,
+                totamt:null,
                 vendorName: '',
-                vendorNameError: false
+                vendorNameError: false,
+                pamt:null
 
             },
             mounted() {
@@ -172,8 +198,21 @@
                     $.ajax({
                         url: 'ajax/fetch_options.php',
                         method: 'POST',
+                        data:{opt:'opt'},
                         success(response) {
                             vm.options = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+
+                    $.ajax({
+                        url: 'ajax/fetch_options.php',
+                        method: 'POST',
+                        data:{ven:'ven'},
+                        success(response) {
+                            vm.vens = response;
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -265,27 +304,40 @@
                     localStorage.removeItem('stockListData');
                 },
                 submitData() {
-                    const vendorName = $('input[name="ven"]').val();
-                    const purchasedDate = $('input[name="purdate"]').val();
+                    const vendorName = $('#ven').val();
 
-                    if (vendorName && purchasedDate && this.stockList.length > 0) 
+                    const venItem = this.vens.find(ven => ven.slno === this.vendorName);
+                    // alert(venItem)
+                    // console.log(venItem)
+                    // return;
+
+                    const purchasedDate = $('input[name="purdate"]').val();
+                    const totamt = $('input[name="totamt"]').val();
+                    const pamt = $('input[name="pamt"]').val();
+                    const remark = $('input[name="remark"]').val();
+                    if (vendorName && purchasedDate && this.stockList.length > 0 && totamt && pamt) 
                     {
                         const vm = this;
                        let log= $.ajax({
                             url: 'ajax/purchase_submit.php',
                             method: 'POST',
                             data: {
-                            vendorName: vendorName,
+                            vendorName: venItem.vendor,
+                            venId: venItem.slno,
                             purchasedDate: purchasedDate,
+                            totamt:totamt,
+                            pamt:pamt,
+                            remark:remark,
                             stockList: vm.stockList
                             },
                             success(response) {
                                 console.log(response);
                                 alert("Data Submited")
                                 vm.stockList = [];
-                                $('input[name="ven"]').val('');
+                                $('#ven').val('');
                                 $('input[name="purdate"]').val('');
                                 localStorage.removeItem('stockListData');
+                                window.location="purchase_product.php"
                             },
                             error(xhr, status, error) {
                                 console.error(error);
@@ -296,7 +348,15 @@
                         $('.form-control').removeClass('error');
                         if (!vendorName) 
                         {
-                            $('input[name="ven"]').addClass('error');
+                            $('#ven').css('border-color', 'red');
+                        }
+                        if (!totamt) 
+                        {
+                            $('input[name="totamt"]').css('border-color', 'red');
+                        }
+                        if (!pamt) 
+                        {
+                            $('input[name="pamt"]').css('border-color', 'red');
                         }
                         if (!purchasedDate) 
                         {
@@ -307,16 +367,38 @@
                             $('.form-control[name="unit"]').addClass('error');
                             $('.form-control[name="qty"]').addClass('error');
                         }
+                        setTimeout(function() 
+                        {
+                            $('#ven').css('border-color', '#0a5f81');
+                            $('input[name="totamt"]').css('border-color', '#0a5f81');
+                            $('input[name="pamt"]').css('border-color', '#0a5f81');
+                        }, 5000);
 
                     }
                 },
                 validateVendorName() 
                 {
                     const regex = /[^\p{L}\s]/u;
-                    if (regex.test(this.vendorName)) {
+                    if (regex.test(this.vendorName)) 
+                    {
                         this.vendorName = this.vendorName.replace(regex, '');
                     }
                     this.vendorNameError = !/^[A-Za-z\s]*$/.test(this.vendorName);
+
+                },
+                validatePositiveNumber() 
+                {
+                    let numericValue = parseFloat(this.pamt);
+
+                    if (!isNaN(numericValue) && numericValue >= 0) 
+                    {
+                        // alert(numericValue)
+                        console.log('Numeric');
+                    } else 
+                    {
+                        console.log(this.pamt);
+                    }
+
 
                 }
 

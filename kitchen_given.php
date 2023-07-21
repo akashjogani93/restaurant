@@ -44,15 +44,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Use Qty</label>
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Kitchen Qty</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="pqty" id="uqty" placeholder="Use Quantity">
+                                            <input type="text" class="form-control" name="pqty" id="uqty" placeholder="Kitchen Qty">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Remain Qty</label>
                                         <div class="col-sm-8">
-                                            <input type="number" class="form-control" name="pqty" id="rqty" placeholder="Use Quantity" readonly="readonly">
+                                            <input type="number" class="form-control" name="pqty" id="rqty" placeholder="Remain Quantity" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">

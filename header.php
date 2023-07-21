@@ -65,6 +65,8 @@ $name=$_SESSION['name'];
                                     <li><a href="kitchen_given.php"><img class="logos" src="img/circle.png" alt=""> Kitchen Inventory</a></li>
                                     <li><a href="stockavilable.php"><img class="logos" src="img/circle.png" alt=""> View Stock</a></li>
                                     <li><a href="purchaseRecords.php"><img class="logos" src="img/circle.png" alt="">Purchase Records</a></li>
+                                    <li><a href="vendor_registration.php"><img class="logos" src="img/circle.png" alt="">Vendor Registration</a></li>
+                                    <li><a href="vendor_payment.php"><img class="logos" src="img/circle.png" alt="">Vendor Payment Details</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">
@@ -87,7 +89,7 @@ $name=$_SESSION['name'];
                                   </span>
                               </a>
                               <ul class="treeview-menu">
-                                    <li><a href="singlebill_form.php"><img class="logos" src="img/circle.png" alt=""> Single Bill</a></li>
+                                    <li><a href="singlebill_form.php"><img class="logos" src="img/circle.png" alt="">Single Bill</a></li>
                                     <li><a href="billdate.php"><img class="logos" src="img/circle.png" alt=""> Bill Datewise</a></li>
                                     <li><a href="day_calculate.php"><img class="logos" src="img/circle.png" alt=""> <span>Bill Monthwise</span></a></li>
                                     <li><a href="menu_print.php"><img class="logos" src="img/circle.png" alt=""> <span>Menu Master Records</span></a></li>

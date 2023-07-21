@@ -21,4 +21,5 @@ $apiUrl .= '?' . http_build_query($params);
 
 // Output the QR code image
 echo '<img src="' . $apiUrl . '" alt="UPI Amount QR Code">';
+
 ?>
