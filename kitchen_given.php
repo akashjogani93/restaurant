@@ -58,7 +58,7 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Given Date</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" name="purdate" id="purdate" id="gdate" placeholder="Purchased Date">
+                                            <input type="date" class="form-control" name="purdate" id="gdate" placeholder="Purchased Date">
                                         </div>
                                     </div>
                                 </div>
@@ -166,6 +166,7 @@
                                                 </td>
                                             </tr>
                                             <?php
+                                            $i++;
                                         }
                                     }
                                 ?>
@@ -240,7 +241,7 @@
         {
             var yourDateValue = new Date();
             var formattedDate = yourDateValue.toISOString().substr(0, 10)
-            $('#purdate').val(formattedDate);
+            $('#gdate').val(formattedDate);
             $('#fdate').val(formattedDate);
             $('#tdate').val(formattedDate);
 
@@ -289,6 +290,7 @@
         }
         function addToKitchen()
         {
+            // alert('running');
             let pid=$('#pid').val();
             let pname = $('#pid option:selected').text();
             let pqty=$('#pqty').val();

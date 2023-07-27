@@ -67,6 +67,7 @@ $name=$_SESSION['name'];
                                     <li><a href="purchaseRecords.php"><img class="logos" src="img/circle.png" alt="">Purchase Records</a></li>
                                     <li><a href="vendor_registration.php"><img class="logos" src="img/circle.png" alt="">Vendor Registration</a></li>
                                     <li><a href="vendor_payment.php"><img class="logos" src="img/circle.png" alt="">Vendor Payment Details</a></li>
+                                    <li><a href="individual_payment.php"><img class="logos" src="img/circle.png" alt="">Individual Vendor Payment</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">

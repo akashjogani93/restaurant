@@ -14,7 +14,9 @@ if ($result->num_rows > 0) {
             'id' => $row['slno'],
             'name' => $row['vendor'],
             'mobile' =>$row['mobile'],
-            'gst' => $row['gst']
+            'gst' => $row['gst'],
+            'fssi' => $row['fssi'],
+            'adds' => $row['adds']
         );
     }
 }

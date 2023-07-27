@@ -22,10 +22,13 @@
                                     <thead>
                                         <tr>                                                        
                                             <th>Id</th>
+                                            <th>Bill No</th>
                                             <th>Vendor Name</th>                                                    
                                             <th>Purchase Date</th>
                                             <th>Total Amount</th>
                                             <th>Paid Amount</th>
+                                            <th>Remain</th>
+                                            <th>Remark</th>
                                             <th>View Item</th>
                                         </tr>
                                     </thead>
@@ -43,10 +46,13 @@
                                                 ?>
                                                     <tr>                                                    
                                                         <td><?php echo $row['id']; ?></td>                                                   
+                                                        <td><?php echo $row['bill']; ?></td>                                            
                                                         <td><?php echo $row['vendor']; ?></td>
                                                         <td><?php echo $row['purchase_date']; ?></td>
                                                         <td><?php echo $row['totalamt']; ?></td>
                                                         <td><?php echo $row['pamt']; ?></td>
+                                                        <td><?php echo $row['totalamt']-$row['pamt']; ?></td>
+                                                        <td><?php echo $row['remark']; ?></td>
                                                         <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
                                                                 View Products
                                                             </button>

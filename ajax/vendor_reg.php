@@ -4,11 +4,14 @@
     $vendor=$_POST['vendor'];
     $mobile=$_POST['mobile'];
     $gst=$_POST['gst'];
+    $fssi=$_POST['fssi'];
+    $adds=$_POST['adds'];
 
     $vendor = mysqli_real_escape_string($conn, $vendor);
     $mobile = mysqli_real_escape_string($conn, $mobile);
     $gst = mysqli_real_escape_string($conn, $gst);
-
+    $fssi = mysqli_real_escape_string($conn, $fssi);
+    $adds = mysqli_real_escape_string($conn, $adds);
 
     $insert=$_POST['insert'];
 
@@ -51,7 +54,7 @@
         {
             if($insert=='insert')
             {
-                $query="INSERT INTO `vendor`(`vendor`, `mobile`, `gst`)VALUES('$vendor','$mobile','$gst')";
+                $query="INSERT INTO `vendor`(`vendor`, `mobile`, `gst`, `fssi`, `adds`)VALUES('$vendor','$mobile','$gst','$fssi','$adds')";
                 if ($conn->query($query) === TRUE) 
                 {
                     echo 0;
@@ -62,7 +65,7 @@
             {
                 if($conn->query("UPDATE `purchase_data` SET `vendor`='$vendor' WHERE `venId`='$id'")==TRUE)
                 {
-                    $query="UPDATE `vendor` SET `vendor`='$vendor',`mobile`='$mobile',`gst`='$gst' WHERE `slno`='$id'";
+                    $query="UPDATE `vendor` SET `vendor`='$vendor',`mobile`='$mobile',`gst`='$gst',`fssi`='$fssi',`adds`='$adds' WHERE `slno`='$id'";
                     if ($conn->query($query) === TRUE) 
                     {
                         echo 0;

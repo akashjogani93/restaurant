@@ -36,7 +36,7 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Vendor Name:</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="vendor" placeholder="Type Here.." v-model="vendor" autocomplete="off">
+                                            <input type="text" class="form-control" name="vendor" placeholder="Type Here.." v-model="vendor" autocomplete="off" @input="validateVendorName">
                                             <input type="hidden" class="form-control" name="id" placeholder="Type Here.." v-model="id" autocomplete="off">
                                         </div>
                                     </div>
@@ -48,10 +48,26 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-5 control-label">Mobile Number:</label>
-                                        <div class="col-sm-7">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">FSSAI NO:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="fssi" placeholder="Type Here" v-model="fssi" autocomplete="off" >
+                                            <!-- <span v-if="mobileNameerror" style="color:red" class="error">Number Is Not Valid Or already Used.</span> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Mobile Number:</label>
+                                        <div class="col-sm-8">
                                             <input type="text" class="form-control" name="mobile" placeholder="Type Here" v-model="mobile" autocomplete="off" @input="validateMobile">
                                             <span v-if="mobileNameerror" style="color:red" class="error">Number Is Not Valid Or already Used.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Vendor Address:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="adds" placeholder="Type Here.." v-model="adds" autocomplete="off">
+                                            <!-- <input type="hidden" class="form-control" name="id" placeholder="Type Here.." v-model="id" autocomplete="off"> -->
                                         </div>
                                     </div>
                                 </div>
@@ -77,6 +93,8 @@
                                     <th style="display:none">id</th>
                                     <th>Vendor Name</th>
                                     <th>GST No</th>
+                                    <th>FSSI No</th>
+                                    <th>Address</th>
                                     <th>Mobile Number</th>
                                     <th>Edit</th>
                                 </tr>
@@ -87,6 +105,8 @@
                                     <td style="display:none">{{ item.id }}</td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.gst }}</td>
+                                    <td>{{ item.fssi }}</td>
+                                    <td>{{ item.adds }}</td>
                                     <td>{{ item.mobile }}</td>
                                     <td>
                                         <button type="button" class="btn btn-sm btn-info" @click="EditItem(item, index)">Edit</button>
@@ -110,6 +130,8 @@
                     gst: '',
                     id:'',
                     mobile: '',
+                    fssi: '',
+                    adds: '',
                     gstNameError:false,
                     mobileNameerror:false
                 },
@@ -144,7 +166,9 @@
                         vendor=this.vendor;
                         mobile=this.mobile;
                         gst=this.gst;
-                        if (vendor && mobile && gst) 
+                        fssi=this.fssi;
+                        adds=this.adds;
+                        if (vendor && mobile && gst && fssi && adds) 
                         {
                             // const gstinRegex = /^[0-9A-Z]{2}[0-9A-Z]{10}[0-9A-Z]{1}[1-9A-Z]{1}[0-9A-Z]{2}[0-9A-Z]{2}$/;
                             // if(gstinRegex.test(gst))
@@ -170,6 +194,8 @@
                                     vendor:vendor,
                                     mobile:mobile,
                                     gst:gst,
+                                    fssi:fssi,
+                                    adds:adds,
                                     insert:'insert'
                                 },
                                 success : function(response)
@@ -196,9 +222,7 @@
                                     console.error(error);
                                 }
                             });
-                            // console.log(log)
-
-                        } else {
+                        } else{
                             $('.form-control').removeClass('error');
                             if (!vendor) 
                             {
@@ -212,8 +236,15 @@
                             {
                                 $('input[name="gst"]').addClass('error');
                             }
+                            if (!fssi) 
+                            {
+                                $('input[name="fssi"]').addClass('error');
+                            }
+                            if (!adds) 
+                            {
+                                $('input[name="adds"]').addClass('error');
+                            }
                         }
-
                     },
                     updateItem() 
                     {
@@ -221,7 +252,9 @@
                         vendor=this.vendor;
                         mobile=this.mobile;
                         gst=this.gst;
-                        if (vendor && mobile && gst) 
+                        fssi=this.fssi;
+                        adds=this.adds;
+                        if (vendor && mobile && gst && fssi && adds) 
                         {
                             const gstinRegex = /^[0-9A-Z]{2}[0-9A-Z]{10}[0-9A-Z]{1}[1-9A-Z]{1}[0-9A-Z]{2}[0-9A-Z]{2}$/;
                             // if(gstinRegex.test(gst))
@@ -248,6 +281,8 @@
                                     mobile:mobile,
                                     gst:gst,
                                     id:id,
+                                    fssi:fssi,
+                                    adds:adds,
                                     insert:'update'
                                 },
                                 success : function(response)
@@ -291,7 +326,14 @@
                             {
                                 $('input[name="gst"]').addClass('error');
                             }
-                            // Implementation for updating an item
+                            if (!fssi) 
+                            {
+                                $('input[name="fssi"]').addClass('error');
+                            }
+                            if (!adds) 
+                            {
+                                $('input[name="adds"]').addClass('error');
+                            }
                         }
                     },
                     EditItem(item, index)
@@ -301,7 +343,19 @@
                         this.vendor = item.name;
                         this.gst = item.gst;
                         this.mobile = item.mobile;
-                    }
+                        this.fssi = item.fssi;
+                        this.adds = item.adds;
+                    },
+                    validateVendorName() 
+                    {
+                        const regex = /[^\p{L}\s]/u;
+                        if (regex.test(this.vendor)) 
+                        {
+                            this.vendor = this.vendor.replace(regex, '');
+                        }
+                        // this.vendorNameError = !/^[A-Za-z\s]*$/.test(this.vendor);
+
+                    },
                 }
         });
     </script>

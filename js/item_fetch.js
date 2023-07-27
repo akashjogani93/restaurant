@@ -13,7 +13,6 @@ function itemload()
     //      console.log(y);
     //     $('#itemlist').load("item_fetch.php?x="+y);
     // });
- 
 }
 
 // function submit() 
@@ -92,36 +91,48 @@ function addmenu()
 
 function checku()
 {
-    // alert('hi');
-    jQuery.ajax({
-        url:'ajax/accnum.php',
-        data:'itm=' +$("#itm_code").val(),
-        type:"POST",
-        success:function(data){
-            $("#checku").html(data);
-        },
-        error:function(){}
-
-});
+    let itemcode=$("#itm_code").val();
+    if (itemcode!=0)
+    {
+        jQuery.ajax({
+            url:'ajax/accnum.php',
+            data:'itm=' +$("#itm_code").val(),
+            type:"POST",
+            success:function(data){
+                $("#checku").html(data);
+            },
+            error:function(){}
+    
+        });
+    }else
+    {
+        $("#checku").html('<span style="color:red">Not Valid</span>');
+        $('#sub').prop('disabled',true);
+    }
 }
 
 function checku1()
 {
-    // alert('hi');
     var itmm = $("#itmm_code").val();
 
     var sl = $("#itmm_code1").val();
-
-    jQuery.ajax({
-        url:'ajax/accnum.php',
-        data:{itmm:itmm,sl:sl},
-        type:"POST",
-        success:function(data){
-            $("#checku1").html(data);
-        },
-        error:function(){}
-
-});
+    if(itmm!=0)
+    {
+        jQuery.ajax({
+            url:'ajax/accnum.php',
+            data:{itmm:itmm,sl:sl},
+            type:"POST",
+            success:function(data){
+                $("#checku1").html(data);
+            },
+            error:function(){}
+    
+        });
+    }else
+    {
+        $("#checku1").html('<span style="color:red">Not Valid</span>');
+        $('#sub1').prop('disabled',true);
+    }
 }
 
 

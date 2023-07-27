@@ -35,9 +35,18 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Select Category</label>
+                                        <div class="col-sm-8">
+                                            <select name="pname" id="pid" required class="form-control pname" v-model="categoryOption" @change="categoryChange">
+                                                <option value="">Select Products</option>
+                                                <option v-for="cate in category" :value="cate.CategoryName">{{ cate.CategoryName }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Product Name</label>
                                         <div class="col-sm-8">
-                                            <select name="pname" id="pid" required class="form-control pname" v-model="selectedOption">
+                                            <select name="pname" id="pid" required class="form-control pname" v-model="selectedOption" @change="productChange">
                                                 <option value="">Select Products</option>
                                                 <option v-for="option in options" :value="option.pid">{{ option.pname }}</option>
                                             </select>
@@ -46,22 +55,21 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputPassword3" class="col-sm-4 control-label">Item Unit</label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" name="unit" v-model="unit">
-                                                <option value="">Select Unit</option>
-                                                <option value="kg">KG</option>
-                                                <option value="litre">Litre</option>
-                                                <option value="box">Box</option>
-                                                <option value="gram">Gram</option>
-                                                <option value="pack">Pack</option>
-                                                <option value="tin">Tin</option>
-                                                <option value="bottle">Bottle</option>
-                                                <option value="bundle">Bundle</option>
-                                                <option value="packet">Packet</option>
-                                                <option value="jar">Jar</option>
-                                                <option value="piece">Piece</option>
-                                            </select>
+                                            <input type="text" class="form-control" name="unit" id="unit" placeholder="Type Here.." v-model="unit" readonly>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <!-- <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Product Name</label>
+                                        <div class="col-sm-8">
+                                            <select name="pname" id="pid" required class="form-control pname" v-model="selectedOption">
+                                                <option value="">Select Products</option>
+                                                <option v-for="option in options" :value="option.pid">{{ option.pname }}</option>
+                                            </select>
+                                        </div>
+                                    </div> -->
+                                    
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">Item Quantity</label>
                                         <div class="col-sm-8">
@@ -89,6 +97,7 @@
                                 <tr>
                                     <th>Sl No</th>
                                     <th>Item Name</th>
+                                    <th>Category</th>
                                     <th>Purchase Qty</th>
                                     <th>Item Unit</th>
                                     <th>Delete</th>
@@ -98,6 +107,7 @@
                                 <tr v-for="(item, index) in stockList" :key="item.id">
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.name }}</td>
+                                    <td>{{ item.cat }}</td>
                                     <td>{{ item.qty }}</td>
                                     <td>{{ item.unit }}</td>
                                     <td>
@@ -140,25 +150,31 @@
                                 </div></br>
                                 <div class="row">
                                     <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Purchase Date</label>
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Bill Date</label>
                                         <div class="col-sm-8">
                                             <input type="date" class="form-control" name="purdate" id="purdate" placeholder="Purchased Date" style=" border-color: #0a5f81;">
                                             
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Remark</label>
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Bill No</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="remark" placeholder="Remark" style=" border-color: #0a5f81;">
+                                            <input type="text" class="form-control" name="billno" id="bill" placeholder="Bill No" style=" border-color: #0a5f81;">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <div class="col-sm-6">
-                                            <button type="button" class="btn btn-sm btn-danger" style="width:100%;"  @click="clearData">Cancel</button>
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Remark</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="remark" id="remark" placeholder="Remark" style=" border-color: #0a5f81;">
                                         </div>
-                                        <div class="col-sm-6">
-                                            <button type="button" class="btn btn-sm btn-info" style="width:100%;" @click="submitData">Submit</button>
-                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <center>   
+                                            <button type="button" class="btn btn-sm btn-danger" style="width:20%;" @click="clearData">Cancel</button>
+                                            <button type="button" class="btn btn-sm btn-info" style="width:20%;" @click="submitData">Submit</button>
+                                        </center>
                                     </div>
                                 </div>
                             </div>
@@ -176,10 +192,10 @@
             var yourDateValue = new Date();
             var formattedDate = yourDateValue.toISOString().substr(0, 10)
             $('#purdate').val(formattedDate);
-            $('#pamt,#totamt,#qty').keypress(function(event)
+            $('#pamt,#totamt,#qty,#bill').keypress(function(event)
             {
                 var keycode = (event.keyCode ? event.keyCode : event.which);
-                if ((keycode < 46 || keycode > 57))
+                if ((keycode < 47 || keycode > 57))
                 {
                     return false;
                 }else
@@ -202,9 +218,11 @@
         var app = new Vue({
             el: '#app',
             data: {
+                category: [],
                 options: [],
                 vens: [],
                 selectedOption: '',
+                categoryOption:'',
                 unit: '',
                 qty: '',
                 stockList: [],
@@ -222,14 +240,15 @@
                 this.retrieveData();
             },
             methods: {
-                fetchOptions() {
+                fetchOptions() 
+                {
                     const vm = this;
                     $.ajax({
                         url: 'ajax/fetch_options.php',
                         method: 'POST',
-                        data:{opt:'opt'},
+                        data:{cat:'category'},
                         success(response) {
-                            vm.options = response;
+                            vm.category = response;
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -248,25 +267,64 @@
                         }
                     });
                 },
+                categoryChange()
+                {
+                    const vm1 = this;
+                    vm1.unit='';
+                    categoryOption=this.categoryOption;
+                    $.ajax({
+                        url: 'ajax/fetch_options.php',
+                        method: 'POST',
+                        data:{opt:'opt',categoryOption:categoryOption},
+                        success(response) {
+                            vm1.options = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                },
+                productChange()
+                {
+                    const vm2 = this;
+                    const selectedItem = this.options.find(option => option.pid === this.selectedOption);
+                    // console.log(selectedItem.pname)
+                    $.ajax({
+                        url: 'ajax/fetch_options.php',
+                        method: 'POST',
+                        data:{selectedpname:selectedItem.pname},
+                        success(response) 
+                        {
+                            vm2.unit = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                },
                 addItem() {
                     const selectedItem = this.options.find(option => option.pid === this.selectedOption);
-                    
-                    if (selectedItem) {
+                    const category=this.categoryOption;
+                    // alert(category);
+                    // return;
+                    if (selectedItem && category) {
                         if (this.unit && this.qty && this.qty > 0) 
                         {
                             const newItem = {
                                 id: this.nextId++,
                                 name: selectedItem.pname,
                                 qty: this.qty,
-                                unit: this.unit
+                                unit: this.unit,
+                                cat:this.categoryOption
                             };
                                 
-                                this.stockList.push(newItem);
+                            this.stockList.push(newItem);
 
-                                this.saveData();
+                            this.saveData();
                             this.selectedOption = '';
                             this.unit = '';
                             this.qty = '';
+                            this.categoryOption='';
                         } else {
                             if (!this.unit) {
                                 document.querySelector('.form-control[name="unit"]').classList.add('error');
@@ -332,15 +390,17 @@
                     this.vendorName='';
                     localStorage.removeItem('stockListData');
                 },
-                submitData() {
+                submitData() 
+                {
                     const vendorName = $('#ven').val();
 
                     const venItem = this.vens.find(ven => ven.slno === this.vendorName);
-
+                    const category=this.categoryOption;
                     const purchasedDate = $('input[name="purdate"]').val();
                     const totamt = $('input[name="totamt"]').val();
                     const pamt = $('input[name="pamt"]').val();
                     const remark = $('input[name="remark"]').val();
+                    const bill = $('input[name="billno"]').val();
                     if (vendorName && purchasedDate && this.stockList.length > 0 && totamt && pamt) 
                     {
                         const vm = this;
@@ -354,6 +414,7 @@
                             totamt:totamt,
                             pamt:pamt,
                             remark:remark,
+                            billNo:bill,
                             stockList: vm.stockList
                             },
                             success(response) {
@@ -365,7 +426,8 @@
                                 localStorage.removeItem('stockListData');
                                 window.location="purchase_product.php"
                             },
-                            error(xhr, status, error) {
+                            error(xhr, status, error) 
+                            {
                                 console.error(error);
                             }
                         });

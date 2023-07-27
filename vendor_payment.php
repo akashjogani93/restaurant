@@ -27,7 +27,8 @@
                                             <!-- <th>Purchase Date</th> -->
                                             <th>Total Amount</th>
                                             <th>Paid Amount</th>
-                                            <th>Remain Amount</th>
+                                            <th>Discount Amount</th>
+                                            <th>Pending Amount</th>
                                             <!-- <th>View Item</th> -->
                                         </tr>
                                     </thead>
@@ -42,13 +43,21 @@
                                             }
                                             while($row = mysqli_fetch_assoc($retval))
                                             { 
+                                                $vendor=$row['vendor']; 
+                                                $query="select SUM(disc) as di from vendor_payment where vendor='$vendor'";
+                                                $exc=mysqli_query($conn,$query);
+                                                while($row1=mysqli_fetch_assoc($exc))
+                                                {
+                                                    $disc=$row1['di'];
+                                                }
                                                 ?>
                                                     <tr>                                                    
                                                         <td><?php echo $row['slno']; ?></td>                                                   
                                                         <td><?php echo $row['vendor']; ?></td>
                                                         <td><?php echo $row['mobile']; ?></td>
                                                         <td><?php echo $row['totalamt']; ?></td>
-                                                        <td><?php echo $row['paid']; ?></td>
+                                                        <td><?php echo $row['paid']-$disc; ?></td>
+                                                        <td><?php echo $disc; ?></td>
                                                         <td><?php echo $row['totalamt']-$row['paid']; ?></td>
                                                         <!-- <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
                                                                 View Products
