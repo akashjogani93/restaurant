@@ -64,6 +64,13 @@
         text-align: left!important;
         /* padding:4px !important; */
       }
+      .content
+     {
+        margin:0  !important;
+        padding:0 0 0 10px !important;
+        overflow: !important;
+        width:96%;
+     }
      
     </style>
        <?php require_once("header.php"); ?>
@@ -87,7 +94,7 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper" id="mainprint" style="background-color:white; min-height:auto;">
             <!-- Content Header (Page header) -->
-            <section class="content" style="padding:0px !important;">
+            <section class="content">
                 <!-- Table -->
                 <div class="box" >
                     <!-- /.box-header -->
@@ -298,11 +305,11 @@
 function myFunction()
 {
     window.print();
-    // window.location.href ="table_form.php";
-    window.onafterprint = function(event)
-    {
-         window.location.href ="singlebill_form.php";
-    };
+    window.location.href ="table_form.php";
+    // window.onafterprint = function(event)
+    // {
+    //      window.location.href ="singlebill_form.php";
+    // };
 }
 
 </script> 

@@ -239,7 +239,7 @@ function myFunction()
    window.print();
         var tab ="<?php echo $tab; ?>";
         var kotnumber ="<?php echo $kotnumber; ?>";
-        // window.onafterprint = function(event) 
+        // window.onafterprint = function(event)
         // {
             window.location.href ="kot_cancel.php?tab=" + tab + "&kotnumber=" + kotnumber;
 

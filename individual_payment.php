@@ -77,7 +77,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in paymentList" :key="item.id" :class= "{'highlight-row':item.settle ==1}">
+                                    <tr v-for="(item, index) in paymentList" :key="item.id" :class= "{'highlight-row':item.settle==1}">
                                         <!-- <td>{{ index + 1 }}</td> -->
                                         <td>{{ item.date }}</td>
                                         <td>{{ item.amt }}</td>
@@ -214,6 +214,7 @@
                         .done(function(response)
                         {
                             console.log(response);
+                            window.location="individual_payment.php"
                         })
                         .fail(function(jqXHR, textStatus, errorThrown)
                         {

@@ -30,7 +30,7 @@ td{
 .box-body{
     width:100%;
     justify-content:center ! important;
-  padding:4px !important;
+    padding:0px !important;
 }
 @page{
     margin:0;

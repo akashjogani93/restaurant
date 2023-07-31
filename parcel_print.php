@@ -44,12 +44,12 @@
     margin:0;
     padding:0;
 }
-.box-body{
-    width:100%;
-  padding-top:5px !important;
-   padding-bottom:5px !important;
+.content{
+    width:95%;
+    padding:0 0 0 10px !important;
+    margin:0 !important;
 }
-      #Iname{
+    #Iname{
        text-align: left!important;
       }
 
@@ -66,7 +66,7 @@
 }
       .INo{
         text-align: left!important;
-      }
+    }
      
     </style>
        <?php require_once("header.php"); ?>
@@ -84,11 +84,11 @@
       		$current_time = $_GET['time'];
         ?>
         <div class="content-wrapper" id="mainprint" style="background-color:white; min-height:auto;">
-            <section class="content" style="padding:0px !important;">
+            <section class="content">
                 <!-- Table -->
                 <div class="box" >
                     <!-- /.box-header -->
-                    <div class="box-body" style="padding-top:5px !important; padding-bottom:5px !important;">
+                    <div class="box-body">
                       
                        <div class="row">
                             <div class="col-md-12">
@@ -245,6 +245,28 @@
                                     }
                                 ?>
                                 <center>
+                                    <?php 
+                                        $upiVpa = 'akashjogani93@axl';
+                                        // $amount = 1;
+                                        // Generate QR code data
+                                        // $data = "upi://pay?pa=$upiVpa&am=$amount";
+                                        $data = "upi://pay?pa=$upiVpa&am=$amount&pn=MerchantName&mc=123456&tid=987654321&tr=123456789&tn=PaymentDescription&url=https://example.com/callback&ands=googlepay";
+                                        // URL to generate QR code using Google Charts API
+                                        $apiUrl = 'https://chart.googleapis.com/chart';
+
+                                        // API parameters
+                                        $params = array(
+                                            'cht' => 'qr',
+                                            'chs' => '150x150', // QR code image size
+                                            'chl' => $data // QR code data
+                                        );
+
+                                        // Generate the API URL with parameters
+                                        $apiUrl .= '?' . http_build_query($params);
+
+                                        // Output the QR code image
+                                        echo '<img src="' . $apiUrl . '" alt="UPI Amount QR Code">';
+                                    ?>
                                     <h4>- - - - - <b>THANK YOU VISIT AGAIN</b> - - - - -</h4>
                                 </center>
                             </div>

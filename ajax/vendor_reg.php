@@ -39,14 +39,16 @@
                 }
             }
 
-            if ($matchingVendor && $matchingMobile) {
+            if ($matchingVendor && $matchingMobile) 
+            {
                 // echo "Both vendor and mobile already exist.";
                 echo 1;
             } elseif ($matchingVendor) 
             {
                 // echo "Vendor with the same name already exists.";
                 echo 2;
-            } elseif ($matchingMobile) {
+            } elseif ($matchingMobile) 
+            {
                 // echo "Mobile number already exists.";
                 echo 3;
             }
@@ -63,20 +65,46 @@
                 }
             }else
             {
-                if($conn->query("UPDATE `purchase_data` SET `vendor`='$vendor' WHERE `venId`='$id'")==TRUE)
+                // if($conn->query("UPDATE `purchase_data` SET `vendor`='$vendor' WHERE `venId`='$id'")==TRUE)
+                // {
+                //     $getVendorName="SELECT `vendor` FROM `vendor` WHERE `slno`='$id'"; $getVendorNameResult = $conn->query($getVendorName);
+                //     while ($getVendorNameRow = $getVendorNameResult->fetch_assoc()) 
+                //     {
+                //         $oldVendorName=$getVendorNameRow['vendor'];
+                //         $query="UPDATE `vendor` SET `vendor`='$vendor',`mobile`='$mobile',`gst`='$gst',`fssi`='$fssi',`adds`='$adds' WHERE `slno`='$id'";
+                //         if ($conn->query($query) === TRUE) 
+                //         {
+                //             $vendor_payment="UPDATE `vendor_payment` SET `vendor`='$vendor' WHERE `vendor`='$oldVendorName'";
+                //             $conn->query($vendor_payment);
+                //             echo 0;
+                //         } else {
+                //             echo "Error: " . $query . "<br>" . $conn->error;
+                //         }
+                //     }
+                // }else
+                // {
+                //     echo "Error: " . $query . "<br>" . $conn->error;
+                // }
+                $getVendorName="SELECT `vendor` FROM `vendor` WHERE `slno`='$id'"; $getVendorNameResult = $conn->query($getVendorName);
+                while ($getVendorNameRow = $getVendorNameResult->fetch_assoc())
                 {
+                    $oldVendorName=$getVendorNameRow['vendor'];
                     $query="UPDATE `vendor` SET `vendor`='$vendor',`mobile`='$mobile',`gst`='$gst',`fssi`='$fssi',`adds`='$adds' WHERE `slno`='$id'";
-                    if ($conn->query($query) === TRUE) 
+                    if($conn->query($query) === TRUE) 
                     {
-                        echo 0;
-                    } else {
-                        echo "Error: " . $query . "<br>" . $conn->error;
+                        if($conn->query("UPDATE `purchase_data` SET `vendor`='$vendor' WHERE `venId`='$id'")==TRUE)
+                        {
+                            $vendor_payment="UPDATE `vendor_payment` SET `vendor`='$vendor' WHERE `vendor`='$oldVendorName'";
+                            if ($conn->query($vendor_payment) === TRUE)
+                            {
+                                echo 0;
+                            }
+                        }else
+                        {
+                            echo 0;
+                        }
                     }
-                }else
-                {
-                    echo "Error: " . $query . "<br>" . $conn->error;
                 }
-                
             }
             
         }

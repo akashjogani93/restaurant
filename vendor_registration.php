@@ -7,8 +7,6 @@
         position: fixed;
         bottom: 0;
         width:100%;
-        /* left: 0;
-        width: 100%; */
     }
     #example1{
         height:20% !important;
@@ -50,8 +48,7 @@
                                     <div class="form-group col-md-4">
                                         <label for="inputEmail3" class="col-sm-4 control-label">FSSAI NO:</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="fssi" placeholder="Type Here" v-model="fssi" autocomplete="off" >
-                                            <!-- <span v-if="mobileNameerror" style="color:red" class="error">Number Is Not Valid Or already Used.</span> -->
+                                            <input type="text" class="form-control" name="fssi" placeholder="Type Here" v-model="fssi" autocomplete="off" @input="validateFssi">
                                         </div>
                                     </div>
                                 </div>
@@ -67,7 +64,6 @@
                                         <label for="inputEmail3" class="col-sm-4 control-label">Vendor Address:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" name="adds" placeholder="Type Here.." v-model="adds" autocomplete="off">
-                                            <!-- <input type="hidden" class="form-control" name="id" placeholder="Type Here.." v-model="id" autocomplete="off"> -->
                                         </div>
                                     </div>
                                 </div>
@@ -161,6 +157,15 @@
                             this.mobile = this.mobile.replace(regex, '');
                         }
                     },
+                    validateFssi()
+                    {
+                        fssi=this.fssi;
+                        const regex = /[^\d]/g;
+                        if (regex.test(this.fssi)) 
+                        {
+                            this.fssi = this.fssi.replace(regex, '');
+                        }
+                    },
                     addItem() 
                     {
                         vendor=this.vendor;
@@ -168,25 +173,52 @@
                         gst=this.gst;
                         fssi=this.fssi;
                         adds=this.adds;
-                        if (vendor && mobile && gst && fssi && adds) 
+                        const vm=this;
+                        if (vendor && mobile && adds) 
                         {
-                            // const gstinRegex = /^[0-9A-Z]{2}[0-9A-Z]{10}[0-9A-Z]{1}[1-9A-Z]{1}[0-9A-Z]{2}[0-9A-Z]{2}$/;
-                            // if(gstinRegex.test(gst))
-                            // {
-                            //     console.log('GST Is Valid');
-                                
-                            // }else
-                            // {
-                            //     console.log('GST Is Not Valid');
-                            //     this.gstNameError=true;
-                            //     return;
-                            // }
-
-                            if(mobile.length>10 && mobile.length<10)
+                            if(gst!='')
                             {
-                                this.mobileNameerror=false;
+                                const gstinRegex=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
+                                console.log(gst)
+                                const urr = "29GGGGG1314R9Z6";
+                                console.log(urr)
+                                if(!gstinRegex.test(gst))
+                                {
+                                    $('input[name="gst"]').css('border-color', 'red');
+                                    setTimeout(function() 
+                                    {
+                                        $('input[name="gst"]').css('border-color', '');
+                                    }, 5000);
+                                    console.log('GST Is Not Valid');
+                                    return;
+                                }
+                            }
+                            if(fssi!='')
+                            {
+                                if(fssi.length != 14)
+                                {
+                                    $('input[name="fssi"]').css('border-color', 'red');
+                                    setTimeout(function() 
+                                    {
+                                        $('input[name="fssi"]').css('border-color', '');
+                                    }, 5000);
+                                    console.log('FSSI Number Not Valid');
+                                    return;
+                                }       
+                            }
+
+                            if(mobile.length != 10)
+                            {
+                                $('input[name="mobile"]').css('border-color', 'red');
+                                setTimeout(function() 
+                                {
+                                    $('input[name="mobile"]').css('border-color', '');
+                                }, 5000);
+                                console.log('Mobile Number Not Valid');
                                 return;
                             }
+                            // console.log('Mobile Number Valid');
+                            this.mobileNameerror=false;
                             let log=$.ajax({
                                 url:'ajax/vendor_reg.php',
                                 type: 'POST',
@@ -232,18 +264,23 @@
                             {
                                 $('input[name="mobile"]').addClass('error');
                             }
-                            if (!gst) 
-                            {
-                                $('input[name="gst"]').addClass('error');
-                            }
-                            if (!fssi) 
-                            {
-                                $('input[name="fssi"]').addClass('error');
-                            }
+                            // if (!gst) 
+                            // {
+                            //     $('input[name="gst"]').addClass('error');
+                            // }
+                            // if (!fssi) 
+                            // {
+                            //     $('input[name="fssi"]').addClass('error');
+                            // }
                             if (!adds) 
                             {
                                 $('input[name="adds"]').addClass('error');
                             }
+                            setTimeout(function() 
+                            {
+                                $('.form-control').removeClass('error');
+                            }, 5000);
+
                         }
                     },
                     updateItem() 
@@ -254,23 +291,47 @@
                         gst=this.gst;
                         fssi=this.fssi;
                         adds=this.adds;
-                        if (vendor && mobile && gst && fssi && adds) 
+                        if (vendor && mobile && adds) 
                         {
-                            const gstinRegex = /^[0-9A-Z]{2}[0-9A-Z]{10}[0-9A-Z]{1}[1-9A-Z]{1}[0-9A-Z]{2}[0-9A-Z]{2}$/;
-                            // if(gstinRegex.test(gst))
-                            // {
-                            //     console.log('GST Is Valid');
-                                
-                            // }else
-                            // {
-                            //     console.log('GST Is Not Valid');
-                            //     this.gstNameError=true;
-                            //     return;
-                            // }
-
-                            if(mobile.length>10 && mobile.length<10)
+                            if(gst!='')
                             {
-                                this.mobileNameerror=false;
+                                const gstinRegex=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
+                                console.log(gst)
+                                const urr = "29GGGGG1314R9Z6";
+                                console.log(urr)
+                                if(!gstinRegex.test(gst))
+                                {
+                                    $('input[name="gst"]').css('border-color', 'red');
+                                    setTimeout(function() 
+                                    {
+                                        $('input[name="gst"]').css('border-color', '');
+                                    }, 5000);
+                                    console.log('GST Is Not Valid');
+                                    return;
+                                }
+                            }
+                            if(fssi!='')
+                            {
+                                if(fssi.length != 14)
+                                {
+                                    $('input[name="fssi"]').css('border-color', 'red');
+                                    setTimeout(function() 
+                                    {
+                                        $('input[name="fssi"]').css('border-color', '');
+                                    }, 5000);
+                                    console.log('FSSI Number Not Valid');
+                                    return;
+                                }       
+                            }
+
+                            if(mobile.length != 10)
+                            {
+                                $('input[name="mobile"]').css('border-color', 'red');
+                                setTimeout(function() 
+                                {
+                                    $('input[name="mobile"]').css('border-color', '');
+                                }, 5000);
+                                console.log('Mobile Number Not Valid');
                                 return;
                             }
                             let log=$.ajax({
@@ -309,7 +370,7 @@
                                     console.error(error);
                                 }
                             });
-                            console.log(log)
+                            // console.log(log)
 
                         }else 
                         {
@@ -322,18 +383,14 @@
                             {
                                 $('input[name="mobile"]').addClass('error');
                             }
-                            if (!gst) 
-                            {
-                                $('input[name="gst"]').addClass('error');
-                            }
-                            if (!fssi) 
-                            {
-                                $('input[name="fssi"]').addClass('error');
-                            }
                             if (!adds) 
                             {
                                 $('input[name="adds"]').addClass('error');
                             }
+                            setTimeout(function() 
+                            {
+                                $('.form-control').removeClass('error');
+                            }, 5000);
                         }
                     },
                     EditItem(item, index)

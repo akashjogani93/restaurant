@@ -1,173 +1,222 @@
+<?php require_once("header.php"); ?>
+<style>
+    .table-box{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+    .table-s{
+        height:50px;
+        width:80px;
+        background-color:#009879;
+        margin:0 10px;
+        padding:10px
+    }
+    .table-kot{
+        height:50px;
+        width:120px;
+        background-color:#f39c12;
+        margin:0 10px;
+        padding:10px
+    }
+    .table_name{
+        justify-content:center;
+        color:white;
+    }
+    .highlighted 
+    {
+      background-color: #7C9D96;
+    }
+    .kot-items{
+        width: 95%;
+        overflow: auto;
+    }
+    .tbale{
+        float: left;
+        width: 23% !important;
+        border:1px solid black;
+        margin:10px;
+        /* justify-content:center; */
+    }
+    table thead tr{
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+    }
+    table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+    }
+    table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+    }
+    .table{
+        margin-bottom:0 !important;
+
+    }
+    .kot-header{
+        background-color:#7C9D96 !important;
+    }
+    /* .highlighted>.table_name
+    {
+        color:dark;
+    } */
+</style>
 <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper" id="form1">
-        <style>
-        .error {
-            color: red;
-        }
-        </style>
-        <?php require_once("header.php"); 
-        include("dbcon.php"); ?>
+    <div class="wrapper" id="form1"></div>
         <div class="content-wrapper">
-            <section class="content">
-                <div class="box box-default">
-                    <div id="app">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box-container">
-                                    <div class="box" v-for="(box, index) in visibleBoxes" :key="index">{{ box }}</div>
+        <section class="content-header">
+            <h1>
+                Kitchen KOT
+            </h1>
+        </section>
+        <section class="content">
+            <div id="app">
+            <div class="box box-default">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-body">
+                            <div class="row">
+                                <center><h4>Running Tables</h4></center>
+                                <div class="table-box">
+                                    <div class="table-s" v-for="(table, index) in tables" :key="index.tabno" @click=singleTableCli(table) :class="{ 'highlighted': selectedTable === table.tabno }">
+                                        <center><p class="table_name">{{ table.tabno }}</p></center>
+                                    </div>
+                                </div>
+                            </div></br>
+                            <!-- <div class="row">
+                                <center><h4>Running KOT</h4></center>
+                                <div class="table-box">
+                                    <div class="table-kot" v-for="(kot, index) in kots" :key="kot.kot_num">
+                                        <center><p class="table_name">KOT-{{ kot.kot_num }}</p></center>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="box">
+                            <div class="row">
+                                <div class="table-box">
+                                    <div class="kot-items">
+                                        <div class="tbale" v-for="(data, kotNum) in alldata" :key="kotNum">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <tr class="kot-header">
+                                                    <th :colspan="2" class="text-center">KOT-{{ kotNum }}</th>
+                                                </tr>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Menu Name</th>
+                                                        <th>Quantity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="(item, index) in data" :key="index">
+                                                        <td>{{ item.itmnam }}</td>
+                                                        <td>{{ item.qty }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="button-container">
-                            <button @click="previous" :disabled="currentIndex === 0">Previous</button>
-                            <button @click="next" :disabled="currentIndex >= totalBoxes - visibleBoxCount">Next</button>
-                        </div>
+                        </box>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+            </div>
+        </section>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="cdn/dataTables.buttons.min.js"></script>
+    <script src="cdn/buttons.print.min.js"></script>
+
+    <script>
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                tables:[],
+                kots:[],
+                selectedTable:null,
+                alldata: {},
+                timeoutId: null,
+            },
+            methods: {
+                fetchTables() 
+                {
+                    const vm=this;
+                    let log=$.post('ajax/kots_kitchen.php',{fetchTable:"Tables"})
+                    .done(function(response)
+                    {
+                        vm.tables=response;
+                    })
+                    .fail(function(jqXHR,textStatus,errorThrown)
+                    {
+                        console.error("AJAX error:", textStatus, errorThrown);
+                    });
+                    setTimeout(()=>
+                    {
+                        vm.fetchTables();
+                    },5000)
+                },
+                singleTableCli(table)
+                {
+                    const vm=this;
+                    vm.alldata={}
+                    vm.selectedTable = table.tabno;
+                    var tabno=table.tabno;
+                    console.log(tabno)
+                    // var tabno="T-1";
+
+                    if (vm.timeoutId) 
+                    {
+                        clearTimeout(vm.timeoutId);
+                    }
+
+                    let log=$.post('ajax/kots_kitchen.php',{tabno:tabno})
+                        .done(function(response)
+                        {
+                            if (response && Object.keys(response).length > 0) 
+                            {
+                                vm.alldata=response;
+                            }
+                        })
+                        .fail(function(jqXHR,textStatus,errorThrown)
+                        {
+                            console.error("AJAX error:", textStatus, errorThrown);
+                        });
+
+                        vm.timeoutId = setTimeout(() => 
+                        {
+                            vm.singleTableCli(table);
+                        }, 5000);
+                    
+                },
+                // singleKotCli()
+                // {
+                    
+                //     const vm=this;
+                //     vm.alldata=[];
+                //     for (const kot of this.kots)
+                //     {
+                //         const kotNum = kot.kot_num;
+                //         const url = 'ajax/kots_kitchen.php';
+                //         const postData = { kotNum: kotNum };
+                //         $.post(url,postData)
+                //         .done(data => {
+                //                 console.log(data);
+                //             })
+                //             .fail(function(jqXHR,textStatus,errorThrown)
+                //             {
+                //                 console.error("AJAX error:", textStatus, errorThrown);
+                //             });
+                //     }
+                // },
+            },
+            mounted(){
+                this.fetchTables();
+                // this.singleTableCli();
+            }
+        });
+    </script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-<script>
-new Vue({
-  el: '#app',
-  data() {
-    return {
-      boxes: ['Menu Master', 'Table Master', 'Report Master', 'Parcel Master', 'Box 5', 'Box 6', 'Box 7', 'Box 8'], // Replace with your box data
-      visibleBoxCount: 4,
-      currentIndex: 0
-    };
-  },
-  computed: {
-    totalBoxes() {
-      return this.boxes.length;
-    },
-    visibleBoxes() {
-      return this.boxes.slice(this.currentIndex, this.currentIndex + this.visibleBoxCount);
-    }
-  },
-  methods: {
-    next() {
-      if (this.currentIndex + this.visibleBoxCount < this.totalBoxes) 
-      {
-        this.currentIndex += this.visibleBoxCount;
-      }
-    },
-    previous() {
-      if (this.currentIndex > 0) {
-        this.currentIndex -= this.visibleBoxCount;
-      }
-    }
-  }
-});
-</script>
-
-<style>
-.box-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
-.box {
-  flex: 1 0 calc(25% - 10px);
-  height: 150px;
-  background-color: pink;
-  margin: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  font-size: 18px;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-button {
-  margin: 0 5px;
-}
-</style>
-
-
-<!--<!DOCTYPE html>
-<html>
-<head>
-  <title>Dynamic Grid of Boxes</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-  <div id="app" class="container mt-4">
-    <div class="row">
-      <div class="col-md-4" v-for="box in displayedBoxes" :key="box.id">
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">{{ box.title }}</h5>
-            <p class="card-text">{{ box.description }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-md-12">
-        <button class="btn btn-primary mr-2" @click="previousPage" :disabled="currentPage === 1">Previous</button>
-        <button class="btn btn-primary" @click="nextPage" :disabled="currentPage === totalPages">Next</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script>
-    new Vue({
-      el: '#app',
-      data: {
-        boxes: [], // All boxes data
-        currentPage: 1, // Current page number
-        pageSize: 4, // Number of boxes to display per page
-      },
-      computed: {
-        displayedBoxes() {
-          const start = (this.currentPage - 1) * this.pageSize;
-          const end = start + this.pageSize;
-          return this.boxes.slice(start, end);
-        },
-        totalPages() {
-          return Math.ceil(this.boxes.length / this.pageSize);
-        },
-      },
-      methods: {
-        fetchBoxes() {
-          // Fetch boxes data from PHP file
-          axios.get('your_php_file.php')
-            .then(response => {
-              this.boxes = response.data;
-            })
-            .catch(error => {
-              console.error(error);
-            });
-        },
-        nextPage() {
-          if (this.currentPage < this.totalPages) {
-            this.currentPage++;
-          }
-        },
-        previousPage() {
-          if (this.currentPage > 1) {
-            this.currentPage--;
-          }
-        },
-      },
-      mounted() {
-        this.fetchBoxes();
-      },
-    });
-  </script>
-</body>
-</html>-->
- 
