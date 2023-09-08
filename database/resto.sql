@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2023 at 03:48 AM
+-- Generation Time: Sep 08, 2023 at 09:18 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -74,6 +74,48 @@ INSERT INTO `addtable` (`table_ID`, `table_Name`, `ac`) VALUES
 (36, 'UD-5', 'Non Ac'),
 (37, 'UD-6', 'Non Ac'),
 (38, 'UD-7', 'Non Ac');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `beverages`
+--
+
+CREATE TABLE `beverages` (
+  `id` int(10) NOT NULL,
+  `pname` varchar(30) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `punit` varchar(30) NOT NULL,
+  `givenDate` date NOT NULL,
+  `uqty` double NOT NULL,
+  `rqty` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categoroy`
+--
+
+CREATE TABLE `categoroy` (
+  `id` int(10) NOT NULL,
+  `CategoryName` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categoroy`
+--
+
+INSERT INTO `categoroy` (`id`, `CategoryName`) VALUES
+(1, 'Beverages And Desserts'),
+(2, 'Produce'),
+(3, 'Grains and Legumes'),
+(4, 'Meat and Seafood'),
+(5, 'Dairy and Eggs'),
+(6, 'Spices and Condiments'),
+(7, 'Bakery and Staples'),
+(8, 'Canned and Jarred Goods'),
+(9, 'Miscellaneous');
 
 -- --------------------------------------------------------
 
@@ -331,7 +373,10 @@ INSERT INTO `item` (`slno`, `item_cat`, `itmnam`, `prc`, `prc2`, `item_code`) VA
 (216, 'Veg', 'Masala Papad', '50', '50', 202),
 (217, 'Veg', 'Hot & Sour Soup(Mushroom)', '110', '110', 203),
 (218, 'Veg', 'Ghee Rice', '130', '130', 204),
-(219, 'Veg', 'Afgani Chicken', '170', '190', 205);
+(219, 'Veg', 'Afgani Chicken', '170', '190', 205),
+(220, 'Veg', 'Thumsup', '80', '90', 257),
+(221, 'Veg', 'Jeera masala', '150', '170', 233),
+(222, 'Veg', 'Tangaddi', '120', '200', 209);
 
 -- --------------------------------------------------------
 
@@ -351,6 +396,22 @@ CREATE TABLE `item-categories` (
 INSERT INTO `item-categories` (`cat_id`, `category`) VALUES
 (1, 'Veg'),
 (2, 'Non-veg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kitchen_used`
+--
+
+CREATE TABLE `kitchen_used` (
+  `id` int(10) NOT NULL,
+  `pname` varchar(30) NOT NULL,
+  `pid` int(30) NOT NULL,
+  `punit` varchar(30) NOT NULL,
+  `givenDate` date NOT NULL,
+  `uqty` double NOT NULL,
+  `rqty` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -404,6 +465,35 @@ CREATE TABLE `kot_history` (
   `kot_num` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `kot_history`
+--
+
+INSERT INTO `kot_history` (`id`, `date`, `itmnam`, `qty`, `tabno`, `capname`, `kot_num`) VALUES
+(1, '2023-08-18', 'Jeera Soda', 1, 'G-1', 'Vivek Joshi', 1),
+(2, '2023-08-18', 'Chaas', 3, 'G-1', 'Vivek Joshi', 1),
+(4, '2023-08-18', 'Jeera Soda', 5, 'G-2', 'Vivek Joshi', 2),
+(5, '2023-08-18', 'Jeera Soda', 5, 'G-3', 'Vivek Joshi', 3),
+(6, '2023-08-18', 'Jeera Soda', 5, 'G-5', 'Vivek Joshi', 4),
+(7, '2023-08-18', 'Fresh Lime Soda', 6, 'G-5', 'Vivek Joshi', 4),
+(9, '2023-08-18', 'Jeera Soda', 6, 'G-10', 'Vivek Joshi', 5),
+(10, '2023-08-18', 'Jeera Soda', 1, 'G-6', 'Vivek Joshi', 6),
+(11, '2023-08-18', 'Jeera Soda', 1, 'G-15', 'Vivek Joshi', 7),
+(12, '2023-08-18', 'Jeera Soda', 6, 'T-5', 'Vivek Joshi', 8),
+(13, '2023-08-18', 'Jeera Soda', 6, 'T-2', 'Vivek Joshi', 9),
+(14, '2023-08-18', 'Jeera Soda', 5, 'T-3', 'Vivek Joshi', 10),
+(15, '2023-08-18', 'Jeera Soda', 1, 'T-4', 'Vivek Joshi', 11),
+(16, '2023-08-18', 'Jeera Soda', 1, 'G-11', 'Vivek Joshi', 12),
+(17, '2023-08-18', 'Jeera Soda', 1, 'G-12', 'Vivek Joshi', 13),
+(18, '2023-08-18', 'Jeera Soda', 1, 'G-13', 'Vivek Joshi', 14),
+(19, '2023-08-18', 'Jeera Soda', 1, 'G-14', 'Vivek Joshi', 15),
+(20, '2023-08-18', 'Jeera Soda', 1, 'G-15', 'Vivek Joshi', 16),
+(21, '2023-08-18', 'Jeera Soda', 1, 'PARCEL_1', '', 17),
+(22, '2023-08-18', 'Chaas', 3, 'PARCEL_1', '', 17),
+(24, '2023-08-18', 'Blue Curacao(soda)', 2, 'PARCEL_5', '', 18),
+(25, '2023-08-18', 'Jeera Soda', 1, 'PARCEL_4', '', 19),
+(26, '2023-08-18', 'Jeera Soda', 1, 'PARCEL_2', '', 20);
+
 -- --------------------------------------------------------
 
 --
@@ -453,6 +543,17 @@ CREATE TABLE `parcel` (
   `kot_num` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `parcel`
+--
+
+INSERT INTO `parcel` (`slno`, `date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `billno`, `status`, `capname`, `kot`, `kot_num`) VALUES
+(1, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'PARCEL_1', 0, '1', '', 19, 17),
+(2, '2023-08-18', 3, 'Chaas', 120, 3, 360, 'PARCEL_1', 0, '1', '', 20, 17),
+(3, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'PARCEL_2', 0, '1', '', 21, 20),
+(4, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'PARCEL_4', 0, '1', '', 22, 19),
+(5, '2023-08-18', 12, 'Blue Curacao(soda)', 80, 2, 160, 'PARCEL_5', 0, '1', '', 23, 18);
+
 -- --------------------------------------------------------
 
 --
@@ -472,20 +573,146 @@ CREATE TABLE `parsetable` (
 
 CREATE TABLE `products` (
   `pid` int(10) NOT NULL,
-  `pname` varchar(30) NOT NULL
+  `pname` varchar(50) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `unit` varchar(10) NOT NULL,
+  `tax` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`pid`, `pname`, `category`, `unit`, `tax`) VALUES
+(1, 'Onions', 'Produce', 'kg', 18),
+(2, 'Tomatoes', 'Produce', 'kg', 18),
+(4, 'Potatoes', 'Produce', 'kg', 0),
+(5, 'Garlic', 'Produce', 'kg', 0),
+(6, 'Bell peppers', 'Produce', 'kg', 0),
+(7, 'Green chilies', 'Produce', 'kg', 0),
+(8, 'Lemons', 'Produce', 'kg', 0),
+(9, 'Cilantro', 'Produce', 'kg', 0),
+(10, 'Mint leaves', 'Produce', 'kg', 0),
+(11, 'Lettuce or salad greens', 'Produce', 'kg', 0),
+(12, 'Fresh herbs', 'Produce', 'kg', 0),
+(13, 'Rice Basmati', 'Grains and Legumes', 'kg', 0),
+(14, 'Belgaum rice', 'Grains and Legumes', 'kg', 0),
+(15, 'Wheat flour', 'Grains and Legumes', 'kg', 0),
+(16, 'Lentils', 'Grains and Legumes', 'kg', 0),
+(17, 'Chickpeas', 'Grains and Legumes', 'kg', 0),
+(18, 'Black beans or kidney beans', 'Grains and Legumes', 'kg', 0),
+(19, 'Pasta', 'Grains and Legumes', 'kg', 0),
+(20, 'Chicken', 'Meat and Seafood', 'kg', 0),
+(21, 'Beef', 'Meat and Seafood', 'kg', 0),
+(22, 'Fish', 'Meat and Seafood', 'kg', 0),
+(23, 'Shrimp', 'Meat and Seafood', 'kg', 0),
+(24, 'Lamb or mutton', 'Meat and Seafood', 'kg', 0),
+(25, 'Milk', 'Dairy and Eggs', 'litre', 0),
+(26, 'Butter', 'Meat and Seafood', 'kg', 0),
+(27, 'Ghee', 'Meat and Seafood', 'kg', 0),
+(28, 'Cream', 'Meat and Seafood', 'kg', 0),
+(29, 'Yogurt', 'Meat and Seafood', 'kg', 0),
+(30, 'Cheese', 'Meat and Seafood', 'kg', 0),
+(31, 'Paneer', 'Meat and Seafood', 'kg', 0),
+(32, 'Eggs', 'Meat and Seafood', 'pack', 0),
+(33, 'Cumin', 'Spices and Condiments', 'kg', 0),
+(34, 'Coriander', 'Spices and Condiments', 'kg', 0),
+(35, 'Turmeric', 'Spices and Condiments', 'kg', 0),
+(36, 'Garam masala', 'Spices and Condiments', 'kg', 0),
+(37, 'Chili powder', 'Spices and Condiments', 'kg', 0),
+(38, 'Paprika', 'Spices and Condiments', 'kg', 0),
+(39, 'Mustard seeds', 'Spices and Condiments', 'kg', 0),
+(40, 'Fenugreek seeds', 'Spices and Condiments', 'kg', 0),
+(41, 'Cardamom', 'Spices and Condiments', 'kg', 0),
+(42, 'Cinnamon', 'Spices and Condiments', 'kg', 0),
+(43, 'Nutmeg', 'Spices and Condiments', 'kg', 0),
+(44, 'Bay leaves', 'Spices and Condiments', 'kg', 0),
+(45, 'Vinegar', 'Spices and Condiments', 'bottle', 0),
+(46, 'Soy sauce', 'Spices and Condiments', 'bottle', 0),
+(47, 'Hot sauce', 'Spices and Condiments', 'bottle', 0),
+(48, 'Ketchup', 'Spices and Condiments', 'packet', 0),
+(49, 'Mayonnaise', 'Spices and Condiments', 'kg', 0),
+(50, 'Mustard', 'Spices and Condiments', 'kg', 0),
+(51, 'Olive oil', 'Spices and Condiments', 'litre', 0),
+(52, 'Vegetable oil', 'Spices and Condiments', 'litre', 0),
+(53, 'Bread', 'Bakery and Staples', 'packet', 0),
+(54, 'Naan or Roti', 'Bakery and Staples', 'packet', 0),
+(55, 'Pita bread', 'Bakery and Staples', 'packet', 0),
+(56, 'Tortillas', 'Bakery and Staples', 'packet', 0),
+(57, 'Sugar', 'Bakery and Staples', 'kg', 0),
+(58, 'Salt', 'Bakery and Staples', 'kg', 0),
+(59, 'All-purpose flour', 'Bakery and Staples', 'kg', 0),
+(60, 'Baking powder', 'Bakery and Staples', 'kg', 0),
+(61, 'Baking soda', 'Bakery and Staples', 'kg', 0),
+(62, 'Yeast', 'Bakery and Staples', 'kg', 0),
+(63, 'Canned tomatoes', 'Canned and Jarred Goods', 'kg', 0),
+(64, 'Tomato paste', 'Canned and Jarred Goods', 'kg', 0),
+(65, 'Coconut milk', 'Canned and Jarred Goods', 'litre', 0),
+(66, 'Pickles', 'Canned and Jarred Goods', 'kg', 0),
+(67, 'Chutneys', 'Canned and Jarred Goods', 'kg', 0),
+(68, 'Olives', 'Canned and Jarred Goods', 'kg', 0),
+(69, 'Coffee', 'Beverages And Desserts', 'kg', 0),
+(70, 'Tea leaves or tea bags', 'Beverages And Desserts', 'kg', 0),
+(71, 'Soft drinks', 'Beverages And Desserts', 'litre', 0),
+(72, 'Juices', 'Beverages And Desserts', 'litre', 0),
+(73, 'Bisleri ', 'Beverages And Desserts', 'litre', 0),
+(74, 'Nuts', 'Miscellaneous', 'kg', 0),
+(75, 'Raisins', 'Miscellaneous', 'kg', 0),
+(76, 'Honey', 'Miscellaneous', 'bottle', 0),
+(77, 'Cooking wine ', 'Miscellaneous', 'litre', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase_data`
+--
+
+CREATE TABLE `purchase_data` (
+  `id` int(10) NOT NULL,
+  `vendor` varchar(30) NOT NULL,
+  `purchase_date` date NOT NULL,
+  `totalamt` double NOT NULL,
+  `pamt` double NOT NULL,
+  `remark` varchar(50) NOT NULL,
+  `venId` int(10) NOT NULL,
+  `bill` int(10) NOT NULL,
+  `gamt` double NOT NULL,
+  `tax` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `readymadeitem`
+-- Table structure for table `stock`
 --
 
-CREATE TABLE `readymadeitem` (
-  `slno` int(10) UNSIGNED NOT NULL,
-  `itmnam` varchar(40) NOT NULL,
+CREATE TABLE `stock` (
+  `id` int(10) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `pname` varchar(30) NOT NULL,
+  `unit` varchar(30) NOT NULL,
   `qty` double NOT NULL,
-  `prc` double NOT NULL
+  `venid` int(10) NOT NULL,
+  `price` double NOT NULL,
+  `total` double NOT NULL,
+  `bamt` double NOT NULL,
+  `tax` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock1`
+--
+
+CREATE TABLE `stock1` (
+  `id` int(30) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `pname` varchar(30) NOT NULL,
+  `unit` varchar(30) NOT NULL,
+  `qty` double NOT NULL,
+  `venid` int(30) NOT NULL,
+  `exp` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -588,6 +815,30 @@ CREATE TABLE `temtable` (
   `kot_num` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `temtable`
+--
+
+INSERT INTO `temtable` (`slno`, `date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `capname`, `billno`, `status`, `kot`, `kot_num`) VALUES
+(1, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'G-1', 'Vivek Joshi', 0, 1, 1, 1),
+(2, '2023-08-18', 3, 'Chaas', 120, 3, 360, 'G-1', 'Vivek Joshi', 0, 1, 2, 1),
+(3, '2023-08-18', 1, 'Jeera Soda', 70, 5, 350, 'G-2', 'Vivek Joshi', 0, 1, 3, 2),
+(4, '2023-08-18', 1, 'Jeera Soda', 70, 5, 350, 'G-3', 'Vivek Joshi', 0, 1, 4, 3),
+(5, '2023-08-18', 1, 'Jeera Soda', 70, 5, 350, 'G-5', 'Vivek Joshi', 0, 1, 5, 4),
+(6, '2023-08-18', 5, 'Fresh Lime Soda', 60, 6, 360, 'G-5', 'Vivek Joshi', 0, 1, 6, 4),
+(7, '2023-08-18', 1, 'Jeera Soda', 70, 6, 420, 'G-10', 'Vivek Joshi', 0, 1, 7, 5),
+(8, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'G-6', 'Vivek Joshi', 0, 1, 8, 6),
+(9, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'G-15', 'Vivek Joshi', 0, 1, 9, 7),
+(10, '2023-08-18', 1, 'Jeera Soda', 70, 6, 420, 'T-5', 'Vivek Joshi', 0, 1, 10, 8),
+(11, '2023-08-18', 1, 'Jeera Soda', 70, 6, 420, 'T-2', 'Vivek Joshi', 0, 1, 11, 9),
+(12, '2023-08-18', 1, 'Jeera Soda', 70, 5, 350, 'T-3', 'Vivek Joshi', 0, 1, 12, 10),
+(13, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'T-4', 'Vivek Joshi', 0, 1, 13, 11),
+(14, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'G-11', 'Vivek Joshi', 0, 1, 14, 12),
+(15, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'G-12', 'Vivek Joshi', 0, 1, 15, 13),
+(16, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'G-13', 'Vivek Joshi', 0, 1, 16, 14),
+(17, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'G-14', 'Vivek Joshi', 0, 1, 17, 15),
+(18, '2023-08-18', 1, 'Jeera Soda', 70, 1, 70, 'G-15', 'Vivek Joshi', 0, 1, 18, 16);
+
 -- --------------------------------------------------------
 
 --
@@ -608,6 +859,57 @@ INSERT INTO `userlist` (`id`, `user`) VALUES
 (4, 'STW'),
 (7, 'Manager');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendor`
+--
+
+CREATE TABLE `vendor` (
+  `slno` int(10) NOT NULL,
+  `vendor` varchar(50) NOT NULL,
+  `mobile` varchar(10) NOT NULL,
+  `gst` varchar(30) NOT NULL,
+  `fssi` varchar(30) NOT NULL,
+  `adds` varchar(50) NOT NULL,
+  `totalamt` double NOT NULL,
+  `paid` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendor_payment`
+--
+
+CREATE TABLE `vendor_payment` (
+  `id` int(10) NOT NULL,
+  `vendor` varchar(30) NOT NULL,
+  `date` date NOT NULL,
+  `amt` double NOT NULL,
+  `paid` double NOT NULL,
+  `remain` double NOT NULL,
+  `pending` double NOT NULL,
+  `disc` double NOT NULL,
+  `settle` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vestage`
+--
+
+CREATE TABLE `vestage` (
+  `id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `pname` varchar(30) NOT NULL,
+  `unit` varchar(30) NOT NULL,
+  `qty` double NOT NULL,
+  `venId` int(10) NOT NULL,
+  `exp` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -617,6 +919,18 @@ INSERT INTO `userlist` (`id`, `user`) VALUES
 --
 ALTER TABLE `addtable`
   ADD PRIMARY KEY (`table_ID`);
+
+--
+-- Indexes for table `beverages`
+--
+ALTER TABLE `beverages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `categoroy`
+--
+ALTER TABLE `categoroy`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `empreg`
@@ -635,6 +949,12 @@ ALTER TABLE `item`
 --
 ALTER TABLE `item-categories`
   ADD PRIMARY KEY (`cat_id`);
+
+--
+-- Indexes for table `kitchen_used`
+--
+ALTER TABLE `kitchen_used`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `kot`
@@ -679,10 +999,22 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`pid`);
 
 --
--- Indexes for table `readymadeitem`
+-- Indexes for table `purchase_data`
 --
-ALTER TABLE `readymadeitem`
-  ADD PRIMARY KEY (`slno`);
+ALTER TABLE `purchase_data`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stock`
+--
+ALTER TABLE `stock`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stock1`
+--
+ALTER TABLE `stock1`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `store_room`
@@ -721,6 +1053,18 @@ ALTER TABLE `userlist`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `vendor`
+--
+ALTER TABLE `vendor`
+  ADD PRIMARY KEY (`slno`);
+
+--
+-- Indexes for table `vendor_payment`
+--
+ALTER TABLE `vendor_payment`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -729,6 +1073,18 @@ ALTER TABLE `userlist`
 --
 ALTER TABLE `addtable`
   MODIFY `table_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT for table `beverages`
+--
+ALTER TABLE `beverages`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `categoroy`
+--
+ALTER TABLE `categoroy`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `empreg`
@@ -740,7 +1096,7 @@ ALTER TABLE `empreg`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `slno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
+  MODIFY `slno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
 
 --
 -- AUTO_INCREMENT for table `item-categories`
@@ -749,10 +1105,16 @@ ALTER TABLE `item-categories`
   MODIFY `cat_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `kitchen_used`
+--
+ALTER TABLE `kitchen_used`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `kot`
 --
 ALTER TABLE `kot`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `kot_cancel`
@@ -764,7 +1126,7 @@ ALTER TABLE `kot_cancel`
 -- AUTO_INCREMENT for table `kot_history`
 --
 ALTER TABLE `kot_history`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `login`
@@ -776,7 +1138,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT for table `parcel`
 --
 ALTER TABLE `parcel`
-  MODIFY `slno` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `slno` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `parsetable`
@@ -788,13 +1150,25 @@ ALTER TABLE `parsetable`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `pid` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `pid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
--- AUTO_INCREMENT for table `readymadeitem`
+-- AUTO_INCREMENT for table `purchase_data`
 --
-ALTER TABLE `readymadeitem`
-  MODIFY `slno` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `purchase_data`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stock`
+--
+ALTER TABLE `stock`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stock1`
+--
+ALTER TABLE `stock1`
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `store_room`
@@ -824,13 +1198,25 @@ ALTER TABLE `tabletot`
 -- AUTO_INCREMENT for table `temtable`
 --
 ALTER TABLE `temtable`
-  MODIFY `slno` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `slno` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `userlist`
 --
 ALTER TABLE `userlist`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `vendor`
+--
+ALTER TABLE `vendor`
+  MODIFY `slno` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `vendor_payment`
+--
+ALTER TABLE `vendor_payment`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

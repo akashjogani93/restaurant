@@ -1,8 +1,28 @@
+<?php require_once("header.php"); ?>
+<?php
+require "vendor/autoload.php";
+
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentLeft;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+?>
+
 <body class="hold-transition skin-blue sidebar-mini"onload="myFunction()" >
     <div class="wrapper" id="form1">
     <style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');
+
+
         body{
             background-color:white;
+            font-family: 'Roboto Mono', monospace;
+        }
+        p{
+            font-family: 'Roboto Mono', monospace;
         }
     *{
         font-size:11pt;
@@ -18,22 +38,26 @@
       }
     th {
     text-align: right!important;
-    font-weight: 600 !important;
+    font-weight: bold !important;
     padding:1px 0 !important;
     margin:0;
     font-size:12px;
     color:black;
 
 }
+
     td{
         text-align: right!important;
         padding:2px !important;
         padding:0 !important;
         font-size:10px;
-        font-weight:600 !important; 
+        font-weight:bold !important; 
         margin:0;
         color:black;
 
+}
+th.qty, td.qty{
+    text-align: left !important; 
 }
 
 @page{
@@ -50,7 +74,7 @@
 .fst h5 {
     margin: 0px !important;
     font-size: 12px;
-    font-weight:600;
+    font-weight:bold;
 
 }
       #mainprint{
@@ -60,7 +84,7 @@
 .fst h6 {
     margin: 0px !important;
     font-size: 14px;
-    font-weight:600;
+    font-weight:bold;
 }
       .INo{
         text-align: left!important;
@@ -75,7 +99,7 @@
         width:95%;
      }
     </style>
-       <?php require_once("header.php"); ?>
+       
         <?php
             $tabno = $_GET['tabno'];
             // $tabsec = $_GET['tabsec'];
@@ -103,25 +127,27 @@
                     <!-- /.box-header -->
                     <div class="box-body" >
                       
-                       <div class="row" >
+                       <div class="row" style="margin-bottom:0px;" >
                             <div class="col-md-12" style="padding-right:8px;padding-left:8px !important;" >
-                                <center>
-                                    <img src="img/Oyeshava.png" alt="" width="80" height="80" style="object-fit:contain;">
-                                    <h5 style="font-size:11px; margin-top:-2px;font-weight:600;">1/E, Bauxite Road, B.K, Kangarli, Belagavi, Karnataka 590010</h5>
-                                    <h6 style="font-size:8px; margin-top:-8px; font-weight:600;">GST : 29AYAPC2895D1ZJ</h6>
-                                    <h6 style="font-size:8px; margin-top:-8px; font-weight:600;">Contact No : 7676801529</h6>
+                             
+                              
+                                <center> 
+                                    <img src="img/Oyeshava.png" alt="" width="80"  style="object-fit:cover;">
+                                    <h5 style="font-size:10px; margin-top:5px;margin-bottom:0px; line-height:0px; font-weight:bold;">1/E, Bauxite Road, B.K, Kangarli, Belagavi, Karnataka 590010</h5>
+                                    <b style="font-size:9px; margin-top:0px; font-weight:bold;margin-bottom:0px;line-height:0px;">7676801529 | www.oyeshawa.in | info@oyeshawa.in </b>
+                                    <p style="font-size:8px;margin-top:-3px; font-weight: bold;"> GST : 29AYAPC2895D1ZJ</p>
                                 </center>  
                             </div>
                        </div>
                        <div class="row">
                             <div class="col-md-12" style="padding-right:8px;padding-left:8px;" >
                                 <div class="fst">
-                                    <h5 style="font-size:11px;font-weight:600;">Bill No:<?php echo $padded_id; ?></h5>
+                                    <h5 style="font-size:11px;font-weight:900;">Bill No:<?php echo $padded_id; ?></h5>
                                     
                                   	   <h5>Date:<?php echo $new_date; ?></h5>
                                 </div>
                                 <div class="fst">
-                                    <h5 style="padding-left:0px;font-size:11px;font-weight:600;margin-top:-8px;">Table No:<?php echo $tabno; ?></h5>
+                                    <h5 style="padding-left:0px;font-size:11px;font-weight:900;margin-top:-8px;">Table No:<?php echo $tabno; ?></h5>
                                     <h5></h5>
                                  
                                   <h5 >Time:<?php echo $current_time; ?></h5>
@@ -140,10 +166,10 @@
                             <div class="col-md-12" style="padding-right:8px;padding-left:8px;" >
                                 <table style="width:100%;">
                                     <thead>
-                                        <tr style="border-bottom:2px dotted black;line-height:2; margin-bottom:18px;">
+                                        <tr style="border-bottom:1px solid black;line-height:2; margin-bottom:18px;">
                                             <th class="INo"  style="width:7%;">No</th>
                                             <th class="INo" style="width:49%;">Item Name</th>
-                                            <th style="width: 10px%;">Qty</th>
+                                            <th class="qty" style="width: 10px%;">Qty</th>
                                             <th style="width:15%;">Rate</th>
                                             <th style="width:20%;">Amount</th>
                                         </tr>
@@ -168,7 +194,7 @@
                                                             <tr style="margin">
                                                                 <td class="INo"><?php echo ++$sn; ?></td>
                                                                 <td class="INo"><?php echo $row['itmnam']; ?></td>
-                                                                <td><?php echo $row['qty']; ?></td>
+                                                                <td class="qty"><?php echo $row['qty']; ?></td>
                                                                 <td><?php echo number_format($row['prc'],2); ?></td>
                                                                 <td><?php echo number_format($row['tot'],2); ?></td>
                                                             </tr>
@@ -190,7 +216,7 @@
                                             ?>
                                           
                                                 <tr></tr>
-                                                <tr style="border-top:2px dotted black; ">
+                                                <tr style="border-top:1px solid black; ">
                                                     <th colspan="2"></th>
                                                     <th colspan="2" style="font-size:10px;">Sub-Total: </th>
                                                     <td> <?php echo number_format($total,2); ?></td>
@@ -235,7 +261,7 @@
                                                             <?php
                                                         }
                                                     ?>
-                                                <tr style="border-top:2px dotted black; border-bottom:2px dotted black;">
+                                                <tr style="border-top:1px solid black; border-bottom:1px solid black;">
                                                    
                                                     <th colspan="4"><b style="font-size:12px;">TOTAL AMOUNT</b></th>
                                                     <td><b style="font-size:12px;"><?php echo number_format($amount,2); ?></b></td>
@@ -260,29 +286,33 @@
                                 ?>
 
                                 <center>
-                                    <?php 
-                                        $upiVpa = 'akashjogani93@axl';
-                                        // $amount = 1;
-                                        // Generate QR code data
-                                        // $data = "upi://pay?pa=$upiVpa&am=$amount";
-                                        $data = "upi://pay?pa=$upiVpa&am=$amount&pn=MerchantName&mc=123456&tid=987654321&tr=123456789&tn=PaymentDescription&url=https://example.com/callback&ands=googlepay";
-                                        // URL to generate QR code using Google Charts API
-                                        $apiUrl = 'https://chart.googleapis.com/chart';
+                                <?php
+                                    // UPI payment details
+                                    $merchantName = 'Oyeshawa';
+                                    $merchantUPI = '63270088246.payswiff@indus'; // Replace with your UPI address
+                                    // $amount = '1.00'; // Replace with the dynamic amount
 
-                                        // API parameters
-                                        $params = array(
-                                            'cht' => 'qr',
-                                            'chs' => '150x150', // QR code image size
-                                            'chl' => $data // QR code data
-                                        );
+                                    // Format UPI data
+                                    $upiData = "upi://pay?pn={$merchantName}&pa={$merchantUPI}&am={$amount}";
 
-                                        // Generate the API URL with parameters
-                                        $apiUrl .= '?' . http_build_query($params);
+                                    $qr_code = QrCode::create($upiData)
+                                                    ->setSize(100)
+                                                    ->setMargin(0)
+                                                    ->setForegroundColor(new Color(0, 0, 0))
+                                                    ->setBackgroundColor(new Color(255, 255, 255))
+                                                    ->setErrorCorrectionLevel(new ErrorCorrectionLevelHigh);
 
-                                        // Output the QR code image
-                                        echo '<img src="' . $apiUrl . '" alt="UPI Amount QR Code">';
-                                    ?>
-                                    <h4>- - - - - <b>THANK YOU VISIT AGAIN</b> - - - - -</h4>
+                                    $writer = new PngWriter;
+
+                                    $re = $writer->write($qr_code);
+                                    echo $re->saveToFile('qrcode.png');
+                                    // Output the QR code image to the browser
+
+                                    // Save the image to a file if needed
+                                    // $result->saveToFile("upi-qr-code.png");
+                                ?>
+                                    <img src="qrcode.png"/>
+                                    <h4 style="margin-top:0px;">- - - - - <b>THANK YOU VISIT AGAIN</b> - - - - -</h4>
                                 </center>
                             </div>
                         </div>
@@ -308,7 +338,7 @@ function myFunction()
     window.print();
     // window.onafterprint = function(event)
     // {
-          window.location.href ="table_form.php";
+       //   window.location.href ="table_form.php";
     // };
 }
 

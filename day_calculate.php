@@ -1,9 +1,10 @@
+<?php
+            require_once("header.php"); 
+            ?>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="form1">
 
-        <?php
-            require_once("header.php"); 
-            ?>
+  
 <style>
     .boxx{
         background-color:rgba(255, 255, 255, 0.4);
@@ -256,7 +257,7 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <?php// require_once("footer.php"); ?>
+
 
     <div class="control-sidebar-bg"></div>
     </div>

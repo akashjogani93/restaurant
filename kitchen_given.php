@@ -134,7 +134,7 @@
                                                 <td>
                                                     <div style="display:flex;">
                                                         <input type="text" name="inputTag" class="form-control" placeholder="Return Qty" style="width: 50%; margin-right:10px;" oninput="validateInput(this)">
-                                                        <button class="btn btn-info" onclick="getDataFromRow(this)">Button</button>
+                                                        <button class="btn btn-info" onclick="getDataFromRow(this)">SUBMIT</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -205,7 +205,8 @@
                     var row = button.parentNode.parentNode.parentNode;
                     var input = row.querySelector('input[name="inputTag"]'); 
                     var inputValue = parseFloat(input.value);
-                    if (isNaN(inputValue)) {
+                    if (isNaN(inputValue)) 
+                    {
                         return;
                     }
                     var cells = row.getElementsByTagName('td');
@@ -370,6 +371,7 @@
                     $.ajax({
                         url: 'ajax/kitchen_fetch_options.php',
                         method: 'POST',
+                        data:{kit:"kit"},
                         success(response) {
                             vm.options = response;
                         },

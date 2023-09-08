@@ -1,10 +1,11 @@
-<body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper" id="form1">
-
-        <?php
+   <?php
             require_once("header.php"); 
            
             ?>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper" id="form1">
+
+     
 
 <style>
     .form-horizontal .form-group{
@@ -191,7 +192,7 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <?php// require_once("footer.php"); ?>
+    
 
     <div class="control-sidebar-bg"></div>
     </div>

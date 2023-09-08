@@ -7,10 +7,15 @@
     }
     .table-s{
         height:50px;
-        width:80px;
+        /* width:80px; */
         background-color:#009879;
         margin:0 10px;
-        padding:10px
+        padding:10px;
+
+        float: left;
+        width: 23% !important;
+        /* border:1px solid black; */
+        margin:10px;
     }
     .table-kot{
         height:50px;
@@ -30,6 +35,11 @@
     .kot-items{
         width: 95%;
         overflow: auto;
+    }
+    .runing-tables,.parcel-tables
+    {
+        width:48%;
+        overflow:auto;
     }
     .tbale{
         float: left;
@@ -77,21 +87,21 @@
                     <div class="col-md-12">
                         <div class="box-body">
                             <div class="row">
-                                <center><h4>Running Tables</h4></center>
                                 <div class="table-box">
-                                    <div class="table-s" v-for="(table, index) in tables" :key="index.tabno" @click=singleTableCli(table) :class="{ 'highlighted': selectedTable === table.tabno }">
-                                        <center><p class="table_name">{{ table.tabno }}</p></center>
+                                    <div class="runing-tables">
+                                        <center><h4>Running Tables</h4></center>
+                                        <div class="table-s" v-for="(table, index) in tables" :key="index.tabno" @click=singleTableCli(table,0) :class="{ 'highlighted': selectedTable === table.tabno }">
+                                            <center><p class="table_name">{{ table.tabno }}</p></center>
+                                        </div>
+                                    </div>
+                                    <div class="parcel-tables">
+                                        <center><h4>Parcel Tables</h4></center>
+                                        <div class="table-s" v-for="(parcel, index) in parcels" :key="index.tabno" @click=singleTableCli(parcel,1) :class="{ 'highlighted': selectedTable === parcel.tabno }">
+                                            <center><p class="table_name">{{ parcel.tabno }}</p></center>
+                                        </div>
                                     </div>
                                 </div>
                             </div></br>
-                            <!-- <div class="row">
-                                <center><h4>Running KOT</h4></center>
-                                <div class="table-box">
-                                    <div class="table-kot" v-for="(kot, index) in kots" :key="kot.kot_num">
-                                        <center><p class="table_name">KOT-{{ kot.kot_num }}</p></center>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="box">
                             <div class="row">
@@ -136,6 +146,7 @@
             el:'#app',
             data:{
                 tables:[],
+                parcels:[],
                 kots:[],
                 selectedTable:null,
                 alldata: {},
@@ -148,7 +159,8 @@
                     let log=$.post('ajax/kots_kitchen.php',{fetchTable:"Tables"})
                     .done(function(response)
                     {
-                        vm.tables=response;
+                        vm.tables=response.tables;
+                        vm.parcels = response.parcels;
                     })
                     .fail(function(jqXHR,textStatus,errorThrown)
                     {
@@ -159,21 +171,20 @@
                         vm.fetchTables();
                     },5000)
                 },
-                singleTableCli(table)
+                singleTableCli(table,status)
                 {
                     const vm=this;
                     vm.alldata={}
                     vm.selectedTable = table.tabno;
                     var tabno=table.tabno;
-                    console.log(tabno)
-                    // var tabno="T-1";
-
+                    console.log(tabno);
+                    console.log(status)
                     if (vm.timeoutId) 
                     {
                         clearTimeout(vm.timeoutId);
                     }
 
-                    let log=$.post('ajax/kots_kitchen.php',{tabno:tabno})
+                    let log=$.post('ajax/kots_kitchen.php',{tabno:tabno,status:status})
                         .done(function(response)
                         {
                             if (response && Object.keys(response).length > 0) 
@@ -188,7 +199,7 @@
 
                         vm.timeoutId = setTimeout(() => 
                         {
-                            vm.singleTableCli(table);
+                            vm.singleTableCli(table,status);
                         }, 5000);
                     
                 },

@@ -4,6 +4,9 @@ include('../dbcon.php');
 $vendorName = $_POST['vendorName'];
 $purchasedDate = $_POST['purchasedDate'];
 $totamt = $_POST['totamt'];
+$gamount = $_POST['gamount'];
+$taxamount = $_POST['taxamount'];
+
 $pamt = $_POST['pamt'];
 $remark = $_POST['remark'];
 $billNo = $_POST['billNo'];
@@ -11,8 +14,8 @@ $venId = $_POST['venId'];
 $stockList = $_POST['stockList'];
 $remain=$totamt-$pamt;
 
-$stmt = $conn->prepare("INSERT INTO `purchase_data` (`vendor`,`purchase_date`,`totalamt`,`pamt`,`remark`,`venId`,`bill`) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sssdsii", $vendorName, $purchasedDate, $totamt, $pamt, $remark,$venId,$billNo);
+$stmt = $conn->prepare("INSERT INTO `purchase_data` (`vendor`,`purchase_date`,`totalamt`,`pamt`,`remark`,`venId`,`bill`,`gamt`,`tax`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("sssdsiidd", $vendorName, $purchasedDate, $totamt, $pamt, $remark,$venId,$billNo,$gamount,$taxamount);
 $stmt->execute();
 $vendorId = $stmt->insert_id;
 
@@ -41,6 +44,13 @@ foreach ($stockList as $stockItem)
     $qty = $stockItem['qty'];
     $unit = $stockItem['unit'];
     $category = $stockItem['cat'];
+    $price = $stockItem['price'];
+    $totalAmt = $stockItem['total'];
+    $tax = $stockItem['tax'];
+    $amt = $stockItem['amt'];
+
+    $exp = $stockItem['exp'];
+
 
     $selectStmt = $conn->prepare("SELECT qty FROM stock1 WHERE pname = ? AND unit = ?");
     $selectStmt->bind_param("ss", $name, $unit);
@@ -57,17 +67,16 @@ foreach ($stockList as $stockItem)
         $updateStmt->execute();
     }else
     {
-        $insertStmt = $conn->prepare("INSERT INTO stock1 (category,pname, unit, qty, venid) VALUES (?, ?, ?, ?, ?)");
-        $insertStmt->bind_param("sssii",$category, $name, $unit, $qty, $vendorId);
+        $insertStmt = $conn->prepare("INSERT INTO stock1 (category,pname, unit, qty, venid,exp) VALUES (?, ?, ?, ?, ?, ?)");
+        $insertStmt->bind_param("sssiis",$category, $name, $unit, $qty, $vendorId,$exp);
         $insertStmt->execute();
     }
-    $stmt = $conn->prepare("INSERT INTO stock (category, pname, unit, qty, venid) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssii",$category, $name, $unit, $qty, $vendorId);
+    $stmt = $conn->prepare("INSERT INTO stock (category, pname, unit, qty, venid,price,total,bamt,tax) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssiidddd",$category, $name, $unit, $qty, $vendorId,$price,$totalAmt,$amt,$tax);
     $stmt->execute();
 }
 
 $stmt->close();
-
 
 // $paymentstmt->close();
 $conn->close();

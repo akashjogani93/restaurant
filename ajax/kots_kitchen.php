@@ -5,6 +5,7 @@ if(isset($_POST['fetchTable']))
     $query="SELECT DISTINCT `tabno` FROM `temtable`";
     $result=$conn->query($query);
     $tables=array();
+    $parcels=array();
     if($result->num_rows > 0)
     {
         while($row=$result->fetch_assoc())
@@ -12,16 +13,37 @@ if(isset($_POST['fetchTable']))
             $tables[]=$row;
         }
     }
+    $query1="SELECT DISTINCT `tabno` FROM `parcel`";
+    $result1=$conn->query($query1);
+    if($result1->num_rows > 0)
+    {
+        while($row1=$result1->fetch_assoc())
+        {
+            $parcels[]=$row1;
+        }
+    }
+
     header('Content-Type: application/json');
-    echo json_encode($tables);
+    echo json_encode(array("tables" => $tables, "parcels" => $parcels));
     $conn->close();
 }
 
 if(isset($_POST['tabno']))
 {
     $tabno=$_POST['tabno'];
+    $status=$_POST['status'];
+
     $tabno=mysqli_real_escape_string($conn, $tabno);
-    $query="SELECT DISTINCT `kot_num` FROM `temtable` WHERE `tabno`='$tabno' AND `kot_num`!=0";
+    $status=mysqli_real_escape_string($conn, $status);
+
+    if($status==0)
+    {
+        $tableName='temtable';
+    }else
+    {
+        $tableName='parcel';
+    }
+    $query="SELECT DISTINCT `kot_num` FROM $tableName WHERE `tabno`='$tabno' AND `kot_num`!=0";
     $result=$conn->query($query);
     $kots=array();
     if($result->num_rows > 0)
@@ -29,7 +51,7 @@ if(isset($_POST['tabno']))
         while($row=$result->fetch_assoc())
         {
             $kotNum=$row['kot_num'];
-            $query_search="SELECT `itmnam`,`qty` FROM `temtable` WHERE `kot_num`='$kotNum' AND `kot_num`!=0";
+            $query_search="SELECT `itmnam`,`qty` FROM $tableName WHERE `kot_num`='$kotNum' AND `kot_num`!=0";
             $result_search=$conn->query($query_search);
             if($result_search->num_rows > 0)
             {

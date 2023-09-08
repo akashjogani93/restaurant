@@ -1,25 +1,43 @@
 <?php
+require "vendor/autoload.php";
 
-$upiVpa = 'akashjogani93@axl';
-$amount = 1;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentLeft;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
 
-// Generate QR code data
-$data = "upi://pay?pa=$upiVpa&am=$amount&pn=MerchantName&mc=123456&tid=987654321&tr=123456789&tn=PaymentDescription&url=https://example.com/callback&ands=googlepay";
+// UPI payment details
+$merchantName = 'Oyeshawa';
+$merchantUPI = '63270088246.payswiff@indus'; // Replace with your UPI address
+$amount = '1.00'; // Replace with the dynamic amount
 
-// URL to generate QR code using Google Charts API
-$apiUrl = 'https://chart.googleapis.com/chart';
+// Format UPI data
+$upiData = "upi://pay?pn={$merchantName}&pa={$merchantUPI}&am={$amount}";
 
-// API parameters
-$params = array(
-    'cht' => 'qr',
-    'chs' => '300x300', // QR code image size
-    'chl' => $data // QR code data
-);
+$qr_code = QrCode::create($upiData)
+                 ->setSize(300)
+                 ->setMargin(40)
+                 ->setForegroundColor(new Color(0, 0, 0))
+                 ->setBackgroundColor(new Color(255, 255, 255))
+                 ->setErrorCorrectionLevel(new ErrorCorrectionLevelHigh);
 
-// Generate the API URL with parameters
-$apiUrl .= '?' . http_build_query($params);
+$label = Label::create("UPI Payment QR Code")
+              ->setTextColor(new Color(255, 0, 0))
+              ->setAlignment(new LabelAlignmentLeft);
 
-// Output the QR code image
-echo '<img src="' . $apiUrl . '" alt="UPI Amount QR Code">';
 
+$writer = new PngWriter;
+
+$result = $writer->write($qr_code,  label: $label);
+
+// Output the QR code image to the browser
+
+
+echo $result->saveToFile('qrcode.png');
+
+// Save the image to a file if needed
+// $result->saveToFile("upi-qr-code.png");
 ?>

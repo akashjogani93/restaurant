@@ -1,7 +1,8 @@
+<?php require_once("header.php"); ?>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="form1">
 
-        <?php require_once("header.php"); ?>
+        
 <style>
     thead{
         background-color:rgba(21, 22, 23, 0.06);

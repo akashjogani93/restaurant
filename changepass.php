@@ -1,3 +1,4 @@
+<?php require_once("header.php"); ?>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="form1">
         <style>
@@ -12,7 +13,7 @@
 				padding-top:50px;
 			}
         </style>
-        <?php require_once("header.php"); ?>
+        
 		<script>
                 $("#dyna").text("Change Password");
             </script>
@@ -82,32 +83,27 @@ if(isset($_POST['New_pass']))
 	{
 			$query="SELECT * FROM login WHERE pass='$old' and `type`='admin';";
 			$confirm=mysqli_query($conn,$query) or die(mysqli_error());
-			while($row=mysqli_fetch_array($confirm))
+			if(mysqli_num_rows($confirm) > 0)
 			{
-				$oldpass=$row['pass'];
-				if($old==$oldpass)
+				while($row=mysqli_fetch_array($confirm))
 				{
 					$query="UPDATE `login` SET `pass`='$confirm_pass' WHERE `type`='admin'";
 					$confirm=mysqli_query($conn,$query) or die(mysqli_error());
 					if($confirm)
 					{
 						echo "<script>alert('Password Updated');</script>";
-						echo "<script>location='index.php';</script>";
+						echo "<script>location='logout.php';</script>";
 					}
-					else
-					{
-						echo "<script>alert('Password Wrong, Try Again');</script>";
-	
-					}
-				}else
-				{
-					echo "<script>alert('Password Wrong, Try Again');</script>";
 				}
+			}else
+			{
+				echo "<script>alert('Password Wrong, Try Again');</script>";
 			}
 	}
-	else{
-		echo "<script>alert('Password Wrong, Try Again');</script>";
+	else
+	{
+		echo "<script>alert('Password Mismatch');</script>";
 		echo "<script>location='changepass.php';</script>";
-		}
+	}
 }
 ?>

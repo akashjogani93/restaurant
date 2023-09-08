@@ -1,17 +1,15 @@
+<?php require_once("header.php"); ?>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="form1">
         <style>
             .error{color: red;}
         </style>
-        <?php require_once("header.php"); ?>
+       
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
                     Stock Inventory
                 </h1>
-                <!-- <ol class="breadcrumb">
-                    <li><a href="home.php"><i class="fa fa-dashboard"></i> Home</a></li>
-                </ol> -->
             </section>
             <section class="content">
                 <div class="box box-default">
@@ -31,7 +29,7 @@
                                         <label for="inputPassword3" class="control-label">Name of Product</label>
                                         <input type="text" id="form-field-1"  placeholder="Name of Product"  name="p1" class="form-control" required="required" autocomplete="off" v-model="product"/>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
                                         <label for="inputPassword3" class="control-label">Item Unit</label>
                                         <select class="form-control" name="unit" v-model="unit" placeholder="Select Unit" id="unit">
                                             <!-- <option value="">Select Unit</option> -->
@@ -47,6 +45,10 @@
                                             <option value="jar">Jar</option>
                                             <option value="piece">Piece</option>
                                         </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="inputPassword3" class="control-label">Tax Of Product</label>
+                                        <input type="number" id="form-field-1"  placeholder="Tax of Product"  name="tax" id="tax" class="form-control" required="required" autocomplete="off" v-model="tax"/>
                                     </div>
                                     <div class="col-md-1">
                                             <button class="btn btn-info" @click="insertProduct" style="margin-top:27px;">
@@ -106,6 +108,10 @@
                                                             <option value="piece">Piece</option>
                                                         </select>
                                                     </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label for="inputPassword3" class="control-label">Tax Of Product</label>
+                                                        <input type="number" placeholder="Tax of Product"  name="tax1" id="tax1" class="form-control" required="required" autocomplete="off">
+                                                    </div>
                                                     <label id="empty"></label>
                                                 </div>
                                                 <div class="box-footer">
@@ -128,6 +134,7 @@
                                             <th>Product Name</th>                                                    
                                             <th>Product Category</th>                                                 
                                             <th>Unit</th>                                                 
+                                            <th>Tax</th>                                                 
                                             <th>Edit</th>
                                         </tr>
                                     </thead>
@@ -148,6 +155,7 @@
                                                         <td><?php echo $row['pname']; ?></td>
                                                         <td><?php echo $row['category']; ?></td>
                                                         <td><?php echo $row['unit']; ?></td>
+                                                        <td><?php echo $row['tax']; ?></td>
                                                         <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
                                                             Edit
                                                                 </button>
@@ -190,6 +198,17 @@
                 </div>
             <section>
             <script>
+                $('#tax').keypress(function(event)
+                {
+                    var keycode = (event.keyCode ? event.keyCode : event.which);
+                    if ((keycode < 47 || keycode > 57))
+                    {
+                        return false;
+                    }else
+                    {
+                        return true;
+                    }
+                });
                 $(function () {
                     $("#dynamic-table").DataTable({
                         columnDefs: [
@@ -214,7 +233,8 @@
                     let productId = $('#tid').val();
                     let editcat = $('#editcat').val();
                     let unitchange = $('#unitchange').val();
-                    if (productName != "" && productId != "" && editcat !='' && unitchange != "")
+                    let tax1 = $('#tax1').val();
+                    if (productName != "" && productId != "" && editcat !='' && unitchange != "" && tax1 !='')
                     {
                         // $.ajax({
                         //     url: 'ajax/create_p.php',
@@ -236,6 +256,7 @@
                                 product : productName,
                                 unit : unitchange,
                                 productId: productId,
+                                tax: tax1,
                                 insert:"Update",
                             },
                             success: function(data) 
@@ -272,6 +293,7 @@
                             console.log(form);
                             form[0].value = (chil[1].innerHTML);
                             form[1].value = (chil[0].innerHTML);
+                            form[2].value = (chil[4].innerHTML);
                             var cat=chil[2].innerHTML;
                             $('#editcat').val(cat);
                             $('#unitchange').val(chil[3].innerHTML);
@@ -286,7 +308,8 @@
                         categoys:[],
                         catName:'',
                         product:'',
-                        unit:''
+                        unit:'',
+                        tax:null,
                     },
                     mounted() {
                         this.fetchOptions();
@@ -341,6 +364,7 @@
                             catName=this.catName;
                             product=this.product;
                             unit=this.unit;
+                            tax=this.tax;
                             var pattern = /^[a-zA-Z\s]*$/;
                             if(catName!='' && product!='' && unit!='')
                             {
@@ -351,6 +375,7 @@
                                         catName : catName,
                                         product : product,
                                         unit : unit,
+                                        tax : tax,
                                         insert:"Insert",
                                     },
                                     success: function(data) 

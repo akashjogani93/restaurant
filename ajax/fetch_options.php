@@ -74,13 +74,13 @@ if(isset($_POST['catName']))
     $product = $_POST['product'];
     $unit = $_POST['unit'];
     $insert = $_POST['insert'];
-
     $catName = mysqli_real_escape_string($conn, $catName);
     $product = mysqli_real_escape_string($conn, $product);
     $unit = mysqli_real_escape_string($conn, $unit);
 
     if($insert=="Insert")
     {
+        $tax = $_POST['tax'];
         $checkQuery = "SELECT * FROM `products` WHERE `pname` = '$product'";
         $result=$conn->query($checkQuery);
         if($result->num_rows > 0)
@@ -96,7 +96,7 @@ if(isset($_POST['catName']))
             }
         }else
         {
-            $sql="INSERT INTO `products`(`pname`, `category`, `unit`) VALUES ('$product','$catName','$unit')";
+            $sql="INSERT INTO `products`(`pname`, `category`, `unit`,`tax`) VALUES ('$product','$catName','$unit','$tax')";
             if ($conn->query($sql) === TRUE) 
             {
                 echo 0;
@@ -123,32 +123,28 @@ if(isset($_POST['catName']))
             }
         }else
         {
-            
             $checkQuery1 = "SELECT * FROM `stock1` WHERE `pname` = '$product' AND `unit`='$unit'";
             $result1=$conn->query($checkQuery1);
             if($result1->num_rows > 0)
             {
-                // $matchingproduct = false;
                 while ($row = $result1->fetch_assoc()) 
                 {
                     if ($row['pname'] === $product) 
                     {
-                        // $matchingproduct = true;
                         echo 2;
                     }
                 }
             }else
             {
-           
-                $query="UPDATE `products` SET `pname`='$product',`unit`='$unit',`category`='$catName' WHERE `pid`='$id'";
-                if ($conn->query($query) === TRUE) 
+                $tax1 = $_POST['tax'];
+                $query="UPDATE `products` SET `pname`='$product',`unit`='$unit',`category`='$catName',`tax`='$tax1' WHERE `pid`='$id'";
+                if ($conn->query($query) === TRUE)
                 {
                     echo 0;
                 } else {
                     echo "Error: " . $query . "<br>" . $conn->error;
                 }
             }
-
         }
     }
 }
@@ -156,17 +152,18 @@ if(isset($_POST['catName']))
 if(isset($_POST['selectedpname']))
 {
     $pname=$_POST['selectedpname'];
-    $sql = "SELECT `unit` FROM `products` WHERE `pname`='$pname'";
+    $sql = "SELECT `unit`,`tax` FROM `products` WHERE `pname`='$pname'";
     $result = $conn->query($sql);
-    // $options = array();
+    $options = array();
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $unit=$row['unit'];
+            // $unit=$row['unit'];
+            $options[]=$row;
         }
     }
     // Return the options as JSON response
     header('Content-Type: application/json');
-    echo json_encode($unit);
+    echo json_encode($options);
 
     $conn->close();
 }
@@ -216,5 +213,61 @@ if(isset($_POST['amountPay']))
     echo json_encode($response);
     // header('Content-Type: application/json');
     // echo json_encode($currentDate);
+}
+
+
+if(isset($_POST['stock']))
+{
+    $cat_name=$_POST['catName1'];
+    if($cat_name=='')
+    {
+        $query1 = "SELECT * FROM `stock1`";
+    }else
+    {
+        $query1 = "SELECT * FROM `stock1` WHERE `category`='$cat_name'";
+    }
+    // $exc=mysqli_query($conn,$query1);
+    // $query="SELECT * FROM `stock1`";
+    $result=$conn->query($query1);
+    $options=array();
+    if($result->num_rows > 0)
+    {
+        while($row=$result->fetch_assoc())
+        {
+            $options[]=$row;
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($options);
+
+    $conn->close();
+}
+
+
+if(isset($_POST['wastageStock']))
+{
+    $cat_name=$_POST['WastagecatName1'];
+    if($cat_name=='')
+    {
+        $query1 = "SELECT * FROM `vestage`";
+    }else
+    {
+        $query1 = "SELECT * FROM `vestage` WHERE `category`='$cat_name'";
+    }
+    // $exc=mysqli_query($conn,$query1);
+    // $query="SELECT * FROM `stock1`";
+    $result=$conn->query($query1);
+    $options=array();
+    if($result->num_rows > 0)
+    {
+        while($row=$result->fetch_assoc())
+        {
+            $options[]=$row;
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($options);
+
+    $conn->close();
 }
 ?>

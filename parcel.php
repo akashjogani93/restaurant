@@ -127,7 +127,7 @@ input[type="number"]::-webkit-inner-spin-button,
                             <div class="box-body form1">
                                 <input type="hidden" class="form-control" name="date" id="datepicker" value="<?php echo date("m/d/Y") ?>" required>
                                 <div class="form-group col-md-2">
-                                    <label for="exampleInputFile">Parcel No (Alt + z) </label>
+                                    <label for="exampleInputFile">Parcel No </label>
                                         <select class="form-control" name="tabno" id="table_no" onchange="tab_no(this.value);">
                                                 <!-- <option value="">
                                                         SELECT NUMBER

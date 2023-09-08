@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="icon" href="img/logo.png"  sizes="16x16">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>OYE SHAWA</title>
     <!-- Tell the browser to be responsive to screen width -->
@@ -93,6 +94,15 @@
     <!-- <script src="cdn/jquery.min.js"></script>
     <link rel="stylesheet" href="cdn/jquery-ui.css">
     <script src="cdn/jquery-ui.min.js"></script> -->
-    
+   <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');
+
+
+body{
+
+    font-family: 'Roboto Mono', monospace;
+}
+
+   </style> 
 
 </head>

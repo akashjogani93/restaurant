@@ -1,5 +1,6 @@
-<body class="hold-transition skin-blue sidebar-mini">
 <?php require_once("header.php"); ?>
+<body class="hold-transition skin-blue sidebar-mini">
+
     <div class="wrapper" id="form1">
         <style>
             .error{color: red;}
@@ -25,9 +26,10 @@
                                             <th>Bill No</th>
                                             <th>Vendor Name</th>                                                    
                                             <th>Purchase Date</th>
+                                            <th>Gross Amount</th>
+                                            <th>Tax</th>
                                             <th>Total Amount</th>
                                             <th>Paid Amount</th>
-                                            <th>Remain</th>
                                             <th>Remark</th>
                                             <th>View Item</th>
                                         </tr>
@@ -49,9 +51,10 @@
                                                         <td><?php echo $row['bill']; ?></td>                                            
                                                         <td><?php echo $row['vendor']; ?></td>
                                                         <td><?php echo $row['purchase_date']; ?></td>
+                                                        <td><?php echo $row['gamt']; ?></td>
+                                                        <td><?php echo $row['tax']; ?></td>
                                                         <td><?php echo $row['totalamt']; ?></td>
                                                         <td><?php echo $row['pamt']; ?></td>
-                                                        <td><?php echo $row['totalamt']-$row['pamt']; ?></td>
                                                         <td><?php echo $row['remark']; ?></td>
                                                         <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
                                                                 View Products
@@ -66,7 +69,7 @@
                                 </div>
                                 <div id="product-table" style="display: none;">
                                     <div id="product-table-content"></div>
-                                    <center><button class="btn btn-primary" id="refresh-btn">Refresh</button></center>
+                                    <center><button class="btn btn-primary" id="refresh-btn">Back</button></center>
                                 </div>
                             </div>
                         </div>

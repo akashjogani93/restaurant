@@ -1,3 +1,4 @@
+<?php require_once("header.php");?>
 <body class="hold-transition skin-blue sidebar-mini"onload="myFunction()">
     <div class="wrapper" id="form1">
     <style>
@@ -57,7 +58,7 @@ td{
         border-bottom:solid 2px #000;
       }
     </style>
-        <?php require_once("header.php"); 
+        <?php  
             require_once("dbcon.php"); 
             if(isset($_GET['tabno']))
             {
@@ -242,7 +243,6 @@ function myFunction()
         // window.onafterprint = function(event)
         // {
             window.location.href ="kot_cancel.php?tab=" + tab + "&kotnumber=" + kotnumber;
-
         // };
          
 }

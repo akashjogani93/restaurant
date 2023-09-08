@@ -44,6 +44,16 @@
     /* For other browsers */
     appearance: textfield;
     }
+
+    .shourtcuts{
+        display:flex;
+
+    }
+    .shourtcuts > p{
+        margin:0 20px;
+        text-align:center;
+        font-size:11px;
+    }
 </style>
 </head>
 
@@ -142,6 +152,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h3>TABLE MASTER</h3>
+                        <div class="shourtcuts">
+                            <p>Print(ALT+C)</p>
+                            <p>Without Print(ALT+t)</p>
+                            <p>KOT Print(ALT+x)</p>
+                            <p>Refresh (ALT+Z)</p>
+                            <p>Next Field(Enter)</p>
+                            <p>Back Field(Shift)</p>
+                        </div>
                         <div class="box box-primary">
                             <form action="" id="form11">
                                 <!-- <h3 class="text-center" style="margin-top: 3px;">Select Menu</h3> -->

@@ -17,7 +17,6 @@
         height: 350px;
         overflow-y:scroll;
     }
-
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div id="app">
@@ -76,6 +75,18 @@
                                             <input type="number" class="form-control" name="qty" id="qty" min="1" placeholder="Quantity" v-model="qty">
                                         </div>
                                     </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Price Per Unit</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" name="price" id="price" min="1" placeholder="Price Per Unit" v-model="price">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Item Expiry</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control" name="exp" id="exp" placeholder="item Expiry Date" v-model="exp">
+                                        </div>
+                                    </div>
                                 </div>  
                             </div>  
                         </div>  
@@ -100,7 +111,12 @@
                                     <th>Category</th>
                                     <th>Purchase Qty</th>
                                     <th>Item Unit</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th>Tax</th>
+                                    <th>Net Total</th>
                                     <th>Delete</th>
+                                    <th>Expiry</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,6 +126,11 @@
                                     <td>{{ item.cat }}</td>
                                     <td>{{ item.qty }}</td>
                                     <td>{{ item.unit }}</td>
+                                    <td>{{ item.price }}</td>
+                                    <td>{{ item.amt }}</td>
+                                    <td>{{ item.tax }}</td>
+                                    <td>{{ item.total }}</td>
+                                    <td>{{ item.exp }}</td>
                                     <td>
                                         <!-- <button type="button" class="btn btn-sm btn-primary" @click="editItem(item, index)">Edit</button> -->
                                         <button type="button" class="btn btn-sm btn-danger" @click="deleteItem(index)">Delete</button>
@@ -124,49 +145,45 @@
                         <div class="col-md-12">
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Vendor Name</label>
-                                        <div class="col-sm-8">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Vendor</label>
                                             <!-- <input type="text" class="form-control" name="ven" placeholder="Vendor Name" v-model="vendorName" @input="validateVendorName" style=" border-color: #0a5f81;"> -->
                                             <select required class="form-control pname" v-model="vendorName" style=" border-color: #0a5f81;" name="ven" id="ven">
                                                 <option value="">Select Vendor</option>
                                                 <option v-for="ven in vens" :value="ven.slno">{{ ven.vendor }}</option>
                                             </select>
                                             <span v-if="vendorNameError" class="error">Vendor name should only contain letters.</span>
-                                        </div>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Total Amount</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" class="form-control" name="totamt" id="totamt" placeholder="Total Amount" v-model="totamt" style=" border-color: #0a5f81;" min="1">
-                                        </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Gross Amt</label>
+                                            <input type="number" class="form-control" name="g-amt" id="g-amt" placeholder="Gross Amount" v-model="gamt" style=" border-color: #0a5f81;" min="1" readonly>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Paid Amount</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" class="form-control pamt" name="pamt" placeholder="Paid Amount" v-model="pamt" style=" border-color: #0a5f81;" id="pamt">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Tax</label>
+                                            <input type="number" class="form-control" name="tax-amt" id="tax-amt" placeholder="Tax Amount" v-model="totaltax" style=" border-color: #0a5f81;" min="1" readonly>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Net Amt</label>
+                                            <input type="number" class="form-control" name="totamt" id="totamt" placeholder="Total Amount" v-model="totamt" style=" border-color: #0a5f81;" min="1" readonly>
                                         </div>
                                     </div>
                                 </div></br>
                                 <div class="row">
-                                    <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Bill Date</label>
-                                        <div class="col-sm-8">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Paid Amount</label>
+                                            <input type="number" class="form-control pamt" name="pamt" placeholder="Paid Amount" v-model="pamt" style=" border-color: #0a5f81;" id="pamt">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Bill Date</label>
                                             <input type="date" class="form-control" name="purdate" id="purdate" placeholder="Purchased Date" style=" border-color: #0a5f81;">
-                                            
-                                        </div>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Bill No</label>
-                                        <div class="col-sm-8">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Bill No</label>
                                             <input type="text" class="form-control" name="billno" id="bill" placeholder="Bill No" style=" border-color: #0a5f81;">
-                                        </div>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="col-sm-4 control-label">Remark</label>
-                                        <div class="col-sm-8">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Remark</label>
                                             <input type="text" class="form-control" name="remark" id="remark" placeholder="Remark" style=" border-color: #0a5f81;">
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -230,9 +247,14 @@
                 editMode: false,
                 index: null,
                 totamt:null,
+                gamt:null,
+                totaltax:null,
                 vendorName: '',
                 vendorNameError: false,
-                pamt:null
+                pamt:null,
+                price:null,
+                tax:null,
+                exp:''
 
             },
             mounted() {
@@ -262,7 +284,8 @@
                         success(response) {
                             vm.vens = response;
                         },
-                        error(xhr, status, error) {
+                        error(xhr, status, error) 
+                        {
                             console.error(error);
                         }
                     });
@@ -295,27 +318,44 @@
                         data:{selectedpname:selectedItem.pname},
                         success(response) 
                         {
-                            vm2.unit = response;
+                            vm2.unit=response[0].unit;
+                            vm2.tax = response[0].tax;
                         },
                         error(xhr, status, error) {
                             console.error(error);
                         }
                     });
                 },
-                addItem() {
+                addItem() 
+                {
+                    // console.log(this.exp)
+                    // exit()
                     const selectedItem = this.options.find(option => option.pid === this.selectedOption);
                     const category=this.categoryOption;
-                    // alert(category);
-                    // return;
                     if (selectedItem && category) {
-                        if (this.unit && this.qty && this.qty > 0) 
+                        if (this.unit && this.qty && this.qty > 0 && this.price > 0) 
                         {
-                            const newItem = {
+                            let tot=this.price*this.qty;
+                            let taxper=this.tax/100;
+                            let baseval=tot/(1+taxper);
+                            let taxAmt1=tot-baseval;
+
+                            let total1 = parseFloat(tot.toFixed(2));
+                            let basevalue = parseFloat(baseval.toFixed(2));
+                            let taxAmt = parseFloat(taxAmt1.toFixed(2));
+
+                            const newItem = 
+                            {
                                 id: this.nextId++,
                                 name: selectedItem.pname,
-                                qty: this.qty,
+                                qty:  this.qty,
                                 unit: this.unit,
-                                cat:this.categoryOption
+                                cat:  this.categoryOption,
+                                price:this.price,
+                                total:total1,
+                                tax:taxAmt,
+                                amt:basevalue,
+                                exp:this.exp,
                             };
                                 
                             this.stockList.push(newItem);
@@ -325,6 +365,11 @@
                             this.unit = '';
                             this.qty = '';
                             this.categoryOption='';
+                            this.price='';
+                            this.total='';
+                            this.tax='';
+                            this.amt='';
+                            this.exp='';
                         } else {
                             if (!this.unit) {
                                 document.querySelector('.form-control[name="unit"]').classList.add('error');
@@ -335,6 +380,12 @@
                                 document.querySelector('.form-control[name="qty"]').classList.add('error');
                             } else {
                                 document.querySelector('.form-control[name="qty"]').classList.remove('error');
+                            }
+                            if(!this.price) 
+                            {
+                                document.querySelector('.form-control[name="price"]').classList.add('error');
+                            } else {
+                                document.querySelector('.form-control[name="price"]').classList.remove('error');
                             }
                         }
                     }
@@ -374,6 +425,12 @@
                 saveData() {
                     // Save stockList data to localStorage
                     localStorage.setItem('stockListData', JSON.stringify(this.stockList));
+                    this.totamt=this.stockList.reduce((total, item) => total + item.total, 0);
+                    this.totaltax=this.stockList.reduce((tax,item) =>tax + item.tax, 0);
+                    this.totaltax = parseFloat(this.totaltax.toFixed(2));
+
+                    this.gamt=this.stockList.reduce((amt,item) =>amt + item.amt, 0);
+                    this.gamt = parseFloat(this.gamt.toFixed(2));
                 },
                 retrieveData() {
                     // Retrieve stockList data from localStorage
@@ -381,6 +438,12 @@
                     
                     if (data) {
                         this.stockList = JSON.parse(data);
+                        this.totamt=this.stockList.reduce((total, item) => total + item.total, 0)
+                        this.totaltax=this.stockList.reduce((tax,item) =>tax + item.tax, 0)
+                        this.totaltax = parseFloat(this.totaltax.toFixed(2));
+
+                        this.gamt=this.stockList.reduce((amt,item) =>amt + item.amt, 0);
+                        this.gamt = parseFloat(this.gamt.toFixed(2));
                     }
                 },
                 clearData() 
@@ -393,11 +456,12 @@
                 submitData() 
                 {
                     const vendorName = $('#ven').val();
-
                     const venItem = this.vens.find(ven => ven.slno === this.vendorName);
                     const category=this.categoryOption;
                     const purchasedDate = $('input[name="purdate"]').val();
                     const totamt = $('input[name="totamt"]').val();
+                    const gamount = $('input[name="g-amt"]').val();
+                    const taxamount = $('input[name="tax-amt"]').val();
                     const pamt = $('input[name="pamt"]').val();
                     const remark = $('input[name="remark"]').val();
                     const bill = $('input[name="billno"]').val();
@@ -415,6 +479,8 @@
                             pamt:pamt,
                             remark:remark,
                             billNo:bill,
+                            gamount:gamount,
+                            taxamount:taxamount,
                             stockList: vm.stockList
                             },
                             success(response) {

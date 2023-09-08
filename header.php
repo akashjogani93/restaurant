@@ -11,6 +11,13 @@ $name=$_SESSION['name'];
 
 ?>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');
+
+
+body{
+   
+    font-family: 'Roboto Mono', monospace;
+}
     .table-striped>tbody>tr:nth-of-type(odd){
         background-color:rgba(255, 255, 255, 0.4);
     }
@@ -24,8 +31,8 @@ $name=$_SESSION['name'];
     <div class="wrapper" id="form1">
         <header class="main-header">
             <a href="home.php" class="logo">
-                <span class="logo-mini"></span>
-                <span class="logo-lg"><img src="img/logo.png" alt=""><b>Oye Shawa</b></span>
+               
+                <span class="logo-lg"><img src="img/logo.png" style="object-fit:contain;width:110px;" alt=""></span>
             </a>
             <nav class="navbar navbar-static-top">
                 <img src="img/slide1.png" alt="" width="35px" height="35px" data-toggle="offcanvas" role="button" id="myImage">
@@ -60,11 +67,11 @@ $name=$_SESSION['name'];
                                 </a>
                                 <ul class="treeview-menu">
                                     <li><a href="add_prodct1.php"><img class="logos" src="img/circle.png" alt=""> Create Product</a></li>
-                                    <!-- <li><a href="store_form.php"><img class="logos" src="img/circle.png" alt=""> Purchase Item</a></li> -->
                                     <li><a href="purchase_product.php"><img class="logos" src="img/circle.png" alt="">Purchase Item</a></li>
-                                    <!-- <li><a href="kitchen_form.php"><img class="logos" src="img/circle.png" alt=""> Kitchen Inventory</a></li> -->
                                     <li><a href="kitchen_given.php"><img class="logos" src="img/circle.png" alt=""> Kitchen Inventory</a></li>
+                                    <li><a href="beveragesSale.php"><img class="logos" src="img/circle.png" alt="">Beverages Sale</a></li>
                                     <li><a href="stockavilable.php"><img class="logos" src="img/circle.png" alt=""> View Stock</a></li>
+                                    <li><a href="wastage.php"><img class="logos" src="img/circle.png" alt="">Wastage Stock</a></li>
                                     <li><a href="purchaseRecords.php"><img class="logos" src="img/circle.png" alt="">Purchase Records</a></li>
                                     <li><a href="vendor_registration.php"><img class="logos" src="img/circle.png" alt="">Vendor Registration</a></li>
                                     <li><a href="vendor_payment.php"><img class="logos" src="img/circle.png" alt="">Vendor Payment Details</a></li>

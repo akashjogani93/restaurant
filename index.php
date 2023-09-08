@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="img/logo.png"  sizes="16x16">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="inde/bootstrap.min.css">
@@ -22,9 +23,16 @@
     <title>OYE SHAWA</title>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');
+
+
+body{
+
+    font-family: 'Roboto Mono', monospace;
+}
         body, html{
         height: 100%;
-        font-family: 'Inter';
+       
         }
         .container-fluid{
             padding:0;
@@ -135,8 +143,8 @@
             </div>
             <div class="co1-md-4 log">
                 <div class="logo">
-                    <img src="./img/logo100.png" alt="" class="displayed">
-                    <center><h6>WELCOME TO THE OYE SHAWA</h6></center>
+                    <img src="./img/Oyeshava.png" style="width:150px;" alt="" class="displayed">
+                    <center><h6>WELCOME TO THE OYESHAWA</h6></center>
                 </div></br>
                 <div class="form2">
                 <form  action="login_check.php" name="Login_Form" method="POST">

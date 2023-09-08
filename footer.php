@@ -3,7 +3,7 @@
         <b>All rights
     reserved.</b>
     </div>
-    <strong>Developed By <a target="_blank" href="http://www.evonitsolution.com">Evon IT Soultions</a>.</strong> 
+    <strong>Developed By <a target="_blank" href="https://www.evonitsolution.com">Evon IT Soultion</a>.</strong> 
 </footer>
 
     

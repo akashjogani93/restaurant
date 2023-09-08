@@ -1,3 +1,4 @@
+<?php require_once("header.php"); ?>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="form1">
         <style>

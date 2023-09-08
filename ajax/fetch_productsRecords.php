@@ -36,6 +36,10 @@ echo '<tr>';
 echo '<th>Product Name</th>';
 echo '<th>Unit</th>';
 echo '<th>Qty</th>';
+echo '<th>Price</th>';
+echo '<th>Base Amount</th>';
+echo '<th>Tax</th>';
+echo '<th>Total</th>';
 echo '</tr>';
 echo '</thead>';
 echo '<tbody>';
@@ -45,6 +49,10 @@ while ($row = mysqli_fetch_assoc($result)) {
     echo '<td>' . $row['pname'] . '</td>';
     echo '<td>' . $row['unit'] . '</td>';
     echo '<td>' . $row['qty'] . '</td>';
+    echo '<td>' . $row['price'] . '</td>';
+    echo '<td>' . $row['bamt'] . '</td>';
+    echo '<td>' . $row['tax'] . '</td>';
+    echo '<td>' . $row['total'] . '</td>';
     echo '</tr>';
 }
 

@@ -1,8 +1,9 @@
+<?php require_once("header.php"); ?>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="form1">
         <style>
         .error{color: red;}</style>
-        <?php require_once("header.php"); ?>
+       
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>

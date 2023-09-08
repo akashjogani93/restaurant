@@ -105,7 +105,7 @@
                                             <th class="font-weight-bold text-danger th-amounts1"><input type="number" class="form-control pamt" name="pamt" placeholder="Discount Amount" v-model="discount" id="discount" @keypress="restrictNonNumeric" @input="discAmount"></th>
                                         </tr>
                                         <tr>
-                                            <th class="font-weight-bold text-primary th-texts">Pending Amount:</th>
+                                            <th class="font-weight-bold text-primary th-texts">Remain Amount:</th>
                                             <th class="font-weight-bold text-danger th-amounts">{{ pending }}</th>
                                         </tr>
                                         <tr>
