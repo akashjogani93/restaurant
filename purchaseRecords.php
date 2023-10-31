@@ -1,18 +1,15 @@
 <?php require_once("header.php"); ?>
 <body class="hold-transition skin-blue sidebar-mini">
-
     <div class="wrapper" id="form1">
         <style>
             .error{color: red;}
         </style>
-       
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
                     Purchase Records
                 </h1>
             </section>
-            <!-- <section class="content"> -->
             <section class="content" id="initial-table">
                 <div class="box box-default">
                     <div class="row" >
@@ -76,12 +73,9 @@
                     </div>
                 </div>
             <section>
-            <!-- <section class="content" id="product-table" style="display: none;">
-                <div id="product-table-content"></div>
-                <button class="btn btn-primary" v-on:click="refreshTable">Refresh</button>
-            </section> -->
             <script>
-                $(function () {
+                $(function () 
+                {
                     $("#dynamic-table").DataTable({
                         columnDefs: [
                             { "orderable": false, "targets": -1 }
@@ -100,65 +94,31 @@
 
                 $(document).ready(function()
                 {
-                    $('#dynamic-table').on('click', '#view-pro', function() {
-                    var id = $(this).closest('tr').find('td:first').text();
-
-                    $('#product-table1').hide();
-
-                    // Show the product table
-                    $('#product-table').show();
-
-                    $.ajax({
-                        type: "POST",
-                        url: "ajax/fetch_productsRecords.php",
-                        data: { id: id },
-                        success: function(response) {
-                            // Display the products in the product table content
-                            $("#product-table-content").html(response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(error);
-                        }
+                    $('#dynamic-table').on('click', '#view-pro', function() 
+                    {
+                        var id = $(this).closest('tr').find('td:first').text();
+                        $('#product-table1').hide();
+                        // Show the product table
+                        $('#product-table').show();
+                        $.ajax({
+                            type: "POST",
+                            url: "ajax/fetch_productsRecords.php",
+                            data: { id: id },
+                            success: function(response) {
+                                // Display the products in the product table content
+                                $("#product-table-content").html(response);
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(error);
+                            }
+                        });
                     });
-            });
-
-            // Event handler for "Refresh" button
-            $('#refresh-btn').click(function() {
-                $('#product-table1').show();
-                $('#product-table').hide();
-            });
+                    // Event handler for "Refresh" button
+                    $('#refresh-btn').click(function() {
+                    $('#product-table1').show();
+                    $('#product-table').hide();
+                    });
                 });
-                // var app = new Vue({
-                //     el: '#form1',
-                //     data: {
-                //         showProductTable: false
-                //     },
-                //     methods: {
-                //         view_product: function(e, id) {
-                //             var tar = e.currentTarget;
-                //             var chil = tar.parentElement.parentElement.children;
-
-                //             this.showProductTable = true;
-
-                //             // Make an AJAX call to fetch the products for the clicked row's ID
-                //             $.ajax({
-                //                 type: "POST",
-                //                 url: "ajax/fetch_productsRecords.php",
-                //                 data: { id: id },
-                //                 success: function(response) {
-                //                     // Display the products in a table
-                //                     $("#product-table-content").html(response);
-                //                 },
-                //                 error: function(xhr, status, error) {
-                //                     console.log(error);
-                //                 }
-                //             });
-                //         },
-                //         refreshTable: function() {
-                //             this.showProductTable =false;
-                //         }
-                //     }
-                // });
         </script>
         </div>
     </div>

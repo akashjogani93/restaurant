@@ -4,7 +4,6 @@
         <style>
             .error{color: red;}
         </style>
-       
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>

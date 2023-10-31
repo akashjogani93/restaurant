@@ -15,7 +15,6 @@ $name=$_SESSION['name'];
 
 
 body{
-   
     font-family: 'Roboto Mono', monospace;
 }
     .table-striped>tbody>tr:nth-of-type(odd){
@@ -66,16 +65,35 @@ body{
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li><a href="add_prodct1.php"><img class="logos" src="img/circle.png" alt=""> Create Product</a></li>
-                                    <li><a href="purchase_product.php"><img class="logos" src="img/circle.png" alt="">Purchase Item</a></li>
-                                    <li><a href="kitchen_given.php"><img class="logos" src="img/circle.png" alt=""> Kitchen Inventory</a></li>
-                                    <li><a href="beveragesSale.php"><img class="logos" src="img/circle.png" alt="">Beverages Sale</a></li>
+                                    <!-- <li><a href="add_prodct1.php"><img class="logos" src="img/circle.png" alt="">Create Product Old</a></li>
+                                    <li><a href="purchase_product.php"><img class="logos" src="img/circle.png" alt="">Purchase Item old</a></li>
+                                    <li><a href="kitchen_given.php"><img class="logos" src="img/circle.png" alt="">Kitchen Inventory old</a></li> -->
+                                    <!-- <li><a href="beveragesSale.php"><img class="logos" src="img/circle.png" alt="">Beverages Sale old</a></li> -->
+
+                                    <li><a href="store_product.php"><img class="logos" src="img/circle.png" alt=""> Create Product</a></li>
+                                    <li><a href="store_purchase_product.php"><img class="logos" src="img/circle.png" alt="">Purchase Product</a></li>
+                                    <li><a href="store_kitchen_given.php"><img class="logos" src="img/circle.png" alt="">Kitchen Inventory</a></li>
+                                    <li><a href="store_beveragesSale.php"><img class="logos" src="img/circle.png" alt="">Beverages Sale</a></li>
                                     <li><a href="stockavilable.php"><img class="logos" src="img/circle.png" alt=""> View Stock</a></li>
                                     <li><a href="wastage.php"><img class="logos" src="img/circle.png" alt="">Wastage Stock</a></li>
                                     <li><a href="purchaseRecords.php"><img class="logos" src="img/circle.png" alt="">Purchase Records</a></li>
                                     <li><a href="vendor_registration.php"><img class="logos" src="img/circle.png" alt="">Vendor Registration</a></li>
                                     <li><a href="vendor_payment.php"><img class="logos" src="img/circle.png" alt="">Vendor Payment Details</a></li>
                                     <li><a href="individual_payment.php"><img class="logos" src="img/circle.png" alt="">Individual Vendor Payment</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#">
+                                <img class="logos" src="img/i6.png" alt="">
+                                    <span>Kitchen Assets</span>
+                                    <span class="pull-right-container">
+                                        <img class="logos" src="img/arrow.png" alt="">
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="create_assets.php"><img class="logos" src="img/circle.png" alt="">Create Product</a></li>
+                                    <li><a href="purchase_assets.php"><img class="logos" src="img/circle.png" alt="">Purchase Product</a></li>
+                                    <li><a href="stock_assets.php"><img class="logos" src="img/circle.png" alt="">Stock</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">

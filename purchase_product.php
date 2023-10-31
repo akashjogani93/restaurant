@@ -147,7 +147,6 @@
                                 <div class="row">
                                     <div class="form-group col-md-3">
                                         <label for="inputEmail3" class="control-label">Vendor</label>
-                                            <!-- <input type="text" class="form-control" name="ven" placeholder="Vendor Name" v-model="vendorName" @input="validateVendorName" style=" border-color: #0a5f81;"> -->
                                             <select required class="form-control pname" v-model="vendorName" style=" border-color: #0a5f81;" name="ven" id="ven">
                                                 <option value="">Select Vendor</option>
                                                 <option v-for="ven in vens" :value="ven.slno">{{ ven.vendor }}</option>

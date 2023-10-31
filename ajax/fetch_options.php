@@ -254,8 +254,6 @@ if(isset($_POST['wastageStock']))
     {
         $query1 = "SELECT * FROM `vestage` WHERE `category`='$cat_name'";
     }
-    // $exc=mysqli_query($conn,$query1);
-    // $query="SELECT * FROM `stock1`";
     $result=$conn->query($query1);
     $options=array();
     if($result->num_rows > 0)
