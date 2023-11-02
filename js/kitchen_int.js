@@ -640,7 +640,7 @@ class Asset_purchase
                 {
                     this.stockList = [];
                     this.saveData();
-                    localStorage.removeItem('assetsDatas');
+                    localStorage.removeItem('assetsData');
                 },
                 submitData()
                 {
@@ -679,8 +679,7 @@ class Asset_purchase
                             {
                                 console.log(response);
                                 alert(response);
-                                localStorage.removeItem('assetsDatas');
-                                location.reload();
+                                vm.clearData();
                             },
                             error(xhr, status, error) 
                             {

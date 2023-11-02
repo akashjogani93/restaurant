@@ -9,7 +9,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Stock Assets
+                Damage Assets
             </h1>
         </section>
         <section class="content">
@@ -33,7 +33,7 @@
                 <!-- </div> -->
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">View Assets</h3>
+                        <h3 class="box-title">Damage Assets</h3>
                     </div>
                     <div class="box-body tablebox">
                         <table id="example1" class="table table-bordered table-striped" style="height:100px !important;">
@@ -42,7 +42,7 @@
                                     <th>Sl.No</th>
                                     <th>Product Name</th>
                                     <th>Qty</th>
-                                    <th>Wastage</th>
+                                    <!-- <th>Wastage</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,10 +50,10 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.product }}</td>
                                     <td class="td-class">{{ item.qty }}</td>
-                                    <td><div style="display:flex;">
+                                    <!-- <td><div style="display:flex;">
                                         <input type="text" name="inputTag" class="form-control" placeholder="Wastage Qty" style="width: 50%; margin-right:10px;" oninput="validateInput(this)">
                                         <button class="btn btn-info" onclick="if (confirm('Stock Damaged..?')) getDataFromRow(this)">Damage</button>
-                                    </div></td>
+                                    </div></td> -->
                                 </tr>
                             </tbody>
                         </table>
@@ -157,7 +157,7 @@
                     $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{StockAssetsFetch:'stock',prodtName:catName},
+                        data:{damageStockview:'stock',damageprodtName:catName},
                         success(response) 
                         {
                             console.log(response)

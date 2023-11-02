@@ -702,4 +702,87 @@ if(isset($_POST['fetch_vendors']))
     echo json_encode($options);
     $conn->close();
 }
+
+
+
+if(isset($_POST['StockAssetsFetch']))
+{
+    $cat_name='';
+    if($cat_name=='')
+    {
+        $query1 = "SELECT * FROM `assetsstock`";
+    }else
+    {
+        $query1 = "SELECT * FROM `assetsstock` WHERE `product`='$cat_name'";
+    }
+    // $exc=mysqli_query($conn,$query1);
+    // $query="SELECT * FROM `stock1`";
+    $result=$conn->query($query1);
+    $options=array();
+    if($result->num_rows > 0)
+    {
+        while($row=$result->fetch_assoc())
+        {
+            $options[]=$row;
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($options);
+
+    $conn->close();
+}
+
+if(isset($_POST['assetsDamage']))
+{
+    $product = $_POST['a_product'];
+    $qty1 = $_POST['a_qty'];
+    $id = $_POST['a_id'];
+    $inputValue = $_POST['a_inputValue'];
+    // $total = $price * $inputValue;
+    
+    $lastQty=$qty1-$inputValue;
+    // $stockTotal=$price*$inputValue;
+
+        $exc=mysqli_query($conn,"UPDATE `assetsstock` SET `qty`='$lastQty' WHERE `product`='$product'");
+        if($exc)
+        {
+            $affectedRows = mysqli_affected_rows($conn);
+            if ($affectedRows > 0)
+            {
+                $query="INSERT INTO `assetsdamage`(`product`,`qty`) VALUES('$product','$inputValue')";
+                $exc=mysqli_query($conn,$query);
+                if($exc)
+                {
+                    echo 'Added To Damage Stock';
+                }
+            }
+        }
+}
+
+// wastage Stocks
+if(isset($_POST['damageStockview']))
+{
+    $cat_name='';
+    if($cat_name=='')
+    {
+        $query1 = "SELECT * FROM `assetsdamage`";
+    }else
+    {
+        $query1 = "SELECT * FROM `assetsdamage` WHERE `category`='$cat_name'";
+    }
+    $result=$conn->query($query1);
+    $options=array();
+    if($result->num_rows > 0)
+    {
+        while($row=$result->fetch_assoc())
+        {
+            $options[]=$row;
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($options);
+
+    $conn->close();
+}
+
 ?>

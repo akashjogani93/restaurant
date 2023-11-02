@@ -338,7 +338,7 @@ function myFunction()
     window.print();
     // window.onafterprint = function(event)
     // {
-       //   window.location.href ="table_form.php";
+         window.location.href ="table_form.php";
     // };
 }
 

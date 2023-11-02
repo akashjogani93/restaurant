@@ -65,7 +65,7 @@
                                 </form>
                                 <div class="row">
                                     <div class="form-group col-md-2">
-                                        <button name="pp" onclick="printClick()" class="btn btn-info col-md-11" style="background-color:#B29CBE;color:white; margin-top:-15px;">Print</button>
+                                        <button name="pp" onclick="printClick()" class="btn btn-info col-md-11" style="background-color:#B29CBE;color:white;">Print</button>
                                     </div>
                                 </div>
                                 <script>
