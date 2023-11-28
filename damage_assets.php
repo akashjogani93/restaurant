@@ -14,26 +14,46 @@
         </section>
         <section class="content">
             <div id="app">
-                <!-- <div class="box box-default"> -->
-                    <!-- <div class="row">
+                <div class="box box-default">
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-9 assets">
+                                            <a class="btn btn-info buga" href="create_assets.php" style="margin-top:27px;">
+                                                Create Asset
+                                            </a>
+                                            <a class="btn btn-info buga" href="purchase_assets.php" style="margin-top:27px;">
+                                                Purchase
+                                            </a>
+                                            <a class="btn btn-info buga" href="stock_assets.php" style="margin-top:27px;">
+                                                View Stock
+                                            </a>
+                                            <a class="btn btn-success buga" href="damage_assets.php" style="margin-top:27px;">
+                                                Damage Stock
+                                            </a>
+                                            <a class="btn btn-info buga" href="purchaseRecord_assets.php" style="margin-top:27px;">
+                                                Purchase Records
+                                            </a>
+                                        </div>
+                                    </div></br>
+                                    <!-- <div class="col-md-4">
                                         <label for="inputPassword3" class="control-label">Select Category</label>
                                         <select class="form-control" id="cat12" name="cat" placeholder="category" required v-model="catName" @change="fetchStock">
                                             <option value="">All</option>
                                             <option v-for="category in categoys" :value="category.CategoryName">{{ category.CategoryName }}</option>
                                         </select>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
-                    </div> -->
-                <!-- </div> -->
-                <div class="box">
+                    </div>
+                </div>
+                <div class="box" id="damageAssets">
                     <div class="box-header">
-                        <h3 class="box-title">Damage Assets</h3>
+                        <!-- <h3 class="box-title">Damage Assets</h3> -->
+                        <button class="btn btn-danger" onclick="addToDamage()">Add To Damage</button>
                     </div>
                     <div class="box-body tablebox">
                         <table id="example1" class="table table-bordered table-striped" style="height:100px !important;">
@@ -42,7 +62,6 @@
                                     <th>Sl.No</th>
                                     <th>Product Name</th>
                                     <th>Qty</th>
-                                    <!-- <th>Wastage</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,24 +69,56 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.product }}</td>
                                     <td class="td-class">{{ item.qty }}</td>
-                                    <!-- <td><div style="display:flex;">
-                                        <input type="text" name="inputTag" class="form-control" placeholder="Wastage Qty" style="width: 50%; margin-right:10px;" oninput="validateInput(this)">
-                                        <button class="btn btn-info" onclick="if (confirm('Stock Damaged..?')) getDataFromRow(this)">Damage</button>
-                                    </div></td> -->
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <div class="box" id="viewAssets" style="display:none;">
+                    <div class="box-header">
+                        <h3 class="box-title">
+                            <button class="btn btn-danger" onclick="viewDamage()">
+                                View Damage
+                            </button>
+                        </h3>
+                    </div>
+                    <div class="box-body tablebox">
+                        <table id="example1" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Sl.No</th>
+                                    <th>Product Name</th>
+                                    <th>Qty</th>
+                                    <th>Amount</th>
+                                    <th>Wastage</th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in purchasedata" :key="item.id">
+                                    <td>{{ index + 1 }}</td>
+                                    <td>{{ item.product }}</td>
+                                    <td class="td-class">{{ item.remainQty }}</td>
+                                    <td class="td-class">{{ item.amount }}</td>
+                                    <td class="td-class">{{ item.remainTotal }}</td>
+                                    <td><div style="display:flex;">
+                                        <input type="text" name="inputTag" class="form-control" placeholder="Wastage Qty" style="width: 50%; margin-right:10px;" oninput="validateInput(this)">
+                                        <button class="btn btn-info" onclick="getDataFromRow(this)">Damage</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                </div>
             </div>
         </section>
     </div>
-
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
     <script src="vue.min.js"></script>
     <script src="cdn/dataTables.buttons.min.js"></script>
     <script src="cdn/buttons.print.min.js"></script>
-
     <script>
         function validateInput(input)
         {
@@ -130,6 +181,7 @@
                 catName:'',
                 categoys:[],
                 stockList:[],
+                purchasedata:[],
             },
             methods:
             {
@@ -167,6 +219,20 @@
                             console.error(error);
                         }
                     });
+
+                    $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{addStockToDamage:'stock',damageprodtName:catName},
+                        success(response) 
+                        {
+                            // console.log(response)
+                            vm.purchasedata = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
                 }
             },
             mounted()
@@ -175,5 +241,16 @@
                 this.fetchStock()
             }
         });
+
+        function addToDamage()
+        {
+            $('#damageAssets').hide();
+            $('#viewAssets').show();
+        }
+        function viewDamage()
+        {
+            $('#viewAssets').hide();
+            $('#damageAssets').show();
+        }
     </script>
 </body>

@@ -1,18 +1,62 @@
 <?php require_once("header.php"); ?>
+<?php require_once("dbcon.php"); ?>
 <script src="js/kitchen_int.js"></script>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="form1">
         <style>
             .error{color: red;}
+            .buga{
+                margin-right:10px;
+            }
+            .table>thead
+        {
+            background-color:grey;
+            color:white;
+        }
+        .table>thead
+        {
+            background-color:grey;
+            color:white;
+        }
+        .table{
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+        }
         </style>
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    Stock Products
+                    Assets
                 </h1>
             </section>
             <section class="content">
                 <div class="box box-default">
+                    <div class="row">
+                        <div class="box-body">
+                            <div class="col-md-9 assets">
+                                <a class="btn btn-success buga" href="create_assets.php" style="margin-top:27px;">
+                                    Create Asset
+                                </a>
+                                <a class="btn btn-info buga" href="purchase_assets.php" style="margin-top:27px;">
+                                    Purchase
+                                </a>
+                                <a class="btn btn-info buga" href="stock_assets.php" style="margin-top:27px;">
+                                    View Stock
+                                </a>
+                                <a class="btn btn-info buga" href="damage_assets.php" style="margin-top:27px;">
+                                    Damage Stock
+                                </a>
+                                <a class="btn btn-info buga" href="purchaseRecord_assets.php" style="margin-top:27px;">
+                                    Purchase Records
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="box-body">
                             <div id="app">
@@ -20,72 +64,11 @@
                                     <label for="inputPassword3" class="control-label">Name of Product</label>
                                     <input type="text" id="product"  placeholder="Name of Product"  name="p1" class="form-control" required="required" autocomplete="off"/>
                                 </div>
-                                <!-- <div class="col-md-1">
-                                    <label for="inputPassword3" class="control-label">Tax</label>
-                                    <input type="number" placeholder="Tax"  name="tax" id="tax" class="form-control" required="required" autocomplete="off"/>
-                                </div> -->
                                 <div class="col-md-1">
-                                    <button class="btn btn-info" id="sub" style="margin-top:27px;">
+                                    <button class="btn btn-danger" id="sub" style="margin-top:27px;">
                                         Submit
                                     </button>
                                 </div>
-                                <!-- Category Module -->
-                                <!-- <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-                                    <div class="modal-dialog modal-sm" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-success">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"><b>Edit Table</b></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="box-body form1">
-                                                    <div class="form-group col-md-12">
-                                                        <label for="exampleInputFile">Product Name</label>
-                                                        <input type="text" class="form-control" id="tno" placeholder="product Name" autocomplete="off">
-                                                        <input type="hidden" class="form-control" id="tid" placeholder="tableno">
-                                                    </div>
-                                                    <div class="form-group col-md-12">
-                                                        <label for="inputPassword3" class="control-label">Change Category</label>
-                                                        <select class="form-control" id="editcat" name="editcat" placeholder="Type Here" required>
-                                                            <?php
-                                                                include("dbcon.php");
-                                                                $query="SELECT * FROM `categoroy` ORDER BY `id` ASC";
-                                                                $exc=mysqli_query($conn,$query);
-                                                                while($row=mysqli_fetch_assoc($exc))
-                                                                {
-                                                                    $name=$row['CategoryName'];
-                                                                    echo '<option>'.$name.'</option>';
-                                                                }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-12">
-                                                        <label for="inputPassword3" class="control-label">Change Unit</label>
-                                                        <select class="form-control" id="unitchange" name="unitchange" placeholder="Type Here.." required>
-                                                            <option value="">Select</option>
-                                                            <option value="kg">KG</option>
-                                                            <option value="litre">Litre</option>
-                                                            <option value="box">Box</option>
-                                                            <option value="gram">Gram</option>
-                                                            <option value="pack">Pack</option>
-                                                            <option value="tin">Tin</option>
-                                                            <option value="bottle">Bottle</option>
-                                                            <option value="bundle">Bundle</option>
-                                                            <option value="packet">Packet</option>
-                                                            <option value="jar">Jar</option>
-                                                            <option value="piece">Piece</option>
-                                                        </select>
-                                                    </div>
-                                                    <label id="empty"></label>
-                                                </div>
-                                                <div class="box-footer">
-                                                    <button type="submit" onclick="submit();" id="adduser" class="btn btn-primary">Submit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -93,13 +76,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-12">
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                <table id="dynamic-table" class="table">
                                     <thead>
                                         <tr>                                                        
                                             <th>Sl.No</th>
                                             <th>Product Name</th>                                                    
                                             <!-- <th>Tax</th>                                                  -->
-                                            <th>Edit</th>
+                                            <!-- <th>Edit</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -117,10 +100,10 @@
                                                         <td><?php echo $row['id']; ?></td>                                                   
                                                         <td><?php echo $row['product']; ?></td>
                                                         <!-- <td><?php echo $row['tax']; ?></td> -->
-                                                        <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
+                                                        <!-- <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
                                                             Edit
                                                             </button>
-                                                        </td>
+                                                        </td> -->
                                                     </tr>
                                                 <?php
                                             }
@@ -131,7 +114,7 @@
                         </div>
 
                         <!-- Create new Category Module -->
-                        <div class="modal fade" id="Addcategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
+                        <!-- <div class="modal fade" id="Addcategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-sm" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header bg-success">
@@ -161,7 +144,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </section>

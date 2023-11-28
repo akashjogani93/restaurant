@@ -4,6 +4,20 @@
     .error {
         color: red;
     }
+    .table>thead
+        {
+            background-color:grey;
+            color:white;
+        }
+    .table{
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+        }
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="content-wrapper">
@@ -26,6 +40,10 @@
                                             <option v-for="category in categoys" :value="category.CategoryName">{{ category.CategoryName }}</option>
                                         </select>
                                     </div>
+                                    <div class="form-group col-md-4">
+                                        <button class="btn btn-danger" onclick="exportTableToPdf1()" style="margin-top:23px;">PDF</button>
+                                        <button class="btn btn-success"  style="margin-top:23px;">Excel</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -36,25 +54,23 @@
                         <h3 class="box-title">View Stock</h3>
                     </div>
                     <div class="box-body tablebox">
-                        <table id="example1" class="table table-bordered table-striped" style="height:100px !important;">
+                        <table id="example1" class="table">
                             <thead>
                                 <tr>
-                                    <th>Sr no</th>
+                                    <th>Sl No</th>
                                     <th>Item name</th>
-                                    <th>Remaining Qty</th>
+                                    <th>Qty</th>
                                     <th>Item unit</th>
-                                    <th>Expiry Date</th>
-                                    <!-- <th>wastage</th> -->
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in stockList" :key="item.id">
-                                    <td>{{ item.id }}</td>
+                                    <td>{{ index + 1 }}</td>
                                     <td>{{ item.pname }}</td>
                                     <td>{{ item.qty }}</td>
-                                    <td>{{ item.unit }}</td>
-                                    <td>{{ item.exp }}</td>
-                                    <!-- <td><button class="btn btn-info" onclick="if (confirm('Add To Wastage..?')) getDataFromRow(this)">wastage</button></td> -->
+                                    <td>{{ item.sellunit }}</td>
+                                    <td>{{ item.date }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -68,7 +84,7 @@
     <script src="cdn/dataTables.buttons.min.js"></script>
     <script src="cdn/buttons.print.min.js"></script>
     <script src="js/kitchen_int.js"></script>
-
+    <script src="html2pdf.js/dist/jspdf.min.js"></script>
     <script>
         $(document).ready(function()
         {
@@ -102,4 +118,81 @@
                 console.log(log);
             }
     </script>
+
+<script>
+            function exportTableToPdf1() {
+                var table = document.getElementById("example1");
+
+                var clonedTable = table.cloneNode(true);
+                applyStylesToTable(clonedTable);
+                html2pdf(clonedTable, {
+                    margin: 3,
+                    filename: 'table.pdf',
+                    html2canvas: { scale: 2 },
+                    jsPDF: {
+                        unit: 'mm',
+                        format: 'a4',
+                        orientation: 'portrait',
+                    },
+                    pagebreak: { avoid: '#example1', mode: 'css' },
+                    repeat: {
+                        after: clonedTable.getElementsByTagName('thead')[0],
+                        every: 1, // Repeat after every page
+                    },
+                }).then(() => {
+                    removeStylesFromTable(clonedTable);
+                });
+            }
+            function applyStylesToTable(table) 
+            {
+                var headers = table.querySelectorAll('th');
+                headers.forEach(function(header) {
+                    header.style.fontSize = '8px';
+                    header.style.fontWeight = 'bold';
+                    header.style.padding = '2px';
+                });
+
+                var cells = table.querySelectorAll('td');
+                cells.forEach(function(cell) {
+                    cell.style.fontSize = '8px';
+                    cell.style.padding = '2px';
+                    cell.style.fontWeight = 'normal';
+                });
+
+                // var wastageButtons = table.querySelectorAll('.btn-info');
+                // wastageButtons.forEach(function(button) {
+                //     button.parentNode.style.display = 'none';
+                // });
+
+                // var wastageHeaderText = 'Retun';
+                // headers.forEach(function(header) {
+                //     if (header.innerText.trim() === wastageHeaderText) {
+                //         header.style.display = 'none';
+                //     }
+                // });
+            }
+
+            function removeStylesFromTable(table) {
+                var headers = table.querySelectorAll('th');
+                headers.forEach(function(header) {
+                    header.style.removeProperty('padding');
+                });
+
+                var cells = table.querySelectorAll('td');
+                cells.forEach(function(cell) {
+                    cell.style.removeProperty('padding');
+                });
+
+                // var wastageButtons = table.querySelectorAll('.btn-info');
+                // wastageButtons.forEach(function(button) {
+                // });
+
+                // var wastageHeaderText = 'Retun';
+                // headers.forEach(function(header) {
+                //     if (header.innerText.trim() === wastageHeaderText) {
+                //         header.style.display = '';
+                //     }
+                // });
+            }
+        </script>
 </body>

@@ -379,8 +379,6 @@
                     {
                         const currentTime = new Date().getTime();
                         const timeSinceLastKeyPress = currentTime - lastKeyPressTime;
-                        // console.log(timeSinceLastKeyPress)
-
                         if (timeSinceLastKeyPress < 400) 
                         { 
                             enterCount++;         

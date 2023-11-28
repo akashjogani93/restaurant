@@ -8,7 +8,6 @@ if(!isset($_SESSION['tye']))
 $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
 $name=$_SESSION['name'];
-
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');
@@ -53,6 +52,7 @@ body{
                   			<li><a href="home.php"> <img class="logos" src="img/i1.png" alt=""> <span>Dashboard</span></a></li>
                     		<li><a href="item_form.php"><img class="logos" src="img/i2.png" alt=""> <span>Menu Master</span></a></li>
                     		<li><a href="table_form.php"><img class="logos" src="img/i3.png" alt=""> <span>Tables Master</span></a></li>
+                    		<li><a href="table_master.php"><img class="logos" src="img/i3.png" alt=""> <span>Tables Master</span></a></li>
                     		<li><a href="parcel.php"><img class="logos" src="img/i4.png" alt=""><span>Parcel</span></a></li>
                     		<li><a href="addtable.php"><img class="logos" src="img/i5.png" alt=""><span>Add Table</span></a></li>
                     		<li><a href="kitchen_kot.php"><img class="logos" src="img/i5.png" alt=""><span>Kitchen-Kot</span></a></li>
@@ -69,15 +69,17 @@ body{
                                     <li><a href="store_purchase_product.php"><img class="logos" src="img/circle.png" alt="">Purchase Product</a></li>
                                     <li><a href="store_kitchen_given.php"><img class="logos" src="img/circle.png" alt="">Kitchen Inventory</a></li>
                                     <li><a href="store_beveragesSale.php"><img class="logos" src="img/circle.png" alt="">Beverages Sale</a></li>
-                                    <li><a href="stockavilable.php"><img class="logos" src="img/circle.png" alt=""> View Stock</a></li>
+                                    <li><a href="store_stock.php"><img class="logos" src="img/circle.png" alt=""> View Stock</a></li>
                                     <li><a href="wastage.php"><img class="logos" src="img/circle.png" alt="">Wastage Stock</a></li>
-                                    <li><a href="purchaseRecords.php"><img class="logos" src="img/circle.png" alt="">Purchase Records</a></li>
+                                    <li><a href="store_stock_report.php"><img class="logos" src="img/circle.png" alt="">Purchse Stock</a></li>
                                     <li><a href="vendor_registration.php"><img class="logos" src="img/circle.png" alt="">Vendor Registration</a></li>
+                                    <li><a href="purchaseRecords.php"><img class="logos" src="img/circle.png" alt="">Vendor Records</a></li>
                                     <li><a href="vendor_payment.php"><img class="logos" src="img/circle.png" alt="">Vendor Payment Details</a></li>
                                     <li><a href="individual_payment.php"><img class="logos" src="img/circle.png" alt="">Individual Vendor Payment</a></li>
                                 </ul>
                             </li>
-                            <li class="treeview">
+                    		<li><a href="create_assets.php"><img class="logos" src="img/i5.png" alt=""><span>Assets</span></a></li>
+                            <!-- <li class="treeview">
                                 <a href="#">
                                 <img class="logos" src="img/i6.png" alt="">
                                     <span>Assets</span>
@@ -91,7 +93,7 @@ body{
                                     <li><a href="stock_assets.php"><img class="logos" src="img/circle.png" alt="">Stock</a></li>
                                     <li><a href="damage_assets.php"><img class="logos" src="img/circle.png" alt="">Damage Assets</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
                             <li class="treeview">
                                 <a href="#">
                                 <img class="logos" src="img/i7.png" alt=""> <span>Employees</span>
@@ -125,9 +127,10 @@ body{
                                   </li> 
                               </ul>
                   			</li>
+                            <li><a href="reports.php"><img class="logos" src="img/circle.png" alt="">Reports</a></li>
                             <li><a href="kot_trash.php"><img class="logos" src="img/i4.png" alt=""><span>KOT Cancelled</span></a></li>
-                              <li><a href="changepass.php"><img class="logos" src="img/i4.png" alt=""><span>Change Password</span></a></li>
-                              <li><a href="logout.php"><img class="logos" src="img/i4.png" alt=""><span>Logout</span></a></li>
+                            <li><a href="changepass.php"><img class="logos" src="img/i4.png" alt=""><span>Change Password</span></a></li>
+                            <li><a href="logout.php"><img class="logos" src="img/i4.png" alt=""><span>Logout</span></a></li>
                   		<?php    
                     }else
                     {

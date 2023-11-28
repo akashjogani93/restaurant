@@ -33,14 +33,14 @@
                                         <option value="KG">KG</option>
                                         <option value="Litre">Litre</option>
                                         <option value="Box">Box</option>
-                                        <option value="Gram">Gram</option>
+                                        <!-- <option value="Gram">Gram</option> -->
                                         <option value="Pack">Pack</option>
                                         <option value="Tin">Tin</option>
                                         <option value="Bottle">Bottle</option>
-                                        <option value="Bundle">Bundle</option>
+                                        <!-- <option value="Bundle">Bundle</option> -->
                                         <option value="Packet">Packet</option>
-                                        <option value="Jar">Jar</option>
-                                        <option value="Piece">Piece</option>
+                                        <!-- <option value="Jar">Jar</option> -->
+                                        <!-- <option value="Piece">Piece</option> -->
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -49,20 +49,24 @@
                                         <option value="KG">KG</option>
                                         <option value="Litre">Litre</option>
                                         <option value="Box">Box</option>
-                                        <option value="Gram">Gram</option>
+                                        <!-- <option value="Gram">Gram</option> -->
                                         <option value="Pack">Pack</option>
                                         <option value="Tin">Tin</option>
                                         <option value="Bottle">Bottle</option>
-                                        <option value="Bundle">Bundle</option>
+                                        <!-- <option value="Bundle">Bundle</option> -->
                                         <option value="Packet">Packet</option>
-                                        <option value="Jar">Jar</option>
-                                        <option value="Piece">Piece</option>
+                                        <!-- <option value="Jar">Jar</option> -->
+                                        <!-- <option value="Piece">Piece</option> -->
                                     </select>
                                 </div>
                                 <div class="col-md-1">
-                                        <label for="inputPassword3" class="control-label">Tax</label>
-                                        <input type="number" placeholder="Tax"  name="tax" id="tax" class="form-control" required="required" autocomplete="off" v-model="tax"/>
-                                    </div>
+                                    <label for="inputPassword3" class="control-label">Tax</label>
+                                    <input type="number" placeholder="Tax"  name="tax" id="tax" class="form-control" required="required" autocomplete="off" v-model="tax"/>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="inputPassword3" class="control-label">Cess</label>
+                                    <input type="number" placeholder="cess"  name="cess" id="cess" class="form-control" required="required" autocomplete="off" v-model="cess"/>
+                                </div>
                                 <div class="col-md-1">
                                     <button class="btn btn-info" @click="insertProduct" style="margin-top:27px;">
                                         Submit
@@ -85,10 +89,19 @@
                                                 <div class="box-body form1">
                                                     <div class="form-group col-md-12">
                                                         <label for="exampleInputFile">Product Name</label>
-                                                        <input type="text" class="form-control" id="tno" placeholder="product Name" autocomplete="off">
-                                                        <input type="hidden" class="form-control" id="tid" placeholder="tableno">
+                                                        <input type="text" class="form-control" id="editproductname" placeholder="product Name" autocomplete="off">
+                                                        <input type="hidden" class="form-control" id="editproductId" placeholder="tableno">
                                                     </div>
                                                     <div class="form-group col-md-12">
+                                                        <label for="inputPassword3" class="control-label">Tax</label>
+                                                        <input type="number" placeholder="Tax"  name="edittax" id="edittax" class="form-control" required="required" autocomplete="off"/>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label for="inputPassword3" class="control-label">Cess</label>
+                                                        <input type="number" placeholder="cess"  name="editcess" id="editcess" class="form-control" required="required" autocomplete="off"/>
+                                                        <input type="hidden" placeholder="oldProduct"  name="oldProduct" id="oldProduct" class="form-control" required="required" autocomplete="off"/>
+                                                    </div>
+                                                    <!-- <div class="form-group col-md-12">
                                                         <label for="inputPassword3" class="control-label">Change Category</label>
                                                         <select class="form-control" id="editcat" name="editcat" placeholder="Type Here" required>
                                                             <?php
@@ -98,12 +111,12 @@
                                                                 while($row=mysqli_fetch_assoc($exc))
                                                                 {
                                                                     $name=$row['CategoryName'];
-                                                                    echo '<option>'.$name.'</option>';
+                                                                    // echo '<option>'.$name.'</option>';
                                                                 }
                                                             ?>
                                                         </select>
-                                                    </div>
-                                                    <div class="form-group col-md-12">
+                                                    </div> -->
+                                                    <!-- <div class="form-group col-md-12">
                                                         <label for="inputPassword3" class="control-label">Change Unit</label>
                                                         <select class="form-control" id="unitchange" name="unitchange" placeholder="Type Here.." required>
                                                             <option value="">Select</option>
@@ -119,7 +132,7 @@
                                                             <option value="jar">Jar</option>
                                                             <option value="piece">Piece</option>
                                                         </select>
-                                                    </div>
+                                                    </div> -->
                                                     <label id="empty"></label>
                                                 </div>
                                                 <div class="box-footer">
@@ -133,79 +146,82 @@
                         </div>
                     </div>
                     </br>
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div id="app1">
+                        <div class="row">
                             <div class="col-md-12">
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>                                                        
-                                            <th>Product ID</th>
-                                            <th>Product Name</th>                                                    
-                                            <th>Product Category</th>                                                 
-                                            <th>Unit</th>                                                 
-                                            <th>Sell Unit</th>                                                 
-                                            <th>Tax</th>                                                 
-                                            <th>Edit</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php 
-                                            $sql = "SELECT * FROM `products`";
-                                            $retval = mysqli_query($conn,$sql);
-                                            if(! $retval )
-                                            {
-                                                die('Could not get data: ' . mysqli_error($conn));
-                                            }
-                                            while($row = mysqli_fetch_assoc($retval))
-                                            { 
-                                                ?>
-                                                    <tr>                                                    
-                                                        <td><?php echo $row['pid']; ?></td>                                                   
-                                                        <td><?php echo $row['pname']; ?></td>
-                                                        <td><?php echo $row['category']; ?></td>
-                                                        <td><?php echo $row['unit']; ?></td>
-                                                        <td><?php echo $row['sellunit']; ?></td>
-                                                        <td><?php echo $row['tax']; ?></td>
-                                                        <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
-                                                            Edit
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                <?php
-                                            }
-                                        ?>
-                                    </tbody>
-                                </table>
+                                <div class="col-md-12">
+                                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>                                                        
+                                                <th>Product ID</th>
+                                                <th>Product Name</th>                                                    
+                                                <th>Product Category</th>                                                 
+                                                <th>Unit</th>                                                 
+                                                <th>Sell Unit</th>                                                 
+                                                <th>Tax</th>                                                 
+                                                <th>Cess</th>                                                 
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                                $sql = "SELECT * FROM `products`";
+                                                $retval = mysqli_query($conn,$sql);
+                                                if(! $retval )
+                                                {
+                                                    die('Could not get data: ' . mysqli_error($conn));
+                                                }
+                                                while($row = mysqli_fetch_assoc($retval))
+                                                { 
+                                                    ?>
+                                                        <tr>                                                    
+                                                            <td><?php echo $row['pid']; ?></td>                                                   
+                                                            <td><?php echo $row['pname']; ?></td>
+                                                            <td><?php echo $row['category']; ?></td>
+                                                            <td><?php echo $row['unit']; ?></td>
+                                                            <td><?php echo $row['sellunit']; ?></td>
+                                                            <td><?php echo $row['tax']; ?></td>
+                                                            <td><?php echo $row['cess']; ?></td>
+                                                            <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
+                                                                Edit
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    <?php
+                                                }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Create new Category Module -->
-                        <div class="modal fade" id="Addcategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
-                            <div class="modal-dialog modal-sm" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-success">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel1"><b>Add Category</b></h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="box-body form1">
-                                            <div class="form-group col-md-12">
-                                                <label for="exampleInputFile">Select Type</label>
-                                                <select class="form-control" id="typeCat" name="typeCat" placeholder="Category Type">
-                                                    <option value="">Select</option>
-                                                    <option>Kitchen</option>
-                                                    <option>Bevarages</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label for="exampleInputFile">Category Name</label>
-                                                <input type="text" class="form-control" id="cat1" placeholder="Category">
-                                                <label id="catempty"></label>
-                                            </div>
+                            <!-- Create new Category Module -->
+                            <div class="modal fade" id="Addcategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog modal-sm" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-success">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel1"><b>Add Category</b></h4>
                                         </div>
-                                        <div class="box-footer">
-                                            <button id="addcate" class="btn btn-primary">Submit</button>
+                                        <div class="modal-body">
+                                            <div class="box-body form1">
+                                                <div class="form-group col-md-12">
+                                                    <label for="exampleInputFile">Select Type</label>
+                                                    <select class="form-control" id="typeCat" name="typeCat" placeholder="Category Type">
+                                                        <option value="">Select</option>
+                                                        <option>Kitchen</option>
+                                                        <option>Bevarages</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label for="exampleInputFile">Category Name</label>
+                                                    <input type="text" class="form-control" id="cat1" placeholder="Category">
+                                                    <label id="catempty"></label>
+                                                </div>
+                                            </div>
+                                            <div class="box-footer">
+                                                <button id="addcate" class="btn btn-primary">Submit</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -219,64 +235,74 @@
                 {
                     const product_create= new Product();
                 });
-                // function submit() 
-                // {
-                //     return;
-                //     $("#empty").fadeIn();
-                //     let productName = $('#tno').val();
-                //     let productId = $('#tid').val();
-                //     let editcat = $('#editcat').val();
-                //     let unitchange = $('#unitchange').val();
-                //     if (productName != "" && productId != "" && editcat !='' && unitchange != "")
-                //     {
-                //         let log=$.ajax({
-                //             url: 'ajax/fetch_options.php',
-                //             type: "POST",
-                //             data: {
-                //                 catName : editcat,
-                //                 product : productName,
-                //                 unit : unitchange,
-                //                 productId: productId,
-                //                 insert:"Update",
-                //             },
-                //             success: function(data) 
-                //             {
-                //                 if(data==1)
-                //                 {
-                //                     alert("Product Already Added");
-                //                 }else if(data==2)
-                //                 {
-                //                     alert("You Have Stock On Using This Name And Unit");
-                //                 }else if(data==0)
-                //                 {
-                //                     alert("Product Added");
-                //                     window.location.href="add_prodct1.php";
-                //                 }
-                //             }
-                //         });
-                //     }else{
-                //         $('#empty').html(`<span style='color:red'>Empty field..</span>`);
-                //         $("#empty").fadeOut(1000);
-                //     }
-                // }
+                function submit()
+                {
+                    $("#empty").fadeIn();
+                    let productName = $('#editproductname').val();
+                    let productId = $('#editproductId').val();
+                    let edittax = $('#edittax').val();
+                    let editcess = $('#editcess').val();
+                    let oldProduct = $('#oldProduct').val();
+                    if (edittax === undefined || edittax === "") {
+                        edittax = 0;
+                    }
+                    if (editcess === undefined || editcess === "") {
+                        editcess = 0;
+                    }
+                    var catName ='CatName';
+                    if (productName != "")
+                    {
+                        // console.log(oldProduct)
+                        // console.log(edittax)
+                        // console.log(editcess)
+                        // console.log(productId)
+                        // return;
+                        let log= $.ajax({
+                            url: 'ajax/store_all.php',
+                            type: "POST",
+                            data: {
+                                catName : catName,
+                                product : productName,
+                                tax:edittax,
+                                cess:editcess,
+                                productId:productId,
+                                oldProduct:oldProduct,
+                                insert:"update",
+                            },
+                            success: function(status) 
+                            {
+                                alert('Updated Successfully');
+                                window.location="store_product.php";
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error("AJAX Error: " + textStatus, errorThrown);
+                            }
+                        });
+                        console.log(log);
+                    }else{
+                        $('#empty').html(`<span style='color:red'>Empty field..</span>`);
+                        $("#empty").fadeOut(1000);
+                    }
+                }
 
-                // var app = new Vue({
-                //     el: '#dynamic-table',
-                //     methods: {
-                //         editItem : function(e) 
-                //         {
-                //             var tar = e.currentTarget;
-                //             var chil = tar.parentElement.parentElement.children;
-                //             var form = $("#category input");
-                //             console.log(form);
-                //             form[0].value = (chil[1].innerHTML);
-                //             form[1].value = (chil[0].innerHTML);
-                //             var cat=chil[2].innerHTML;
-                //             $('#editcat').val(cat);
-                //             $('#unitchange').val(chil[3].innerHTML);
-                //         }
-                //     }
-                // });
+                var app1 = new Vue({
+                    el: '#dynamic-table',
+                    methods: {
+                        editItem : function(e) 
+                        {
+                            var tar = e.currentTarget;
+                            var chil = tar.parentElement.parentElement.children;
+                            var form = $("#category input");
+                            form[0].value = (chil[1].innerHTML);
+                            form[1].value = (chil[0].innerHTML);
+                            form[2].value = (chil[5].innerHTML);
+                            form[3].value = (chil[6].innerHTML);
+                            form[4].value = (chil[1].innerHTML);
+                            var cat=chil[2].innerHTML;
+                            // $('#unitchange').val(chil[3].innerHTML);
+                        }
+                    }
+                });
         </script>
         </div>
     </div>

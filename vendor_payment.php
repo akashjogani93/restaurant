@@ -4,6 +4,20 @@
     <div class="wrapper" id="form1">
         <style>
             .error{color: red;}
+            .table>thead
+        {
+            background-color:grey;
+            color:white;
+        }
+    .table{
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+        }
         </style>
        
         <div class="content-wrapper">
@@ -19,7 +33,7 @@
                         <div class="col-md-12">
                             <div class="col-md-12">
                             <div id="product-table1">
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                <table id="dynamic-table" class="table">
                                     <thead>
                                         <tr>                                                        
                                             <th>Id</th>

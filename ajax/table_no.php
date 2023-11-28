@@ -3,6 +3,7 @@ $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
 $name=$_SESSION['name'];
 include("../dbcon.php");
+//lost
 if(isset($_POST['search']))
 {
     $search = mysqli_real_escape_string($conn,$_POST['search']);
@@ -31,6 +32,7 @@ if(isset($_POST['search']))
 //     echo json_encode($response);
 // }
 
+//lost
 if(isset($_POST['cap_code']))
 {
     $search = $_POST['cap_code'];
@@ -50,6 +52,8 @@ if(isset($_POST['cap_code']))
 }
 
 
+
+//lost
 if(isset($_POST['wingname']))
 {
     $search = $_POST['wingname'];

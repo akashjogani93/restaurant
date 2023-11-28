@@ -2,7 +2,7 @@
 include("../dbcon.php");
 $mobno = "";
 $gst=5;
-$paymentmode = "none";
+$paymentmode = "Not Setteled";
 $capnam ="";
 date_default_timezone_set("Asia/Kolkata");
 $date = date("Y-m-d");

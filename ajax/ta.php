@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+session_start();
 $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
 $name=$_SESSION['name'];
@@ -77,6 +78,7 @@ if(isset($_POST['catsus1']))
     echo json_encode($a);
 }
 
+//table Shift
 if(isset($_POST['table1']))
 {
    $table1=$_POST['table1'];
@@ -90,15 +92,15 @@ if(isset($_POST['table1']))
         $table2=$_POST['table2'];
     }
 
-   mysqli_query($conn,"UPDATE `temtable` SET `tabno`='$table2' WHERE `tabno`='$table1'");
-   mysqli_query($conn,"UPDATE `kot` SET `tabno`='$table2' WHERE `tabno`='$table1'");
+    mysqli_query($conn,"UPDATE `temtable` SET `tabno`='$table2' WHERE `tabno`='$table1' AND `status`=0");
+    mysqli_query($conn,"UPDATE `kot` SET `tabno`='$table2' WHERE `tabno`='$table1'");
     echo json_encode('Table Shifted');
 }
 
 if(isset($_POST['tabe3']))
 {
     $tabe3=$_POST['tabe3'];
-    $result = $conn->query("SELECT * FROM `temtable` WHERE `tabno` = '$tabe3'");
+    $result = $conn->query("SELECT * FROM `temtable` WHERE `tabno` = '$tabe3' AND `status`=0");
     if ($result->num_rows > 0) {
         echo json_encode('Match found');
     } else {

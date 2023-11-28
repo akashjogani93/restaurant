@@ -16,9 +16,26 @@
     }
     .tablebox
     {
-        height: 350px;
-        overflow-y:scroll;
+        /* height: 350px;
+        overflow-y:scroll; */
     }
+    .buga{
+                margin-right:10px;
+            }
+            .table>thead
+        {
+            background-color:grey;
+            color:white;
+        }
+        .table{
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+        }
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div id="app">
@@ -34,6 +51,25 @@
                         <div class="col-md-12">
                             <div class="box-body">
                                 <div class="row">
+                                    <div class="col-md-9 assets">
+                                        <a class="btn btn-info buga" href="create_assets.php" style="margin-top:27px;">
+                                            Create Asset
+                                        </a>
+                                        <a class="btn btn-success buga" href="purchase_assets.php" style="margin-top:27px;">
+                                            Purchase
+                                        </a>
+                                        <a class="btn btn-info buga" href="stock_assets.php" style="margin-top:27px;">
+                                            View Stock
+                                        </a>
+                                        <a class="btn btn-info buga" href="damage_assets.php" style="margin-top:27px;">
+                                            Damage Stock
+                                        </a>
+                                        <a class="btn btn-info buga" href="purchaseRecord_assets.php" style="margin-top:27px;">
+                                            Purchase Records
+                                        </a>
+                                    </div>
+                                </div></br>
+                                <div class="row">
                                     <div class="form-group col-md-3">
                                         <label for="inputEmail3" class="control-label">Select Product</label>
                                         <select name="pname" id="pid" required class="form-control pname">
@@ -46,8 +82,12 @@
                                         <input type="number" class="form-control" name="qty" id="qty" min="1" placeholder="Quantity">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label for="inputEmail3" class="control-label">Total Price</label>
-                                        <input type="number" class="form-control" name="price" id="price" min="1" placeholder="Total Price">
+                                        <label for="inputEmail3" class="control-label">Case Price</label>
+                                        <input type="number" class="form-control" name="price" id="price" min="1" placeholder="Price">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail3" class="control-label">Total</label>
+                                        <input type="number" class="form-control" name="total" id="total" min="1" placeholder="Total Price" readonly>
                                     </div>
                                 </div>
                                 <div class="box-footer">
@@ -60,12 +100,13 @@
                                         <h3 class="box-title">Stock List</h3>
                                     </div>
                                     <div class="box-body tablebox">
-                                        <table id="example1" class="table table-bordered table-striped" style="height:100px !important;">
+                                        <table id="example1" class="table">
                                             <thead>
                                                 <tr>
                                                     <th>Sl.No</th>
                                                     <th>Product Name</th>
                                                     <th>Qty</th>
+                                                    <th>Price</th>
                                                     <th>Total Amount</th>
                                                     <th>Delete</th>
                                                 </tr>
@@ -75,6 +116,7 @@
                                                     <td>{{ index + 1 }}</td>
                                                     <td>{{ item.product }}</td>
                                                     <td>{{ item.qty }}</td>
+                                                    <td>{{ item.price }}</td>
                                                     <td>{{ item.total }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-danger" @click="deleteItem(index)">Delete</button>

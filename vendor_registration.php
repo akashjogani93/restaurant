@@ -15,6 +15,20 @@
         height: 350px;
         overflow-y:scroll;
     }
+    .table>thead
+        {
+            background-color:grey;
+            color:white;
+        }
+    .table{
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+        }
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div id="app">
@@ -82,7 +96,7 @@
                         <h3 class="box-title">Vendor List</h3>
                     </div>
                     <div class="box-body tablebox">
-                        <table id="example1" class="table table-bordered table-striped" style="height:100px !important;">
+                        <table id="example1" class="table">
                             <thead>
                                 <tr>
                                     <th>Sl No</th>

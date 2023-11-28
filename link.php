@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
 
     <link rel="stylesheet" href="dist/css/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
     <script src="dist/js/jquery-1.12.4.js"></script>
     <script src="dist/js/jquery-ui.js"></script>
 
@@ -90,7 +90,7 @@
     <script src="dist/js/vue/vue.js"></script>
     <script src="dist/js/vue/vue-resource@1.3.4.js"></script>
     <script src="dist/js/vue/vee-validate.js"></script>
-
+    <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script>
     <!-- <script src="cdn/jquery.min.js"></script>
     <link rel="stylesheet" href="cdn/jquery-ui.css">
     <script src="cdn/jquery-ui.min.js"></script> -->

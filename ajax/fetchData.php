@@ -1,7 +1,7 @@
 <?php 
 
 include("../dbcon.php");
-
+//lost
 if(isset($_POST['search'])){
     $search = mysqli_real_escape_string($conn,$_POST['search']);
     $query = "SELECT * FROM `item` where `itmnam` LIKE '%".$search."%'";

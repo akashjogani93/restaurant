@@ -83,7 +83,7 @@ mysqli_query($conn, $sql1);
 }
 
 
-
+//lost
 // table merge
 if(isset($_POST['tabno'],$_POST['merge'],$_POST['x']))
 {

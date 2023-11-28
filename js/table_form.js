@@ -3,24 +3,26 @@ $(document).ready(function()
         const urlParams = new URLSearchParams(window.location.search);
         const statuscancel = urlParams.get('statuscancel');
         $('#itemlist').load("current_data.php?x="+statuscancel);
-        $('.poi').css( 'cursor', 'pointer' );
-        $('#boxx').load("final_search.php");
-        let sess=$('#sess').val();
-        if(sess!='Captain')
-        {
-            $('#boxx1').load("final_setelment.php?order=0");
-        }
-        $('#boxx2').load("shiftTable.php");
-        document.getElementById("table_no").focus();
-        $('#example1').DataTable
-        ({
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
+
+    $('.poi').css( 'cursor', 'pointer' );
+    $('#boxx').load("final_search.php");
+    let sess=$('#sess').val();
+    if(sess!='Captain')
+    {
+        $('#boxx1').load("final_setelment.php?order=0");
+    }
+    
+    $('#boxx2').load("shiftTable.php");
+
+    document.getElementById("table_no").focus();
+    $('#example1').DataTable({
+        "paging": false,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false
+    });
 });
 
 $('#priceform').keyup(function () { 
@@ -178,11 +180,9 @@ function insert()
                         $('#itemlist').load("current_data.php?x="+table_no);
                         $('#boxx').load("final_search.php");
                         $('#boxx2').load("shiftTable.php");
-                        
-                        
                     }
                 });
-                // console.log(log);
+                console.log(log);
     }
     else
     {
@@ -290,7 +290,8 @@ document.addEventListener('keydown', function(event)
     if (event.altKey && event.keyCode === 88) 
     {
         document.getElementById("koot").click();
-    }else if (event.altKey && event.keyCode === 67)
+    }
+    else if (event.altKey && event.keyCode === 67)
     {
         $('#tbody tr').each(function()
         {

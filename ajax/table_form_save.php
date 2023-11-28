@@ -6,7 +6,7 @@ $current_time = date('h:i A');
 $mobno = "";
 $gst=5;
 $total=0;
-$paymentmode = "none";
+$paymentmode = "Not Setteled";
 $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
 
@@ -78,7 +78,6 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
             {
                 //insert into table
                 $sql1 = "INSERT INTO `tabledata`(`date`,`itmno`,`itmnam`,`prc`,`qty`,`tot`,`tabno`,`billno`) SELECT `date`,`itmno`,`itmnam`,`prc`,SUM(`qty`) as `qty`,SUM(`tot`) AS `tot`,`tabno`,`billno` FROM `temtable` GROUP BY `itmno`,`tabno` HAVING `tabno`='$tabno'";
-    
                 if (!mysqli_query($conn, $sql1)) {
                     echo json_encode('Error: ' . mysqli_error($conn ));
                 }

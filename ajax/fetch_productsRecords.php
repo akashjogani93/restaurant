@@ -7,7 +7,7 @@ include("../dbcon.php");
 // Retrieve the ID from the POST data
 $id = $_POST['id'];
 
-$purchaseQuery = "SELECT vendor, purchase_date FROM purchase_data WHERE id = $id";
+$purchaseQuery = "SELECT * FROM purchase_data WHERE id = $id";
 $purchaseResult = mysqli_query($conn, $purchaseQuery);
 
 if (!$purchaseResult) {
@@ -17,10 +17,12 @@ if (!$purchaseResult) {
 $purchaseRow = mysqli_fetch_assoc($purchaseResult);
 $vendor = $purchaseRow['vendor'];
 $purchaseDate = $purchaseRow['purchase_date'];
+$totalamt = number_format($purchaseRow['totalamt'],2);
+$id = $purchaseRow['id'];
 
 
 // Query the database to fetch the products for the provided ID
-$sql = "SELECT * FROM stock WHERE venid = $id";
+$sql = "SELECT `stock`.*,`products`.`pname`,`products`.`unit` FROM `stock`,`products` WHERE `stock`.`venid` = '$id' AND `stock`.`pid`=`products`.`pid`";
 $result = mysqli_query($conn, $sql);
 
 if (!$result) {
@@ -28,8 +30,9 @@ if (!$result) {
 }
 
 // Generate the HTML for the product table
-echo '<center><label>Vendor: ' . $vendor . '</label><br>';
-echo '<label>Purchase Date: ' . $purchaseDate . '</label></center><br>';
+echo '<center><label>Vendor: ' . $vendor . '</label>&nbsp;&nbsp;<label>Bill No: ' . $id . '</label><br>';
+echo '<label>Purchase Date: ' . $purchaseDate . '</label><br>';
+echo '<label>Total Amount: ' . $totalamt . '</label></center><br>';
 echo '<table class="table table-striped table-bordered table-hover">';
 echo '<thead>';
 echo '<tr>';
@@ -49,10 +52,10 @@ while ($row = mysqli_fetch_assoc($result)) {
     echo '<td>' . $row['pname'] . '</td>';
     echo '<td>' . $row['unit'] . '</td>';
     echo '<td>' . $row['qty'] . '</td>';
-    echo '<td>' . $row['price'] . '</td>';
-    echo '<td>' . $row['bamt'] . '</td>';
-    echo '<td>' . $row['tax'] . '</td>';
-    echo '<td>' . $row['total'] . '</td>';
+    echo '<td>' . number_format($row['price'],2) . '</td>';
+    echo '<td>' . number_format($row['bamt'],2) . '</td>';
+    echo '<td>' . number_format($row['tax'],2) . '</td>';
+    echo '<td>' . number_format($row['total'],2) . '</td>';
     echo '</tr>';
 }
 

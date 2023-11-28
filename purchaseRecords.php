@@ -3,6 +3,20 @@
     <div class="wrapper" id="form1">
         <style>
             .error{color: red;}
+            .table>thead
+            {
+                background-color:grey;
+                color:white;
+            }
+            .table{
+                border-collapse: collapse;
+            }
+            .table th,
+            .table td 
+            {
+                border: 1px solid black;
+                /* padding: 5px; */
+            }
         </style>
         <div class="content-wrapper">
             <section class="content-header">
@@ -16,15 +30,18 @@
                         <div class="col-md-12">
                             <div class="col-md-12">
                             <div id="product-table1">
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                                    <thead>
+                                <table id="dynamic-table" class="table">
+                                    <thead class="thead-dark">
                                         <tr>                                                        
                                             <th>Id</th>
                                             <th>Bill No</th>
                                             <th>Vendor Name</th>                                                    
                                             <th>Purchase Date</th>
                                             <th>Gross Amount</th>
+                                            <th>Disc Amount</th>
                                             <th>Tax</th>
+                                            <th>Cess</th>
+                                            <th>Other Amount</th>
                                             <th>Total Amount</th>
                                             <th>Paid Amount</th>
                                             <th>Remark</th>
@@ -48,10 +65,13 @@
                                                         <td><?php echo $row['bill']; ?></td>                                            
                                                         <td><?php echo $row['vendor']; ?></td>
                                                         <td><?php echo $row['purchase_date']; ?></td>
-                                                        <td><?php echo $row['gamt']; ?></td>
-                                                        <td><?php echo $row['tax']; ?></td>
-                                                        <td><?php echo $row['totalamt']; ?></td>
-                                                        <td><?php echo $row['pamt']; ?></td>
+                                                        <td><?php echo number_format($row['gamt'],2); ?></td>
+                                                        <td><?php echo number_format($row['disc'],2); ?></td>
+                                                        <td><?php echo number_format($row['tax'],2); ?></td>
+                                                        <td><?php echo number_format($row['cessamount'],2); ?></td>
+                                                        <td><?php echo number_format($row['otheramt'],2); ?></td>
+                                                        <td><?php echo number_format($row['totalamt'],2); ?></td>
+                                                        <td><?php echo number_format($row['pamt'],2); ?></td>
                                                         <td><?php echo $row['remark']; ?></td>
                                                         <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
                                                                 View Products
