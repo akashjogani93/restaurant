@@ -156,12 +156,12 @@
             {
                 var value = $('#wastage').val();
                 value = value.replace(/[^0-9.]/g, '');
-                value = value.replace(/(\..*)\./g, '$1');
+                value = value.replace(/(\.[^.]*)\./g, '$1');
                 tdValue = parseFloat($('#closingStock').val());
 
-                value = parseFloat(value);
-                if (value > tdValue) 
-                {
+                if (isNaN(value)) {
+                    value = 0;
+                } else if (value > tdValue) {
                     value = tdValue;
                 }
                 $('#wastage').val(value);

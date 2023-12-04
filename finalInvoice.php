@@ -1,4 +1,6 @@
-<?php require_once("header.php"); ?>
+<?php require_once("header.php"); 
+    require_once("dbcon.php");
+?>
 <?php
 require "vendor/autoload.php";
 
@@ -43,6 +45,7 @@ use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
     margin:0;
     font-size:12px;
     color:black;
+
 }
 
     td{
@@ -100,21 +103,37 @@ th.qty, td.qty{
     </style>
        
         <?php
-            $tabno = $_GET['tabno'];
-            // $tabsec = $_GET['tabsec'];
+            // $tabno = $_GET['tabno'];
+            // // $tabsec = $_GET['tabsec'];
             $billno = $_GET['billno'];
-
-            $padded_id = str_pad($billno, 4, '0', STR_PAD_LEFT);
+            $back = $_GET['back'];
+            $billno1 = str_pad($billno, 4, '0', STR_PAD_LEFT);
             
-            $captain = $_GET['capnam'];
-            $discount = $_GET['discount'];
-            $amt = $_GET['amt'];
-            // $amt1=floatval($amt);
-            $date = $_GET['date'];
-            $new_date = date("d/m/Y", strtotime($date));
-      		$current_time = $_GET['time'];
-     	    // date_default_timezone_set('Asia/Kolkata');
-            // $current_time = date('h:i A');
+            $query="SELECT * FROM `invoice` WHERE `slno`='$billno'";
+            $exc=mysqli_query($conn,$query);
+            while($row=mysqli_fetch_assoc($exc))
+            {
+                $date=$row['date'];
+                $time=$row['time'];
+                $cpaname=$row['capname'];
+                $tabno=$row['tabno'];
+                $status=$row['status'];
+                $gtot=$row['gtot'];
+                $discount=$row['discount'];
+                $discAmt=$row['discAmt'];
+                $gstAmt=$row['gstAmt']/2;
+                $roundplus=$row['roundplus'];
+                $roundminus=$row['roundminus'];
+                $nettot=$row['nettot'];
+                $userid=$row['cashId'];
+            }
+            if($status==0)
+            {
+                $table="temtable";
+            }else
+            {
+                $table="tabledata";
+            }
         ?>
         
         <!-- Content Wrapper. Contains page content -->
@@ -141,26 +160,25 @@ th.qty, td.qty{
                        <div class="row">
                             <div class="col-md-12" style="padding-right:8px;padding-left:8px;" >
                                 <div class="fst">
-                                    <h5 style="font-size:11px;font-weight:900;">Bill No:<?php echo $padded_id; ?></h5>
+                                    <h5 style="font-size:11px;font-weight:900;">Bill No:<?php echo $billno; ?></h5>
                                     
-                                  	   <h5>Date:<?php echo $new_date; ?></h5>
+                                  	   <h5>Date:<?php echo $date; ?></h5>
                                 </div>
                                 <div class="fst">
                                     <h5 style="padding-left:0px;font-size:11px;font-weight:900;margin-top:-8px;">Table No:<?php echo $tabno; ?></h5>
                                     <h5></h5>
                                  
-                                  <h5 >Time:<?php echo $current_time; ?></h5>
+                                  <h5 >Time:<?php echo $time; ?></h5>
                                   
                                 </div>
                                <div class="fst">
-                                    <h5>STW:<?php echo $captain; ?></h5>
+                                    <h5>STW:<?php echo $cpaname; ?></h5>
                                     <h5></h5>
                                     <h5></h5>
                                 </div>
                             </div>
                        </div>
                        <hr style="margin:0; padding:0; font-weight:10px;">
-
                         <div class="row">
                             <div class="col-md-12" style="padding-right:8px;padding-left:8px;" >
                                 <table style="width:100%;">
@@ -173,98 +191,79 @@ th.qty, td.qty{
                                             <th style="width:20%;">Amount</th>
                                         </tr>
                                     </thead>
-                                    <tbody >
-                                        <!--<tr style="border-top:1px dotted black;margin:10px 0;"></tr>-->
+                                    <tbody>
                                         <?php 
-                                            $total = 0;
-                                            $gst = 0;
-                                            $gstamt = 0;
-                                            $nettot = 0;
-                                            require_once("dbcon.php");
-                                            $sql = "SELECT * FROM tabledata WHERE tabno='$tabno' AND `billno`= $billno";
-                                                $result = mysqli_query($conn, $sql);
-                                                if (mysqli_num_rows($result) > 0)
+                                            $sql = "SELECT itmnam,prc,SUM(qty) as total_qty, SUM(tot) as total_tot FROM $table WHERE `tabno`='$tabno' AND `billno`= $billno GROUP BY `itmnam`";
+                                            $result = mysqli_query($conn, $sql);
+                                            if (mysqli_num_rows($result) > 0)
+                                            {
+                                                $sn=0;
+                                                while($row = mysqli_fetch_assoc($result)) 
                                                 {
-                                                    $sn = 0;
-                                                    while($row = mysqli_fetch_assoc($result)) 
-                                                    {
-                                                        $total += $row['tot'];
-                                                        ?>
-                                                            <tr style="margin">
-                                                                <td class="INo"><?php echo ++$sn; ?></td>
-                                                                <td class="INo"><?php echo $row['itmnam']; ?></td>
-                                                                <td class="qty"><?php echo $row['qty']; ?></td>
-                                                                <td><?php echo number_format($row['prc'],2); ?></td>
-                                                                <td><?php echo number_format($row['tot'],2); ?></td>
-                                                            </tr>
-                                                        <?php
-                                                    }
-                                                }
-                                              //  $total = number_format($total,2);
-                                                $nettot = $total-$amt;
-
-                                                $gstmain=$nettot*2.5/100;
-                                                $gst=$gstmain*2;
-
-                                                $final=($nettot+$gst);
-                                                $amount=round($final);
-
-                                                $decimalPart = fmod($final, 1);
-                                                
-
-                                            ?>
-                                          
-                                                <tr></tr>
-                                                <tr style="border-top:1px solid black; ">
-                                                    <th colspan="2"></th>
-                                                    <th colspan="2" style="font-size:10px;">Sub-Total: </th>
-                                                    <td> <?php echo number_format($total,2); ?></td>
-                                                </tr>
-                                                <?php 
-                                                    if($discount!=0 && $discount!='')
-                                                    {
-                                                        echo '<tr>
-                                                        <th colspan="1"></th>
-                                                            <th colspan="3">Discount('.$discount.'%): </th>
-                                                            <td>'.-number_format($amt,2).'</td>
-                                                        </tr>';
-                                                    }
-                                                 ?>
-                                                <tr>
-                                                    <th colspan="1"></th>
-                                                    <th colspan="3" style="font-size:10px;"> SGST @ 2.5%: </th>
-                                                    <td><?php echo number_format($gstmain,2); ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th colspan="1"></th>
-                                                    <th colspan="3" style="font-size:10px;">CGST @ 2.5%: </th>
-                                                    <td> <?php echo number_format($gstmain,2); ?></td>
-                                                </tr>
-                                                    <?php 
-                                                        if($decimalPart!=0)
-                                                        {
-                                                            ?>
-                                                            <tr>
-                                                                <th colspan="2"></th>
-                                                                <th colspan="2" style="font-size:10px;">Round Off: </th>
-                                                                <td> <?php if($decimalPart < 0.50)
-                                                                            {
-                                                                                echo -number_format($decimalPart,2);
-                                                                            }else
-                                                                            {
-
-                                                                                echo "+".number_format(1-$decimalPart,2);
-                                                                            }
-                                                                ?></td>
-                                                            </tr>
-                                                            <?php
-                                                        }
                                                     ?>
-                                                <tr style="border-top:1px solid black; border-bottom:1px solid black;">
-                                                   
-                                                    <th colspan="4"><b style="font-size:12px;">TOTAL AMOUNT</b></th>
-                                                    <td><b style="font-size:12px;"><?php echo number_format($amount,2); ?></b></td>
+                                                        <tr style="margin">
+                                                            <td class="INo"><?php echo ++$sn; ?></td>
+                                                            <td class="INo"><?php echo $row['itmnam']; ?></td>
+                                                            <td class="qty"><?php echo $row['total_qty']; ?></td>
+                                                            <td><?php echo number_format($row['prc'], 2); ?></td>
+                                                            <td><?php echo number_format($row['total_tot'], 2); ?></td>
+                                                        </tr>
+                                                    <?php
+                                                }
+                                            }
+                                        ?>
+                                        <tr></tr>
+                                        <tr style="border-top:1px solid black; ">
+                                            <th colspan="2"></th>
+                                            <th colspan="2" style="font-size:10px;">Sub-Total: </th>
+                                            <td> <?php echo number_format($gtot,2); ?></td>
+                                        </tr>
+                                        <?php 
+                                            if($discount!=0 && $discount!='')
+                                            {
+                                                echo '<tr>
+                                                <th colspan="1"></th>
+                                                    <th colspan="3">Discount('.$discount.'%): </th>
+                                                    <td>'.-number_format($discAmt,2).'</td>
+                                                </tr>';
+                                            }
+                                        ?>
+                                        <tr>
+                                            <th colspan="1"></th>
+                                            <th colspan="3" style="font-size:10px;"> SGST @ 2.5%: </th>
+                                            <td><?php echo number_format($gstAmt,2); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="1"></th>
+                                            <th colspan="3" style="font-size:10px;">CGST @ 2.5%: </th>
+                                            <td> <?php echo number_format($gstAmt,2); ?></td>
+                                        </tr>
+                                        <?php 
+                                            if($roundplus != 0)
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <th colspan="2"></th>
+                                                    <th colspan="2" style="font-size:10px;">Round Off: </th>
+                                                    <td> <?php echo +$roundplus; ?></td>
                                                 </tr>
+                                                <?php
+                                            }
+                                            if($roundminus != 0)
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <th colspan="2"></th>
+                                                    <th colspan="2" style="font-size:10px;">Round Off: </th>
+                                                    <td> <?php echo -$roundminus; ?></td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        ?>
+                                        <tr style="border-top:1px solid black; border-bottom:1px solid black;">
+                                            <th colspan="4"><b style="font-size:12px;">TOTAL AMOUNT</b></th>
+                                            <td><b style="font-size:12px;"><?php echo number_format($nettot,2); ?></b></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -274,13 +273,13 @@ th.qty, td.qty{
  								E.& 0.E
                               <br>
                               <b style="font-size:11px;">Cashier Id:</b> 
-                              <?php if($cash_id=='0')
+                              <?php if($userid=='0')
                                     {
                                         echo 'Admin'; 
                                     }
                                     else
                                     {
-                                        echo $cash_id;
+                                        echo $userid;
                                     }
                                 ?>
 
@@ -292,7 +291,7 @@ th.qty, td.qty{
                                     // $amount = '1.00'; // Replace with the dynamic amount
 
                                     // Format UPI data
-                                    $upiData = "upi://pay?pn={$merchantName}&pa={$merchantUPI}&am={$amount}";
+                                    $upiData = "upi://pay?pn={$merchantName}&pa={$merchantUPI}&am={$nettot}";
 
                                     $qr_code = QrCode::create($upiData)
                                                     ->setSize(100)
@@ -315,8 +314,6 @@ th.qty, td.qty{
                                 </center>
                             </div>
                         </div>
-
-
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -329,16 +326,24 @@ th.qty, td.qty{
 
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="jquery.PrintArea.js"></script>
+    <script src="jquery.PrintArea.js"></script>
     <script type="text/javascript">
 
 function myFunction()
 {
+    const urlParams = new URLSearchParams(window.location.search);
+    var back = urlParams.get('back');
     window.print();
-    // window.onafterprint = function(event)
-    // {
-         window.location.href ="table_form.php";
-    // };
+    window.onafterprint = function(event)
+    {
+        if(back==1)
+        {
+             window.location.href ="table_master.php";
+        }else
+        {
+             window.location.href ="report_day_Amount.php";
+        }
+    };
 }
 
 </script> 

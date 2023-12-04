@@ -88,14 +88,10 @@ if(isset($_POST['catName']))
             if ($conn->query($sql) === TRUE)
             {
                 $lastInsertedId = $conn->insert_id;
-                // $stock1="INSERT INTO `stock1`(`category`, `pname`, `unit`, `sellunit`, `qty`,`remain`,`perCaseQty`,`venid`, `exp`,`pid`) VALUES ('$catName','$product','$unit','$sellUnit',0,0,1,0,'$twoMonthsLater','$lastInsertedId')";
-                // if($conn->query($stock1)=== TRUE)
-                // {
-                    $stockid = $conn->insert_id;
-                    $store_stock="INSERT INTO `store_stock`(`pid`,`date`,`perCaseQty`) VALUES ('$lastInsertedId','$currentDate',1)";
-                    $excQuery=mysqli_query($conn,$store_stock);
-                    echo 0;
-                // }
+                $stockid = $conn->insert_id;
+                $store_stock="INSERT INTO `store_stock`(`pid`,`date`,`perCaseQty`) VALUES ('$lastInsertedId','$currentDate',1)";
+                $excQuery=mysqli_query($conn,$store_stock);
+                echo 0;
             } else
             {
                 echo "Error: " . $query . "<br>" . $conn->error;
@@ -106,32 +102,8 @@ if(isset($_POST['catName']))
         $id=$_POST['productId'];
         $oldProduct=$_POST['oldProduct'];
         $id = mysqli_real_escape_string($conn, $id);
-        $checkQuery="SELECT * FROM `stock1` WHERE `pname`='$oldProduct'";
-        $exc=mysqli_query($conn,$checkQuery);
-        if(mysqli_num_rows($exc) > 0)
-        {
-            while($row=mysqli_fetch_assoc($exc))
-            {
-                $stock1=$row['id'];
-                $updateStock="UPDATE `stock1` SET `pname`='$product' WHERE `id`='$stock1'";
-                $out=mysqli_query($conn,$updateStock);
-            }
-            $checkkit="SELECT * FROM `kitchen_stock` WHERE `pname`='$oldProduct'";
-            $exc1=mysqli_query($conn,$checkkit);
-            if(mysqli_num_rows($exc1) > 0)
-            {
-                while($row=mysqli_fetch_assoc($exc1))
-                {
-                    $kitid=$row['id'];
-                    $updateStocki="UPDATE `kitchen_stock` SET `pname`='$product' WHERE `id`='$kitid'";
-                    $out1=mysqli_query($conn,$updateStocki);
-                }
-            }
-        }
         $productUpdate="UPDATE `products` SET `pname`='$product',`tax`='$tax',`cess`='$cess' WHERE `pid`='$id'";
         $result=mysqli_query($conn,$productUpdate);
-
-        // echo 'Updated Successfully';
     }
 }
 
@@ -262,7 +234,7 @@ if(isset($_POST['stockList']))
             $cess = $stockItem['cessAmt'];
             $exp = $stockItem['exp'];
 
-            $mainQty=$insideqty*$insideqty;
+            $mainQty=$qty*$insideqty;
 
             $stockData="INSERT INTO `stock`(`qty`,`venid`,`price`,`total`,`bamt`,`tax`,`disc`,`cess`,`perCaseQty`,`pid`,`exp`) VALUES ('$qty', '$vendorId', '$pric', '$amt','$baseamt','$tax','$discamt','$cess','$insideqty','$pid','$exp')";
             $stock1exc=mysqli_query($conn,$stockData);
@@ -308,7 +280,8 @@ if(isset($_POST['productKitchenChange']))
     $exc=mysqli_query($conn,$query);
     while($row=mysqli_fetch_assoc($exc))
     {
-        $netStock=$row['netStock'];
+        $netStock=number_format($row['netStock'],2);
+        $row['netStock']=$netStock;
         $options[] = $row;
     }
     header('Content-Type: application/json');
@@ -316,8 +289,10 @@ if(isset($_POST['productKitchenChange']))
 }
 
 //adding a Kitchen in store_kitchen_given.php
-if(isset($_POST['pid']))
+if(isset($_POST['cattype']))
 {
+    $cattype = $_POST['cattype'];
+
     $pid = $_POST['pid'];
 
     $pqty = $_POST['pqty']; //total stock have
@@ -327,75 +302,37 @@ if(isset($_POST['pid']))
     $gdate = $_POST['gdate']; 
     $currentDate = date('Y-m-d');
 
-    $query="INSERT INTO `store_kitchen`(`pid`,`stock`,`date`) VALUES ('$pid','$uqty','$gdate')";
-    $exc = mysqli_query($conn, $query);
-
     $insertStore="INSERT INTO `store_stock`(`pid`,`issuedStock`,`date`)VALUES('$pid','$uqty','$gdate')";
     $excinsert=mysqli_query($conn,$insertStore);
-    echo 'Added To Kitchen';
-}
 
-// return kitchen to stock
-if (isset($_POST['product_k'])) 
-{
-    $pid = $_POST['id_k'];
-    $product = $_POST['product_k'];
-    $unit = $_POST['unit_k'];
-    $inputValue = $_POST['inputValue_k'];
-    $qty_k = $_POST['remain_k'];
-
-    $currentDate = date("Y-m-d");
-  
-    $qu="SELECT * FROM `stock1` WHERE `pid`='$pid'";
-    $quex=mysqli_query($conn,$qu);
-    if(mysqli_num_rows($quex) > 0)
+    if($cattype=="bev")
     {
-        while($row=mysqli_fetch_assoc($quex))
-        {
-            $perCaseQty=$row['perCaseQty'];
-            $category=$row['category'];
-            $qty=$row['qty'];
-            // $stockPrice=$row['price'];
-            // $perCase=$row['perCase'];
-            // $stockTotal=$row['total']+$total;
-
-            $updateQty=($perCaseQty*$qty)+$inputValue;
-            $lastQty=$updateQty/$perCaseQty;
-
-            $upqty=$inputValue/$perCaseQty;
-
-            $exc=mysqli_query($conn,"UPDATE `stock1` SET `qty`=`qty`+'$lastQty',`remain`=`remain`+'$upqty' WHERE `pname`='$product'");
-            if($exc)
-            {
-                // $affectedRows = mysqli_affected_rows($conn);
-                // if ($affectedRows > 0) 
-                // {
-                    $query="UPDATE `kitchen_data` SET `remain`=`remain`-'$inputValue',`qty`=`qty`-'$inputValue' WHERE `pid`='$pid'";
-                    $insertResult = mysqli_query($conn, $query);
-                    if ($insertResult) 
-                    {
-                        $insertkit_stock="INSERT INTO `kitchen_stock`(`category`, `pname`, `pid`,`givenDate`,`qty`,`perCaseQty`,`unit`,`dataid`,`retur`) VALUES ('$category','$product','$pid','$currentDate',0,'$perCaseQty','$unit','0','$inputValue')";
-                        $exc=mysqli_query($conn,$insertkit_stock);
-                    }
-                // }
-            }
-        }
-    }else
+        $query="INSERT INTO `beverages`(`pid`, `stock`, `date`) VALUES ('$pid','$uqty','$gdate')";
+        $exc = mysqli_query($conn, $query);
+        echo 'Selled';
+    }else if($cattype=="parcel")
     {
-        echo $pid;
+        $query="INSERT INTO `parcelmaterial`(`pid`, `stock`, `date`) VALUES ('$pid','$uqty','$gdate')";
+        $exc = mysqli_query($conn, $query);
+        echo 'Selled';
+    }
+    else
+    {
+        $query="INSERT INTO `store_kitchen`(`pid`,`stock`,`date`) VALUES ('$pid','$uqty','$gdate')";
+        $exc = mysqli_query($conn, $query);
+        echo 'Added To Kitchen';
     }
 }
 
-
-//show beaverages
-if(isset($_POST['bev']))
+//show beaverages Category
+if(isset($_POST['bevcat']))
 {
-    $sql = "SELECT `stock1`.`id`,`stock1`.`pname` FROM `stock1`,`categoroy`  WHERE `stock1`.`category`=`categoroy`.`CategoryName` AND `categoroy`.`catType`='Bevarages' AND `stock1`.`qty`!=0";
+    $sql="SELECT `CategoryName` AS `category` FROM `categoroy` WHERE `catType`='Bevarages'";
     $result = $conn->query($sql);
-
     $options = array();
     if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) 
+        {
             $options[] = $row;
         }
     }
@@ -405,80 +342,66 @@ if(isset($_POST['bev']))
     $conn->close();
 }
 
-
-//work on beaverages
-//sale beaverages
-if(isset($_POST['pid1']))
+if(isset($_POST['BeaveragesStock']))
 {
-    $pid = $_POST['pid1'];
-    $pname = $_POST['pname'];
-    $pqty = $_POST['pqty'];
-    $punit = $_POST['punit'];
-    $rqty = $_POST['rqty'];
-    $uqty = $_POST['uqty'];
-    $gdate = $_POST['gdate'];
-
-    // $price = $_POST['price'];
-    // $total = $_POST['total'];
-    $perCaseQty = $_POST['perCaseQty'];
-    $updateQty=$rqty/$perCaseQty;
-    $query = "SELECT * FROM `beverages` WHERE `pid` = '$pid' AND `givenDate`='$gdate'";
-    $result = mysqli_query($conn, $query);
-    if(mysqli_num_rows($result) > 0)
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $fdate = mysqli_real_escape_string($conn,$fdate);
+    $tdate = mysqli_real_escape_string($conn,$tdate);
+    $sql="SELECT SUM(beverages.stock) AS `stockdata`,`products`.`pname`,`products`.`sellunit` FROM `beverages`,`products` WHERE `beverages`.`pid`=`products`.`pid` AND `beverages`.`date` BETWEEN '$fdate' AND '$tdate'";
+    $result=$conn->query($sql);
+    $options=array();
+    if($result->num_rows > 0)
     {
-        $updateQuery = "UPDATE `beverages` SET `uqty` = `uqty` + '$uqty' WHERE `pid` = '$pid' AND `givenDate`='$gdate'";
-        $updateResult = mysqli_query($conn, $updateQuery);
-        if($updateResult)
+        while($row=$result->fetch_assoc())
         {
-            mysqli_query($conn,"UPDATE `stock1` SET `qty`='$updateQty' WHERE `pname`='$pname'");
-            echo "Added successfully";
-        }else 
-        {
-            echo "Failed to update quantity: " . mysqli_error($conn);
+            $options[]=$row;
         }
-    }else
-    {
-      $insertQuery="INSERT INTO `beverages`(`pname`,`pid`,`punit`,`givenDate`,`uqty`)VALUES('$pname','$pid','$punit','$gdate','$uqty')";
-      $insertResult = mysqli_query($conn, $insertQuery);
-      if($insertResult)
-      {
-            mysqli_query($conn,"UPDATE `stock1` SET `qty`='$updateQty' WHERE `pname`='$pname'");
-        echo "Added successfully.";
-      }else
-      {
-        echo "Failed to insert data: " . mysqli_error($conn);
-      }
     }
-    mysqli_close($conn);
+    header('Content-Type: application/json');
+    echo json_encode($options);
+
+    $conn->close();
 }
 
-
-if(isset($_POST['wastage']))
+if(isset($_POST['materialStock']))
 {
-    $product = $_POST['w_product'];
-    $qty1 = $_POST['w_qty'];
-    $unit = $_POST['w_unit'];
-    $inputValue = $_POST['w_inputValue'];
-    $price = $_POST['w_price'];
-    $total = $price * $inputValue;
-    
-    $lastQty=$qty1-$inputValue;
-    $stockTotal=$price*$inputValue;
-
-        $exc=mysqli_query($conn,"UPDATE `stock1` SET `qty`='$lastQty',`total`=`total`-'$stockTotal' WHERE `pname`='$product'");
-        if($exc)
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $fdate = mysqli_real_escape_string($conn,$fdate);
+    $tdate = mysqli_real_escape_string($conn,$tdate);
+    $sql="SELECT SUM(parcelmaterial.stock) AS `stockdata`,`products`.`pname`,`products`.`sellunit` FROM `parcelmaterial`,`products` WHERE `parcelmaterial`.`pid`=`products`.`pid` AND `parcelmaterial`.`date` BETWEEN '$fdate' AND '$tdate'";
+    $result=$conn->query($sql);
+    $options=array();
+    if($result->num_rows > 0)
+    {
+        while($row=$result->fetch_assoc())
         {
-            $affectedRows = mysqli_affected_rows($conn);
-            if ($affectedRows > 0) 
-            {
-                $query="INSERT INTO `vastage`(`product`, `unit`, `qty`, `price`) VALUES('$product','$unit','$inputValue','$total')";
-                $exc=mysqli_query($conn,$query);
-                if($exc)
-                {
-                    echo 'Added To Wastage';
-                }
-            }
+            $options[]=$row;
         }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($options);
+
+    $conn->close();
+}
+
+//show beaverages Category
+if(isset($_POST['parcelcat']))
+{
+    $sql="SELECT `CategoryName` AS `category` FROM `categoroy` WHERE `catType`='ParcelMaterial'";
+    $result = $conn->query($sql);
+    $options = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) 
+        {
+            $options[] = $row;
+        }
+    }
+    // Return the options as JSON response
+    header('Content-Type: application/json');
+    echo json_encode($options);
+    $conn->close();
 }
 
 if(isset($_POST['assetsProduct']))
@@ -547,77 +470,77 @@ if(isset($_POST['assetsSubmitData']))
 }
 
 //Purchase Stock Details
-if(isset($_POST['stock']))
-{
-    $cat_name=$_POST['catName1'];
-    if($cat_name=='')
-    {
-        // $query1 = "SELECT stock1.*, SUM(kitchen_stock.qty) as total_qty
-        // FROM stock1
-        // JOIN kitchen_stock ON stock1.pname = kitchen_stock.pname
-        // GROUP BY stock1.pname;";
-        $query1 = "SELECT * FROM `stock1`";
-    }else
-    {
-        $query1 = "SELECT * FROM `stock1` WHERE `category`='$cat_name'";
-    }
-    $result=$conn->query($query1);
-    $options=array();
-    if($result->num_rows > 0)
-    {
-        while($row=$result->fetch_assoc())
-        {
+// if(isset($_POST['stock']))
+// {
+//     $cat_name=$_POST['catName1'];
+//     if($cat_name=='')
+//     {
+//         // $query1 = "SELECT stock1.*, SUM(kitchen_stock.qty) as total_qty
+//         // FROM stock1
+//         // JOIN kitchen_stock ON stock1.pname = kitchen_stock.pname
+//         // GROUP BY stock1.pname;";
+//         $query1 = "SELECT * FROM `stock1`";
+//     }else
+//     {
+//         $query1 = "SELECT * FROM `stock1` WHERE `category`='$cat_name'";
+//     }
+//     $result=$conn->query($query1);
+//     $options=array();
+//     if($result->num_rows > 0)
+//     {
+//         while($row=$result->fetch_assoc())
+//         {
 
-            $pname=$row['pname'];
-            $perCaseQty=$row['perCaseQty'];
-            $total_qty = 0;
-            $remain_qty=($row['qty']*$perCaseQty)/100;
+//             $pname=$row['pname'];
+//             $perCaseQty=$row['perCaseQty'];
+//             $total_qty = 0;
+//             $remain_qty=($row['qty']*$perCaseQty)/100;
 
-            // $query2="SELECT * FROM `kitchen_data` WHERE `pname`='$pname'";
-            // $result1=$conn->query($query2);
-            // while($row1=$result1->fetch_assoc())
-            // {
-            //     $total_qty=$row1['qty'];
-            //     // $remain_qty=$row1['remain_qty'];
-            // }
-            // $query2 = "SELECT SUM(qty) As `total_qty` FROM `stock` WHERE `pname`='$pname'";
-            $query2 = "SELECT SUM(s.qty) AS total_qty
-           FROM stock s
-           INNER JOIN purchase_data v ON s.venid = v.id
-           WHERE s.pname = '$pname'
-             AND MONTH(v.purchase_date) = MONTH(CURRENT_DATE())
-             AND YEAR(v.purchase_date) = YEAR(CURRENT_DATE())";
+//             // $query2="SELECT * FROM `kitchen_data` WHERE `pname`='$pname'";
+//             // $result1=$conn->query($query2);
+//             // while($row1=$result1->fetch_assoc())
+//             // {
+//             //     $total_qty=$row1['qty'];
+//             //     // $remain_qty=$row1['remain_qty'];
+//             // }
+//             // $query2 = "SELECT SUM(qty) As `total_qty` FROM `stock` WHERE `pname`='$pname'";
+//             $query2 = "SELECT SUM(s.qty) AS total_qty
+//            FROM stock s
+//            INNER JOIN purchase_data v ON s.venid = v.id
+//            WHERE s.pname = '$pname'
+//              AND MONTH(v.purchase_date) = MONTH(CURRENT_DATE())
+//              AND YEAR(v.purchase_date) = YEAR(CURRENT_DATE())";
 
-            $result1=$conn->query($query2);
-            while($row1=$result1->fetch_assoc())
-            {
-                $total_qty=$row1['total_qty'];
-            }
-            $kitchenQty=0;
-            $remain=0;
-            // if ($perCaseQty != 0)
-            // {
-            //     $kitchenQty=$total_qty/$perCaseQty;
-            //     $remain=$remain_qty/$perCaseQty;
-            // }
-            $row['total_qty'] = number_format($kitchenQty,2);
-            $row['remain_qty'] = number_format($remain,2);
-            $row['curMonth'] = number_format($total_qty,2);
+//             $result1=$conn->query($query2);
+//             while($row1=$result1->fetch_assoc())
+//             {
+//                 $total_qty=$row1['total_qty'];
+//             }
+//             $kitchenQty=0;
+//             $remain=0;
+//             // if ($perCaseQty != 0)
+//             // {
+//             //     $kitchenQty=$total_qty/$perCaseQty;
+//             //     $remain=$remain_qty/$perCaseQty;
+//             // }
+//             $row['total_qty'] = number_format($kitchenQty,2);
+//             $row['remain_qty'] = number_format($remain,2);
+//             $row['curMonth'] = number_format($total_qty,2);
 
 
 
-            $row['qty'] = number_format($row['qty'],2);
-            $row['issued'] = number_format($row['issued'],2);
-            $row['remain'] = number_format($row['remain'],2);
+//             $row['qty'] = number_format($row['qty'],2);
+//             $row['issued'] = number_format($row['issued'],2);
+//             $row['remain'] = number_format($row['remain'],2);
 
-            $options[]=$row;
-        }
-    }
-    header('Content-Type: application/json');
-    echo json_encode($options);
+//             $options[]=$row;
+//         }
+//     }
+//     header('Content-Type: application/json');
+//     echo json_encode($options);
 
-    $conn->close();
-}
+//     $conn->close();
+// }
 
 if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 {
@@ -633,7 +556,7 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
         $sql = "
             SELECT
                 p.pname AS 'Product Name',
-                p.unit AS 'unit',
+                p.sellunit AS 'unit',
                 p.pid AS 'pid',
                 IFNULL((SELECT SUM(ss.stock + ss.stockReturn) - SUM(ss.issuedStock + ss.wastageStock)
                         FROM store_stock ss
@@ -671,7 +594,7 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
         $sql = "
             SELECT
                 p.pname AS 'Product Name',
-                p.unit AS 'unit',
+                p.sellunit AS 'unit',
                 p.pid AS 'pid',
                 IFNULL((SELECT SUM(ss.stock + ss.stockReturn) - SUM(ss.issuedStock + ss.wastageStock)
                         FROM store_stock ss
@@ -891,7 +814,6 @@ if(isset($_POST['damageStockview']))
 //kitchen category show
 if(isset($_POST['kitcencat']))
 {
-    // $sql = "SELECT DISTINCT `stock1`.`category` FROM `stock1`,`categoroy`WHERE `stock1`.`category`=`categoroy`.`CategoryName` AND `categoroy`.`catType`='Kitchen'";
     $sql="SELECT `CategoryName` AS `category` FROM `categoroy` WHERE `catType`='Kitchen'";
     $result = $conn->query($sql);
     $options = array();
@@ -979,47 +901,30 @@ if(isset($_POST['kitchenallStock']))
     $conn->close();
 }
 
-// kitch stock 
-if(isset($_POST['kitchenallStock1']))
+//kitchen purchase 
+if(isset($_POST['kitchenHistory']))
 {
-    $fdate=$_POST['fdate1'];
-    if($fdate=="none")
-    {
-        $query1 = "SELECT `kitchen_stock`.*,`kitchen_data`.`remain` FROM `kitchen_stock`,`kitchen_data` WHERE `kitchen_data`.`id`=`kitchen_stock`.`dataid` AND `kitchen_stock`.`qty`!=0";
-    }else
-    {
-        $tdate=$_POST['tdate'];
-        // $query1 = "SELECT * FROM `kitchen_stock` WHERE `givenDate` BETWEEN '$fdate' AND '$tdate'";
-        $query1 = "SELECT `kitchen_stock`.*,`kitchen_data`.`remain` FROM `kitchen_stock`,`kitchen_data` WHERE `kitchen_data`.`id`=`kitchen_stock`.`dataid` AND `kitchen_stock`.`qty`!=0 AND `givenDate` BETWEEN '$fdate' AND '$tdate'";
-    }
-    $result=$conn->query($query1);
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+
+    $result = $conn->query("SELECT
+                            `store_kitchen`.*,
+                            `products`.`pname`,
+                            `products`.`sellunit`
+                        FROM
+                            `store_kitchen`,
+                            `products`
+                        WHERE
+                            `store_kitchen`.`pid` = `products`.`pid`
+                            AND (`store_kitchen`.`stock` != 0 OR `store_kitchen`.`stockreturn` != 0)
+                            AND `store_kitchen`.`date` BETWEEN '$fdate' AND '$tdate'
+                    ");
+
     $options=array();
     if($result->num_rows > 0)
     {
         while($row=$result->fetch_assoc())
         {
-            $options[]=$row;
-        }
-    }
-    header('Content-Type: application/json');
-    echo json_encode($options);
-
-    $conn->close();
-}
-
-// kitch stock 
-if(isset($_POST['kitchenstock_all']))
-{
-    $query1="SELECT * FROM `kitchen_data` WHERE `qty`!=0";
-    $result=$conn->query($query1);
-    $options=array();
-    if($result->num_rows > 0)
-    {
-        while($row=$result->fetch_assoc())
-        {
-            $row['qty']=number_format($row['qty'],2);
-            $row['issuedqty']=number_format($row['issuedqty'],2);
-            $row['remain']=number_format($row['remain'],2);
             $options[]=$row;
         }
     }

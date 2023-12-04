@@ -513,7 +513,7 @@ function printData(tab_no,event)
                 success: function(status)
                 {
                     console.log(status);
-                    window.location="table_master.php";
+                    window.location="finalInvoice.php?billno="+status+"&back=1";
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("AJAX Error: " + textStatus, errorThrown);

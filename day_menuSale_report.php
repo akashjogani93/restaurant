@@ -34,7 +34,7 @@
             border: 1px solid black;
             padding: 5px;
         }
-        #monthsale{
+        #dayfoodsale{
             background: green;
         }
     </style>
@@ -72,18 +72,12 @@
                                     <th></th>
                                 </tr> -->
                                 <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Invoice Number</th>
-                                    <th scope="col">Gross Amount</th>
-                                    <th scope="col">Discount</th>
-                                    <th scope="col">C.GST</th>
-                                    <th scope="col">S.GST</th>
-                                    <th scope="col">Round Off(-)</th>  
-                                    <th scope="col">Round Off(+)</th>
-                                    <th scope="col">Net Amount</th>
+                                    <th scope="col">Menu Item Code</th>
+                                    <th scope="col">Menu Item Name</th>
+                                    <th scope="col">Quantity</th>
                                 </tr>
                             </thead>
-                            <tbody id="monthData">
+                            <tbody id="menuqtySale">
                             </tbody>
                         </table>
                         </div>
@@ -96,11 +90,11 @@
             $(document).ready(function()
             {
                 const day_sales=new Reports();
-                day_sales.month_sales()
+                day_sales.menu_Qty()
 
                 $('#search').on('click',function()
                 {
-                    day_sales.month_sales()
+                    day_sales.menu_Qty()
                 });
             });
             // function generatePDF() 

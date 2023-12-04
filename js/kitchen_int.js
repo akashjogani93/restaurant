@@ -596,8 +596,7 @@ class Kitchen
                 options: [],
                 categorys:[],
                 kitchenstock:[],
-                kitchenstock1:[],
-                kitchenstock_all:[],
+                kitchenpurchase:[],
                 selectedOption: '',
                 categoryOption:'',
                 productQty: '',
@@ -610,6 +609,7 @@ class Kitchen
             mounted() {
                 this.fetchOptions();
                 this.stockbyDate();
+                this.kitchenHistory();
             },
             methods: {
                 fetchOptions()
@@ -630,47 +630,6 @@ class Kitchen
                         data:{kitcencat:"kitcencat"},
                         success(response) {
                             vm.categorys = response;
-                        },
-                        error(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
-                    // var fdate="none";
-                    // let log= $.ajax({
-                    //     url: 'ajax/store_all.php',
-                    //     method: 'POST',
-                    //     data:{kitchenallStock:"kitchen_allStock",fdate:fdate},
-                    //     success(response) 
-                    //     {
-                    //         console.log(response);
-                    //         vm.kitchenstock = response;
-                    //     },
-                    //     error(xhr, status, error) {
-                    //         console.error(error);
-                    //     }
-                    // });
-                    var fdate="none";
-                    let log2= $.ajax({
-                        url: 'ajax/store_all.php',
-                        method: 'POST',
-                        data:{kitchenallStock1:"kitchen_allStock",fdate1:fdate},
-                        success(response) 
-                        {
-                            // console.log(response);
-                            vm.kitchenstock1 = response;
-                        },
-                        error(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
-                    let log5= $.ajax({
-                        url: 'ajax/store_all.php',
-                        method: 'POST',
-                        data:{kitchenstock_all:"kitchenstock_all"},
-                        success(response) 
-                        {
-                            // console.log(response);
-                            vm.kitchenstock_all = response;
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -722,6 +681,35 @@ class Kitchen
                         }
                     });
                 },
+                kitchenHistory()
+                {
+                    const vm=this;
+                    var fdate=$('#fdate').val();
+                    var tdate=$('#tdate').val();
+                    if(fdate=='')
+                    {
+                        $('#fdate').css('border-color', 'red');
+                        return;
+                    }
+                    if(tdate=='')
+                    {
+                        $('#tdate').css('border-color','red');
+                        return;
+                    }
+                    let log= $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{kitchenHistory:"kitchenHistory",fdate:fdate,tdate:tdate},
+                        success(response) 
+                        {
+                            vm.kitchenpurchase= response;
+                        },
+                        error(xhr, status, error) 
+                        {
+                            console.error(error);
+                        }
+                    });
+                },
                 handleIssued(index) 
                 {
                     this.selectedIndex = index;
@@ -745,6 +733,10 @@ class Kitchen
                     {
                         return;
                     }
+                    if(issued==0)
+                    {
+                        return;
+                    }
                     let log=$.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
@@ -754,7 +746,7 @@ class Kitchen
                         },
                         success: function(response) 
                         {
-                            console.log(log);
+                            console.log(response);
                         },
                         error: function(xhr, status, error) 
                         {
@@ -762,11 +754,11 @@ class Kitchen
                         }
                     });
                     $('#issuedModal').modal('hide');
-                    this.closingStock='',
-                    this.selectedIndex=null,
-                    this.pid=null,
-                    $('#issued').val('')
-                    this.stockbyDate()
+                    this.closingStock='';
+                    this.selectedIndex=null;
+                    this.pid=null;
+                    $('#issued').val('');
+                    this.stockbyDate();
                 },
                 handleReturnConfirm()
                 {
@@ -786,18 +778,24 @@ class Kitchen
                         },
                         success: function(response) 
                         {
-                            console.log(log);
+                            console.log(response);
                         },
                         error: function(xhr, status, error) 
                         {
                             console.error(error);
                         }
                     });
+                    
                     $('#returnModal').modal('hide');
-                    this.closingStock='',
-                    this.selectedIndex=null,
-                    this.pid=null,
-                    $('#return').val('')
+                    
+                    this.closingStock='';
+                    
+                    this.selectedIndex=null;
+                    
+                    this.pid=null;
+                    
+                    $('#return').val('');
+                    
                     this.stockbyDate()
                 }
         
@@ -1029,29 +1027,176 @@ class Beaverages
             el:'#app',
             data:{
                 options:[],
+                categorys:[],
+                bevstock:[],
                 selectedOption:'',
+                categoryOption:'',
             },
             methods:{
                 fetchOptions()
                 {
-                    const vm=this;
-                    let log=$.ajax({
+                    var yourDateValue = new Date();
+                    var formattedDate = yourDateValue.toISOString().substr(0, 10)
+                    $('#fdate').val(formattedDate);
+                    $('#tdate').val(formattedDate);
+
+                    const vm = this;
+                    let log1= $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{bev:"bev"},
-                        success(response) 
-                        {
+                        data:{bevcat:"bevcat"},
+                        success(response) {
+                            vm.categorys = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                },
+                categoryChange()
+                {
+                    const vm=this;
+                    var category=this.categoryOption;
+                    // console.log(category);
+                    let log= $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{kit:category},
+                        success(response) {
                             vm.options = response;
                         },
                         error(xhr, status, error) {
                             console.error(error);
                         }
                     });
-                }
+                },
+                stockbyDate()
+                {
+                    const vm=this;
+                    var fdate=$('#fdate').val();
+                    var tdate=$('#tdate').val();
+                    if(fdate=='')
+                    {
+                        $('#fdate').css('border-color', 'red');
+                        return;
+                    }
+                    if(tdate=='')
+                    {
+                        $('#tdate').css('border-color','red');
+                        return;
+                    }
+                    let log= $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{BeaveragesStock:"bevStock",fdate:fdate,tdate:tdate},
+                        success(response) 
+                        {
+                            vm.bevstock = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                },
             },
             mounted()
             {
                 this.fetchOptions();
+                this.stockbyDate();
+            }
+        });
+    }
+}
+
+class parcelMaterial
+{
+    constructor() 
+    {
+        this.initializeTabs();
+    }
+    initializeTabs()
+    {
+        var app= new Vue({
+            el:'#app',
+            data:{
+                options:[],
+                categorys:[],
+                material:[],
+                selectedOption:'',
+                categoryOption:'',
+            },
+            methods:{
+                fetchOptions()
+                {
+                    var yourDateValue = new Date();
+                    var formattedDate = yourDateValue.toISOString().substr(0, 10)
+                    $('#fdate').val(formattedDate);
+                    $('#tdate').val(formattedDate);
+
+                    const vm = this;
+                    let log1= $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{parcelcat:"parcelcat"},
+                        success(response) {
+                            vm.categorys = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                },
+                categoryChange()
+                {
+                    const vm=this;
+                    var category=this.categoryOption;
+                    // console.log(category);
+                    let log= $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{kit:category},
+                        success(response) {
+                            vm.options = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                },
+                stockbyDate()
+                {
+                    const vm=this;
+                    var fdate=$('#fdate').val();
+                    var tdate=$('#tdate').val();
+                    if(fdate=='')
+                    {
+                        $('#fdate').css('border-color', 'red');
+                        return;
+                    }
+                    if(tdate=='')
+                    {
+                        $('#tdate').css('border-color','red');
+                        return;
+                    }
+                    let log= $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{materialStock:"material",fdate:fdate,tdate:tdate},
+                        success(response) 
+                        {
+                            vm.material = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                    // console.log(log)
+                },
+            },
+            mounted()
+            {
+                this.fetchOptions();
+                this.stockbyDate();
             }
         });
     }

@@ -27,6 +27,9 @@
             border: 1px solid black;
             padding: 5px;
         }
+        #kitchenStock{
+            background: green;
+        }
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="content-wrapper">
@@ -84,7 +87,7 @@
                                     <th>Purchase Stock</th>
                                     <th>Issued Stock</th>
                                     <th>Return Stock</th>
-                                    <th>Cloasing Stock</th>
+                                    <th>Closing Stock</th>
                                     <th>Use/Return</th>
                                 </tr>
                             </thead>
@@ -99,7 +102,7 @@
                                     <td>{{ item.retur }}</td>
                                     <td>{{ item.cloasing }}</td>
                                     <td>
-                                        <button class="btn btn-success" @click="handleIssued(index)">Issued</button>
+                                        <button class="btn btn-success" @click="handleIssued(index)">Issue</button>
                                         <button class="btn btn-info" @click="handleReturn(index)">Return</button>
                                     </td>
                                 </tr>
@@ -178,13 +181,14 @@
             $('#issued').on('input',function()
             {
                 var value = $('#issued').val();
+
                 value = value.replace(/[^0-9.]/g, '');
-                value = value.replace(/(\..*)\./g, '$1');
+                value = value.replace(/(\.[^.]*)\./g, '$1');
                 tdValue = parseFloat($('#closingStock').val());
 
-                value = parseFloat(value);
-                if (value > tdValue) 
-                {
+                if (isNaN(value)) {
+                    value = 0;
+                } else if (value > tdValue) {
                     value = tdValue;
                 }
                 $('#issued').val(value);
@@ -193,13 +197,12 @@
             {
                 var value = $('#return').val();
                 value = value.replace(/[^0-9.]/g, '');
-                value = value.replace(/(\..*)\./g, '$1');
+                value = value.replace(/(\.[^.]*)\./g, '$1');
                 tdValue = parseFloat($('#returnStock').val());
 
-                value = parseFloat(value);
-
-                if (value > tdValue) 
-                {
+                if (isNaN(value)) {
+                    value = 0;
+                } else if (value > tdValue) {
                     value = tdValue;
                 }
                 $('#return').val(value);

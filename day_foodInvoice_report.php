@@ -25,6 +25,11 @@
             background-color:grey;
             color:white;
         }
+        .table>tfoot
+        {
+            background-color:grey;
+            color:white;
+        }
         .table{
             border-collapse: collapse;
         }
@@ -34,14 +39,14 @@
             border: 1px solid black;
             padding: 5px;
         }
-        #monthsale{
+        #dayfoodinv{
             background: green;
         }
     </style>
     <script src="js/reports.js"></script>
     <div class="content-wrapper">
         <section class="content">
-            <h3 class="top-headerMain">Month Sales</h3>
+            <h3 class="top-headerMain">Daily Sales</h3>
             <?php include('buttons.html'); ?>
             <div class="box box-primary">
                 <div class="box-body form1">
@@ -66,26 +71,7 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <table class="table" id="kotdata">
-                            <thead class="thead-dark">
-                                <!-- <tr>
-                                    <th></th>
-                                </tr> -->
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Invoice Number</th>
-                                    <th scope="col">Gross Amount</th>
-                                    <th scope="col">Discount</th>
-                                    <th scope="col">C.GST</th>
-                                    <th scope="col">S.GST</th>
-                                    <th scope="col">Round Off(-)</th>  
-                                    <th scope="col">Round Off(+)</th>
-                                    <th scope="col">Net Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody id="monthData">
-                            </tbody>
-                        </table>
+                            <div id="maintable"></div>
                         </div>
                     </div>
                 </div>
@@ -96,11 +82,10 @@
             $(document).ready(function()
             {
                 const day_sales=new Reports();
-                day_sales.month_sales()
-
+                day_sales.day_foodInvoice();
                 $('#search').on('click',function()
                 {
-                    day_sales.month_sales()
+                    day_sales.day_foodInvoice();
                 });
             });
             // function generatePDF() 

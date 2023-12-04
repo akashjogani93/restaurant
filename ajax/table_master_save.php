@@ -84,7 +84,7 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
             $exc1=mysqli_query($conn,$tem);
             if($exc1)
             {
-                echo 'CLEAR';
+                echo $insertedId;
             }
         }else
         {

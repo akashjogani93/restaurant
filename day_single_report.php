@@ -34,7 +34,7 @@
             border: 1px solid black;
             padding: 5px;
         }
-        #monthsale{
+        #singlefoodsale{
             background: green;
         }
     </style>
@@ -72,18 +72,15 @@
                                     <th></th>
                                 </tr> -->
                                 <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Invoice Number</th>
-                                    <th scope="col">Gross Amount</th>
-                                    <th scope="col">Discount</th>
-                                    <th scope="col">C.GST</th>
-                                    <th scope="col">S.GST</th>
-                                    <th scope="col">Round Off(-)</th>  
-                                    <th scope="col">Round Off(+)</th>
-                                    <th scope="col">Net Amount</th>
+                                    <th scope="col">Bill No</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Table No</th>
+                                    <th scope="col">Waiter Code</th>
+                                    <th scope="col">Uid</th>
+                                    <th scope="col">Date & Time</th>
                                 </tr>
                             </thead>
-                            <tbody id="monthData">
+                            <tbody id="singleFood">
                             </tbody>
                         </table>
                         </div>
@@ -96,11 +93,11 @@
             $(document).ready(function()
             {
                 const day_sales=new Reports();
-                day_sales.month_sales()
+                day_sales.singleFood()
 
                 $('#search').on('click',function()
                 {
-                    day_sales.month_sales()
+                    day_sales.singleFood()
                 });
             });
             // function generatePDF() 

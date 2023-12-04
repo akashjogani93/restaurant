@@ -37,6 +37,10 @@
         #dailysale{
             background: green;
         }
+        @media (min-width: 768px){
+.modal-dialog {
+            width: 1000px !important; /* Adjust the percentage as needed */
+        }}
     </style>
     <script src="js/reports.js"></script>
     <div class="content-wrapper">
@@ -55,8 +59,8 @@
                             <input type="date" class="form-control pull-right" name="tdate" id="tdate">
                         </div>
                         <div class="form-group col-md-4">
-                            <button class="btn btn-success" style="margin-top:23px;">SEARCH</button>
-                            <button class="btn btn-danger" style="margin-top:23px;" onclick="exportTableToPdf1()">PDF</button>
+                            <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
+                            <button class="btn btn-danger" style="margin-top:23px;" onclick="generatePDF1()">PDF</button>
                             <button class="btn btn-success" style="margin-top:23px;">Excel</button>
                         </div>
                     </div>
@@ -65,23 +69,67 @@
             <div class="box box-primary">
                 <div class="box-body form1">
                     <div class="row">
-                        <div class="col-md-12">
-                        <table class="table" id="kotdata">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">Invoice Date</th>
-                                    <th scope="col">Invoice Number</th>
-                                    <th scope="col">Gross Amount</th>
-                                    <th scope="col">Discount</th>
-                                    <th scope="col">GST Amount</th>
-                                    <th scope="col">Round Off(-)</th>  
-                                    <th scope="col">Round Off(+)</th>
-                                    <th scope="col">Net Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody id="kotdata">
-                            </tbody>
-                        </table>
+                        <div class="col-md-12" id="mainData">
+                            <table class="table" id="kotdata">
+                                <thead class="thead-dark" style="background-color: grey; color: white;">
+                                    <tr>
+                                        <th scope="col">Invoice Date</th>
+                                        <th scope="col">Invoice Number</th>
+                                        <th scope="col">Gross Amount</th>
+                                        <th scope="col">Discount</th>
+                                        <th scope="col">GST Amount</th>
+                                        <th scope="col">Round Off(-)</th>  
+                                        <th scope="col">Round Off(+)</th>
+                                        <th scope="col">Net Amount</th>
+                                        <th scope="col">Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dayData">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl custom-width">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Invoice</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-header">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="">Invoice Number</label>
+                                        <input type="text" class="form-control" id="editSlno" readonly>
+                                    </div>
+                                </div></br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <table class="table" id="editTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Item Name</th>
+                                                <th>Qty</th>
+                                                <th>Prc</th>
+                                                <th>Tot</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -92,31 +140,163 @@
             $(document).ready(function()
             {
                 const day_sales=new Reports();
-                day_sales.day_sales()
+                day_sales.day_sales();
+                $('#search').on('click',function()
+                {
+                    day_sales.day_sales();
+                });
+                
+                $(document).on("click", ".edit-btn", function() 
+                {
+                    var billno = $(this).closest('tr').find('td:eq(1)').text();
+                    let billdata=[];
+                    localStorage.removeItem('billData');
+                    let log=$.ajax({
+                            type: "post",
+                            url: "ajax/reports.php",
+                            dataType: 'json',
+                            data: {
+                                billno: billno,
+                            },
+                            cache: false,
+                            success:function(status)
+                            {
+                                billdata = status;
+                                updateModal(billdata);
+                            }
+                        });
+                });
+
+                $("#kotdata tbody").on('dblclick', 'tr', function() 
+                {
+                    var currow = $(this).closest('tr');
+                    var item_id = currow.find('td:eq(1)').html();
+                    window.location.href = 'finalInvoice.php?billno='+item_id+"&back=0";
+                });
+
+                $(document).on("click", ".delete-btn", function() {
+                    var storedData = JSON.parse(localStorage.getItem('billData')) || { items: [] };
+                    var indexToDelete = $(this).data('index');
+                    storedData.items.splice(indexToDelete, 1);
+
+                    // Check if no more items, then hide modal or provide indication
+                    if (storedData.items.length === 0) 
+                    {
+                        $('.bd-example-modal-xl').modal('hide');
+                    } else {
+                        updateModal(storedData);
+                    }
+                });
+
+                $(document).on("click", ".quantity-btn", function() {
+                    var storedData = JSON.parse(localStorage.getItem('billData')) || { items: [] };
+                    var indexToUpdate = $(this).data('index');
+                    var action = $(this).data('action');
+
+                    if (action === 'increase') {
+                        storedData.items[indexToUpdate].qty++;
+                    } else if (action === 'decrease' && storedData.items[indexToUpdate].qty > 0) {
+                        storedData.items[indexToUpdate].qty--;
+                    }
+
+                    storedData.items[indexToUpdate].tot = storedData.items[indexToUpdate].qty * storedData.items[indexToUpdate].prc;
+                    updateModal(storedData);
+                });
+
+                $('#saveChanges').on('click',function()
+                {
+                    var storedData = JSON.parse(localStorage.getItem('billData'));
+                    let log=$.ajax({
+                            type: "post",
+                            url: "ajax/reports.php",
+                            dataType: 'json',
+                            data: {
+                                storedData: storedData,
+                            },
+                            cache: false,
+                            success:function(status)
+                            {
+                                console.log(status);
+                            }
+                        });
+                    console.log(log);
+                });
             });
-            // function generatePDF() 
-            // {
-            //     console.log('running');
-            //     const doc = new jsPDF();
-            //     const table = document.getElementById("kotdata");
-            //     doc.fromHTML(table, 15, 15);
-            //     doc.save("table.pdf");
-            // }
-        </script>
-        <script>
-            function exportTableToPdf1() 
+
+            function updateModal(data) 
             {
-                var table = document.getElementById("kotdata");
-                console.log(table)
-                var options = {
-                    margin: 10,
-                    filename: "table.pdf",
-                    image: { type: "jpeg", quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                };
-                html2pdf().from(table).set(options).outputPdf();
+                localStorage.setItem('billData', JSON.stringify(data));
+                var tbody = $('#editTable tbody');
+                tbody.empty();
+                var billno = data.billno;
+                $('#editSlno').val(billno);
+                var totalSum = 0;
+                data.items.forEach(function(item, index)
+                {
+                    var totValue = parseFloat(item.tot);
+                    var qty = parseFloat(item.qty);
+                    var row = '<tr>' +
+                                    '<td>' + item.itmnam + '</td>' +
+                                    '<td>' + 
+                                        '<button class="quantity-btn" data-action="decrease" data-index="' + index + '"> - </button>&nbsp;&nbsp;' +
+                                        '<span class="quantity">' + qty + '</span>&nbsp;&nbsp;' +
+                                        '<button class="quantity-btn" data-action="increase" data-index="' + index + '"> + </button>&nbsp;&nbsp;' +
+                                    '</td>' +
+                                    '<td>' + item.prc + '</td>' +
+                                    '<td>' + totValue + '</td>' +
+                                    '<td><button class="delete-btn" data-index="' + index + '">Delete</button></td>' +
+                                '</tr>';
+                    totalSum += totValue; 
+                    tbody.append(row);
+                });
+                var sumRow = '<tr>' +
+                        '<td colspan="2"></td>' +
+                        '<td colspan="2"><strong>Total:</strong></td>' +
+                        '<td>' + totalSum + '</td>' +
+                        '</tr>';
+                    tbody.append(sumRow);
+                $('.bd-example-modal-xl').modal('show');
+            }
+
+            function generatePDF() 
+            {
+                console.log('running');
+                const doc = new jsPDF();
+                const table = document.getElementById("kotdata");
+                doc.fromHTML(table, 15, 15);
+                doc.save("table.pdf");
             }
         </script>
+        <script>
+            function generatePDF1()
+            {
+                var mainDataElement = document.getElementById('mainData');
+                // Get the outer HTML with the added styles
+                var data = mainDataElement.outerHTML;
+                // Create a new XMLHttpRequest object
+                var xhr = new XMLHttpRequest();
+                // Set up the XMLHttpRequest
+                xhr.open('POST', 'tcpdf.php', true);
+                xhr.responseType = 'arraybuffer';
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                // Define the callback function when the state of the XMLHttpRequest changes
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState === 4 && xhr.status === 200) 
+                    {
+                        // Create a Blob object from the response data
+                        var blob = new Blob([xhr.response], {type: 'application/pdf'});
+                        // Create a download link and trigger the download by simulating a click event
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = "your_pdf_file_name.pdf";
+                        link.click();
+                    }
+                };
+                // Send the POST request
+                xhr.send('table_data=' + encodeURIComponent(data));
+            }
+        </script>
+
     </div>
 </body>

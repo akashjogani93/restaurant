@@ -211,6 +211,7 @@
                                                         <option value="">Select</option>
                                                         <option>Kitchen</option>
                                                         <option>Bevarages</option>
+                                                        <option>ParcelMaterial</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-12">

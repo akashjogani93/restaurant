@@ -27,6 +27,9 @@
             border: 1px solid black;
             padding: 5px;
         }
+        #kitchenhis{
+            background: green;
+        }
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="content-wrapper">
@@ -44,10 +47,26 @@
                         <div class="col-md-12">
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="form-group col-md-4">
-                                        <button class="btn btn-danger" onclick="exportTableToPdf1()">PDF</button>
-                                        <button class="btn btn-success">Excel</button>
-                                    </div>
+                                    <!-- <form class="form-horizontal" method="post" action="kitchen_given.php"> -->
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEmail3" class="col-sm-4 control-label">From Date</label>
+                                            <div class="col-sm-8">
+                                                <input type="date" class="form-control pull-right" name="from_date" id="fdate">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEmail3" class="col-sm-4 control-label">To Date</label>
+                                            <div class="col-sm-8">
+                                                <input type="date" class="form-control pull-right" name="to_date" id="tdate">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <!-- <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button> -->
+                                            <button type="submit" name="view_report" class="btn btn-info" id="search" @click="kitchenHistory()">View</button>
+                                            <button class="btn btn-danger" onclick="exportTableToPdf1()">PDF</button>
+                                            <button class="btn btn-success">Excel</button>
+                                        </div>
+                                    <!-- </form> -->
                                 </div>
                             </div>
                         </div>
@@ -61,29 +80,22 @@
                         <table id="example1" class="table">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Slno</th>
                                     <th>Item Name</th>
-                                    <th>Opening Stock</th>
                                     <th>Unit</th>
-                                    <th>Issued Stock</th>
-                                    <th>Remain Qty</th>
-                                    <th>Use</th>
+                                    <th>Purchase Stock</th>
+                                    <th>Remain Stock</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(item, index) in kitchenstock_all" :key="item.id">
-                                    <td>{{ item.id }}</td>
+                                <tr v-for="(item, index) in kitchenpurchase" :key="item.id">
+                                    <td>{{ index + 1 }}</td>
                                     <td>{{ item.pname }}</td>
-                                    <td>{{ item.qty }}</td>
-                                    <td>{{ item.unit }}</td>
-                                    <td>{{ item.issuedqty }}</td>
-                                    <td class="td-class">{{ item.remain }}</td>
-                                    <td>
-                                        <div style="display:flex;">
-                                            <input type="text" name="inputTag" class="form-control" placeholder="Kitchen use Qty" style="width: 40%; margin-right:10px;" oninput="validateInput(this)">
-                                            <button class="btn btn-info" onclick="getDataFromRow(this)">Use</button>
-                                        </div>
-                                    </td>
+                                    <td>{{ item.sellunit }}</td>
+                                    <td>{{ item.stock }}</td>
+                                    <td>{{ item.stockreturn }}</td>
+                                    <td>{{ item.date }}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -174,10 +174,10 @@ function myFunction()
 {
    window.print();
    var tab="<?php echo $table_no; ?>";
-    window.onafterprint = function(event)
-    {
+    // window.onafterprint = function(event)
+    // {
         window.location.href ="table_master.php?tabno="+tab;
-    };
+    // };
 }
 </script>
 </body>
