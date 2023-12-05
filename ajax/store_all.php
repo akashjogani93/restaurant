@@ -456,10 +456,12 @@ if(isset($_POST['assetsProduct']))
     $exc=mysqli_query($conn,$query);
     if($exc)
     {
+        $id=mysqli_insert_id($conn);
+        $inv="INSERT INTO `assetsstock`(`pur_id`,`date`) VALUES ('$id','$currentDate')";
+        $out=mysqli_query($conn,$inv);
         echo 'Product Added';
     }
 }
-
 
 if(isset($_POST['assetsdata']))
 {
@@ -492,21 +494,11 @@ if(isset($_POST['assetsSubmitData']))
             $qty=$stock['qty'];
             $total=$stock['total'];
             $price=$stock['price'];
-            $select="SELECT * FROM `assetsstock` WHERE `product`='$product'";
-            $selectcon=mysqli_query($conn,$select);
-            if(mysqli_num_rows($selectcon) > 0)
-            {
-                while($row=mysqli_fetch_assoc($selectcon))
-                {
-                    $qu="UPDATE `assetsstock` SET `qty`=`qty`+'$qty',`amount`=`amount`+'$total' WHERE `product`='$product'";
-                    $exc1=mysqli_query($conn,$qu);
-                }
-            }else
-            {
-                $qu="INSERT INTO `assetsstock`(`product`,`qty`,`amount`) VALUES ('$product','$qty','$total')";
-                $exc1=mysqli_query($conn,$qu);
-            }
-            $qu="INSERT INTO `assetspurchasedata`(`pur_id`, `product`, `amount`,`qty`,`total`,`remainQty`,`remainTotal`) VALUES ('$insertId','$product','$price','$qty','$total','$qty','$total')";
+
+            $assetspurchasedata="INSERT INTO `assetspurchasedata`(`pur_id`, `amount`, `qty`, `total`,`venId`) VALUES ('$product','$price','$qty','$total','$insertId')";
+            $assetpur=mysqli_query($conn,$assetspurchasedata);
+
+            $qu="INSERT INTO `assetsstock`(`pur_id`, `stock`,`amount`, `date`) VALUES ('$product','$qty','$total','$date')";
             $exc1=mysqli_query($conn,$qu);
         }
         echo 'Assets Purchased';
@@ -778,22 +770,76 @@ if(isset($_POST['fetch_vendors']))
 if(isset($_POST['StockAssetsFetch']))
 {
     $cat_name='';
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $fdate = mysqli_real_escape_string($conn,$fdate);
+    $tdate = mysqli_real_escape_string($conn,$tdate);
     if($cat_name=='')
     {
-        $query1 = "SELECT * FROM `assetsstock`";
+        $query1 = "SELECT
+                        p.product AS 'product',
+                        p.id AS 'id',
+                    IFNULL((SELECT SUM(s.stock) - SUM(s.damage)
+                        FROM assetsstock s
+                        WHERE s.pur_id = p.id AND s.date < '$fdate'
+                    ), 0) AS 'Opening Stock',
+                    IFNULL((SELECT SUM(s.amount) - SUM(s.damageAmount)
+                        FROM assetsstock s
+                        WHERE s.pur_id = p.id AND s.date < '$fdate'
+                        ), 0) AS 'OpeningAmt',
+                    IFNULL((SELECT SUM(s.stock)
+                        FROM assetsstock s
+                        WHERE s.pur_id = p.id AND s.date BETWEEN '$fdate' AND '$tdate'
+                    ), 0) AS 'Purchase Stock',
+                    IFNULL((SELECT SUM(s.amount)
+                        FROM assetsstock s
+                        WHERE s.pur_id = p.id AND s.date BETWEEN '$fdate' AND '$tdate'
+                    ), 0) AS 'Purchaseamt',
+                    IFNULL((SELECT SUM(s.damage)
+                        FROM assetsstock s
+                        WHERE s.pur_id = p.id AND s.date BETWEEN '$fdate' AND '$tdate'
+                    ), 0) AS 'damage',
+                    IFNULL((SELECT SUM(s.damageAmount)
+                        FROM assetsstock s
+                        WHERE s.pur_id = p.id AND s.date BETWEEN '$fdate' AND '$tdate'
+                    ), 0) AS 'damageAmount'
+                    FROM assetsproduct p";
+
     }else
     {
         $query1 = "SELECT * FROM `assetsstock` WHERE `product`='$cat_name'";
     }
-    // $exc=mysqli_query($conn,$query1);
-    // $query="SELECT * FROM `stock1`";
     $result=$conn->query($query1);
     $options=array();
     if($result->num_rows > 0)
     {
         while($row=$result->fetch_assoc())
         {
-            $options[]=$row;
+            $name=$row['product'];
+            $id=$row['id'];
+            $openingStock=number_format($row['Opening Stock'],2);
+            $purchaseStock=number_format($row['Purchase Stock'],2);
+            $damage=number_format($row['damage'],2);
+
+            $openingAmt=number_format($row['OpeningAmt'],2);
+            $Purchaseamt=number_format($row['Purchaseamt'],2);
+            $damageAmount=number_format($row['damageAmount'],2);
+
+        $cloasingStock=number_format(($row['Opening Stock']+$row['Purchase Stock'])-($row['damage']),2);
+        $cloasinamt=number_format(($row['OpeningAmt']+$row['Purchaseamt'])-($row['damageAmount']),2);
+        $data=[
+            'name'=>$name,
+            'id'=>$id,
+            'openingStock'=>$openingStock,
+            'stocksum'=>$purchaseStock,
+            'damage'=>$damage,
+            'openingAmt'=>$openingAmt,
+            'Purchaseamt'=>$Purchaseamt,
+            'damageAmount'=>$damageAmount,
+            'cloasing'=>$cloasingStock,
+            'cloasinAmt'=>$cloasinamt,
+        ];
+            $options[]=$data;
         }
     }
     header('Content-Type: application/json');

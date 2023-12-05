@@ -83,7 +83,7 @@
                                     <th>Slno</th>
                                     <th>Item Name</th>
                                     <th>Unit</th>
-                                    <th>Stock</th>
+                                    <th>Qty</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>

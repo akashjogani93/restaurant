@@ -25,6 +25,26 @@
             <h1>
                 Stock Assets
             </h1>
+            </br>
+            <div class="row">
+                <div class="col-md-9 assets">
+                    <a class="btn btn-info buga" href="create_assets.php" style="margin-top:27px;">
+                        Create Asset
+                    </a>
+                    <a class="btn btn-info buga" href="purchase_assets.php" style="margin-top:27px;">
+                        Purchase
+                    </a>
+                    <a class="btn btn-success buga" href="stock_assets.php" style="margin-top:27px;">
+                        View Stock
+                    </a>
+                    <a class="btn btn-info buga" href="damage_assets.php" style="margin-top:27px;">
+                        Damage Stock
+                    </a>
+                    <a class="btn btn-info buga" href="purchaseRecord_assets.php" style="margin-top:27px;">
+                        Purchase Records
+                    </a>
+                </div>
+            </div>
         </section>
         <section class="content">
             <div id="app">
@@ -33,33 +53,26 @@
                         <div class="col-md-12">
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="row">
-                                        <div class="col-md-9 assets">
-                                            <a class="btn btn-info buga" href="create_assets.php" style="margin-top:27px;">
-                                                Create Asset
-                                            </a>
-                                            <a class="btn btn-info buga" href="purchase_assets.php" style="margin-top:27px;">
-                                                Purchase
-                                            </a>
-                                            <a class="btn btn-success buga" href="stock_assets.php" style="margin-top:27px;">
-                                                View Stock
-                                            </a>
-                                            <a class="btn btn-info buga" href="damage_assets.php" style="margin-top:27px;">
-                                                Damage Stock
-                                            </a>
-                                            <a class="btn btn-info buga" href="purchaseRecord_assets.php" style="margin-top:27px;">
-                                                Purchase Records
-                                            </a>
+                                    <!-- <form class="form-horizontal" method="post" action="kitchen_given.php"> -->
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEmail3" class="col-sm-4 control-label">From Date</label>
+                                            <div class="col-sm-8">
+                                                <input type="date" class="form-control pull-right" name="from_date" id="fdate">
+                                            </div>
                                         </div>
-                                    </div>
-                                    </br>
-                                    <!-- <div class="col-md-4">
-                                        <label for="inputPassword3" class="control-label">Select Category</label>
-                                        <select class="form-control" id="cat12" name="cat" placeholder="category" required v-model="catName" @change="fetchStock">
-                                            <option value="">All</option>
-                                            <option v-for="category in categoys" :value="category.CategoryName">{{ category.CategoryName }}</option>
-                                        </select>
-                                    </div> -->
+                                        <div class="form-group col-md-4">
+                                            <label for="inputEmail3" class="col-sm-4 control-label">To Date</label>
+                                            <div class="col-sm-8">
+                                                <input type="date" class="form-control pull-right" name="to_date" id="tdate">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <!-- <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button> -->
+                                            <button type="submit" name="view_report" class="btn btn-info" id="search" @click="beveragesHis()">View</button>
+                                            <button class="btn btn-danger" onclick="exportTableToPdf1()">PDF</button>
+                                            <button class="btn btn-success">Excel</button>
+                                        </div>
+                                    <!-- </form> -->
                                 </div>
                             </div>
                         </div>
@@ -75,7 +88,10 @@
                                 <tr>
                                     <th>Sl.No</th>
                                     <th>Product Name</th>
-                                    <th>Qty</th>
+                                    <th>Opening</th>
+                                    <th>Purchase</th>
+                                    <th>Damage</th>
+                                    <th>Cloasing</th>
                                     <th>Amount</th>
                                     <!-- <th>Wastage</th> -->
                                 </tr>
@@ -83,9 +99,12 @@
                             <tbody>
                                 <tr v-for="(item, index) in stockList" :key="item.id">
                                     <td>{{ index + 1 }}</td>
-                                    <td>{{ item.product }}</td>
-                                    <td class="td-class">{{ item.qty }}</td>
-                                    <td class="td-class">{{ item.amount }}</td>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.openingStock }}</td>
+                                    <td>{{ item.stocksum }}</td>
+                                    <td>{{ item.damage }}</td>
+                                    <td>{{ item.cloasing }}</td>
+                                    <td>{{ item.cloasinAmt }}</td>
                                     <!-- <td><div style="display:flex;">
                                         <input type="text" name="inputTag" class="form-control" placeholder="Wastage Qty" style="width: 50%; margin-right:10px;" oninput="validateInput(this)">
                                         <button class="btn btn-info" onclick="if (confirm('Stock Damaged..?')) getDataFromRow(this)">Damage</button>
@@ -158,7 +177,6 @@
                     console.error(error);
                 }
             });
-            // console.log(log);
         }
 
         var app= new Vue({
@@ -172,6 +190,10 @@
             {
                 fetchCategory()
                 {
+                    var yourDateValue = new Date();
+                    var formattedDate = yourDateValue.toISOString().substr(0, 10)
+                    $('#fdate').val(formattedDate);
+                    $('#tdate').val(formattedDate);
                     return;
                     const vm = this;
                     $.ajax({
@@ -191,10 +213,22 @@
                 {
                     const vm = this;
                     catName=this.catName;
-                    $.ajax({
+                    var fdate=$('#fdate').val();
+                    var tdate=$('#tdate').val();
+                    if(fdate=='')
+                    {
+                        $('#fdate').css('border-color', 'red');
+                        return;
+                    }
+                    if(tdate=='')
+                    {
+                        $('#tdate').css('border-color','red');
+                        return;
+                    }
+                    let log=$.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{StockAssetsFetch:'stock',prodtName:catName},
+                        data:{StockAssetsFetch:'stock',fdate:fdate,tdate:tdate},
                         success(response) 
                         {
                             console.log(response)
@@ -204,6 +238,7 @@
                             console.error(error);
                         }
                     });
+                    console.log(log);
                 }
             },
             mounted()

@@ -221,37 +221,52 @@ if(isset($_POST['singlefood']) && isset($_POST['fdate']) && isset($_POST['tdate'
 {
     $fdate=$_POST['fdate'];
     $tdate=$_POST['tdate'];
-    $query="SELECT 
-                t.itmnam,
-                t.qty,
-                t.tablename,
-                i.waitercode,
-                t.date,
-                i.date
-            FROM
-                tabledata t
-            JOIN
-                invoice i
-            ON
-                t.billno = i.billno
-            WHERE
-                t.date BETWEEN '$fdate' AND '$tdate'
-            AND
-                i.date BETWEEN '$fdate' AND '$tdate'
-            ORDER BY
-                t.itmnam,
-                t.date;";
-    $exc=mysqli_query($conn,$query);
-    while($row=mysqli_fetch_assoc($exc))
+
+    $query1="SELECT DISTINCT `itmnam` FROM `tabledata`";
+    $run=mysqli_query($conn,$query1);
+    while($row1=mysqli_fetch_assoc($run))
     {
-        ?>
-            <tr>
-                <td colspan="4"><?php echo $row['itmnam'];?></td>
-            </tr>
-            <tr>
+        $itmnam=$row1['itmnam'];
+        $query="SELECT 
+            td.qty as total_qty,
+            td.tabno,
+            td.date,
+            td.time,
+            i.slno,
+            i.cap_code,
+            i.cashId
+        FROM 
+            `tabledata` td
+        JOIN 
+            `invoice` i ON i.slno = td.billno
+        WHERE td.itmnam='$itmnam' AND i.date BETWEEN '$fdate' AND '$tdate';
+        ";
+        $qty=0;
+        $exc=mysqli_query($conn,$query);
+        while($row=mysqli_fetch_assoc($exc))
+        {
+            ?>
                 
-            </tr>
+                <tr>
+                    <td class="text-right"><?php echo $row['slno'];?></td>
+                    <td class="text-right"><?php echo number_format($row['total_qty'],2);?></td>
+                    <td><?php echo $row['tabno'];?></td>
+                    <td><?php echo $row['cap_code'];?></td>
+                    <td><?php echo $row['cashId'];?></td>
+                    <td><?php echo $row['date'].' & '.$row['time'];?></td>
+                </tr>
+            <?php
+            $qty=$qty+$row['total_qty'];
+        }
+        if($qty!=0)
+        {
+       ?>
+        <tr class="thead-dark">
+            <td colspan="2" class="text-right"><?php echo number_format($qty,2);?></td>
+            <td colspan="4"><?php echo $itmnam; ?></td>
+        </tr>
         <?php
+        }
     }
 }
 

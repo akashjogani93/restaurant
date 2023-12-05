@@ -136,5 +136,6 @@ class Reports
                 $('#singleFood').append(status);
             }
         });
+        console.log(log);
     }
 }

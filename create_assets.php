@@ -80,8 +80,7 @@
                                     <thead>
                                         <tr>                                                        
                                             <th>Sl.No</th>
-                                            <th>Product Name</th>                                                    
-                                            <!-- <th>Tax</th>                                                  -->
+                                            <th>Product Name</th>     
                                             <!-- <th>Edit</th> -->
                                         </tr>
                                     </thead>
@@ -99,7 +98,6 @@
                                                     <tr>                                                    
                                                         <td><?php echo $row['id']; ?></td>                                                   
                                                         <td><?php echo $row['product']; ?></td>
-                                                        <!-- <td><?php echo $row['tax']; ?></td> -->
                                                         <!-- <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
                                                             Edit
                                                             </button>

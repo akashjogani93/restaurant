@@ -20,7 +20,7 @@
         label{
             font-size:12px;
         }
-        .table>thead
+        .table>thead,.thead-dark
         {
             background-color:grey;
             color:white;

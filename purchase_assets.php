@@ -74,7 +74,7 @@
                                         <label for="inputEmail3" class="control-label">Select Product</label>
                                         <select name="pname" id="pid" required class="form-control pname">
                                             <option value="">Select Product</option>
-                                            <option v-for="cate in products" :value="cate.product">{{ cate.product }}</option>
+                                            <option v-for="cate in products" :value="cate.id">{{ cate.product }}</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-3">

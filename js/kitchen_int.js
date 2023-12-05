@@ -806,13 +806,12 @@ class Kitchen
 
 class Assets_Product
 {
-    constructor() 
+    constructor()
     {
         this.initializeTabs();
     }
     initializeTabs()
     {
-
         let pro=$.ajax({
             url:'ajax/store_all.php',
             type:'POST',
@@ -823,8 +822,7 @@ class Assets_Product
                 console.log(response);
             }
         });
-        // console.log(pro);
-        
+
         $('#sub').on('click',function()
         {
             var product = $('#product').val();
@@ -846,7 +844,9 @@ class Assets_Product
             });
             console.log(log);
         });
-        $('input').on('focus', function() {
+
+        $('input').on('focus', function() 
+        {
             $(this).css('border-color', '');
         });
     }
@@ -854,7 +854,7 @@ class Assets_Product
 
 class Asset_purchase
 {
-    constructor() 
+    constructor()
     {
         this.initializeTabs();
     }
@@ -873,7 +873,7 @@ class Asset_purchase
                 this.retrieveData();
             },
             methods: {
-                fetchOptions() 
+                fetchOptions()
                 {
                     $('input , select').on('focus',function()
                     {
