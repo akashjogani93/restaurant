@@ -122,9 +122,9 @@
                     case !regex.test(inputValue):
                         $(this).val('');
                         break;
-                    case totalqty && parseFloat(inputValue) > parseFloat(totalqty):
-                        $(this).val(totalqty);
-                        break;
+                    // case totalqty && parseFloat(inputValue) > parseFloat(totalqty):
+                    //     $(this).val(totalqty);
+                    //     break;
                     case !totalqty:
                         $(this).val('');
                         $("#pid").css("border-color", "red");
@@ -169,10 +169,10 @@
                 case !gdate:
                     $('#gdate').css('border-color', 'red');
                     break;
-                case totalqty==0:
-                    alert('Please Add Stock First');
-                    $('#sellqty').css('border-color', 'red');
-                    break;
+                // case totalqty==0:
+                //     alert('Please Add Stock First');
+                //     $('#sellqty').css('border-color', 'red');
+                //     break;
                 default:
                     let log= $.ajax({
                         url: 'ajax/store_all.php',

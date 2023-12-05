@@ -1029,6 +1029,7 @@ class Beaverages
                 options:[],
                 categorys:[],
                 bevstock:[],
+                bevhis:[],
                 selectedOption:'',
                 categoryOption:'',
             },
@@ -1098,11 +1099,40 @@ class Beaverages
                         }
                     });
                 },
+                beveragesHis()
+                {
+                    const vm=this;
+                    var fdate=$('#fdate').val();
+                    var tdate=$('#tdate').val();
+                    if(fdate=='')
+                    {
+                        $('#fdate').css('border-color', 'red');
+                        return;
+                    }
+                    if(tdate=='')
+                    {
+                        $('#tdate').css('border-color','red');
+                        return;
+                    }
+                    let log= $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{BeaveHistory:"bevhistory",fdate:fdate,tdate:tdate},
+                        success(response) 
+                        {
+                            vm.bevhis = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
             },
             mounted()
             {
                 this.fetchOptions();
                 this.stockbyDate();
+                this.beveragesHis();
             }
         });
     }
@@ -1122,6 +1152,7 @@ class parcelMaterial
                 options:[],
                 categorys:[],
                 material:[],
+                materialhis:[],
                 selectedOption:'',
                 categoryOption:'',
             },
@@ -1192,11 +1223,40 @@ class parcelMaterial
                     });
                     // console.log(log)
                 },
+                materialHistoru()
+                {
+                    const vm=this;
+                    var fdate=$('#fdate').val();
+                    var tdate=$('#tdate').val();
+                    if(fdate=='')
+                    {
+                        $('#fdate').css('border-color', 'red');
+                        return;
+                    }
+                    if(tdate=='')
+                    {
+                        $('#tdate').css('border-color','red');
+                        return;
+                    }
+                    let log= $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{materialHistory:"materialHistory",fdate:fdate,tdate:tdate},
+                        success(response) 
+                        {
+                            vm.materialhis = response;
+                        },
+                        error(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                },
             },
             mounted()
             {
                 this.fetchOptions();
                 this.stockbyDate();
+                this.materialHistoru();
             }
         });
     }

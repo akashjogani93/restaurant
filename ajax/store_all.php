@@ -364,6 +364,28 @@ if(isset($_POST['BeaveragesStock']))
     $conn->close();
 }
 
+if(isset($_POST['BeaveHistory']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $fdate = mysqli_real_escape_string($conn,$fdate);
+    $tdate = mysqli_real_escape_string($conn,$tdate);
+    $sql="SELECT `beverages`.`stock` AS `stockdata`,`beverages`.`date`,`products`.`pname`,`products`.`sellunit` FROM `beverages`,`products` WHERE `beverages`.`pid`=`products`.`pid` AND `beverages`.`date` BETWEEN '$fdate' AND '$tdate'";
+    $result=$conn->query($sql);
+    $options=array();
+    if($result->num_rows > 0)
+    {
+        while($row=$result->fetch_assoc())
+        {
+            $options[]=$row;
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($options);
+
+    $conn->close();
+}
+
 if(isset($_POST['materialStock']))
 {
     $fdate=$_POST['fdate'];
@@ -371,6 +393,28 @@ if(isset($_POST['materialStock']))
     $fdate = mysqli_real_escape_string($conn,$fdate);
     $tdate = mysqli_real_escape_string($conn,$tdate);
     $sql="SELECT SUM(parcelmaterial.stock) AS `stockdata`,`products`.`pname`,`products`.`sellunit` FROM `parcelmaterial`,`products` WHERE `parcelmaterial`.`pid`=`products`.`pid` AND `parcelmaterial`.`date` BETWEEN '$fdate' AND '$tdate'";
+    $result=$conn->query($sql);
+    $options=array();
+    if($result->num_rows > 0)
+    {
+        while($row=$result->fetch_assoc())
+        {
+            $options[]=$row;
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($options);
+
+    $conn->close();
+}
+
+if(isset($_POST['materialHistory']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $fdate = mysqli_real_escape_string($conn,$fdate);
+    $tdate = mysqli_real_escape_string($conn,$tdate);
+    $sql="SELECT `parcelmaterial`.`stock` AS `stockdata`,`parcelmaterial`.`date`,`products`.`pname`,`products`.`sellunit` FROM `parcelmaterial`,`products` WHERE `parcelmaterial`.`pid`=`products`.`pid` AND `parcelmaterial`.`date` BETWEEN '$fdate' AND '$tdate'";
     $result=$conn->query($sql);
     $options=array();
     if($result->num_rows > 0)
