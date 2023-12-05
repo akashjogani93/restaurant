@@ -35,7 +35,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Sold Material
+                Sold Beverages
             </h1>
             </br>
             <?php include('bevbutton.html'); ?>

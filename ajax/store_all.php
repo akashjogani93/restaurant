@@ -389,7 +389,7 @@ if(isset($_POST['materialStock']))
 //show beaverages Category
 if(isset($_POST['parcelcat']))
 {
-    $sql="SELECT `CategoryName` AS `category` FROM `categoroy` WHERE `catType`='ParcelMaterial'";
+    $sql="SELECT `CategoryName` AS `category` FROM `categoroy` WHERE `catType`='Material'";
     $result = $conn->query($sql);
     $options = array();
     if ($result->num_rows > 0) {
