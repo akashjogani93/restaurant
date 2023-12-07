@@ -81,7 +81,7 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <table class="table" id="kotdata">
+                        <table class="table">
                             <thead class="thead-dark">
                                 <tr>
                                     <!-- <th scope="col">Vendor Name</th>   -->

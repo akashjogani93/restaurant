@@ -93,7 +93,7 @@
                                     <th>Damage</th>
                                     <th>Cloasing</th>
                                     <th>Amount</th>
-                                    <!-- <th>Wastage</th> -->
+                                    <th>Damaged</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,15 +105,40 @@
                                     <td>{{ item.damage }}</td>
                                     <td>{{ item.cloasing }}</td>
                                     <td>{{ item.cloasinAmt }}</td>
-                                    <!-- <td><div style="display:flex;">
-                                        <input type="text" name="inputTag" class="form-control" placeholder="Wastage Qty" style="width: 50%; margin-right:10px;" oninput="validateInput(this)">
-                                        <button class="btn btn-info" onclick="if (confirm('Stock Damaged..?')) getDataFromRow(this)">Damage</button>
-                                        </div>
-                                    </td> -->
+                                    <td>
+                                        <button class="btn btn-success" @click="handleIssued(index)">Damage</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div class="modal fade" id="issuedModal" tabindex="-1" role="dialog" aria-labelledby="issuedModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="issuedModalLabel">Issued Stock</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="closingStock">Closing Stock:</label>
+                                    <input type="text" class="form-control" id="closingStock" v-model="closingStock" readonly>
+                                    <input type="hidden" class="form-control" id="pid" v-model="pid" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userInput">Issued:</label>
+                                    <input type="text" class="form-control" id="issued">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" @click="handleIssuedConfirm">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </section>
@@ -185,6 +210,10 @@
                 catName:'',
                 categoys:[],
                 stockList:[],
+                closingStock: '',
+                selectedIndex: null,
+                pid:null,
+                editMode: false
             },
             methods:
             {
@@ -239,6 +268,18 @@
                         }
                     });
                     console.log(log);
+                },
+                handleIssued(index)
+                {
+                    console.log(index);
+                    this.selectedIndex = index;
+                    this.closingStock = parseFloat(this.stockList[index].cloasing);
+                    this.pid = parseFloat(this.stockList[index].name);
+                    $('#issuedModal').modal('show');
+                },
+                handleIssuedConfirm()
+                {
+
                 }
             },
             mounted()

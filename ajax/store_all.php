@@ -495,7 +495,7 @@ if(isset($_POST['assetsSubmitData']))
             $total=$stock['total'];
             $price=$stock['price'];
 
-            $assetspurchasedata="INSERT INTO `assetspurchasedata`(`pur_id`, `amount`, `qty`, `total`,`venId`) VALUES ('$product','$price','$qty','$total','$insertId')";
+            $assetspurchasedata="INSERT INTO `assetspurchasedata`(`pur_id`, `amount`, `qty`, `total`,`venId`,`date`) VALUES ('$product','$price','$qty','$total','$insertId','$date')";
             $assetpur=mysqli_query($conn,$assetspurchasedata);
 
             $qu="INSERT INTO `assetsstock`(`pur_id`, `stock`,`amount`, `date`) VALUES ('$product','$qty','$total','$date')";

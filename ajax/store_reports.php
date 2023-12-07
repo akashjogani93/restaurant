@@ -55,11 +55,12 @@ if(isset($_POST['assets']) && isset($_POST['fdate']) && isset($_POST['tdate']))
     $fdate=$_POST['fdate'];
     $tdate=$_POST['tdate'];
 
-    $query="SELECT `assetspurchasedata`.*,`assetspurchase`.`date` FROM `assetspurchasedata`,`assetspurchase` WHERE `assetspurchase`.`id`=`assetspurchasedata`.`pur_id` AND `assetspurchase`.`date` BETWEEN '$fdate' AND '$tdate'";
+    $query="SELECT `assetspurchasedata`.*,`assetsproduct`.`product` FROM `assetspurchasedata`,`assetsproduct` WHERE `assetspurchasedata`.`pur_id`=`assetsproduct`.`id` AND `assetspurchasedata`.`date` BETWEEN '$fdate' AND '$tdate'";
     $exc=mysqli_query($conn,$query);
     $i=0;
     while($row=mysqli_fetch_assoc($exc))
     {
+        $pur_id=$row['pur_id'];
         $product=$row['product'];
         $amount=$row['amount'];
         $qty=$row['qty'];
