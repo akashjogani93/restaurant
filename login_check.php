@@ -6,7 +6,7 @@ $na2=$_POST["pass"];
 $user=$_POST["user"];
 
 include("dbcon.php");
-$sql="SELECT * FROM login WHERE user='$user' and pass='$na2'";
+$sql="SELECT * FROM `login` WHERE user='$user' and pass='$na2'";
 $retval=mysqli_query($conn,$sql);
 if(mysqli_num_rows($retval)!=0)
 {
@@ -41,15 +41,14 @@ if(mysqli_num_rows($retval)!=0)
 		{
 			echo '<script>location="home.php"</script>';
 		}
-        
         exit;
 	}
-	if($row['user']==$user && $row['pass']==$na2 && $row['type']=="Cashier")
-	{  
-        echo '<script>alert("Login successfull");</script>';
-        echo '<script>location="home.php"</script>';
-        exit;
-	}
+	// if($row['user']==$user && $row['pass']==$na2 && $row['type']=="Cashier")
+	// {  
+    //     echo '<script>alert("Login successfull");</script>';
+    //     echo '<script>location="home.php"</script>';
+    //     exit;
+	// }
 }
 	
 echo '<script>alert("Login Unsucessfull");</script>';

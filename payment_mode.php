@@ -20,7 +20,7 @@
         label{
             font-size:12px;
         }
-        .table>thead
+        .table>thead,.table>tfoot
         {
             background-color:grey;
             color:white;
@@ -34,42 +34,36 @@
             border: 1px solid black;
             padding: 5px;
         }
+        #paymentMode{
+            background: green;
+        }
     </style>
-    <script src="js/store_report.js"></script>
+    <script src="js/reports.js"></script>
     <div class="content-wrapper">
         <section class="content">
-            <h3 class="top-headerMain">Purchase Assets</h3>
+            <h3 class="top-headerMain">Payment Mode</h3>
+            <?php include('buttons.html'); ?>
             <div class="box box-primary">
                 <div class="box-body form1">
                     <div class="row">
-                        <div class="col-md-9 assets">
-                            <a class="btn btn-info buga" href="create_assets.php" style="margin-top:27px;">
-                                Create Asset
-                            </a>
-                            <a class="btn btn-info buga" href="purchase_assets.php" style="margin-top:27px;">
-                                Purchase
-                            </a>
-                            <a class="btn btn-info buga" href="stock_assets.php" style="margin-top:27px;">
-                                View Stock
-                            </a>
-                            <a class="btn btn-success buga" href="damage_assets.php" style="margin-top:27px;">
-                                Damage Stock
-                            </a>
-                            <a class="btn btn-info buga" href="purchaseRecord_assets.php" style="margin-top:27px;">
-                                Purchase Records
-                            </a>
-                        </div>
-                    </div></br>
-                    <div class="row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="inputEmail3" class="control-label">From Date</label>
                             <input type="date" class="form-control pull-right" name="fdate" id="fdate">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="inputEmail3" class="control-label">To Date</label>
                             <input type="date" class="form-control pull-right" name="tdate" id="tdate">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
+                            <label for="inputEmail3" class="control-label">Select Mode</label>
+                            <select name="pay" id="pay" class="form-control pull-right" onchange="paychange()">
+                                <option value="All">All</option>
+                                <option>Cash</option>
+                                <option>Online</option>
+                                <option>Card</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
                             <button class="btn btn-danger" style="margin-top:23px;" onclick="exportTableToPdf1()">PDF</button>
                             <button class="btn btn-success" style="margin-top:23px;">Excel</button>
@@ -81,20 +75,9 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <!-- <th scope="col">Vendor Name</th>   -->
-                                    <th scope="col">SL.No</th>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Qty</th>
-                                    <th scope="col">Amount</th>  
-                                    <th scope="col">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="damData">
-                            </tbody>
-                        </table>
+                            <div id="payment">
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,14 +87,20 @@
         <script>
             $(document).ready(function()
             {
-                const purchase_report=new Reports();
-                purchase_report.damage_data();
+                const day_sales=new Reports();
+                day_sales.payment()
 
-                $('#search').click(function()
+                $('#search').on('click',function()
                 {
-                    purchase_report.damage_data();
+                    day_sales.payment();
+                });
+
+                $('#pay').on('change',function()
+                {
+                    day_sales.payment();
                 });
             });
+
             // function generatePDF() 
             // {
             //     console.log('running');

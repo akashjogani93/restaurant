@@ -20,7 +20,7 @@
         label{
             font-size:12px;
         }
-        .table>thead
+        .table>thead,.table>tfoot
         {
             background-color:grey;
             color:white;
@@ -34,32 +34,17 @@
             border: 1px solid black;
             padding: 5px;
         }
+        #cashier{
+            background: green;
+        }
     </style>
-    <script src="js/store_report.js"></script>
+    <script src="js/reports.js"></script>
     <div class="content-wrapper">
         <section class="content">
-            <h3 class="top-headerMain">Purchase Assets</h3>
+            <h3 class="top-headerMain">Month Sales</h3>
+            <?php include('buttons.html'); ?>
             <div class="box box-primary">
                 <div class="box-body form1">
-                    <div class="row">
-                        <div class="col-md-9 assets">
-                            <a class="btn btn-info buga" href="create_assets.php" style="margin-top:27px;">
-                                Create Asset
-                            </a>
-                            <a class="btn btn-info buga" href="purchase_assets.php" style="margin-top:27px;">
-                                Purchase
-                            </a>
-                            <a class="btn btn-info buga" href="stock_assets.php" style="margin-top:27px;">
-                                View Stock
-                            </a>
-                            <a class="btn btn-success buga" href="damage_assets.php" style="margin-top:27px;">
-                                Damage Stock
-                            </a>
-                            <a class="btn btn-info buga" href="purchaseRecord_assets.php" style="margin-top:27px;">
-                                Purchase Records
-                            </a>
-                        </div>
-                    </div></br>
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label for="inputEmail3" class="control-label">From Date</label>
@@ -81,20 +66,9 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <!-- <th scope="col">Vendor Name</th>   -->
-                                    <th scope="col">SL.No</th>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Qty</th>
-                                    <th scope="col">Amount</th>  
-                                    <th scope="col">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="damData">
-                            </tbody>
-                        </table>
+                            <div id="cashierData">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,12 +78,12 @@
         <script>
             $(document).ready(function()
             {
-                const purchase_report=new Reports();
-                purchase_report.damage_data();
+                const day_sales=new Reports();
+                day_sales.cashierReport()
 
-                $('#search').click(function()
+                $('#search').on('click',function()
                 {
-                    purchase_report.damage_data();
+                    day_sales.cashierReport()
                 });
             });
             // function generatePDF() 

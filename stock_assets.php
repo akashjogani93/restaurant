@@ -68,7 +68,7 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <!-- <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button> -->
-                                            <button type="submit" name="view_report" class="btn btn-info" id="search" @click="beveragesHis()">View</button>
+                                            <button type="submit" name="view_report" class="btn btn-info" id="search" @click="fetchStock()">View</button>
                                             <button class="btn btn-danger" onclick="exportTableToPdf1()">PDF</button>
                                             <button class="btn btn-success">Excel</button>
                                         </div>
@@ -116,7 +116,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="issuedModalLabel">Issued Stock</h5>
+                                <h5 class="modal-title" id="issuedModalLabel">Damage Stock</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -126,6 +126,7 @@
                                     <label for="closingStock">Closing Stock:</label>
                                     <input type="text" class="form-control" id="closingStock" v-model="closingStock" readonly>
                                     <input type="hidden" class="form-control" id="pid" v-model="pid" readonly>
+                                    <input type="hidden" class="form-control" id="amount" v-model="amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="userInput">Issued:</label>
@@ -150,6 +151,24 @@
     <script src="cdn/buttons.print.min.js"></script>
 
     <script>
+        $(document).ready(function() 
+        {
+            $('#issued').on('input',function()
+            {
+                var value = $('#issued').val();
+
+                value = value.replace(/[^0-9.]/g, '');
+                value = value.replace(/(\.[^.]*)\./g, '$1');
+                tdValue = parseFloat($('#closingStock').val());
+
+                if (isNaN(value)) {
+                    value = 0;
+                } else if (value > tdValue) {
+                    value = tdValue;
+                }
+                $('#issued').val(value);
+            });
+        });
         function validateInput(input)
         {
             var value = input.value;
@@ -213,7 +232,8 @@
                 closingStock: '',
                 selectedIndex: null,
                 pid:null,
-                editMode: false
+                editMode: false,
+                amount:'',
             },
             methods:
             {
@@ -260,7 +280,7 @@
                         data:{StockAssetsFetch:'stock',fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            console.log(response)
+                            // console.log(response)
                             vm.stockList = response;
                         },
                         error(xhr, status, error) {
@@ -271,16 +291,57 @@
                 },
                 handleIssued(index)
                 {
-                    console.log(index);
                     this.selectedIndex = index;
                     this.closingStock = parseFloat(this.stockList[index].cloasing);
-                    this.pid = parseFloat(this.stockList[index].name);
+                    this.pid = parseFloat(this.stockList[index].id);
+                    this.amount =this.stockList[index].cloasinAmt;
                     $('#issuedModal').modal('show');
                 },
                 handleIssuedConfirm()
                 {
+                    const vm=this;
+                    var close=this.closingStock;
+                    var amount=this.amount;
+                    let amt = amount.replace(/,/g, '');
+                    amt=parseFloat(amt);
+                    var per_amt=amt/close;
 
-                }
+
+                    var issued=$('#issued').val();
+                    var damageAmt=issued*per_amt;
+                    var pid=$('#pid').val();
+                    if(isNaN(issued)) 
+                    {
+                        return;
+                    }
+                    if(issued==0)
+                    {
+                        return;
+                    }
+                    let log=$.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data: {
+                            damage_pid: pid,
+                            damage_issued: issued,
+                            damage_amount: damageAmt,
+                        },
+                        success: function(response) 
+                        {
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) 
+                        {
+                            console.error(error);
+                        }
+                    });
+                    $('#issuedModal').modal('hide');
+                    vm.fetchStock();
+                    this.closingStock='';
+                    this.selectedIndex=null;
+                    this.pid=null;
+                    $('#issued').val('');
+                }       
             },
             mounted()
             {

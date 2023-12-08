@@ -807,7 +807,7 @@ if(isset($_POST['StockAssetsFetch']))
 
     }else
     {
-        $query1 = "SELECT * FROM `assetsstock` WHERE `product`='$cat_name'";
+        // $query1 = "SELECT * FROM `assetsstock` WHERE `product`='$cat_name'";
     }
     $result=$conn->query($query1);
     $options=array();
@@ -848,57 +848,72 @@ if(isset($_POST['StockAssetsFetch']))
     $conn->close();
 }
 
-if(isset($_POST['assetsDamage']))
-{
-    $product = $_POST['a_product'];
-    $qty1 = $_POST['a_qty'];
-    $id = $_POST['a_id'];
-    $inputValue = $_POST['a_inputValue'];
-    // $total = $price * $inputValue;
+// if(isset($_POST['assetsDamage']))
+// {
+//     $product = $_POST['a_product'];
+//     $qty1 = $_POST['a_qty'];
+//     $id = $_POST['a_id'];
+//     $inputValue = $_POST['a_inputValue'];
+//     // $total = $price * $inputValue;
     
-    $lastQty=$qty1-$inputValue;
-    // $stockTotal=$price*$inputValue;
+//     $lastQty=$qty1-$inputValue;
+//     // $stockTotal=$price*$inputValue;
 
-        $exc=mysqli_query($conn,"UPDATE `assetsstock` SET `qty`='$lastQty' WHERE `product`='$product'");
-        if($exc)
-        {
-            $affectedRows = mysqli_affected_rows($conn);
-            if ($affectedRows > 0)
-            {
-                $query="INSERT INTO `assetsdamage`(`product`,`qty`) VALUES('$product','$inputValue')";
-                $exc=mysqli_query($conn,$query);
-                if($exc)
-                {
-                    echo 'Added To Damage Stock';
-                }
-            }
-        }
-}
+//         $exc=mysqli_query($conn,"UPDATE `assetsstock` SET `qty`='$lastQty' WHERE `product`='$product'");
+//         if($exc)
+//         {
+//             $affectedRows = mysqli_affected_rows($conn);
+//             if ($affectedRows > 0)
+//             {
+//                 $query="INSERT INTO `assetsdamage`(`product`,`qty`) VALUES('$product','$inputValue')";
+//                 $exc=mysqli_query($conn,$query);
+//                 if($exc)
+//                 {
+//                     echo 'Added To Damage Stock';
+//                 }
+//             }
+//         }
+// }
 
 // wastage Stocks
-if(isset($_POST['damageStockview']))
-{
-    $cat_name='';
-    if($cat_name=='')
-    {
-        $query1 = "SELECT * FROM `assetsdamage`";
-    }else
-    {
-        $query1 = "SELECT * FROM `assetsdamage` WHERE `category`='$cat_name'";
-    }
-    $result=$conn->query($query1);
-    $options=array();
-    if($result->num_rows > 0)
-    {
-        while($row=$result->fetch_assoc())
-        {
-            $options[]=$row;
-        }
-    }
-    header('Content-Type: application/json');
-    echo json_encode($options);
+// if(isset($_POST['damageStockview']))
+// {
+//     $cat_name='';
+//     if($cat_name=='')
+//     {
+//         $query1 = "SELECT * FROM `assetsdamage`";
+//     }else
+//     {
+//         $query1 = "SELECT * FROM `assetsdamage` WHERE `category`='$cat_name'";
+//     }
+//     $result=$conn->query($query1);
+//     $options=array();
+//     if($result->num_rows > 0)
+//     {
+//         while($row=$result->fetch_assoc())
+//         {
+//             $options[]=$row;
+//         }
+//     }
+//     header('Content-Type: application/json');
+//     echo json_encode($options);
 
-    $conn->close();
+//     $conn->close();
+// }
+
+//use kitchen stock
+if(isset($_POST['damage_pid']))
+{
+    $id=$_POST['damage_pid'];
+    $isued=$_POST['damage_issued'];
+    $amount=$_POST['damage_amount'];
+    $currentDate = date('Y-m-d');
+    $qu="INSERT INTO `assetsstock`(`pur_id`, `damage`,`damageAmount`, `date`) VALUES ('$id','$isued','$amount','$currentDate')";
+    $exc1=mysqli_query($conn,$qu);
+
+    $que="INSERT INTO `assetsdamage`(`pur_id`, `qty`, `amount`,`date`) VALUES ('$id','$isued','$amount','$currentDate')";
+    $exc=mysqli_query($conn,$que);
+    echo 'Damaged';
 }
 
 //kitchen category show

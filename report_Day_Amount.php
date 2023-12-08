@@ -20,7 +20,7 @@
         label{
             font-size:12px;
         }
-        .table>thead
+        .table>thead,.table>tfoot
         {
             background-color:grey;
             color:white;
@@ -38,7 +38,7 @@
             background: green;
         }
         @media (min-width: 768px){
-.modal-dialog {
+        .modal-dialog {
             width: 1000px !important; /* Adjust the percentage as needed */
         }}
     </style>
@@ -69,24 +69,10 @@
             <div class="box box-primary">
                 <div class="box-body form1">
                     <div class="row">
-                        <div class="col-md-12" id="mainData">
-                            <table class="table" id="kotdata">
-                                <thead class="thead-dark" style="background-color: grey; color: white;">
-                                    <tr>
-                                        <th scope="col">Invoice Date</th>
-                                        <th scope="col">Invoice Number</th>
-                                        <th scope="col">Gross Amount</th>
-                                        <th scope="col">Discount</th>
-                                        <th scope="col">GST Amount</th>
-                                        <th scope="col">Round Off(-)</th>  
-                                        <th scope="col">Round Off(+)</th>
-                                        <th scope="col">Net Amount</th>
-                                        <th scope="col">Edit</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="dayData">
-                                </tbody>
-                            </table>
+                        <div class="col-md-12" id="">
+                            <div id="mainData">
+
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -70,7 +70,7 @@
                             <input type="date" class="form-control pull-right" name="tdate" id="tdate">
                         </div>
                         <div class="form-group col-md-4">
-                            <button class="btn btn-success" style="margin-top:23px;">SEARCH</button>
+                            <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
                             <button class="btn btn-danger" style="margin-top:23px;" onclick="exportTableToPdf1()">PDF</button>
                             <button class="btn btn-success" style="margin-top:23px;">Excel</button>
                         </div>
@@ -107,6 +107,11 @@
             {
                 const purchase_report=new Reports();
                 purchase_report.assets_data()
+
+                $('#search').click(function()
+                {
+                    purchase_report.assets_data();
+                });
             });
             // function generatePDF() 
             // {

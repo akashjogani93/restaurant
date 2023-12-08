@@ -51,11 +51,11 @@ class Reports
             cache: false,
             success: function(status)
             {
-                $('#dayData').empty();
-                $('#dayData').append(status);
+                $('#mainData').empty();
+                $('#mainData').append(status);
             }
         });
-        // console.log(log);
+        console.log(log);
     }
     month_sales()
     {
@@ -136,6 +136,70 @@ class Reports
                 $('#singleFood').append(status);
             }
         });
-        console.log(log);
+        // console.log(log);
+    }
+    cashierReport()
+    {
+        var fdate=$("#fdate").val();
+        var tdate=$("#tdate").val();
+        let log=$.ajax({
+            type: "post",
+            url: "ajax/reports.php",
+            data:{
+                    cashier: 'cashier',
+                    fdate:fdate,
+                    tdate:tdate
+                },
+            cache: false,
+            success: function(status)
+            {
+                $('#cashierData').empty();
+                $('#cashierData').append(status);
+            }
+        });
+    }
+    captainData()
+    {
+        var fdate=$("#fdate").val();
+        var tdate=$("#tdate").val();
+        let log=$.ajax({
+            type: "post",
+            url: "ajax/reports.php",
+            data:{
+                    captainData: 'captainData',
+                    fdate:fdate,
+                    tdate:tdate
+                },
+            cache: false,
+            success: function(status)
+            {
+                $('#captainData').empty();
+                $('#captainData').append(status);
+            }
+        });
+        // console.log(log);
+    }
+    payment()
+    {
+        var fdate=$("#fdate").val();
+        var tdate=$("#tdate").val();
+        var pay=$("#pay").val();
+        let log=$.ajax({
+            type: "post",
+            url: "ajax/reports.php",
+            data:{
+                    paymentMode: 'payment',
+                    pay:pay,
+                    fdate:fdate,
+                    tdate:tdate
+                },
+            cache: false,
+            success: function(status)
+            {
+                $('#payment').empty();
+                $('#payment').append(status);
+            }
+        });
+        //console.log(log);
     }
 }

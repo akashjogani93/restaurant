@@ -2,44 +2,35 @@ $(document).ready(function()
 {
     fetchuser();
     $("#example1").DataTable();
-    $.validator.addMethod("alphabetsnspace", function(value, element)
+
+
+    $('#mobile').keypress(function(event)
     {
-        return this.optional(element) || /^[a-zA-Z ]*$/.test(value);
-    });
-    $('#form11').validate({
-        rules: {
-            empname: {
-                required: true,
-                alphabetsnspace: true
-            },
-            // mobile: {
-            //         digits: true,
-            //         minlength: 10,
-            //         maxlength: 10
-            // }
-        },
-        messages: {
-            empname: {
-                alphabetsnspace: "Pleae Enter Only Letters"
-            }
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if ((keycode < 47 || keycode > 57))
+        {
+            return false;
+        }else
+        {
+            return true;
         }
     });
+
 });
 $("#type").change(function() 
 {
-    console.log('working');
    if ($('#type').val() == "Captain")
    {
-       $("#unamepass1").css("display", "none");
+    //    $("#unamepass1").css("display", "none");
       $("#unamepass").css("display", "block");
     }else if($('#type').val() == "Manager")
     {
-        $("#unamepass1").css("display", "none");
+        // $("#unamepass1").css("display", "none");
         $("#unamepass").css("display", "block");
     }
    else{
     	   $("#unamepass").css("display", "none");
-        	$("#unamepass1").css("display", "block");
+        	// $("#unamepass1").css("display", "block");
     }
 });
 function submit() 
@@ -80,7 +71,6 @@ function submit()
 
 function fetchuser()
 {
-    //$('#type').children().remove().end().append('<option value="">Select User</option>') ;
     let log = $.ajax({
         url: 'ajax/emp.php',
         type: "POST",
@@ -101,18 +91,17 @@ function fetchuser()
             }
         }
     });
-    // console.log(log)
 }
 
 
 function subt()
 {
-    // alert('hii');
     let ty=$("#type").val();
-   let empid=$("#empid").val();
-   let empname=$("#empname").val();
-   let uname=$("#uname").val();
-   let pass=$("#pass").val();
+    let empid=$("#empid").val();
+    let empname=$("#empname").val();
+    let uname=$("#uname").val();
+    let pass=$("#pass").val();
+    let mobile=$("#mobile").val();
     let login='get'; 
    if(ty=="Manager" || ty=="Captain")
    {
@@ -133,6 +122,7 @@ function subt()
                 empid:empid,
                 empname:empname,
                 uname:uname,
+                mobile:mobile,
                 pass:pass,
                 login:login
             },
@@ -148,20 +138,75 @@ function subt()
 
 }
 
-
-function getRowValues(cell) 
+function subt1()
 {
-    var row = cell.closest("tr");
+    let ty=$("#type").val();
+    let empid=$("#empid").val();
+    let empname=$("#empname").val();
+    let uname=$("#uname").val();
+    let pass=$("#pass").val();
+    let mobile=$("#mobile").val();
+    let login='get'; 
+   if(ty=="Manager" || ty=="Captain")
+   {
+        if(uname=="" && pass=="")
+        {
+            alert("Please Fill All Feilds");
+            exit();
+        }
+        login='not';
+   }
+   if(empname!='' && ty!='')
+   {
+        $.ajax({
+            type:'POST',
+            url:'empregupdate.php',
+            data:{
+                ty:ty,
+                empid:empid,
+                empname:empname,
+                uname:uname,
+                mobile:mobile,
+                pass:pass,
+                login:login
+            },
+            success :function(response)
+            {   
+                alert(response);
+                window.location="empreg.php";
+            }
+        });
+   }else{
+    alert("Please Fill All Feilds");
+   }
+}
+
+function getRowValues(event, empid) {
+    var row = event.target.closest("tr");
     var cells = Array.from(row.getElementsByTagName("td"));
-    
-    var col1 = cells[0].innerText;
-    var col2 = cells[1].innerText;
-    var col3 = cells[2].innerText;
-    
-    // Add more variables for additional columns if needed
-    
-    return [col1, col2, col3];
-  }
+
+    var name = cells[2].innerText;
+    var mobile = cells[3].innerText;
+    var type = cells[4].innerText;
+    var user = cells[5].innerText;
+    var pass = cells[6].innerText;
+
+    $('#mainSub').hide();
+    $('#mainedit').show();
+
+    $('#empid').val(empid);
+    $('#empname').val(name);
+    $('#mobile').val(mobile);
+    $('#type').val(type);
+
+    if(type=="Manager" || type=="Captain")
+    {
+        $("#unamepass").show();
+        $("#uname").val(user);
+        $("#pass").val(pass);
+    }
+
+}
   
   function handleClick(cell) {
     var confirmation = window.confirm("Are you sure..?");

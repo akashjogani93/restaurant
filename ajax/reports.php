@@ -4,6 +4,13 @@ $cash_id=$_SESSION['id'];
 $name=$_SESSION['name']; 
 include('../dbcon.php');
 
+$Totalgtot=0;
+$totaldisc=0;
+$totalgst=0;
+$totalminus=0;
+$totalplus=0;
+$toatlnet=0;
+
 //store_purchase_product categorys show   and store_product.php category;
 if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 {
@@ -48,8 +55,33 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
     $tdate=$_POST['tdate'];
     $query="SELECT * FROM `invoice` WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'";
     $exc=mysqli_query($conn,$query);
+
+    ?>
+        <table class="table" id="kotdata">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th scope="col">Invoice Date</th>
+                    <th scope="col">Invoice Number</th>
+                    <th scope="col">Gross Amount</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">GST Amount</th>
+                    <th scope="col">Round Off(-)</th>  
+                    <th scope="col">Round Off(+)</th>
+                    <th scope="col">Net Amount</th>
+                    <th scope="col">Edit</th>
+                </tr>
+            </thead>
+            <tbody id="dayData">
+    <?php
     while($row=mysqli_fetch_assoc($exc))
     {
+        $Totalgtot=$Totalgtot+$row['gtot'];
+        $totaldisc=$totaldisc+$row['discAmt'];
+        $totalgst=$totalgst+$row['gstAmt'];
+        $totalminus=$totalminus+$row['roundminus'];
+        $totalplus=$totalplus+$row['roundplus'];
+        $toatlnet=$toatlnet+$row['nettot'];
+
         $date=$row['date'];
         $slno=$row['slno'];
         $gtot=number_format($row['gtot'],2);
@@ -69,12 +101,27 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
                 <td><?php echo $roundplus; ?></td>
                 <td><?php echo $nettot; ?></td>
                 <td>
-                    <!-- <button class="btn btn-danger edit-btn" data-toggle="modal" data-target="#editModal">Edit</button> -->
                     <button type="button" class="btn btn-danger edit-btn">Edit</button>
                 </td>
             </tr>
         <?php
     }
+    ?>
+        </tbody>
+        <tfoot class="thead-dark">
+            <tr>
+                <th colspan="2"></th>
+                <th><?php echo number_format($Totalgtot,2); ?></th>
+                <th><?php echo number_format($totaldisc,2); ?></th>
+                <th><?php echo number_format($totalgst,2); ?></th>
+                <th><?php echo number_format($totalminus,2); ?></th>
+                <th><?php echo number_format($totalplus,2); ?></th>
+                <th><?php echo number_format($toatlnet,2); ?></th>
+                <th></th>
+            </tr>
+        </tfoot>
+        </table>
+    <?php
 }
 
 if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
@@ -98,8 +145,33 @@ if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']
           GROUP BY 
               DATE(`date`)";
     $exc=mysqli_query($conn,$query);
+    ?>
+        <table class="table" id="kotdata">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Invoice Number</th>
+                    <th scope="col">Gross Amount</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">C.GST</th>
+                    <th scope="col">S.GST</th>
+                    <th scope="col">Round Off(-)</th>  
+                    <th scope="col">Round Off(+)</th>
+                    <th scope="col">Net Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+    <?php
     while($row=mysqli_fetch_assoc($exc))
     {
+        $Totalgtot=$Totalgtot+$row['gross'];
+        $totaldisc=$totaldisc+$row['disc'];
+        $totalgst=$totalgst+$row['gstamt'];
+        $totalminus=$totalminus+$row['minus'];
+        $totalplus=$totalplus+$row['plus'];
+        $toatlnet=$toatlnet+$row['total'];
+
+
         $date=$row['day'];
         $start_id=$row['start_id'];
         $end_id=$row['end_id'];
@@ -113,17 +185,33 @@ if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']
         ?>
             <tr>
                 <td><?php echo $date; ?></td>
-                <td><?php echo $start_id.'To'.$end_id; ?></td>
+                <td><?php echo $start_id.' To '.$end_id; ?></td>
                 <td><?php echo $gtot; ?></td>
                 <td><?php echo $disc; ?></td>
-                <td><?php echo $gst; ?></td>
-                <td><?php echo $gst; ?></td>
+                <td><?php echo number_format($gst,2); ?></td>
+                <td><?php echo number_format($gst,2); ?></td>
                 <td><?php echo $roundminus; ?></td>
                 <td><?php echo $roundplus; ?></td>
                 <td><?php echo $nettot; ?></td>
             </tr>
         <?php
     }
+    ?>
+        </tbody>
+        <tfoot class="thead-dark">
+            <tr>
+                <th colspan="2"></th>
+                <th><?php echo number_format($Totalgtot,2); ?></th>
+                <th><?php echo number_format($totaldisc,2); ?></th>
+                <th><?php echo number_format($totalgst/2,2); ?></th>
+                <th><?php echo number_format($totalgst/2,2); ?></th>
+                <th><?php echo number_format($totalminus,2); ?></th>
+                <th><?php echo number_format($totalplus,2); ?></th>
+                <th><?php echo number_format($toatlnet,2); ?></th>
+            </tr>
+        </tfoot>
+    </table>
+    <?php
 }
 
 if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['tdate']))
@@ -146,9 +234,11 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
           GROUP BY 
                 i.slno";
     $exc=mysqli_query($conn,$query);
+    $net=0;
     while($row=mysqli_fetch_assoc($exc))
     {
-
+        $gtot=$row['gtot'];
+        $net=$net+$gtot;
         ?>
             <table class="table" id="kotdata" style="width:100%;">
                 <thead class="thead-dark">
@@ -163,7 +253,8 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
                 <tbody>
                     <tr>
                         <th colspan="2">Bill NO : <?php echo $row['slno'].'&nbsp;/&nbsp;'.$row['date'].'&nbsp;/&nbsp;'.$row['time']; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Captain Name : <?php echo $row['capname']; ?></th>
-                        <th colspan="3">Table-No : <?php echo $row['tabno'];?></th>
+                        <th colspan="1">Table-No : <?php echo $row['tabno'];?></th>
+                        <th colspan="2">UID : <?php echo $row['cashId'];?></th>
                     </tr>
                 <?php
                     $productNames = explode(', ', $row['product_names']);
@@ -188,12 +279,22 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
                 <tfoot class="thead-dark">
                     <tr>
                         <th colspan="4"></th>
-                        <th><?php echo number_format($row['gtot'],2);?></th>
+                        <th><?php echo number_format($gtot,2);?></th>
                     </tr>
                 </tfoot>
             </table>
         <?php
     }
+    ?>
+        <table class="table" id="kotdata" style="width:100%;">
+            <thead class="thead-dark">
+                <tr>
+                    <th colspan="4"></th>
+                    <th><?php echo "Grand Total:".$net;?></th>
+                </tr>
+            <thead>
+        </table>
+    <?php
 }
 
 if(isset($_POST['menuQty']) && isset($_POST['fdate']) && isset($_POST['tdate']))
@@ -270,6 +371,263 @@ if(isset($_POST['singlefood']) && isset($_POST['fdate']) && isset($_POST['tdate'
     }
 }
 
+if(isset($_POST['cashier']) && isset($_POST['fdate']) && isset($_POST['tdate']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $query = "SELECT `date`, `cashId`,
+                    SUM(`gtot`) as `total_gtot`,
+                    SUM(`discAmt`) as `total_discAmt`,
+                    SUM(`gstAmt`) as `total_gstAmt`,
+                    SUM(`roundplus`) as `total_plus`,
+                    SUM(`roundminus`) as `total_minus`,
+                    SUM(`nettot`) as total_nettot
+                FROM `invoice`
+                WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'
+                GROUP BY `date`, `cashId`";
+
+    $exc=mysqli_query($conn,$query);
+    ?>
+        <table class="table" id="kotdata">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">UID</th>
+                    <th scope="col">Cashier Name</th>
+                    <th scope="col">Gross Amount</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">GST Amount</th>
+                    <th scope="col">Round Off(-)</th>  
+                    <th scope="col">Round Off(+)</th>
+                    <th scope="col">Net Amount</th>
+                </tr>
+            </thead>
+            <tbody id="dayData">
+    <?php
+    while($row=mysqli_fetch_assoc($exc))
+    {
+        $Totalgtot=$Totalgtot+$row['total_gtot'];
+        $totaldisc=$totaldisc+$row['total_discAmt'];
+        $totalgst=$totalgst+$row['total_gstAmt'];
+        $totalminus=$totalminus+$row['total_minus'];
+        $totalplus=$totalplus+$row['total_plus'];
+        $toatlnet=$toatlnet+$row['total_nettot'];
+
+        $date=$row['date'];
+        $chashId=$row['cashId'];
+        if($chashId==0)
+        {
+            $cashierName="Admin";
+        }else
+        {
+            $query="SELECT `empname` FROM `empreg` WHERE `cap_code`='$chashId'";
+            $exc=mysqli_query($conn,$query);
+            while($row=mysqli_fetch_assoc($exc))
+            {
+                $cashierName=$row['empname'];
+            }
+        }
+        $total_gtot=number_format($row['total_gtot'],2);
+        $total_discAmt=number_format($row['total_discAmt'],2);
+        $total_gstAmt=number_format($row['total_gstAmt'],2);
+        $total_plus=$row['total_plus'];
+        $total_minus=$row['total_minus'];
+        $total_nettot=number_format($row['total_nettot'],2);
+        ?>
+            <tr>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $chashId; ?></td>
+                <td><?php echo $cashierName; ?></td>
+                <td><?php echo $total_gtot; ?></td>
+                <td><?php echo $total_discAmt; ?></td>
+                <td><?php echo $total_gstAmt; ?></td>
+                <td><?php echo $total_minus; ?></td>
+                <td><?php echo $total_plus; ?></td>
+                <td><?php echo $total_nettot; ?></td>
+            </tr>
+        <?php
+    }
+    ?>
+        </tbody>
+        <tfoot class="thead-dark">
+            <tr>
+                <th colspan="3"></th>
+                <th><?php echo number_format($Totalgtot,2); ?></th>
+                <th><?php echo number_format($totaldisc,2); ?></th>
+                <th><?php echo number_format($totalgst,2); ?></th>
+                <th><?php echo number_format($totalminus,2); ?></th>
+                <th><?php echo number_format($totalplus,2); ?></th>
+                <th><?php echo number_format($toatlnet,2); ?></th>
+            </tr>
+        </tfoot>
+        </table>
+    <?php
+}
+
+if(isset($_POST['captainData']) && isset($_POST['fdate']) && isset($_POST['tdate']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $query = "SELECT `date`, `cap_code`,`capname`,
+                    SUM(`gtot`) as `total_gtot`,
+                    SUM(`discAmt`) as `total_discAmt`,
+                    SUM(`gstAmt`) as `total_gstAmt`,
+                    SUM(`roundplus`) as `total_plus`,
+                    SUM(`roundminus`) as `total_minus`,
+                    SUM(`nettot`) as total_nettot
+                FROM `invoice`
+                WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'
+                GROUP BY `date`, `cap_code`";
+
+    $exc=mysqli_query($conn,$query);
+    ?>
+        <table class="table" id="kotdata">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">UID</th>
+                    <th scope="col">Cashier Name</th>
+                    <th scope="col">Gross Amount</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">GST Amount</th>
+                    <th scope="col">Round Off(-)</th>  
+                    <th scope="col">Round Off(+)</th>
+                    <th scope="col">Net Amount</th>
+                </tr>
+            </thead>
+            <tbody id="dayData">
+    <?php
+    while($row=mysqli_fetch_assoc($exc))
+    {
+        $Totalgtot=$Totalgtot+$row['total_gtot'];
+        $totaldisc=$totaldisc+$row['total_discAmt'];
+        $totalgst=$totalgst+$row['total_gstAmt'];
+        $totalminus=$totalminus+$row['total_minus'];
+        $totalplus=$totalplus+$row['total_plus'];
+        $toatlnet=$toatlnet+$row['total_nettot'];
+
+        $date=$row['date'];
+        $chashId=$row['cap_code'];
+        $capname=$row['capname'];
+        $total_gtot=number_format($row['total_gtot'],2);
+        $total_discAmt=number_format($row['total_discAmt'],2);
+        $total_gstAmt=number_format($row['total_gstAmt'],2);
+        $total_plus=$row['total_plus'];
+        $total_minus=$row['total_minus'];
+        $total_nettot=number_format($row['total_nettot'],2);
+        ?>
+            <tr>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $chashId; ?></td>
+                <td><?php echo $capname; ?></td>
+                <td><?php echo $total_gtot; ?></td>
+                <td><?php echo $total_discAmt; ?></td>
+                <td><?php echo $total_gstAmt; ?></td>
+                <td><?php echo $total_minus; ?></td>
+                <td><?php echo $totalplus; ?></td>
+                <td><?php echo $total_nettot; ?></td>
+            </tr>
+        <?php
+    }
+    ?>
+        </tbody>
+            <tfoot class="thead-dark">
+                <tr>
+                    <th colspan="3"></th>
+                    <th><?php echo number_format($Totalgtot,2); ?></th>
+                    <th><?php echo number_format($totaldisc,2); ?></th>
+                    <th><?php echo number_format($totalgst,2); ?></th>
+                    <th><?php echo number_format($totalminus,2); ?></th>
+                    <th><?php echo number_format($totalplus,2); ?></th>
+                    <th><?php echo number_format($toatlnet,2); ?></th>
+                </tr>
+            </tfoot>
+        </table>
+    <?php
+}
+
+if(isset($_POST['paymentMode']) && isset($_POST['fdate']) && isset($_POST['tdate']) && isset($_POST['pay']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $pay=$_POST['pay'];
+
+    if($pay=='All')
+    {
+        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'";
+    }else
+    {
+        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `pmode`='$pay' AND `date` BETWEEN '$fdate' AND '$tdate'";
+    }
+        
+    $exc=mysqli_query($conn,$query);
+
+    ?>
+        <table class="table" id="kotdata">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th scope="col">Invoice Date</th>
+                    <th scope="col">Invoice Number</th>
+                    <th scope="col">Gross Amount</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">GST Amount</th>
+                    <th scope="col">Round Off(-)</th>  
+                    <th scope="col">Round Off(+)</th>
+                    <th scope="col">Net Amount</th>
+                    <th scope="col">Payment</th>
+                </tr>
+            </thead>
+            <tbody id="dayData">
+    <?php
+    while($row=mysqli_fetch_assoc($exc))
+    {
+        $Totalgtot=$Totalgtot+$row['gtot'];
+        $totaldisc=$totaldisc+$row['discAmt'];
+        $totalgst=$totalgst+$row['gstAmt'];
+        $totalminus=$totalminus+$row['roundminus'];
+        $totalplus=$totalplus+$row['roundplus'];
+        $toatlnet=$toatlnet+$row['nettot'];
+
+        $date=$row['date'];
+        $slno=$row['slno'];
+        $gtot=number_format($row['gtot'],2);
+        $discAmt=number_format($row['discAmt'],2);
+        $gstAmt=number_format($row['gstAmt'],2);
+        $roundplus=$row['roundplus'];
+        $roundminus=$row['roundminus'];
+        $pmod=$row['pmode'];
+        $nettot=number_format($row['nettot'],2);
+        ?>
+            <tr>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $slno; ?></td>
+                <td><?php echo $gtot; ?></td>
+                <td><?php echo $discAmt; ?></td>
+                <td><?php echo $gstAmt; ?></td>
+                <td><?php echo $roundminus; ?></td>
+                <td><?php echo $roundplus; ?></td>
+                <td><?php echo $nettot; ?></td>
+                <td><?php echo $pmod; ?></td>
+            </tr>
+        <?php
+    }
+    ?>
+        </tbody>
+        <tfoot class="thead-dark">
+            <tr>
+                <th colspan="2"></th>
+                <th><?php echo number_format($Totalgtot,2); ?></th>
+                <th><?php echo number_format($totaldisc,2); ?></th>
+                <th><?php echo number_format($totalgst,2); ?></th>
+                <th><?php echo number_format($totalminus,2); ?></th>
+                <th><?php echo number_format($totalplus,2); ?></th>
+                <th><?php echo number_format($toatlnet,2); ?></th>
+                <th></th>
+            </tr>
+        </tfoot>
+        </table>
+    <?php
+}
 
 if(isset($_POST['billno']))
 {
@@ -411,5 +769,8 @@ if(isset($_POST['storedData']))
     header('Content-Type: application/json');
     echo json_encode('running');
 }
+
+
+
 
 ?>

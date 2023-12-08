@@ -48,7 +48,7 @@ body{
                   <?php 
                   	if($cash_type=='admin' || $cash_type=='Manager')
                     {
-                      ?>
+                        ?>
                   			<li><a href="home.php"> <img class="logos" src="img/i1.png" alt=""> <span>Dashboard</span></a></li>
                     		<li><a href="item_form.php"><img class="logos" src="img/i2.png" alt=""> <span>Menu Master</span></a></li>
                     		<!-- <li><a href="table_form.php"><img class="logos" src="img/i3.png" alt=""> <span>Tables Master</span></a></li> -->
@@ -80,21 +80,6 @@ body{
                                 </ul>
                             </li>
                     		<li><a href="create_assets.php"><img class="logos" src="img/i5.png" alt=""><span>Assets</span></a></li>
-                            <!-- <li class="treeview">
-                                <a href="#">
-                                <img class="logos" src="img/i6.png" alt="">
-                                    <span>Assets</span>
-                                    <span class="pull-right-container">
-                                        <img class="logos" src="img/arrow.png" alt="">
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li><a href="create_assets.php"><img class="logos" src="img/circle.png" alt="">Create Product</a></li>
-                                    <li><a href="purchase_assets.php"><img class="logos" src="img/circle.png" alt="">Purchase Product</a></li>
-                                    <li><a href="stock_assets.php"><img class="logos" src="img/circle.png" alt="">Stock</a></li>
-                                    <li><a href="damage_assets.php"><img class="logos" src="img/circle.png" alt="">Damage Assets</a></li>
-                                </ul>
-                            </li> -->
                             <li class="treeview">
                                 <a href="#">
                                 <img class="logos" src="img/i7.png" alt=""><span>Employees</span>
@@ -106,7 +91,7 @@ body{
                                     <li class="active"><a href="empreg.php"><img class="logos" src="img/circle.png" alt="">Registration</a></li>
                                 </ul>
                             </li>
-                  			<li class="treeview">
+                  			<!-- <li class="treeview">
                               <a href="#">
                               <img class="logos" src="img/i9.png" alt="">
                                   <span>Reports</span>
@@ -127,7 +112,7 @@ body{
                                         <li><a href="payment.php"><img class="logos" src="img/circle.png" alt=""> <span>Payments</span></a>
                                     </li> 
                                 </ul>
-                  			</li>
+                  			</li> -->
                             <li><a href="reports.php"><img class="logos" src="img/circle.png" alt="">Reports</a></li>
                             <!-- <li><a href="kot_trash.php"><img class="logos" src="img/i4.png" alt=""><span>KOT Cancelled</span></a></li> -->
                             <li><a href="changepass.php"><img class="logos" src="img/i4.png" alt=""><span>Change Password</span></a></li>

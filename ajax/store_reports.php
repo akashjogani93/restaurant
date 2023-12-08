@@ -79,4 +79,35 @@ if(isset($_POST['assets']) && isset($_POST['fdate']) && isset($_POST['tdate']))
         $i++;
     }
 }
+
+
+
+// assets Store Damage Data;
+if(isset($_POST['damData']) && isset($_POST['fdate']) && isset($_POST['tdate']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+
+    $query="SELECT `assetsdamage`.*,`assetsproduct`.`product` FROM `assetsdamage`,`assetsproduct` WHERE `assetsdamage`.`pur_id`=`assetsproduct`.`id` AND `assetsdamage`.`date` BETWEEN '$fdate' AND '$tdate'";
+    $exc=mysqli_query($conn,$query);
+    $i=0;
+    while($row=mysqli_fetch_assoc($exc))
+    {
+        $pur_id=$row['pur_id'];
+        $product=$row['product'];
+        $amount=$row['amount'];
+        $qty=$row['qty'];
+        $date=$row['date'];
+        ?>
+            <tr>
+                <td><?php echo $i+1; ?></td>
+                <td><?php echo $product; ?></td>
+                <td><?php echo $qty; ?></td>
+                <td><?php echo number_format($amount,2); ?></td>
+                <td><?php echo $date; ?></td>
+            </tr>
+        <?php
+        $i++;
+    }
+}
 ?>

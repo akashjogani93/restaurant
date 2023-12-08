@@ -900,6 +900,10 @@ class Asset_purchase
                         var amt=price*qty;
                         $('#total').val(amt);
                     });
+
+                    var yourDateValue = new Date();
+                    var formattedDate = yourDateValue.toISOString().substr(0, 10)
+                    $('#date').val(formattedDate);
                 },
                 addItem()
                 {

@@ -20,7 +20,7 @@
         label{
             font-size:12px;
         }
-        .table>thead
+        .table>thead,.table>tfoot
         {
             background-color:grey;
             color:white;
@@ -66,26 +66,9 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <table class="table" id="kotdata">
-                            <thead class="thead-dark">
-                                <!-- <tr>
-                                    <th></th>
-                                </tr> -->
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Invoice Number</th>
-                                    <th scope="col">Gross Amount</th>
-                                    <th scope="col">Discount</th>
-                                    <th scope="col">C.GST</th>
-                                    <th scope="col">S.GST</th>
-                                    <th scope="col">Round Off(-)</th>  
-                                    <th scope="col">Round Off(+)</th>
-                                    <th scope="col">Net Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody id="monthData">
-                            </tbody>
-                        </table>
+                            <div id="monthData">
+
+                            </div>
                         </div>
                     </div>
                 </div>

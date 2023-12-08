@@ -6,7 +6,7 @@
             color: red;
         }
         </style>
-        <?php 
+        <?php
 			require_once("header.php");
 			require_once("dbcon.php");
             $cnt = 0;
@@ -26,68 +26,65 @@
                 <h1>
                     Employee Registration
                 </h1>
-                <ol class="breadcrumb">
-                    <li><a href="home.php"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <!-- <li><a href="#">Item Master</a></li> -->
-                </ol>
             </section>
             <section class="content">
                 <div class="box box-default">
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- <form class="form-horizontal" name="form1" id="form11" method="post" action="empreginsert.php" enctype="multipart/form-data"> -->
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">Select User</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" id="type" name="type" required>
-                                                   <option value="">Select User</option>
-                                                    
-                                                </select>
-                                                <label id="useradd"></label>
-                                            </div>
-                                        </div>
-                                        <!--<button type="button" data-toggle="modal" data-target="#finalModal" class="btn btn-warning">Add User</button>-->
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">Emp_Id</label>
-                                            <div class="col-sm-8">
-                                                <input type="number" class="form-control" placeholder="Emp Id" name="empid" id="empid" value="<?php echo $cnt; ?>" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="inputPassword3" class="col-sm-4 control-label">Emp_Name</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="empname" id='empname' placeholder="Employee Name">
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    
-                                    <div class="row" id="unamepass" style="display:none;">
-                                        <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">User Name</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="uname" id="uname" required placeholder="User Name">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="inputPassword3" class="col-sm-4 control-label">Password</label>
-                                            <div class="col-sm-8">
-                                                <input type="password" class="form-control" name="password" id="pass" required placeholder="Password">
-                                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Select User</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" id="type" name="type" required>
+                                                <option value="">Select User</option>
+                                                
+                                            </select>
+                                            <label id="useradd"></label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="box-footer">
-                                    <center>
-                                        <button type="submit" class="btn btn-primary" style="padding:10px; padding-left:20px; padding-right:20px;" onclick="subt()">Submit</button>
-                                    </center>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Emp_Id</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" placeholder="Emp Id" name="empid" id="empid" value="<?php echo $cnt; ?>" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword3" class="col-sm-4 control-label">Emp_Name</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="empname" id='empname' placeholder="Employee Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword3" class="col-sm-4 control-label">Mobile</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="mobile" id='mobile' placeholder="Mobile Number">
+                                        </div>
+                                    </div>
                                 </div>
-                            <!-- </form> -->
+                                <div class="row" id="unamepass" style="display:none;">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">User Name</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="uname" id="uname" required placeholder="User Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword3" class="col-sm-4 control-label">Password</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="password" id="pass" required placeholder="Password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <center>
+                                    <button type="submit" class="btn btn-primary" style="padding:10px; padding-left:20px; padding-right:20px;" onclick="subt()" id="mainSub">Submit</button>
+                                    <button type="submit" class="btn btn-danger" style="padding:10px; padding-left:20px; padding-right:20px; display:none;" onclick="subt1()" id="mainedit">Update</button>
+                                </center>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -99,37 +96,71 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Emp_Id</th>
+                                    <th>Sl.No</th>
+                                    <th>Cap_code</th>
                                     <th>Emp_Name</th>
+                                    <th>Mobile</th>
                                     <th>Type</th>
-                                    <th>User Name</th>
-                                    <th>Password</th>
-                                    <th>Delete</th>
+                                    <?php 
+                                        if($cash_type=='admin')
+                                        {
+                                    ?>
+                                            <th>User Name</th>
+                                            <th>Password</th>
+                                            <th>Edit</th>
+                                    <?php 
+                                        }
+                                    ?>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                    $sql="SELECT * FROM `empreg` WHERE `cap_code`!=0";
+                                    $sql="SELECT `empreg`.* FROM `empreg`";
                                     $result = mysqli_query($conn, $sql);
-                                    if (mysqli_num_rows($result) > 0) {
+                                    if (mysqli_num_rows($result) > 0) 
+                                    {
+                                        $i=0;
                                         while($row = mysqli_fetch_assoc($result))
                                         {
+                                            $id=$row['empid'];
+                                            $query="SELECT * FROM `login` WHERE `id`='$id'";
+                                            $result1 = mysqli_query($conn, $query);
+                                            if (mysqli_num_rows($result1) > 0) 
+                                            {
+                                                while($row1 = mysqli_fetch_assoc($result1))
+                                                {
+                                                    $user=$row1['user'];
+                                                    $pass=$row1['user'];
+                                                }
+                                            }else
+                                            {
+                                                $user='';
+                                                $pass='';
+                                            }
+
                                             ?>
                                                 <tr>
+                                                    <td><?php echo $i+1; ?></td>
                                                     <td><?php echo $row['empid']; ?></td>
                                                     <td><?php echo $row['empname']; ?></td>
+                                                    <td><?php echo $row['mobile']; ?></td>
                                                     <td><?php echo $row['type']; ?></td>
                                               
-                                                    <td><?php echo $row['uname']; ?></td>
-                                                    <td><?php echo $row['pass']; ?></td>
-                                                    <td>
-                                                        <!-- <a href="empedit.php?del=<?php echo $row['empid'];?>"
-                                                            class="btn btn-danger btn-sm">Delete</a> -->
-                                                        <button type="submit" class="btn btn-danger" onclick="handleClick(this)">Delete</button>
-
-                                                    </td>
+                                                    <?php 
+                                                        if($cash_type=='admin')
+                                                        {
+                                                    ?>
+                                                            <td><?php echo $user ?></td>
+                                                            <td><?php echo $pass ?></td>
+                                                            <td>
+                                                                <button class="btn btn-info" id="edit" onclick="getRowValues(event,this.value)" value="<?php echo $row['empid']; ?>">Edit</button>
+                                                            </td>
+                                                    <?php 
+                                                        }
+                                                    ?>
                                                 </tr>
                                             <?php
+                                            $i++;
                                         }
                                     }
 
