@@ -1,16 +1,30 @@
-<?php include('dbcon.php'); 
+<?php  session_start();
+include('dbcon.php'); 
 $cat = $_GET['tabno']; 
 $table_no = $_GET['tabno']; 
 $sum = 0;
 $sum1 = 0;
 $output="";
-$query="SELECT DISTINCT `kot_num` FROM `temtable` WHERE `tabno`='$table_no' AND `status`=0 AND `billno`=0 ORDER BY `kot_num` ASC; ";
+
+$billno = isset($_SESSION['billno']) ? $_SESSION['billno'] : '';
+$billEdit = isset($_SESSION['billEdit']) ? $_SESSION['billEdit'] : '';
+if($billEdit==true)
+{
+    $status=1;
+    $bill=$billno;
+}else
+{
+    $status=0;
+    $bill=0;
+}
+$query="SELECT DISTINCT `kot_num` FROM `temtable` WHERE `tabno`='$table_no' AND `status`='$status' AND `billno`='$bill' ORDER BY `kot_num` ASC; ";
 $CONFORM=mysqli_query($conn,$query);
 if(mysqli_num_rows($CONFORM)>0)
 {
+    if($billEdit !=true)
+    {
     ?>
         <div style="display:flex; padding:0 20px;">
-            <!-- <h4 style="color:red; width:60%;">Table No :<?php echo $cat; ?></h4> -->
             <select class="form-control" style="float-right; width:150px;margin-top:10px;" name="shifttables" id="shifttables" onload="shifttables()">
             </select>
             <button onclick="shiftitem()" id="select11" class="btn btn-info" style="float-right; margin-top:10px; margin-left:10px; font-size:10px;">Item Shift</button>
@@ -18,6 +32,7 @@ if(mysqli_num_rows($CONFORM)>0)
             <button onclick="printAllItem(this.value)" value="<?php echo $cat; ?>" id="printAllItem" class="btn btn-info" style="float-right; margin-top:10px; margin-left:10px; font-size:10px;">Print Item</button>
         </div>
             <?php
+    }
                 while($row1=mysqli_fetch_array($CONFORM))
                 {
                     $kot_num=$row1["kot_num"];
@@ -30,7 +45,6 @@ if(mysqli_num_rows($CONFORM)>0)
                                         {
                                             echo 'Current Data';
                                             ?>
-                                                <!-- <a href="kot.php?tabno=<?php echo $table_no; ?>" class="btn btn-danger" style="position:relative; left:50px;" id="koot">KOT (ALT + x )</a> -->
                                                 <button onclick="KotPrint(this.value)" value="<?php echo $table_no; ?>" id="kotPrint" class="btn btn-danger" style="position:relative; left:50px; font-size:10px;">KOT (ALT + x)</button>
                                             <?php
                                         }else
@@ -38,7 +52,6 @@ if(mysqli_num_rows($CONFORM)>0)
                                             echo $kot_num; 
                                             ?>
                                             <button onclick="cancel_Kot(this.value)" value="<?php echo $kot_num; ?>" class="btn btn-info" style="position:relative; left:50px; font-size:10px;">Cancel KOT</button>
-                                            <!-- <a href="ajax/table_form_insert.php?cancel=<?php echo $kot_num; ?>" style="position:relative; left:50px; font-size:10px;" class="btn btn-info">Cancel KOT</a> -->
                                             <a href="final_kot.php?tabno=<?php echo $kot_num; ?>" style="position:relative; left:50px; font-size:10px;" class="btn btn-danger">Print</a>
                                             <?php
                                         }
@@ -46,7 +59,7 @@ if(mysqli_num_rows($CONFORM)>0)
                             </h4>
                         </div>
                     <?php
-                        $qry="SELECT * FROM `temtable` WHERE `tabno`='$cat' AND `kot_num`='$kot_num' AND `status`=0 AND `billno`=0 ORDER BY `kot_num` ASC;";
+                        $qry="SELECT * FROM `temtable` WHERE `tabno`='$cat' AND `kot_num`='$kot_num' AND `status`='$status' AND `billno`='$bill' ORDER BY `kot_num` ASC;";
                         $confirm=mysqli_query($conn,$qry);
                         $sn=0;
                     ?>
@@ -92,8 +105,7 @@ if(mysqli_num_rows($CONFORM)>0)
                 <?php
 }
 
-
-    $query="SELECT DISTINCT `capname`,`cap_code` FROM `temtable` WHERE `tabno`='$cat' AND `status`=0 AND `billno`=0";
+    $query="SELECT DISTINCT `capname`,`cap_code` FROM `temtable` WHERE `tabno`='$cat' AND `status`='$status' AND `billno`='$bill'";
     $CONFOR=mysqli_query($conn,$query);
     while($row=mysqli_fetch_array($CONFOR))
     {
@@ -104,11 +116,17 @@ if(mysqli_num_rows($CONFORM)>0)
                 var capname='<?php echo $capname; ?>';
                 var cap_code='<?php echo $cap_code; ?>';
                 var tabno='<?php echo $cat; ?>';
+                var status='<?php echo $status; ?>';
     
                 $("#table_no").val(tabno);
                 $("#captain12").val(capname);
                 $("#captainname").val(cap_code);
-                // alert(capname);
+                if(status==1)
+                {
+                    $("#table_no").prop('readonly', true);
+                    $("#captain12").prop('readonly', true);
+                    $("#captainname").prop('readonly', true);
+                }
             </script>
         <?php
     }

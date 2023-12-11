@@ -60,7 +60,7 @@
                                         </div>
                                     <div class="col-md-3">
                                         <button class="btn btn-success" style="margin-top:23px;" @click="search">Search</button>
-                                        <button class="btn btn-danger" style="margin-top:23px;" onclick="exportTableToPdf1()">PDF</button>
+                                        <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
                                         <button class="btn btn-success" style="margin-top:23px;">Excel</button>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                                     <th>Purchase</th>
                                     <th>Issued Stock</th>
                                     <th>Return</th>
-                                    <th>Wastage</th>
+                                    <th>Wastage Stock</th>
                                     <th>Closing Stock</th>
                                     <th>Wastage</th>
                                 </tr>
@@ -143,8 +143,14 @@
     <script src="cdn/dataTables.buttons.min.js"></script>
     <script src="cdn/buttons.print.min.js"></script>
 
-    <script src="html2pdf.js/dist/jspdf.min.js"></script>
-        <!-- <script src="path/to/jspdf.plugin.autotable.min.js"></script> -->
+    <!-- <script src="html2pdf.js/dist/html2pdf.bundle.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script> -->
+    <!-- <script src="path/to/jspdf.plugin.autotable.min.js"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+    <!-- <script src="assets/js/jspdf-autotable-custom.js"></script> -->
+
     <script src="js/kitchen_int.js"></script>
     <script>
         $(document).ready(function()
@@ -158,7 +164,6 @@
                 value = value.replace(/[^0-9.]/g, '');
                 value = value.replace(/(\.[^.]*)\./g, '$1');
                 tdValue = parseFloat($('#closingStock').val());
-
                 if (isNaN(value)) {
                     value = 0;
                 } else if (value > tdValue) {
@@ -196,93 +201,59 @@
             }
         </script>
         <script>
-            function exportTableToPdf1() {
-                var table = document.getElementById("example1");
-
-                var clonedTable = table.cloneNode(true);
-                applyStylesToTable(clonedTable);
-                html2pdf(clonedTable, {
-                    margin: 3,
-                    filename: 'table.pdf',
-                    html2canvas: { scale: 2 },
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'a4',
-                        orientation: 'portrait',
-                    },
-                    pagebreak: { avoid: '#example1', mode: 'css' },
-                    repeat: {
-                        after: clonedTable.getElementsByTagName('thead')[0],
-                        every: 1, // Repeat after every page
-                    },
-                }).then(() => {
-                    // Remove the styles after PDF generation
-                    removeStylesFromTable(clonedTable);
-                });
-            }
-            function applyStylesToTable(table) 
+            function generateTable() 
             {
-                // Apply padding to the headers
-                var headers = table.querySelectorAll('th');
-                headers.forEach(function(header) {
-                    header.style.fontSize = '8px';
-                    header.style.fontWeight = 'bold';
-                    header.style.padding = '2px';
-                });
-                // Apply padding to the cells
-                var cells = table.querySelectorAll('td');
-                cells.forEach(function(cell) {
-                    cell.style.fontSize = '8px';
-                    cell.style.padding = '2px';
-                    cell.style.fontWeight = 'normal';
-                });
+                var fdate=$('#fdate').val();
+                var tdate=$('#tdate').val();
+                var doc = new jsPDF('p', 'pt', 'letter');
+                var y = 20;
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, "Store Stock From "+fdate+" To "+tdate);
+                doc.autoTable({
+                    html: '#example1',
+                    startY: 40,
+                    startX: 40,
+                    theme: 'grid',
+                    columns: [
+                        {dataKey: 'Sl.No'},
+                        {dataKey: 'Item Name'},
+                        {dataKey: 'Unit'},
+                        {dataKey: 'Opening Stock'},
+                        {dataKey: 'Purchase'},
+                        {dataKey: 'Issued Stock'},
+                        {dataKey: 'Return'},
+                        {dataKey: 'Wastage Stock'},
+                        {dataKey: 'Closing Stock'},
+                    ],
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 8,
+                        cellPadding: {horizontal: 5, vertical: 2},
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 8,
+                        lineWidth: 1,
+                    },
+                })
 
-                // Hide wastage column
-                var wastageButtons = table.querySelectorAll('.btn-info');
-                wastageButtons.forEach(function(button) {
-                    button.parentNode.style.display = 'none'; // Hide the entire column
-                    // If you want to hide just the button and keep the cell space:
-                    // button.style.display = 'none';
-                });
-
-                // Hide wastage header
-                var wastageHeaderText = 'wastage'; // Adjust based on the actual text in your header
-                headers.forEach(function(header) {
-                    if (header.innerText.trim() === wastageHeaderText) {
-                        header.style.display = 'none';
-                    }
-                });
-            }
-
-            function removeStylesFromTable(table) {
-                // Remove padding from the headers
-                var headers = table.querySelectorAll('th');
-                headers.forEach(function(header) {
-                    header.style.removeProperty('padding');
-                });
-
-                // Remove padding from the cells
-                var cells = table.querySelectorAll('td');
-                cells.forEach(function(cell) {
-                    cell.style.removeProperty('padding');
-                });
-
-                var wastageButtons = table.querySelectorAll('.btn-info');
-                wastageButtons.forEach(function(button) {
-                    button.parentNode.style.display = ''; // Reset to the default display value
-                    // If you hid just the button and kept the cell space:
-                    // button.style.display = '';
-                });
-
-                // Show wastage header
-                var wastageHeaderText = 'wastage'; // Adjust based on the actual text in your header
-                headers.forEach(function(header) {
-                    if (header.innerText.trim() === wastageHeaderText) {
-                        header.style.display = '';
-                    }
-                });
+                // doc.setProperties({
+                //     title: 'Product Detailed Report',
+                //     subject: 'This is the Product Detailed Report',
+                //     author: 'Author Name',
+                //     keywords: 'generated, javascript, web 2.0, ajax',
+                //     creator: 'Author Name',
+                //     margins: {
+                //         top: 0,
+                //         bottom: 0,
+                //         left: 0,
+                //         right: 0,
+                //     },
+                //     pageSize: 'letter',
+                // });
+                doc.save('store_stock');
             }
         </script>
-
-
 </body>

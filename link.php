@@ -90,10 +90,12 @@
     <script src="dist/js/vue/vue.js"></script>
     <script src="dist/js/vue/vue-resource@1.3.4.js"></script>
     <script src="dist/js/vue/vee-validate.js"></script>
-    <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script>
+    <!-- <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script> -->
     <!-- <script src="cdn/jquery.min.js"></script>
     <link rel="stylesheet" href="cdn/jquery-ui.css">
     <script src="cdn/jquery-ui.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
    <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');
 

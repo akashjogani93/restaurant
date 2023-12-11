@@ -1,19 +1,34 @@
+var direct;
 $(document).ready(function()
 {
     const urlParams = new URLSearchParams(window.location.search);
     const statuscancel = urlParams.get('tabno');
     $('#itemlist').load("order_data.php?tabno="+statuscancel);
-
-    $('#boxx2').load("tableShift.php");
     $('#boxx').load("bill_data.php");
-
-    let sess=$('#cashType').val();
-    if(sess!='Captain')
-    {
-        $('#boxx1').load("bill_setelment.php?order=0");
-    }
+    let log=$.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: 'set_session.php',
+        success: function(response) 
+        {
+            var Table=response.Table;
+            if(response.BillEdit==true)
+            {
+                $('#itemlist').load("order_data.php?tabno="+Table);
+            }else
+            {
+                $('#boxx2').load("tableShift.php");
+                let sess=$('#cashType').val();
+                if(sess!='Captain')
+                {
+                    $('#boxx1').load("bill_setelment.php?order=0");
+                }
+            }
+        }
+    });
 
     $("#table_no").focus();
+
     $(function() {
         $("#table_no").autocomplete({
             source: function (request, response)
@@ -144,6 +159,19 @@ $(document).ready(function()
                 var td = $(this).find('td:nth-child(2)').text();
                 if (td == table_no) 
                 {
+                    direct=true;
+                    $(this).find('#printData').click();
+                }
+            });
+        }
+        else if (e.altKey && (e.key === "t" || e.keyCode === 84)) {
+            e.preventDefault();
+            $('#tbody tr').each(function () 
+            {
+                var td = $(this).find('td:nth-child(2)').text();
+                if (td == table_no) 
+                {
+                    direct=false;
                     $(this).find('#printData').click();
                 }
             });
@@ -168,7 +196,6 @@ $(document).ready(function()
     {
         total();
     });
-
 });
 
 function tab_no(tabName)
@@ -283,8 +310,8 @@ function store()
 {
     var wingname = document.getElementById('autocomplete').value;
     let table_no=$("#table_no").val();
-    $.ajax({
-        url: 'ajax/item_nam_ajax.php',
+    let log=$.ajax({
+        url: 'ajax/table_master.php',
         type: "POST",
         dataType: 'json',
         data: {
@@ -300,6 +327,7 @@ function store()
             total();
         }
     });
+    console.log(log);
 }
 
 function OrderAdd()
@@ -512,16 +540,21 @@ function printData(tab_no,event)
                 },
                 success: function(status)
                 {
-                    console.log(status);
-                    window.location="finalInvoice.php?billno="+status+"&back=1";
+                    if(direct==true)
+                    {
+                        window.location="finalInvoice.php?billno="+status+"&back=1";
+                    }
+                    else
+                    {
+                        location.reload();
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("AJAX Error: " + textStatus, errorThrown);
                 }
             });
-            console.log(log);
+            // console.log(log);
         }
-
     } else 
     {
         console.error('Row not found.');
@@ -541,14 +574,15 @@ function settle(event)
     // Get values from the cells in the current row
     var billno = currentRow.querySelector('td:nth-child(1)').textContent;
     var tabno = currentRow.querySelector('td:nth-child(2)').textContent;
-    var amount = currentRow.querySelector('td:nth-child(4)').textContent;
+    var amount = currentRow.querySelector('td:nth-child(3)').textContent;
     var paymentMethod = document.getElementById('payment').value;
 
     // Now you have the values, and you can use them as needed
-    // console.log('slno:', slno);
-    // console.log('tabno:', tabno);
-    // console.log('amount:', amount);
-    // console.log('paymentMethod:', paymentMethod);
+    console.log('billno:', billno);
+    console.log('tabno:', tabno);
+    console.log('amount:', amount);
+    console.log('paymentMethod:', paymentMethod);
+    return;
 
     let log=$.ajax({
         type: 'POST',
@@ -566,4 +600,24 @@ function settle(event)
         }
     });
     console.log(log)
+}
+
+function editBill(event)
+{
+    var currentRow = event.currentTarget.closest('tr');
+    var billno = currentRow.querySelector('td:nth-child(1)').textContent;
+    var tabno = currentRow.querySelector('td:nth-child(2)').textContent;
+    $.ajax({
+        type: 'POST',
+        url: 'set_session.php',
+        data: { billno: billno,tabno:tabno },
+        success: function(response) 
+        {
+            console.log(response);
+            $('#itemlist').load("order_data.php?tabno="+tabno);
+            $('#boxx').load("bill_data.php");
+            $('#boxx2').remove();
+            $('#boxx1').remove();
+        }
+    });
 }

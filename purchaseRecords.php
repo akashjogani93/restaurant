@@ -76,6 +76,9 @@
                                                         <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
                                                                 View Products
                                                             </button>
+                                                            <button  class="btn btn-danger btn-sm">
+                                                                Edit
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 <?php

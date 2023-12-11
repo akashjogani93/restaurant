@@ -51,7 +51,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
-                            <button class="btn btn-danger" style="margin-top:23px;" onclick="exportTableToPdf1()">PDF</button>
+                            <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
                             <button class="btn btn-success" style="margin-top:23px;">Excel</button>
                         </div>
                     </div>
@@ -102,60 +102,63 @@
             });
         </script>
         <script>
-            function exportTableToPdf1() {
-                var table = document.getElementById("purchaseStore");
+            function generateTable() 
+            {
+                var fdate=$('#fdate').val();
+                var tdate=$('#tdate').val();
+                var doc = new jsPDF('p', 'pt', 'letter');
+                var y = 20;
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, "Purchase Stock From "+fdate+" To "+tdate);
+                doc.autoTable({
+                    html: '#purchaseStore',
+                    startY: 40,
+                    startX: 40,
+                    theme: 'grid',
+                    columns: [
+                        {dataKey: 'Sl.No'},
+                        {dataKey: 'Bill No'},
+                        {dataKey: 'Category'},
+                        {dataKey: 'Pname'},
+                        {dataKey: 'Unit'},
+                        {dataKey: 'Qty'},
+                        {dataKey: 'Price'},
+                        {dataKey: 'Gross Amount'},
+                        {dataKey: 'Disc'},
+                        {dataKey: 'Tax'},
+                        {dataKey: 'Cess'},
+                        {dataKey: 'Total'},
+                        {dataKey: 'Date'},
+                    ],
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 8,
+                        cellPadding: {horizontal: 5, vertical: 2},
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 8,
+                        lineWidth: 1,
+                    },
+                })
 
-                var clonedTable = table.cloneNode(true);
-                applyStylesToTable(clonedTable);
-                html2pdf(clonedTable, {
-                    margin: 3,
-                    filename: 'table.pdf',
-                    html2canvas: { scale: 2 },
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'a4',
-                        orientation: 'portrait',
-                    },
-                    pagebreak: { avoid: '#purchaseStore', mode: 'css' },
-                    repeat: {
-                        after: clonedTable.getElementsByTagName('thead')[0],
-                        every: 1, // Repeat after every page
-                    },
-                }).then(() => {
-                    // Remove the styles after PDF generation
-                    removeStylesFromTable(clonedTable);
-                });
+                // doc.setProperties({
+                //     title: 'Product Detailed Report',
+                //     subject: 'This is the Product Detailed Report',
+                //     author: 'Author Name',
+                //     keywords: 'generated, javascript, web 2.0, ajax',
+                //     creator: 'Author Name',
+                //     margins: {
+                //         top: 0,
+                //         bottom: 0,
+                //         left: 0,
+                //         right: 0,
+                //     },
+                //     pageSize: 'letter',
+                // });
+                doc.save('purchase_stock');
             }
-        function applyStylesToTable(table) 
-        {
-            // Apply padding to the headers
-            var headers = table.querySelectorAll('th');
-            headers.forEach(function(header) {
-                header.style.fontSize = '8px';
-                header.style.fontWeight = 'bold';
-                header.style.padding = '2px';
-            });
-            // Apply padding to the cells
-            var cells = table.querySelectorAll('td');
-            cells.forEach(function(cell) {
-                cell.style.fontSize = '8px';
-                cell.style.padding = '2px';
-                cell.style.fontWeight = 'normal';
-            });
-        }
-
-        function removeStylesFromTable(table) {
-            // Remove padding from the headers
-            var headers = table.querySelectorAll('th');
-            headers.forEach(function(header) {
-                header.style.removeProperty('padding');
-            });
-
-            // Remove padding from the cells
-            var cells = table.querySelectorAll('td');
-            cells.forEach(function(cell) {
-                cell.style.removeProperty('padding');
-            });
-        }
         </script>
 </body>

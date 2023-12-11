@@ -3,6 +3,10 @@ session_start();
 $cash_type=$_SESSION['tye'];
 // $cash_id=$_SESSION['id'];
 $name=$_SESSION['name'];
+
+$editbillno = isset($_SESSION['billno']) ? $_SESSION['billno'] : '';
+$billEdit = isset($_SESSION['billEdit']) ? $_SESSION['billEdit'] : '';
+
 date_default_timezone_set('Asia/Kolkata');
 include("../dbcon.php");
 
@@ -166,8 +170,6 @@ if(isset($_POST['itemname']))
     echo json_encode($a);
 }
 
-
-
 //INSERTING ORDER STARTING
 if(isset($_POST['captain']) && isset($_POST['itmnam']))
 {
@@ -183,7 +185,16 @@ if(isset($_POST['captain']) && isset($_POST['itmnam']))
     $tabno = $_POST['tabno'];
     $current_time = date("h:i A");
 
-    $searchTem="SELECT * FROM `temtable` WHERE `kot_num`=0 AND `tabno`='$tabno' AND `itmno`='$itmno' AND `status`=0 AND `billno`=0";
+    if($billEdit==true)
+    {   
+        $status=1;
+        $bill=$editbillno;
+    }else
+    {
+        $status=0;
+        $bill=0;
+    }
+    $searchTem="SELECT * FROM `temtable` WHERE `kot_num`=0 AND `tabno`='$tabno' AND `itmno`='$itmno' AND `status`='$status' AND `billno`='$bill'";
     $searchResult=mysqli_query($conn,$searchTem);
     if(mysqli_num_rows($searchResult)>0)
     {
@@ -193,23 +204,15 @@ if(isset($_POST['captain']) && isset($_POST['itmnam']))
             $qty1=$row3['qty']+$qty;
             $tot1=$prc*$qty1;
             mysqli_query($conn, "UPDATE `temtable` SET `capname`='$captain',`cap_code`='$captainCode',`time`='$current_time',`qty`='$qty1',`tot`='$tot1' WHERE `slno`='$slno'");
-            // mysqli_query($conn, "UPDATE `kot` SET `capname`='$captain',`cap_code`='$captainCode',`time`='$current_time',`qty`='$qty1' WHERE `tabno`='$tabno' AND `itmnam`='$itmnam';");
         }
     }else
     {
-        // $kotInsert="INSERT INTO `kot`(`date`, `itmnam`, `qty`, `tabno`, `capname`, `kot_num`, `kot`, `status`,`cap_code`,`time`) VALUES ('$ymd','$itmnam','$qty','$tabno','$captain',0,0,0,'$captainCode','$current_time')";
-        // $kotInsertResult=mysqli_query($conn,$kotInsert);
-        // if ($kotInsertResult) 
-        // {
-        //     $lastInsertId = mysqli_insert_id($conn);
-            $temInsert="INSERT INTO `temtable`(`date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `capname`, `billno`, `status`, `kot`, `kot_num`,`cap_code`,`time`) VALUES ('$ymd','$itmno','$itmnam','$prc','$qty','$tot','$tabno','$captain',0,0,0,0,'$captainCode','$current_time')";
+            $temInsert="INSERT INTO `temtable`(`date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `capname`, `billno`, `status`, `kot`, `kot_num`,`cap_code`,`time`) VALUES ('$ymd','$itmno','$itmnam','$prc','$qty','$tot','$tabno','$captain','$bill','$status',0,0,'$captainCode','$current_time')";
             $temInsertResult=mysqli_query($conn,$temInsert);
             if($temInsertResult)
             {
-                mysqli_query($conn, "UPDATE `temtable` SET `capname`='$captain',`cap_code`='$captainCode' WHERE `tabno`='$tabno' AND `status`=0 AND `billno`=0");
-                // mysqli_query($conn, "UPDATE `kot` SET `capname`='$captain',`cap_code`='$captainCode' WHERE `tabno`='$tabno';");
+                mysqli_query($conn, "UPDATE `temtable` SET `capname`='$captain',`cap_code`='$captainCode' WHERE `tabno`='$tabno' AND `status`='$status' AND `billno`='$bill'");
             }
-        // }
         else
         {
             echo 'Error: ' . mysqli_error($conn );
@@ -221,6 +224,16 @@ if(isset($_POST['captain']) && isset($_POST['itmnam']))
 //KOT-PRINT TABLE
 if(isset($_POST['kot']))
 {
+    if($billEdit==true)
+    {   
+        $status=1;
+        $bill=$editbillno;
+    }else
+    {
+        $status=0;
+        $bill=0;
+    }
+
     $current_date = date('Y-m-d');
     $current_time = date("h:i A");
     $tabno=$_POST['kot'];
@@ -251,7 +264,8 @@ if(isset($_POST['kot']))
             $kotnumber=1;
         }
     }
-    $SELECTDATA="SELECT * FROM `temtable` WHERE `kot_num`=0 AND `tabno`='$tabno' AND `status`=0";
+
+    $SELECTDATA="SELECT * FROM `temtable` WHERE `kot_num`=0 AND `tabno`='$tabno' AND `status`='$status'";
     $SELECTRESULT=mysqli_query($conn,$SELECTDATA);
     if(mysqli_num_rows($SELECTRESULT) > 0)
     {
@@ -261,7 +275,7 @@ if(isset($_POST['kot']))
             $kotinsert="INSERT INTO `kot`(`date`,`tabno`,`kot_num`,`time`,`status`)VALUES('$current_date','$tabno','$kotnumber','$current_time','$slno')";
             $kotInsertResult=mysqli_query($conn,$kotinsert);
         }
-        mysqli_query($conn, "UPDATE `temtable` SET `kot_num`='$kotnumber' WHERE `tabno`='$tabno' AND `status`=0 AND `kot_num`=0");
+        mysqli_query($conn, "UPDATE `temtable` SET `kot_num`='$kotnumber' WHERE `tabno`='$tabno' AND `status`='$status' AND `kot_num`=0");
         echo $kotnumber;
     }else
     {
@@ -298,7 +312,6 @@ if(isset($_POST['cancel_Kot']))
     echo $tabno;
 }
 
-
 //delelte Item
 if(isset($_POST['delete'],$_POST['itmno']))
 {
@@ -326,14 +339,13 @@ if(isset($_POST['delete'],$_POST['itmno']))
         $exc=mysqli_query($conn, $sql);
         if($exc)
         {
-            $sql1="DELETE FROM `temtable` WHERE `slno`='".$itmno1."'";
+            // $sql1="DELETE FROM `temtable` WHERE `slno`='".$itmno1."'";
             mysqli_query($conn,"DELETE FROM `temtable` WHERE `slno`='$slno'");
             mysqli_query($conn,"DELETE FROM `kot` WHERE `status`='$slno'");
         }
     }
     echo $tabno;
 }
-
 
 //merge Table
 // table merge

@@ -4,9 +4,9 @@
         <tr>
             <th>Bill No</th>
             <th>Table</th>
-            <th>Edit</th>
             <th>Total Amount</th>
             <th>Payment</th>
+            <th>Edit</th>
             <th>Settle</th>
         </tr>
 
@@ -23,7 +23,7 @@
                 $sql3 = "SELECT * FROM `tabletot` WHERE `Status`=0 AND `orde`='parcel'";
             }
             $result3 = mysqli_query($conn, $sql3);
-            if (mysqli_num_rows($result3) > 0)
+            if(mysqli_num_rows($result3) > 0)
             {
                 while($row3 = mysqli_fetch_assoc($result3)) 
                 {
@@ -36,7 +36,6 @@
                     <tr>
                         <td><?php echo $row3['slno']; ?></td>
                         <td><?php echo $row3['tabno']; ?></td>
-                        <td>Edit</td>
                         <td><?php echo $amount; ?></td>
                         <td>
                             <select class="form-control" name="payment" id="payment" style="background-color: #4F4557; color: #B0DAFF;">
@@ -56,65 +55,10 @@
                                  ?>
                             </select>
                         </td>
+                        <td><button id="edit" class="btn btn-info" onclick="editBill(event)">Edit</button></td>
                         <td><button id="settle" class="btn btn-danger" onclick="settle(event)">Settle</button></td>
                     </tr>
         <?php   }
            }  ?>
     </tbody>
 </table>
-
-<script>
-    // var app = new Vue({
-    //     el: '#formsettle',
-    //     data: {
-    //         slno: 0,
-    //         rows: {},
-    //         itmnam: '',
-    //         qty: 1,
-    //         prc: '',
-    //         shnam: '',
-    //         attemptSubmit: false
-    //     },
-    //     computed: {
-    //         missingItmnam: function() {
-    //             return this.itmnam === '';
-    //         },
-    //         missingQty: function() {
-    //             return this.qty === '';
-    //         },
-    //         missingPrc: function() {
-    //             return this.prc === '';
-    //         },
-    //         missingShnam: function() {
-    //             return this.shnam === '';
-    //         },
-    //     },
-    //     methods: {
-    //         settle: function(e)
-    //         {
-    //             var order='<?php echo $order; ?>'
-    //             var tar = e.currentTarget;
-    //             var chil = tar.parentElement.parentElement.children;
-    //             var x1 = chil[2].querySelector('select').value;
-    //             var x = chil[0].innerHTML;
-    //             $.ajax({
-    //                 type: 'POST',
-    //                 url: 'ajax/billsettle.php',
-    //                 data: { x:x,x1: x1 },
-    //                 success: function(response) 
-    //                 {
-                        
-    //                     $('#boxx1').load("final_setelment.php?order="+order);
-    //                     console.log(response);
-    //                 },
-    //                 error: function(jqXHR, textStatus, errorThrown) 
-    //                 {
-                        
-    //                     console.error(errorThrown);
-    //                     $('#boxx1').load("final_setelment.php?order="+order);
-    //                 }
-    //             });
-    //         }
-    //     }
-    // });
-</script>

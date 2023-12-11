@@ -1,4 +1,8 @@
-<?php require_once("header.php");?>
+<?php session_start();
+$editbillno = isset($_SESSION['billno']) ? $_SESSION['billno'] : '';
+$billEdit = isset($_SESSION['billEdit']) ? $_SESSION['billEdit'] : '';
+
+require_once("header.php");?>
 <body class="hold-transition skin-blue sidebar-mini"onload="myFunction()">
     <div class="wrapper" id="form1">
         <style>
@@ -57,9 +61,18 @@
             require_once("dbcon.php"); 
             if(isset($_GET['tabno']))
             {
+                if($editbillno==true)
+                {
+                    $bill=$editbillno;
+                    $status=1;
+                }else
+                {
+                    $bill=0;
+                    $status=0;
+                }
                 $current_date = date('Y-m-d');
                 $tab1=$_GET['tabno'];
-                $sql="SELECT * FROM `temtable` WHERE `tabno`='$tab1'";
+                $sql="SELECT * FROM `temtable` WHERE `tabno`='$tab1' AND `status`='$status' AND `billno`='$bill'";
                 $c=mysqli_query($conn, $sql);
                 if (mysqli_num_rows($c) > 0)
                 {

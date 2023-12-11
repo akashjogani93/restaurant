@@ -63,7 +63,7 @@
                                         <div class="form-group col-md-4">
                                             <!-- <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button> -->
                                             <button type="submit" name="view_report" class="btn btn-info" id="search" @click="kitchenHistory()">View</button>
-                                            <button class="btn btn-danger" onclick="exportTableToPdf1()">PDF</button>
+                                            <button class="btn btn-danger" onclick="generateTable()">PDF</button>
                                             <button class="btn btn-success">Excel</button>
                                         </div>
                                     <!-- </form> -->
@@ -84,7 +84,7 @@
                                     <th>Item Name</th>
                                     <th>Unit</th>
                                     <th>Purchase Stock</th>
-                                    <th>Remain Stock</th>
+                                    <th>Return Stock</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
@@ -169,81 +169,57 @@
             });
         }
     </script>
+    <script>
+        function generateTable() 
+        {
+            var fdate=$('#fdate').val();
+            var tdate=$('#tdate').val();
+            var doc = new jsPDF('p', 'pt', 'letter');
+            var y = 20;
+            doc.setLineWidth(2);
+            doc.text(150, y = y + 10, "Kitchen History From "+fdate+" To "+tdate);
+            doc.autoTable({
+                html: '#example1',
+                startY: 40,
+                startX: 40,
+                theme: 'grid',
+                columns: [
+                    {dataKey: 'Sl.No'},
+                    {dataKey: 'Item Name'},
+                    {dataKey: 'Unit'},
+                    {dataKey: 'Purchase'},
+                    {dataKey: 'Return Stock'},
+                    {dataKey: 'Date'},
+                ],
+                styles: {
+                    overflow: 'linebreak',
+                    lineWidth: 1,
+                    fontSize: 8,
+                    cellPadding: {horizontal: 5, vertical: 2},
+                },
+                headerStyles: {
+                    fillColor: [128, 128, 128],
+                    textColor: [255, 255, 255],
+                    fontSize: 8,
+                    lineWidth: 1,
+                },
+            })
 
-        <script>
-            function exportTableToPdf1()
-            {
-                var table = document.getElementById("example1");
-
-                var clonedTable = table.cloneNode(true);
-                applyStylesToTable(clonedTable);
-                html2pdf(clonedTable, {
-                    margin: 3,
-                    filename: 'table.pdf',
-                    html2canvas: { scale: 2 },
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'a4',
-                        orientation: 'portrait',
-                    },
-                    pagebreak: { avoid: '#example1', mode: 'css' },
-                    repeat: {
-                        after: clonedTable.getElementsByTagName('thead')[0],
-                        every: 1, // Repeat after every page
-                    },
-                }).then(() => {
-                    removeStylesFromTable(clonedTable);
-                });
-            }
-            function applyStylesToTable(table) 
-            {
-                var headers = table.querySelectorAll('th');
-                headers.forEach(function(header) {
-                    header.style.fontSize = '8px';
-                    header.style.fontWeight = 'bold';
-                    header.style.padding = '2px';
-                });
-
-                var cells = table.querySelectorAll('td');
-                cells.forEach(function(cell) {
-                    cell.style.fontSize = '8px';
-                    cell.style.padding = '2px';
-                    cell.style.fontWeight = 'normal';
-                });
-
-                var wastageButtons = table.querySelectorAll('.btn-info');
-                wastageButtons.forEach(function(button) {
-                    button.parentNode.style.display = 'none';
-                });
-
-                var wastageHeaderText = 'Use';
-                headers.forEach(function(header) {
-                    if (header.innerText.trim() === wastageHeaderText) {
-                        header.style.display = 'none';
-                    }
-                });
-            }
-            function removeStylesFromTable(table) {
-                var headers = table.querySelectorAll('th');
-                headers.forEach(function(header) {
-                    header.style.removeProperty('padding');
-                });
-
-                var cells = table.querySelectorAll('td');
-                cells.forEach(function(cell) {
-                    cell.style.removeProperty('padding');
-                });
-
-                var wastageButtons = table.querySelectorAll('.btn-info');
-                wastageButtons.forEach(function(button) {
-                });
-
-                var wastageHeaderText = 'Use';
-                headers.forEach(function(header) {
-                    if (header.innerText.trim() === wastageHeaderText) {
-                        header.style.display = '';
-                    }
-                });
-            }
-        </script>
+            // doc.setProperties({
+            //     title: 'Product Detailed Report',
+            //     subject: 'This is the Product Detailed Report',
+            //     author: 'Author Name',
+            //     keywords: 'generated, javascript, web 2.0, ajax',
+            //     creator: 'Author Name',
+            //     margins: {
+            //         top: 0,
+            //         bottom: 0,
+            //         left: 0,
+            //         right: 0,
+            //     },
+            //     pageSize: 'letter',
+            // });
+            doc.save('kitchen_history');
+        }
+    </script>
 </body>
