@@ -1092,6 +1092,19 @@ if(isset($_POST['addStockToDamage']))
     {
         $rows[]=$row;
     }
-    echo json_encode($row);
+    echo json_encode($rows);
+}
+
+if(isset($_POST['editid']))
+{
+    $editid=$_POST['editid'];
+    $rows=array();
+    $query="SELECT * FROM `purchase_data` WHERE `id`='$editid'";
+    $exc=mysqli_query($conn,$query);
+    while($row=mysqli_fetch_assoc($exc))
+    {
+        $rows[]=$row;
+    }
+    echo json_encode($rows);
 }
 ?>

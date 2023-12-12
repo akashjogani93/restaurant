@@ -56,7 +56,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
-                            <button class="btn btn-danger" style="margin-top:23px;" onclick="exportTableToPdf1()">PDF</button>
+                            <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
                             <button class="btn btn-success" style="margin-top:23px;">Excel</button>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <table class="table" id="kotdata">
+                        <table class="table" id="dayfoodtable">
                             <thead class="thead-dark">
                                 <!-- <tr>
                                     <th></th>
@@ -100,28 +100,63 @@
                     day_sales.singleFood()
                 });
             });
-            // function generatePDF() 
-            // {
-            //     console.log('running');
-            //     const doc = new jsPDF();
-            //     const table = document.getElementById("kotdata");
-            //     doc.fromHTML(table, 15, 15);
-            //     doc.save("table.pdf");
-            // }
         </script>
         <script>
-            function exportTableToPdf1() 
+            function generateTable() 
             {
-                var table = document.getElementById("kotdata");
-                console.log(table)
-                var options = {
-                    margin: 10,
-                    filename: "table.pdf",
-                    image: { type: "jpeg", quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                };
-                html2pdf().from(table).set(options).outputPdf();
+                var fdate=$('#fdate').val();
+                var tdate=$('#tdate').val();
+                var doc = new jsPDF('p', 'pt', 'letter');
+                var y = 20;
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, "Food Sale By Table From "+fdate+" To "+tdate);
+                doc.autoTable({
+                    html: '#dayfoodtable',
+                    startY: 40,
+                    startX: 40,
+                    theme: 'grid',
+                    columns: [
+                        {dataKey: 'Bill No'},
+                        {dataKey: 'Quantity'},
+                        {dataKey: 'Table No'},
+                        {dataKey: 'Waiter Code'},
+                        {dataKey: 'Uid'},
+                        {dataKey: 'Date & Time'}
+                    ],
+                    didParseCell: function (data) 
+                    {
+                        if (data.row.section === 'body') 
+                        {
+                            var rowElement = data.row.raw;
+                            var tr = data.row.raw._element;
+                            if (tr.classList.contains('likethead')) 
+                            {
+                                data.cell.styles.fillColor = [128, 128, 128];
+                                data.cell.styles.textColor = [255, 255, 255];
+                                data.cell.styles.fontSize = 8;
+                            }
+                        }
+                    },
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 8,
+                        cellPadding: {horizontal: 5, vertical: 2},
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 8,
+                        lineWidth: 1,
+                    },
+                    footStyles: {
+                        fontSize: 8,
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        lineWidth: 1,
+                    },
+                })
+                doc.save('day_sale');
             }
         </script>
     </div>

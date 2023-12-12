@@ -61,7 +61,7 @@
                                     <div class="col-md-3">
                                         <button class="btn btn-success" style="margin-top:23px;" @click="search">Search</button>
                                         <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
-                                        <button class="btn btn-success" style="margin-top:23px;">Excel</button>
+                                        <button class="btn btn-success" style="margin-top:23px;" onclick="exportToExcel()">Excel</button>
                                     </div>
                                 </div>
                             </div>
@@ -147,8 +147,10 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script> -->
     <!-- <script src="path/to/jspdf.plugin.autotable.min.js"></script> -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-xlsx/0.15.0/xlsx.core.min.js"></script>
     <!-- <script src="assets/js/jspdf-autotable-custom.js"></script> -->
 
     <script src="js/kitchen_int.js"></script>
@@ -254,6 +256,16 @@
                 //     pageSize: 'letter',
                 // });
                 doc.save('store_stock');
+            }
+
+            function exportToExcel() 
+            {
+                var table = document.getElementById("example1");
+                TableExport(table, {
+                    formats: ["xlsx"],
+                    filename: "myTableData",
+                    exportButtons: false
+                });
             }
         </script>
 </body>

@@ -60,7 +60,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
-                            <button class="btn btn-danger" style="margin-top:23px;" onclick="generatePDF1()">PDF</button>
+                            <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
                             <button class="btn btn-success" style="margin-top:23px;">Excel</button>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                 </div>
             </div>
         </section>
-        <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script>
+        <!-- <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script> -->
         <script>
             $(document).ready(function()
             {
@@ -243,46 +243,67 @@
                     tbody.append(sumRow);
                 $('.bd-example-modal-xl').modal('show');
             }
-
-            function generatePDF() 
-            {
-                console.log('running');
-                const doc = new jsPDF();
-                const table = document.getElementById("kotdata");
-                doc.fromHTML(table, 15, 15);
-                doc.save("table.pdf");
-            }
         </script>
         <script>
-            function generatePDF1()
+            function generateTable() 
             {
-                var mainDataElement = document.getElementById('mainData');
-                // Get the outer HTML with the added styles
-                var data = mainDataElement.outerHTML;
-                // Create a new XMLHttpRequest object
-                var xhr = new XMLHttpRequest();
-                // Set up the XMLHttpRequest
-                xhr.open('POST', 'tcpdf.php', true);
-                xhr.responseType = 'arraybuffer';
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                // Define the callback function when the state of the XMLHttpRequest changes
-                xhr.onreadystatechange = function()
-                {
-                    if(xhr.readyState === 4 && xhr.status === 200) 
-                    {
-                        // Create a Blob object from the response data
-                        var blob = new Blob([xhr.response], {type: 'application/pdf'});
-                        // Create a download link and trigger the download by simulating a click event
-                        var link = document.createElement('a');
-                        link.href = window.URL.createObjectURL(blob);
-                        link.download = "your_pdf_file_name.pdf";
-                        link.click();
-                    }
-                };
-                // Send the POST request
-                xhr.send('table_data=' + encodeURIComponent(data));
+                var fdate=$('#fdate').val();
+                var tdate=$('#tdate').val();
+                var doc = new jsPDF('p', 'pt', 'letter');
+                var y = 20;
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, "Day Food Sale Invoice From "+fdate+" To "+tdate);
+                doc.autoTable({
+                    html: '#dayinvoices',
+                    startY: 40,
+                    startX: 40,
+                    theme: 'grid',
+                    columns: [
+                        {dataKey: 'Invoice Date'},
+                        {dataKey: 'Invoice Number'},
+                        {dataKey: 'Gross Amount'},
+                        {dataKey: 'Discount'},
+                        {dataKey: 'GST Amount'},
+                        {dataKey: 'Round Off(-)'},
+                        {dataKey: 'Round Off(+)'},
+                        {dataKey: 'Net Amount'},
+                    ],
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 8,
+                        cellPadding: {horizontal: 5, vertical: 2},
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 8,
+                        lineWidth: 1,
+                    },
+                    footStyles: {
+                        fontSize: 8,
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        lineWidth: 1,
+                    },
+                })
+
+                // doc.setProperties({
+                //     title: 'Product Detailed Report',
+                //     subject: 'This is the Product Detailed Report',
+                //     author: 'Author Name',
+                //     keywords: 'generated, javascript, web 2.0, ajax',
+                //     creator: 'Author Name',
+                //     margins: {
+                //         top: 0,
+                //         bottom: 0,
+                //         left: 0,
+                //         right: 0,
+                //     },
+                //     pageSize: 'letter',
+                // });
+                doc.save('day_sale');
             }
         </script>
-
     </div>
 </body>

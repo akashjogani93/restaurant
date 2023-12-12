@@ -57,7 +57,7 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
     $exc=mysqli_query($conn,$query);
 
     ?>
-        <table class="table" id="kotdata">
+        <table class="table" id="dayinvoices">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
                     <th scope="col">Invoice Date</th>
@@ -108,7 +108,7 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
     }
     ?>
         </tbody>
-        <tfoot class="thead-dark">
+        <tfoot class="thead-dark" id="tfoot">
             <tr>
                 <th colspan="2"></th>
                 <th><?php echo number_format($Totalgtot,2); ?></th>
@@ -146,7 +146,7 @@ if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']
               DATE(`date`)";
     $exc=mysqli_query($conn,$query);
     ?>
-        <table class="table" id="kotdata">
+        <table class="table" id="monthsalebill">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Date</th>
@@ -178,7 +178,7 @@ if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']
         $gtot=number_format($row['gross'],2);
         $disc=number_format($row['disc'],2);
         $gstAmt=number_format($row['gstamt'],2);
-        $gst=$gstAmt/2;
+        $gst=$row['gstamt']/2;
         $roundplus=$row['plus'];
         $roundminus=$row['minus'];
         $nettot=number_format($row['total'],2);
@@ -230,7 +230,7 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
             LEFT JOIN 
                 tabledata td ON i.slno = td.billno
             WHERE 
-                i.date BETWEEN '$fdate' AND '$tdate'
+               i.status=1 AND i.date BETWEEN '$fdate' AND '$tdate'
           GROUP BY 
                 i.slno";
     $exc=mysqli_query($conn,$query);
@@ -253,8 +253,7 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
                 <tbody>
                     <tr>
                         <th colspan="2">Bill NO : <?php echo $row['slno'].'&nbsp;/&nbsp;'.$row['date'].'&nbsp;/&nbsp;'.$row['time']; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Captain Name : <?php echo $row['capname']; ?></th>
-                        <th colspan="1">Table-No : <?php echo $row['tabno'];?></th>
-                        <th colspan="2">UID : <?php echo $row['cashId'];?></th>
+                        <th colspan="3">Table-No : <?php echo $row['tabno'];?>&nbsp;/&nbsp;UID : <?php echo $row['cashId'];?></th>
                     </tr>
                 <?php
                     $productNames = explode(', ', $row['product_names']);
@@ -267,7 +266,7 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
                         ?>
                         <tr>
                             <td style="width:10%;"><?php echo $item_code[$i]; ?></td>
-                            <td style="width:50%;"><?php echo $productNames[$i]; ?></td>
+                            <td style="width:60%;"><?php echo $productNames[$i]; ?></td>
                             <td style="width:10%;"><?php echo number_format($prc[$i],2); ?></td>
                             <td style="width:10%;"><?php echo number_format($quantities[$i],2); ?></td>
                             <td style="width:10%;"><?php echo number_format($tot[$i],2); ?></td>
@@ -362,7 +361,7 @@ if(isset($_POST['singlefood']) && isset($_POST['fdate']) && isset($_POST['tdate'
         if($qty!=0)
         {
        ?>
-        <tr class="thead-dark">
+        <tr class="thead-dark likethead">
             <td colspan="2" class="text-right"><?php echo number_format($qty,2);?></td>
             <td colspan="4"><?php echo $itmnam; ?></td>
         </tr>
@@ -388,7 +387,7 @@ if(isset($_POST['cashier']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 
     $exc=mysqli_query($conn,$query);
     ?>
-        <table class="table" id="kotdata">
+        <table class="table" id="cashierdd">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
                     <th scope="col">Date</th>
@@ -481,12 +480,12 @@ if(isset($_POST['captainData']) && isset($_POST['fdate']) && isset($_POST['tdate
 
     $exc=mysqli_query($conn,$query);
     ?>
-        <table class="table" id="kotdata">
+        <table class="table" id="captaintable">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
                     <th scope="col">Date</th>
                     <th scope="col">UID</th>
-                    <th scope="col">Cashier Name</th>
+                    <th scope="col">Captain Name</th>
                     <th scope="col">Gross Amount</th>
                     <th scope="col">Discount</th>
                     <th scope="col">GST Amount</th>
@@ -563,7 +562,7 @@ if(isset($_POST['paymentMode']) && isset($_POST['fdate']) && isset($_POST['tdate
     $exc=mysqli_query($conn,$query);
 
     ?>
-        <table class="table" id="kotdata">
+        <table class="table" id="paymode">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
                     <th scope="col">Invoice Date</th>

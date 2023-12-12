@@ -200,7 +200,6 @@ class Purchase
             //     // order: [[0, 'desc']]
             // });
         });
-
         var app = new Vue({
             el: '#app',
             data: {
@@ -243,6 +242,27 @@ class Purchase
                 fetchOptions() 
                 {
                     const vm = this;
+
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const statuscancel = urlParams.get('pur_bill');
+                    if(statuscancel !== null && statuscancel !== undefined) 
+                    {
+                        $.ajax({
+                            url: 'ajax/store_all.php',
+                            method: 'POST',
+                            data:{editid:statuscancel},
+                            dataType:'JSON',
+                            success(response) {
+                                console.log(response[0].vendor);
+                                $('#ven').val(response[0].vendor);
+                                vm.vendorName=response[0].vendor;
+                            },
+                            error(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    }
+
                     $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
@@ -255,17 +275,17 @@ class Purchase
                         }
                     });
 
-                    $.ajax({
-                        url: 'ajax/store_all.php',
-                        method: 'POST',
-                        data:{ven:'ven'},
-                        success(response) {
-                            vm.vens = response;
-                        },
-                        error(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
+                    // $.ajax({
+                    //     url: 'ajax/store_all.php',
+                    //     method: 'POST',
+                    //     data:{ven:'ven'},
+                    //     success(response) {
+                    //         vm.vens = response;
+                    //     },
+                    //     error(xhr, status, error) {
+                    //         console.error(error);
+                    //     }
+                    // });
 
                     $('input, select').on('focus', function() {
                         $(this).css('border-color', '');

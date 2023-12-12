@@ -15,7 +15,12 @@
             .table td 
             {
                 border: 1px solid black;
-                /* padding: 5px; */
+                font-size:10px;
+                padding: 2px;
+            }
+            .table>tbody>tr>td
+            {
+                padding:3px;
             }
         </style>
         <div class="content-wrapper">
@@ -74,9 +79,9 @@
                                                         <td><?php echo number_format($row['pamt'],2); ?></td>
                                                         <td><?php echo $row['remark']; ?></td>
                                                         <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
-                                                                View Products
+                                                                View
                                                             </button>
-                                                            <button  class="btn btn-danger btn-sm">
+                                                            <button  class="btn btn-danger btn-sm" onclick="billEdit(this.value)" value="<?php echo $row['id']; ?>">
                                                                 Edit
                                                             </button>
                                                         </td>
@@ -97,23 +102,23 @@
                 </div>
             <section>
             <script>
-                $(function () 
-                {
-                    $("#dynamic-table").DataTable({
-                        columnDefs: [
-                            { "orderable": false, "targets": -1 }
-                        ]
-                    });
+                // $(function () 
+                // {
+                //     $("#dynamic-table").DataTable({
+                //         columnDefs: [
+                //             { "orderable": false, "targets": -1 }
+                //         ]
+                //     });
 
-                    $('#example2').DataTable({
-                        "paging": true,
-                        "lengthChange": false,
-                        "searching": false,
-                        "ordering": true,
-                        "info": true,
-                        "autoWidth": false
-                    });
-                });
+                //     $('#example2').DataTable({
+                //         "paging": true,
+                //         "lengthChange": false,
+                //         "searching": false,
+                //         "ordering": true,
+                //         "info": true,
+                //         "autoWidth": false
+                //     });
+                // });
 
                 $(document).ready(function()
                 {
@@ -142,6 +147,10 @@
                     $('#product-table').hide();
                     });
                 });
+                function billEdit(id)
+                {
+                    window.location="store_purchase_product.php?pur_bill="+id;
+                }
         </script>
         </div>
     </div>

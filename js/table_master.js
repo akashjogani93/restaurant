@@ -26,7 +26,7 @@ $(document).ready(function()
             }
         }
     });
-
+    direct=true;
     $("#table_no").focus();
 
     $(function() {
@@ -582,8 +582,6 @@ function settle(event)
     console.log('tabno:', tabno);
     console.log('amount:', amount);
     console.log('paymentMethod:', paymentMethod);
-    return;
-
     let log=$.ajax({
         type: 'POST',
         url: 'ajax/billsettle.php',

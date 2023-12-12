@@ -56,7 +56,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
-                            <button class="btn btn-danger" style="margin-top:23px;" onclick="exportTableToPdf1()">PDF</button>
+                            <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
                             <button class="btn btn-success" style="margin-top:23px;">Excel</button>
                         </div>
                     </div>
@@ -86,28 +86,52 @@
                     day_sales.cashierReport()
                 });
             });
-            // function generatePDF() 
-            // {
-            //     console.log('running');
-            //     const doc = new jsPDF();
-            //     const table = document.getElementById("kotdata");
-            //     doc.fromHTML(table, 15, 15);
-            //     doc.save("table.pdf");
-            // }
         </script>
         <script>
-            function exportTableToPdf1() 
+            function generateTable() 
             {
-                var table = document.getElementById("kotdata");
-                console.log(table)
-                var options = {
-                    margin: 10,
-                    filename: "table.pdf",
-                    image: { type: "jpeg", quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                };
-                html2pdf().from(table).set(options).outputPdf();
+                var fdate=$('#fdate').val();
+                var tdate=$('#tdate').val();
+                var doc = new jsPDF('p', 'pt', 'letter');
+                var y = 20;
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, "Cashier Sale By Table From "+fdate+" To "+tdate);
+                doc.autoTable({
+                    html: '#cashierdd',
+                    startY: 40,
+                    startX: 40,
+                    theme: 'grid',
+                    columns: [
+                        {dataKey: 'Date'},
+                        {dataKey: 'UID'},
+                        {dataKey: 'Cashier Name'},
+                        {dataKey: 'Gross Amount'},
+                        {dataKey: 'Discount'},
+                        {dataKey: 'GST Amount'},
+                        {dataKey: 'Round Off(-)'},
+                        {dataKey: 'Round Off(+)'},
+                        {dataKey: 'Net Amount'},
+                    ],
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 8,
+                        cellPadding: {horizontal: 5, vertical: 2},
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 8,
+                        lineWidth: 1,
+                    },
+                    footStyles: {
+                        fontSize: 8,
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        lineWidth: 1,
+                    },
+                })
+                doc.save('cashier');
             }
         </script>
     </div>

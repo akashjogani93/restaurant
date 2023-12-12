@@ -61,7 +61,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
-                            <button class="btn btn-danger" style="margin-top:23px;" onclick="exportTableToPdf1()">PDF</button>
+                            <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
                             <button class="btn btn-success" style="margin-top:23px;">Excel</button>
                         </div>
                     </div>
@@ -88,29 +88,83 @@
                     day_sales.day_foodInvoice();
                 });
             });
-            // function generatePDF() 
-            // {
-            //     console.log('running');
-            //     const doc = new jsPDF();
-            //     const table = document.getElementById("kotdata");
-            //     doc.fromHTML(table, 15, 15);
-            //     doc.save("table.pdf");
-            // }
         </script>
         <script>
-            function exportTableToPdf1() 
-            {
-                var table = document.getElementById("kotdata");
-                console.log(table)
-                var options = {
-                    margin: 10,
-                    filename: "table.pdf",
-                    image: { type: "jpeg", quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                };
-                html2pdf().from(table).set(options).outputPdf();
+            function generateTable() {
+                var fdate = $('#fdate').val();
+                var tdate = $('#tdate').val();
+                var doc = new jsPDF('p', 'pt', 'letter');
+                var y = 20;
+
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, "Food Sale Table From " + fdate + " To " + tdate);
+
+                // Iterate through each table with class 'table' inside 'maintable'
+                $('#maintable .table').each(function (index) {
+                    var currentTable = $(this);
+                    var tableId = currentTable.attr('id');
+
+                    // Only generate the table if it has an id
+                    if (tableId) {
+                        if (index > 0) {
+                            y = doc.autoTable.previous.finalY + 10; // Set y to the bottom of the previous table plus spacing
+                        }
+
+                        var rowStyles = {
+                            0: { fontStyle: 'bold', fillColor: [200, 200, 200], fontSize: 8 }, // Apply styles to the first row
+                        };
+                        doc.autoTable({
+                            html: '#' + tableId, // Use the id of the current table
+                            startY: y,
+                            startX: 40,
+                            theme: 'grid',
+                            columns: [
+                                { dataKey: 'Itme No' },
+                                { dataKey: 'Item Name' },
+                                { dataKey: 'Rate' },
+                                { dataKey: 'Qty' },
+                                { dataKey: 'Amount' },
+                            ],
+                            styles: {
+                                overflow: 'linebreak',
+                                lineWidth: 1,
+                                fontSize: 8,
+                                cellPadding: { horizontal: 5, vertical: 2 },
+                            },
+                            headerStyles: {
+                                fillColor: [128, 128, 128],
+                                textColor: [255, 255, 255],
+                                fontSize: 8,
+                                lineWidth: 1,
+                            },
+                            footStyles: {
+                                fontSize: 8,
+                                fillColor: [128, 128, 128],
+                                textColor: [255, 255, 255],
+                                lineWidth: 1,
+                            },
+                            // didDrawCell: function (data) 
+                            // {
+                            //     var isInTbody = data.row.index !== 0 && $(data.cell.raw).closest('tbody').length > 0;
+                            //     if (isInTbody) 
+                            //     {
+                            //         console.log(data.cell)
+                            //         // Apply your styles or logic here for cells within the first row of tbody
+                            //         data.cell.styles = {
+                            //             // Your styles for tbody first row cells
+                            //             fontStyle: 'bold',
+                            //             fillColor: [200, 200, 200],
+                            //             fontSize: 8,
+                            //         };
+                            //     }
+                            // },
+                        });
+                    }
+                });
+
+                // Additional settings or modifications can be added here.
+
+                doc.save('food_sale');
             }
         </script>
-    </div>
 </body>
