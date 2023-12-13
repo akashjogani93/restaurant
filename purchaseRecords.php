@@ -15,7 +15,7 @@
             .table td 
             {
                 border: 1px solid black;
-                font-size:10px;
+                font-size:12px;
                 padding: 2px;
             }
             .table>tbody>tr>td

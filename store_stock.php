@@ -149,9 +149,11 @@
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script> -->
+    <!-- Include js-xlsx library from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-xlsx/0.17.0/xlsx.core.min.js"></script>
+
+    <!-- Include tableexport.min.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-xlsx/0.15.0/xlsx.core.min.js"></script>
-    <!-- <script src="assets/js/jspdf-autotable-custom.js"></script> -->
 
     <script src="js/kitchen_int.js"></script>
     <script>
@@ -258,8 +260,7 @@
                 doc.save('store_stock');
             }
 
-            function exportToExcel() 
-            {
+            function exportToExcel() {
                 var table = document.getElementById("example1");
                 TableExport(table, {
                     formats: ["xlsx"],
