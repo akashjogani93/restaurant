@@ -301,26 +301,26 @@ class Purchase
                         }
                     });
 
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const statuscancel = urlParams.get('pur_bill');
-                    if(statuscancel !== null && statuscancel !== undefined) 
-                    {
-                        $.ajax({
-                            url: 'ajax/store_all.php',
-                            method: 'POST',
-                            data:{editid:statuscancel},
-                            dataType:'JSON',
-                            success(response) 
-                            {
-                                console.log(response[0].vendor);
-                                // $('#ven').val(response[0].vendor);
-                                vm.vendorName = response[0].vendor;
-                            },
-                            error(xhr, status, error) {
-                                console.error(error);
-                            }
-                        });
-                    }
+                    // const urlParams = new URLSearchParams(window.location.search);
+                    // const statuscancel = urlParams.get('pur_bill');
+                    // if(statuscancel !== null && statuscancel !== undefined) 
+                    // {
+                    //     $.ajax({
+                    //         url: 'ajax/store_all.php',
+                    //         method: 'POST',
+                    //         data:{editid:statuscancel},
+                    //         dataType:'JSON',
+                    //         success(response) 
+                    //         {
+                    //             console.log(response[0].vendor);
+                    //             // $('#ven').val(response[0].vendor);
+                    //             vm.vendorName = response[0].vendor;
+                    //         },
+                    //         error(xhr, status, error) {
+                    //             console.error(error);
+                    //         }
+                    //     });
+                    // }
                 },
                 categoryChange()
                 {
