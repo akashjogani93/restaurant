@@ -284,9 +284,6 @@
         $(document).ready(function()
         {
             const purchase_datas= new Purchase();
-            var yourDateValue = new Date();
-            var formattedDate = yourDateValue.toISOString().substr(0, 10)
-            $('#purdate').val(formattedDate);
             $('#pamt, #totamt, #qty, #bill').keypress(function(event) {
                 var keycode = (event.keyCode ? event.keyCode : event.which);
 
