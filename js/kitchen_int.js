@@ -232,7 +232,7 @@ class Purchase
                 // other:null,
                 disc:0,
                 totalofprice:0,
-                // grandTotal:0
+                // grandTotal:0;'
             },
             mounted() {
                 this.fetchOptions();
