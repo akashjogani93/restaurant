@@ -89,7 +89,7 @@
                 },
                 success(response)
                 {
-                    $('#sellunit').val(response[0].sellunit);
+                    $('#sellunit').val(response[0].unit);
                     $('#sellqty').val(response[0].netStock);
                 }
             });

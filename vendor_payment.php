@@ -50,34 +50,36 @@
                                     <tbody>
                                         <?php 
                                             include("dbcon.php");
-                                            $sql = "SELECT * FROM vendor";
-                                            $retval = mysqli_query($conn,$sql);
+                                            $query="SELECT
+                                                        ve.vendor AS 'vendor',
+                                                        ve.slno AS 'slno',
+                                                        ve.mobile AS 'mobile',
+                                                        SUM(v.amt) AS 'total_amt',
+                                                        SUM(v.paid) AS 'total_paid',
+                                                        SUM(v.disc) AS 'total_disc'
+                                                    FROM
+                                                        vendor_payment v
+                                                    JOIN
+                                                        vendor ve ON v.venId = ve.slno
+                                                    GROUP BY
+                                                        ve.vendor, ve.mobile;
+                                                    ";
+                                            $retval = mysqli_query($conn,$query);
                                             if(! $retval )
                                             {
                                                 die('Could not get data: ' . mysqli_error($conn));
                                             }
                                             while($row = mysqli_fetch_assoc($retval))
                                             { 
-                                                $vendor=$row['vendor']; 
-                                                $query="select SUM(disc) as di from vendor_payment where vendor='$vendor'";
-                                                $exc=mysqli_query($conn,$query);
-                                                while($row1=mysqli_fetch_assoc($exc))
-                                                {
-                                                    $disc=$row1['di'];
-                                                }
                                                 ?>
                                                     <tr>                                                    
                                                         <td><?php echo $row['slno']; ?></td>                                                   
                                                         <td><?php echo $row['vendor']; ?></td>
                                                         <td><?php echo $row['mobile']; ?></td>
-                                                        <td><?php echo $row['totalamt']; ?></td>
-                                                        <td><?php echo $row['paid']-$disc; ?></td>
-                                                        <td><?php echo $disc; ?></td>
-                                                        <td><?php echo $row['totalamt']-$row['paid']; ?></td>
-                                                        <!-- <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
-                                                                View Products
-                                                            </button>
-                                                        </td> -->
+                                                        <td><?php echo number_format($row['total_amt'],2); ?></td>
+                                                        <td><?php echo number_format($row['total_paid'],2); ?></td>
+                                                        <td><?php echo number_format($row['total_disc'],2); ?></td>
+                                                        <td><?php echo number_format($row['total_amt']-$row['total_paid'],2); ?></td>
                                                     </tr>
                                                 <?php
                                             }

@@ -63,7 +63,7 @@
                                             <div class="col-sm-8">
                                                 <select name="pname" id="pid" required class="form-control pname" v-model="vendorOption" @change="vendorChange">
                                                     <option value="">Select Vendor</option>
-                                                    <option v-for="ven in vens" :value="ven.vendor">{{ ven.vendor }}</option>
+                                                    <option v-for="ven in vens" :value="ven.slno">{{ ven.vendor }}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -97,7 +97,7 @@
                                         <td>{{ item.amt }}</td>
                                         <td>{{ item.paid }}</td>
                                         <!-- <td>{{ item.remain }}</td> -->
-                                        <td>{{ item.pending }}</td>
+                                        <td>{{ item.remain }}</td>
                                         <td>{{ item.disc }}</td>
                                         <!-- <td>{{ item.settle }}</td> -->
                                     </tr>
@@ -108,7 +108,7 @@
                                     <thead v-if="paymentList.length > 0" class="thea">
                                         <tr>
                                             <th class="font-weight-bold text-primary th-texts">Amount To Pay:</th>
-                                            <th class="font-weight-bold text-danger th-amounts">{{ paymentList.length > 0 ? paymentList[paymentList.length - 1].pending : 0 }}</th>
+                                            <th class="font-weight-bold text-danger th-amounts">{{ paymentList.length > 0 ? paymentList.reduce((sum, payment) => sum + (parseFloat(payment.amt) - parseFloat(payment.paid)), 0) : 0 }}</th>
                                         </tr>
                                         <tr>
                                             <th class="font-weight-bold text-primary th-texts1">Pay Amount:</th>
@@ -208,9 +208,10 @@
                 },
                 settleBill()
                 {
+                    const vm=this;
                     const amountPay = parseFloat(this.amount);
                     const amountDiscount = parseFloat(this.discount);
-                    const pendingAmount=this.paymentList[this.paymentList.length - 1].pending;
+                    const pendingAmount = this.paymentList.reduce((sum, payment) => sum + parseFloat(payment.remain), 0);
                     vendorOption=this.vendorOption;
                     if (isNaN(amountPay)) 
                     {
@@ -228,7 +229,9 @@
                         .done(function(response)
                         {
                             console.log(response);
-                            window.location="individual_payment.php"
+                            vm.vendorChange();
+                            vm.amount=0;
+
                         })
                         .fail(function(jqXHR, textStatus, errorThrown)
                         {
@@ -241,7 +244,7 @@
                 {
                     const amountPay = parseFloat(this.amount);
                     const amountDiscount = parseFloat(this.discount);
-                    const pendingAmount=this.paymentList[this.paymentList.length - 1].pending;
+                    const pendingAmount = this.paymentList.reduce((sum, payment) => sum + parseFloat(payment.remain), 0);
                     if (isNaN(amountDiscount)) 
                     {
                         this.discount = 0;
@@ -264,7 +267,8 @@
                 {
                     const amountPay = parseFloat(this.amount);
                     const amountDiscount = parseFloat(this.discount);
-                    const pendingAmount=this.paymentList[this.paymentList.length - 1].pending;
+                    // const pendingAmount=this.paymentList[this.paymentList.length - 1].pending;
+                    const pendingAmount = this.paymentList.reduce((sum, payment) => sum + parseFloat(payment.remain), 0);
                     if (isNaN(amountPay)) 
                     {
                         this.amount = 0;

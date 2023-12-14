@@ -100,7 +100,7 @@
                                     <td>{{ item.wastage }}</td>
                                     <td>{{ item.cloasing }}</td>
                                     <td>
-                                        <button class="btn btn-success" @click="handlewastage(index)">wastage</button>
+                                        <button class="btn btn-success" @click="handlewastage(index)"><i class='bx bx-trash-alt'></i></button>
                                     </td>
                                 </tr>
                             </tbody>

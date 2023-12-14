@@ -170,8 +170,8 @@ if(isset($_POST['selectedpname']))
 
 if(isset($_POST['vendorOption']))
 {
-    $name=$_POST['vendorOption'];
-    $query="SELECT * FROM `vendor_payment` WHERE `vendor`='$name'";
+    $venId=$_POST['vendorOption'];
+    $query="SELECT * FROM `vendor_payment` WHERE `venId`='$venId'";
     $result=$conn->query($query);
     $options=array();
     if($result->num_rows > 0)
@@ -193,20 +193,21 @@ if(isset($_POST['amountPay']))
     $discount=$_POST['discount'];
     $pendingAmount=$_POST['pendingAmount'];
     $vendorName=$_POST['vendorName'];
+
     $lastPending=$pendingAmount-($amountPay+$discount);
     $currentDate = date("Y-m-d");
-    $updatevendor=($amountPay+$discount);
+    // $updatevendor=($amountPay+$discount);
     $settle=1;
     $zero=0;
-    $paymentstmt=$conn->prepare("INSERT INTO `vendor_payment`(`vendor`, `date`, `amt`, `paid`, `remain`, `pending`, `disc`,`settle`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-    $paymentstmt->bind_param("ssdddddi",$vendorName,$currentDate,$zero,$amountPay,$zero,$lastPending,$discount,$settle);
+    $paymentstmt=$conn->prepare("INSERT INTO `vendor_payment`(`date`,`amt`,`paid`, `remain`, `disc`,`settle`,`venId`) VALUES(?, ?, ?, ?, ?, ?, ?)");
+    $paymentstmt->bind_param("sddddii",$currentDate,$zero,$amountPay,$zero,$discount,$settle,$vendorName);
     $paymentstmt->execute();
     $paymentstmt->close();
 
-    $updateStmt = $conn->prepare("UPDATE `vendor` SET `paid` = `paid` + ? WHERE `vendor` = ?");
-    $updateStmt->bind_param("ds",$updatevendor,$vendorName);
-    $updateStmt->execute();
-    $updateStmt->close();
+    // $updateStmt = $conn->prepare("UPDATE `vendor` SET `paid` = `paid` + ? WHERE `vendor` = ?");
+    // $updateStmt->bind_param("ds",$updatevendor,$vendorName);
+    // $updateStmt->execute();
+    // $updateStmt->close();
 
     $conn->close();
     $response = array('status' => 'success', 'message' => 'Data submitted successfully');

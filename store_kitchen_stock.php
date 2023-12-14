@@ -86,6 +86,7 @@
                                     <th>Purchase Stock</th>
                                     <th>Return Stock</th>
                                     <th>Date</th>
+                                    <!-- <th>Edit</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,6 +97,7 @@
                                     <td>{{ item.stock }}</td>
                                     <td>{{ item.stockreturn }}</td>
                                     <td>{{ item.date }}</td>
+                                    <!-- <td><button class="btn btn-info" @click="handleEdit(index)">Edit</button></td> -->
                                 </tr>
                             </tbody>
                         </table>

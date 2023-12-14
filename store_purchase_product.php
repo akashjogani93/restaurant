@@ -34,6 +34,7 @@
         padding: 5px;
     }
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <body class="hold-transition skin-blue sidebar-mini">
     <div id="app">
         <div class="wrapper" id="form1"></div>
@@ -176,8 +177,8 @@
                                     <td>{{ item.amt }}</td>
                                     <td>{{ item.exp }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-primary" @click="editItem(item, index)">Edit</button>
-                                        <button type="button" class="btn btn-sm btn-danger" @click="deleteItem(index)">Delete</button>
+                                        <button type="button" class="btn btn-sm btn-primary" @click="editItem(item, index)"><i class='bx bx-edit-alt'></i></button>
+                                        <button type="button" class="btn btn-sm btn-danger" @click="deleteItem(index)"><i class='bx bx-trash'></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -189,14 +190,6 @@
                         <div class="col-md-12">
                             <div class="box-body">
                                 <div class="row">
-                                    <!-- <div class="form-group col-md-3">
-                                        <label for="inputEmail3" class="control-label">Vendor</label>
-                                        <select required class="form-control pname" v-model="vendorName" style=" border-color: #0a5f81;" name="ven" id="ven">
-                                            <option value="">Select Vendor</option>
-                                            <option v-for="ven in vens" :value="ven.slno">{{ ven.vendor }}</option>
-                                        </select>
-                                        <span v-if="vendorNameError" class="error">Vendor name should only contain letters.</span>
-                                    </div> -->
                                     <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Gross Amt</label>
                                             <input type="number" class="form-control" name="g-amt" id="g-amt" placeholder="Gross Amount" v-model="gamt" style=" border-color: #0a5f81;" min="1" readonly>
@@ -205,11 +198,11 @@
                                         <label for="inputEmail3" class="control-label">Disc</label>
                                         <input type="number" class="form-control" name="disc-amt" id="disc-amt" placeholder="Disc Amount" v-model="disctax" style=" border-color: #0a5f81;" min="1" readonly>
                                     </div>
-                                    <div class="form-group col-md-1">
+                                    <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Tax</label>
                                         <input type="number" class="form-control" name="tax-amt" id="tax-amt" placeholder="Tax" v-model="totaltax" style=" border-color: #0a5f81;" min="1" readonly>
                                     </div>
-                                    <div class="form-group col-md-1">
+                                    <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Cess</label>
                                         <input type="number" class="form-control" name="cess-amt" id="cess-amt" placeholder="Cess" v-model="totalcess" style=" border-color: #0a5f81;" min="1" readonly>
                                     </div>
@@ -222,24 +215,12 @@
                                         <input type="number" class="form-control" name="totamt" id="totamt" placeholder="Total Amount" style=" border-color: #0a5f81;" readonly>
                                         <input type="hidden" class="form-control" name="totamt1" id="totamt1" placeholder="Tax Amount1" style="border-color: #0a5f81;" min="1" readonly>
                                     </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="inputEmail3" class="control-label">Paid Amount</label>
-                                            <input type="number" class="form-control pamt" name="pamt" placeholder="Paid Amount" v-model="pamt" style=" border-color: #0a5f81;" id="pamt">
-                                    </div>
                                 </div>
                                 <div class="row">
-                                    <!-- <div class="form-group col-md-2">
+                                    <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Paid Amount</label>
                                             <input type="number" class="form-control pamt" name="pamt" placeholder="Paid Amount" v-model="pamt" style=" border-color: #0a5f81;" id="pamt">
-                                    </div> -->
-                                    <!-- <div class="form-group col-md-2">
-                                        <label for="inputEmail3" class="control-label">Bill Date</label>
-                                            <input type="date" class="form-control" name="purdate" id="purdate" placeholder="Purchased Date" style=" border-color: #0a5f81;">
                                     </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="inputEmail3" class="control-label">Bill No</label>
-                                            <input type="text" class="form-control" name="billno" id="bill" placeholder="Bill No" style=" border-color: #0a5f81;">
-                                    </div> -->
                                     <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Payment</label>
                                         <select name="paymentmode" id="paymentmode" class="form-control">
@@ -260,16 +241,11 @@
                                         <!-- </center> -->
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <button type="button" class="btn btn-sm btn-info" style="width:100%; margin-top:25px;" @click="submitData">Submit</button>
+                                        <button type="button" class="btn btn-sm btn-info" style="width:100%; margin-top:25px;" @click="submitData" v-if="!billEdit">Submit</button>
+                                        <button v-else type="button" class="btn btn-sm btn-info" style="width:100%; margin-top:25px;" @click="finalUpdateData">Update</button>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <!-- <div class="form-group col-md-12">
-                                        <center>   
-                                            <button type="button" class="btn btn-sm btn-danger" style="width:20%;" @click="clearData">Cancel</button>
-                                            <button type="button" class="btn btn-sm btn-info" style="width:20%;" @click="submitData">Submit</button>
-                                        </center>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -293,15 +269,6 @@
                     return true;
                 }
             });
-            let log= $('#pamt,#totamt').on('change', function()
-            {
-                var pamt = parseFloat($('#pamt').val());
-                var totamt = parseFloat($('#totamt').val());
-                if (!isNaN(pamt) && !isNaN(totamt) && pamt > totamt) 
-                {
-                    $('#pamt').val(totamt)
-                }
-            });
             $('#other-amt').on('input', function() 
             {
                 var tot = $('#totamt').val();
@@ -311,16 +278,10 @@
                 {
                     var total = parseFloat(totamt1) + parseFloat(otherAmt);
                     $('#totamt').val(total);
-                    console.log('pass');
                 } else {
-                    $('#totamt').val(totamt1);
-                    console.log('fail');
+                    $('#totamt').val(totamt1.toFixed(2));
                 }
             });
-
-
-            
-
         });
     </script>
 </body>

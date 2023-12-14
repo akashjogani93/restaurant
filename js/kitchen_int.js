@@ -214,12 +214,13 @@ class Purchase
                 price:null,
                 stockList: [],
                 nextId: 1,
+                editnextId:1,
                 editMode: false,
                 index: null,
                 // totamt:null,
                 vendorName: '',
                 vendorNameError: false,
-                pamt:null,
+                pamt:0,
                 insideqty:'',
                 sellprice:'',
                 exp:'',
@@ -233,6 +234,9 @@ class Purchase
                 disc:0,
                 totalofprice:0,
                 // grandTotal:0;'
+                billEdit:false,
+                editbillno:null,
+                stockListdelete:[],
             },
             mounted() {
                 this.fetchOptions();
@@ -269,7 +273,8 @@ class Purchase
                         success(response) {
                             vm.vens = response;
                         },
-                        error(xhr, status, error) {
+                        error(xhr, status, error)
+                        {
                             console.error(error);
                         }
                     });
@@ -289,38 +294,106 @@ class Purchase
                         var total=amt-disc;
                         if(disc >amt)
                         {
-                            vm.disc=amt;
+                            vm.disc=amt.toFixed(2);
                             vm.totalofprice=0;
                         }else if(disc <= amt)
                         {
-                            vm.totalofprice=total;
+                            vm.totalofprice=total.toFixed(2);
                         }else
                         {
                             $('#disc').val(0)
-                            vm.totalofprice=total;
+                            vm.totalofprice=total.toFixed(2);
                         }
                     });
 
-                    // const urlParams = new URLSearchParams(window.location.search);
-                    // const statuscancel = urlParams.get('pur_bill');
-                    // if(statuscancel !== null && statuscancel !== undefined) 
-                    // {
-                    //     $.ajax({
-                    //         url: 'ajax/store_all.php',
-                    //         method: 'POST',
-                    //         data:{editid:statuscancel},
-                    //         dataType:'JSON',
-                    //         success(response) 
-                    //         {
-                    //             console.log(response[0].vendor);
-                    //             // $('#ven').val(response[0].vendor);
-                    //             vm.vendorName = response[0].vendor;
-                    //         },
-                    //         error(xhr, status, error) {
-                    //             console.error(error);
-                    //         }
-                    //     });
-                    // }
+                    let log= $('#pamt,#totamt').on('input', function()
+                    {
+                        var pamt = parseFloat($('#pamt').val());
+                        var totamt = parseFloat($('#totamt').val());
+                        if (!isNaN(pamt) && !isNaN(totamt) && pamt > totamt) 
+                        {
+                            vm.pamt=totamt.toFixed(2);
+                        }
+                    });
+
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const statuscancel = urlParams.get('pur_bill');
+                    if(statuscancel !== null && statuscancel !== undefined) 
+                    {
+                        vm.billEdit=true;
+                        vm.editbillno=statuscancel;
+                        $('#purdate').prop('readonly', true);
+                        $.ajax({
+                            url: 'ajax/store_all.php',
+                            method: 'POST',
+                            data:{editid:statuscancel},
+                            dataType:'JSON',
+                            success(response) 
+                            {
+                                vm.vendorName = response[0].slno;
+                                $('#purdate').val(response[0].purchase_date);
+                                $('#bill').val(response[0].id);
+
+                                // vm.gamt=parseFloat(response[0].gamt);
+                                // vm.disctax=parseFloat(response[0].disc);
+                                // vm.totaltax=parseFloat(response[0].tax);
+                                // vm.totalcess=parseFloat(response[0].cessamount);
+                                vm.pamt=parseFloat(response[0].pamt);
+
+                                // var totamt=parseFloat(response[0].totalamt);
+                                $('#other-amt').val(parseFloat(response[0].otheramt))
+                                // $('#totamt').val(parseFloat(totamt))
+                                // $('#totamt1').val(parseFloat(totamt))
+                                $('#paymentmode').val(response[0].paymentMode)
+                                $('#remark').val(response[0].remark)
+                            },
+                            error(xhr, status, error) 
+                            {
+                                console.error(error);
+                            }
+                        });
+
+                        $.ajax({
+                            url: 'ajax/store_all.php',
+                            method: 'POST',
+                            data:{editfetchstock:statuscancel},
+                            dataType:'JSON',
+                            success(response) 
+                            {
+                                console.log(response);
+                                vm.stockList=[];
+                                response.forEach(item => {
+                                    const newItem = {
+                                        id: vm.nextId++,
+                                        name:item.pname,
+                                        pid: item.pid,
+                                        cat:item.category,
+                                        purunit:item.unit,
+                                        sellunit:item.sellunit,
+                                        qty:item.qty,
+                                        insideqty:item.perCaseQty,
+                                        pric:item.price,
+                                        baseamt:item.bamt,
+                                        disc:item.disc,
+                                        totalofprice:item.total,
+                                        tax:item.tax,
+                                        cessAmt:item.cess,
+                                        amt:item.total,
+                                        exp:item.exp,
+                                        taxper:item.taxper,
+                                        cessper:item.cessper,
+                                        stockid:item.id
+                                    };
+                                    vm.stockList.push(newItem);
+                                });
+                                vm.saveData();
+                            },
+                            error(xhr, status, error) 
+                            {
+                                console.error(error);
+                            }
+                        });
+                    }
                 },
                 categoryChange()
                 {
@@ -375,20 +448,19 @@ class Purchase
                         if(this.unit && this.exp && this.qty && this.qty > 0 && this.insideqty > 0 && this.price > 0)
                         {
                             var checkname=selectedItem.pname;
-                            var checkprice=this.price;
+                            var checkprice=parseFloat(this.price);
 
-                            let baseval=this.price*this.qty;
+                            let baseval=this.price*parseFloat(this.qty);
                             let disc=parseFloat(vm2.disc);
-                            let totalofprice=this.totalofprice;
+                            let totalofprice=parseFloat(this.totalofprice);
 
-                            let taxper = (totalofprice*this.tax)/100;
-                            let cessamt = (totalofprice*this.cess)/100;
+                            let taxper = (totalofprice*parseFloat(this.tax))/100;
+                            let cessamt = (totalofprice*parseFloat(this.cess))/100;
                             let tot=totalofprice+taxper+cessamt;
-
-                            let total1 = parseFloat(tot.toFixed(2));
-                            let basevalue = parseFloat(baseval.toFixed(2));
-                            let taxAmt = parseFloat(taxper.toFixed(2));
-                            let cessAmt = parseFloat(cessamt.toFixed(2));
+                            let total1 = tot.toFixed(2);
+                            let basevalue =baseval.toFixed(2);
+                            let taxAmt =taxper.toFixed(2);
+                            let cessAmt =cessamt.toFixed(2);
                             const newItem = {
                                     id: vm2.nextId++,
                                     name: selectedItem.pname,
@@ -399,7 +471,7 @@ class Purchase
                                     qty: vm2.qty,
                                     insideqty: vm2.insideqty,
                                     pric:vm2.price,
-                                    baseamt:baseval,
+                                    baseamt:baseval.toFixed(2),
                                     disc:disc,
                                     totalofprice:totalofprice,
                                     tax:taxAmt,
@@ -407,7 +479,8 @@ class Purchase
                                     amt:total1,
                                     exp:this.exp,
                                     taxper:vm2.tax,
-                                    cessper:vm2.cess
+                                    cessper:vm2.cess,
+                                   
                                 };
                                 vm2.stockList.push(newItem);
                                 vm2.saveData();
@@ -457,19 +530,24 @@ class Purchase
                     if (data)
                     {
                         this.stockList = JSON.parse(data);
-                        var totamt=this.stockList.reduce((amt, item) => amt + item.amt, 0)
-                        $('#totamt').val(totamt);
-                        $("#totamt1").val(totamt);
-                        this.totaltax=this.stockList.reduce((tax,item) =>tax + item.tax, 0)
-                        this.totaltax = parseFloat(this.totaltax.toFixed(2));
+                        var other=parseFloat($('#other-amt').val());
+                        if (isNaN(other))
+                        {
+                            other=0;
+                        }
+                        var totamt=this.stockList.reduce((amt, item) => amt + parseFloat(item.amt), 0)+other;
+                        $('#totamt').val(totamt.toFixed(2));
+                        $("#totamt1").val(totamt.toFixed(2));
+                        var taxtamt = this.stockList.reduce((tax, item) => tax + parseFloat(item.tax), 0);
+                        this.totaltax=taxtamt.toFixed(2);
                         
-                        this.totalcess=this.stockList.reduce((cessAmt,item) =>cessAmt + item.cessAmt, 0);
-                        this.totalcess = parseFloat(this.totalcess.toFixed(2));
+                        var totalcess=this.stockList.reduce((cessAmt,item) =>cessAmt + parseFloat(item.cessAmt), 0);
+                        this.totalcess = totalcess.toFixed(2);
 
-                        this.disctax = parseFloat(this.stockList.reduce((disc, item) => disc + item.disc, 0));
-                        // this.disctax = parseFloat(this.disctax.toFixed(2));
-                        this.gamt=this.stockList.reduce((baseamt,item) =>baseamt + item.baseamt, 0);
-                        this.gamt = parseFloat(this.gamt.toFixed(2));
+                        this.disctax = this.stockList.reduce((disc, item) => disc + parseFloat(item.disc), 0);
+                        this.disctax = this.disctax.toFixed(2);
+                        this.gamt=this.stockList.reduce((baseamt,item) =>baseamt + parseFloat(item.baseamt), 0);
+                        this.gamt =this.gamt.toFixed(2);
                     }
                 },
                 clearData() 
@@ -503,6 +581,7 @@ class Purchase
                             method: 'POST',
                             data: {
                             vendorName: venItem.vendor,
+                            vendorNameId: venItem.slno,
                             venId: venItem.slno,
                             purchasedDate: purchasedDate,
                             remark:remark,
@@ -539,10 +618,97 @@ class Purchase
                         {
                             $('input[name="totamt"]').css('border-color', 'red');
                         }
-                        // if (!pamt) 
-                        // {
-                        //     $('input[name="pamt"]').css('border-color', 'red');
-                        // }
+                        if (!purchasedDate) 
+                        {
+                            $('#purdate').css('border-color', 'red');
+                        }
+                        if (this.stockList.length === 0) 
+                        {
+                            $('.form-control[name="unit"]').addClass('error');
+                            $('.form-control[name="qty"]').addClass('error');
+                        }
+                        if (!paymentmode) 
+                        {
+                            $('select[name="paymentmode"]').css('border-color', 'red');
+                        }
+                    }
+                },
+                finalUpdateData()
+                {
+                    const vm1 = this;
+                    const vendorName = $('#ven').val();
+                    const paymentmode = $('#paymentmode').val();
+                    const venItem = this.vens.find(ven => ven.slno === this.vendorName);
+                    // const category=this.categoryOption;
+                    const purchasedDate = $('input[name="purdate"]').val();
+                    const totamt = $('input[name="totamt"]').val(); //net amt
+                    const discamt = $('input[name="disc-amt"]').val();
+                    const gamount = $('input[name="g-amt"]').val();
+                    const taxamount = $('input[name="tax-amt"]').val();
+                    const cessamount = $('input[name="cess-amt"]').val();
+                    const otheramt = $('input[name="other-amt"]').val();
+                    const pamt = $('input[name="pamt"]').val();
+                    const remark = $('input[name="remark"]').val();
+                    const bill = $('input[name="billno"]').val();
+                    var editbill=this.editbillno;
+                   
+                    var lenstock=this.stockListdelete.length;
+                    if(lenstock==0)
+                    {
+                        const newItem={
+                                id: vm1.editnextId++,
+                                deletepid:0,
+                                stockId:0,
+                            }
+                        vm1.stockListdelete.push(newItem);
+                    }
+                    if(vendorName && purchasedDate && paymentmode && this.stockList.length > 0 && totamt)
+                    {
+                        const vm = this;
+                        let log= $.ajax({
+                            url: 'ajax/store_all.php',
+                            method: 'POST',
+                            data: {
+                            edit_vendorName: venItem.vendor,
+                            edit_venId: venItem.slno,
+                            edit_purchasedDate: purchasedDate,
+                            edit_remark:remark,
+                            edit_billNo:bill,
+                            edit_paymentmode:paymentmode,
+                            edit_totamt:totamt,
+                            edit_taxamount:taxamount,
+                            edit_discamt:discamt,
+                            edit_gamount:gamount,
+                            edit_pamt:pamt,
+                            edit_cessamount:cessamount,
+                            edit_otheramt:otheramt,
+                            edit_stockList: vm.stockList,
+                            edit_deletestock:vm.stockListdelete,
+                            editbill:editbill
+                            },
+                            success(response) 
+                            {
+                                console.log(response);
+                                alert("Product Added To Stock");
+                                localStorage.removeItem('stockListData');
+                                localStorage.removeItem('stockListData');
+                                window.location="purchaseRecords.php";
+                            },
+                            error(xhr, status, error) 
+                            {
+                                console.error(error);
+                            }
+                        });
+                    }else
+                    {
+                        if(!vendorName) 
+                        {
+                            $('#ven').css('border-color', 'red');
+                        }
+                        if (!totamt) 
+                        {
+                            $('input[name="totamt"]').css('border-color', 'red');
+                        }
                         if (!purchasedDate) 
                         {
                             $('#purdate').css('border-color', 'red');
@@ -561,22 +727,42 @@ class Purchase
                 saveData()
                 {
                     localStorage.setItem('stockListData', JSON.stringify(this.stockList));
-                    var other=$('#other-amt').val();
-                    var total=this.stockList.reduce((amt, item) => amt + item.amt, 0)+other;
-                    $("#totamt").val(total);
-                    $("#totamt1").val(total);
-                    this.totaltax=this.stockList.reduce((tax,item) =>tax + item.tax, 0);
-                    this.totaltax = parseFloat(this.totaltax.toFixed(2));
+                    var other=parseFloat($('#other-amt').val());
+                    if (isNaN(other))
+                    {
+                        other=0;
+                    }
+                    var totamt=this.stockList.reduce((amt, item) => amt + parseFloat(item.amt), 0)+other;
+                    $('#totamt').val(totamt.toFixed(2));
+                    $("#totamt1").val(totamt.toFixed(2));
+                    var taxtamt = this.stockList.reduce((tax, item) => tax + parseFloat(item.tax), 0);
+                    this.totaltax=taxtamt.toFixed(2);
+                    
+                    var totalcess=this.stockList.reduce((cessAmt,item) =>cessAmt + parseFloat(item.cessAmt), 0);
+                    this.totalcess = totalcess.toFixed(2);
 
-                    this.totalcess=this.stockList.reduce((cessAmt,item) =>cessAmt + item.cessAmt, 0);
-                    this.totalcess = parseFloat(this.totalcess.toFixed(2));
-
-                    this.disctax = parseFloat(this.stockList.reduce((disc, item) => disc + item.disc, 0));
-                    this.gamt=this.stockList.reduce((baseamt,item) =>baseamt + item.baseamt, 0);
-                    this.gamt = parseFloat(this.gamt.toFixed(2));
+                    this.disctax = this.stockList.reduce((disc, item) => disc + parseFloat(item.disc), 0);
+                    this.disctax = this.disctax.toFixed(2);
+                    
+                    this.gamt=this.stockList.reduce((baseamt,item) =>baseamt + parseFloat(item.baseamt), 0);
+                    this.gamt =this.gamt.toFixed(2);
                 },
                 deleteItem(index) 
                 {
+                    const vm=this;
+                    var bill=this.billEdit;
+                    if(bill=true)
+                    {
+                        var pid=this.stockList[index].pid;
+                        var stockId=this.stockList[index].stockid;
+                        const newItem={
+                            id: vm.editnextId++,
+                            deletepid:pid,
+                            stockId:stockId
+                        }
+                        vm.stockListdelete.push(newItem);
+                    }
+                    console.log(vm.stockListdelete[0].deletepid)
                     this.stockList.splice(index, 1);
                     this.saveData();
                 },
@@ -633,7 +819,8 @@ class Kitchen
                 closingStock: '',
                 selectedIndex: null,
                 pid:null,
-                editMode: false
+                editMode: false,
+                editbillno:null
             },
             mounted() {
                 this.fetchOptions();
@@ -664,6 +851,24 @@ class Kitchen
                             console.error(error);
                         }
                     });
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const statuscancel = urlParams.get('stock');
+                    if(statuscancel !== null && statuscancel !== undefined) 
+                    {
+                        vm.editbillno=statuscancel;
+                        $.ajax({
+                            url: 'ajax/store_all.php',
+                            method: 'POST',
+                            data:{kitchenstockEdit:statuscancel},
+                            dataType:'JSON',
+                            success(response) 
+                            {
+                                // vm.vendorName = response[0].slno;
+                                // $('#purdate').val(response[0].purchase_date);
+                                // $('#bill').val(response[0].id);
+                            }
+                        });
+                    }
                 },
                 categoryChange()
                 {
@@ -826,8 +1031,12 @@ class Kitchen
                     $('#return').val('');
                     
                     this.stockbyDate()
+                },
+                handleEdit(index)
+                {
+                    var stock_id=this.kitchenpurchase[index].stock_id;
+                    window.location="store_kitchen_given.php?stock="+stock_id;
                 }
-        
             }
         });
     }
@@ -1604,12 +1813,12 @@ class Vendor
                 },
                 updateItem() 
                 {
-                    id=this.id;
-                    vendor=this.vendor;
-                    mobile=this.mobile;
-                    gst=this.gst;
-                    fssi=this.fssi;
-                    adds=this.adds;
+                    var id=this.id;
+                    var vendor=this.vendor;
+                    var mobile=this.mobile;
+                    var gst=this.gst;
+                    var fssi=this.fssi;
+                    var adds=this.adds;
                     if (vendor && mobile && adds) 
                     {
                         if(gst!='')

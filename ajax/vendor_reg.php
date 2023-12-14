@@ -94,11 +94,11 @@
                     {
                         if($conn->query("UPDATE `purchase_data` SET `vendor`='$vendor' WHERE `venId`='$id'")==TRUE)
                         {
-                            $vendor_payment="UPDATE `vendor_payment` SET `vendor`='$vendor' WHERE `vendor`='$oldVendorName'";
-                            if ($conn->query($vendor_payment) === TRUE)
-                            {
+                            // $vendor_payment="UPDATE `vendor_payment` SET `vendor`='$vendor' WHERE `vendor`='$oldVendorName'";
+                            // if ($conn->query($vendor_payment) === TRUE)
+                            // {
                                 echo 0;
-                            }
+                            // }
                         }else
                         {
                             echo 0;

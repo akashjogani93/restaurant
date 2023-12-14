@@ -40,7 +40,7 @@
                                         <!-- <option value="Bundle">Bundle</option> -->
                                         <option value="Packet">Packet</option>
                                         <!-- <option value="Jar">Jar</option> -->
-                                        <!-- <option value="Piece">Piece</option> -->
+                                        <option value="Piece">Piece</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -56,7 +56,7 @@
                                         <!-- <option value="Bundle">Bundle</option> -->
                                         <option value="Packet">Packet</option>
                                         <!-- <option value="Jar">Jar</option> -->
-                                        <!-- <option value="Piece">Piece</option> -->
+                                        <option value="Piece">Piece</option>
                                     </select>
                                 </div>
                                 <div class="col-md-1">

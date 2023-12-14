@@ -50,7 +50,7 @@
                                             <th>Total Amount</th>
                                             <th>Paid Amount</th>
                                             <th>Remark</th>
-                                            <th>View Item</th>
+                                            <th>View/Edit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,10 +79,10 @@
                                                         <td><?php echo number_format($row['pamt'],2); ?></td>
                                                         <td><?php echo $row['remark']; ?></td>
                                                         <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
-                                                                View
+                                                                <i class='bx bx-show'></i>
                                                             </button>
                                                             <button  class="btn btn-danger btn-sm" onclick="billEdit(this.value)" value="<?php echo $row['id']; ?>">
-                                                                Edit
+                                                                <i class='bx bxs-edit-alt' ></i>
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -102,23 +102,23 @@
                 </div>
             <section>
             <script>
-                // $(function () 
-                // {
-                //     $("#dynamic-table").DataTable({
-                //         columnDefs: [
-                //             { "orderable": false, "targets": -1 }
-                //         ]
-                //     });
+                $(function () 
+                {
+                    $("#dynamic-table").DataTable({
+                        columnDefs: [
+                            { "orderable": false, "targets": -1 }
+                        ]
+                    });
 
-                //     $('#example2').DataTable({
-                //         "paging": true,
-                //         "lengthChange": false,
-                //         "searching": false,
-                //         "ordering": true,
-                //         "info": true,
-                //         "autoWidth": false
-                //     });
-                // });
+                    $('#example2').DataTable({
+                        "paging": true,
+                        "lengthChange": false,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false
+                    });
+                });
 
                 $(document).ready(function()
                 {
