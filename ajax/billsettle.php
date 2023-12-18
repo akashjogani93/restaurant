@@ -1,15 +1,14 @@
 <?php
 include("../dbcon.php");
 
-if(isset($_POST['x']) && isset($_POST['x1']))
-{
-    $bill = $_POST['x'];
-    $payment = $_POST['x1'];
+// if(isset($_POST['x']) && isset($_POST['x1']))
+// {
+//     $bill = $_POST['x'];
+//     $payment = $_POST['x1'];
 
-    mysqli_query($conn,"UPDATE `tabletot` SET `paymentmode`='$payment',`status`=1 WHERE `slno`='$bill'");
-    echo "Bill SETTLED TO: " . $bill;
-}
-
+//     mysqli_query($conn,"UPDATE `tabletot` SET `paymentmode`='$payment',`status`=1 WHERE `slno`='$bill'");
+//     echo "Bill SETTLED TO: " . $bill;
+// }
 if(isset($_POST['billno']) && isset($_POST['paymentMethod']))
 {
     $billno=$_POST['billno'];
@@ -32,11 +31,11 @@ if(isset($_POST['billno']) && isset($_POST['paymentMethod']))
             $slno=$row['slno'];
             // $kot_history="INSERT INTO `kot_history`(`date`, `itmno`, `itmnam`, `qty`, `tabno`, `capname`, `cap_code`, `kot_num`) VALUES ('$date','$itmno','$itmnam','$qty','$tabno','$capname','$cap_code','$kot_num')";
             // $resultKot=mysqli_query($conn,$kot_history);
-            mysqli_query($conn,"DELETE FROM `kot` WHERE `status`='$slno'");
+            // mysqli_query($conn,"DELETE FROM `kot` WHERE `status`='$slno'");
         }
     }
 
-    $sql1 = "INSERT INTO `tabledata`(`date`,`itmno`,`itmnam`,`prc`,`qty`,`tot`,`tabno`,`billno`,`time`,`kot_num`) SELECT `date`,`itmno`,`itmnam`,`prc`,SUM(`qty`) as `qty`,SUM(`tot`) AS `tot`,`tabno`,`billno`,`time`,`kot_num` FROM `temtable` GROUP BY `itmno`,`tabno` HAVING `billno`='$billno'";
+    $sql1 = "INSERT INTO `tabledata`(`date`,`itmno`,`itmnam`,`prc`,`qty`,`tot`,`tabno`,`billno`,`time`,`kot_num`,`type`) SELECT `date`,`itmno`,`itmnam`,`prc`,SUM(`qty`) as `qty`,SUM(`tot`) AS `tot`,`tabno`,`billno`,`time`,`kot_num`,`type` FROM `temtable` GROUP BY `itmno`,`tabno` HAVING `billno`='$billno'";
     if (!mysqli_query($conn, $sql1)) 
     {
         echo json_encode('Error: ' . mysqli_error($conn ));

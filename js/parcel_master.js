@@ -3,25 +3,25 @@ $(document).ready(function()
 {
     const urlParams = new URLSearchParams(window.location.search);
     const statuscancel = urlParams.get('tabno');
-    $('#itemlist').load("order_data.php?tabno="+statuscancel);
-    $('#boxx').load("bill_data.php");
+    $('#itemlist').load("parcel_data.php?tabno="+statuscancel);
+    $('#boxx').load("parcelBill_data.php");
     let log=$.ajax({
         type: 'GET',
         dataType: 'json',
-        url: 'set_session.php',
+        url: 'parcel_session.php',
         success: function(response) 
         {
             var Table=response.Table;
             if(response.BillEdit==true)
             {
-                $('#itemlist').load("order_data.php?tabno="+Table);
+                $('#itemlist').load("parcel_data.php?tabno="+Table);
             }else
             {
-                $('#boxx2').load("tableShift.php");
+                // $('#boxx2').load("tableShift.php");
                 let sess=$('#cashType').val();
                 if(sess!='Captain')
                 {
-                    $('#boxx1').load("bill_setelment.php?order=0");
+                    $('#boxx1').load("bill_setelment.php?order=1");
                 }
             }
         }
@@ -30,33 +30,33 @@ $(document).ready(function()
     $("#table_no").focus();
 
     $(function() {
-        $("#table_no").autocomplete({
-            source: function (request, response)
-            {
-                let log= $.ajax({
-                    url: "ajax/table_master.php",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        search: request.term,
-                    },
-                    success: function (data)
-                    {
-                        response(data);
-                    },
-                });
-            },
-            select: function (event, ui)
-            {
-                $("#table_no").val(ui.item.label);
-                return false;
-            },
-            focus: function (event, ui) 
-            {
-                $("#table_no").val(ui.item.label);
-                return false;
-            },
-        });
+        // $("#table_no").autocomplete({
+        //     source: function (request, response)
+        //     {
+        //         let log= $.ajax({
+        //             url: "ajax/table_master.php",
+        //             type: "post",
+        //             dataType: "json",
+        //             data: {
+        //                 search: request.term,
+        //             },
+        //             success: function (data)
+        //             {
+        //                 response(data);
+        //             },
+        //         });
+        //     },
+        //     select: function (event, ui)
+        //     {
+        //         $("#table_no").val(ui.item.label);
+        //         return false;
+        //     },
+        //     focus: function (event, ui) 
+        //     {
+        //         $("#table_no").val(ui.item.label);
+        //         return false;
+        //     },
+        // });
         $("#captain12").autocomplete({
             source: function (request, response)
             {
@@ -140,16 +140,17 @@ $(document).ready(function()
         }
     });
 
-    $(document).on("keydown", function (e) 
+    $(document).on("keydown", function (e)
     {
         var table_no = $("#table_no").val();
         if (e.altKey && (e.key === "z" || e.keyCode === 90)) {
             e.preventDefault();
-            window.location='table_master.php';
+            window.location='parcel_master.php';
         }else if (e.altKey && (e.key === "x" || e.keyCode === 88)) 
         {
             document.getElementById("kotPrint").click();
         }else if (e.altKey && (e.key === "a" || e.keyCode === 65)) {
+            console.log('running');
             e.preventDefault();
             document.getElementById("printAllItem").click();
         }else if (e.altKey && (e.key === "c" || e.keyCode === 67)) {
@@ -200,28 +201,37 @@ $(document).ready(function()
 
 function tab_no(tabName)
 {
+    // console.log('runnig');
     // $("#captain12").val('');
     // $("#captainname").val('');
-    let log=$.ajax({
-        url: 'ajax/table_master.php',
-        type: "POST",
-        dataType: 'json',
-        data: {
-            tabName: tabName,
-        },
-        success: function(data)
+    // let log=$.ajax({
+    //     url: 'ajax/parcel_master.php',
+    //     type: "POST",
+    //     dataType: 'json',
+    //     data: {
+    //         tabName: tabName,
+    //     },
+    //     success: function(data)
+    //     {
+    //         if(data=="none")
+    //         {
+    //             $("#table_no").val('').focus();
+    //         }else   
+    //         {
+        if(tabName!='')
         {
-            if(data=="none")
-            {
-                $("#table_no").val('').focus();
-            }else   
-            {
                 $("#table_no").val(tabName);
-                $('#itemlist').load("order_data.php?tabno="+tabName);
-                $('#boxx').load("bill_data.php");
-            }
+                $('#itemlist').load("parcel_data.php?tabno="+tabName);
+                $('#boxx').load("parcelBill_data.php");
+        }else
+        {
+            $('#itemlist').empty();
+            $("#captain12").val('');
+            $("#captainname").val('');
         }
-    }); 
+    //         }
+    //     }
+    // }); 
 }
 
 function cap_codeCange(capCode)
@@ -254,7 +264,7 @@ function item_no()
     let table_no=$("#table_no").val();
 
     let log= $.ajax({
-        url: 'ajax/table_master.php',
+        url: 'ajax/parcel_master.php',
         type: "POST",
         dataType: 'json',
         data: {
@@ -311,7 +321,7 @@ function store()
     var wingname = document.getElementById('autocomplete').value;
     let table_no=$("#table_no").val();
     let log=$.ajax({
-        url: 'ajax/table_master.php',
+        url: 'ajax/parcel_master.php',
         type: "POST",
         dataType: 'json',
         data: {
@@ -352,7 +362,7 @@ function OrderAdd()
     {
         let log=$.ajax({
             type: "post",
-            url: "ajax/table_master.php",
+            url: "ajax/parcel_master.php",
             data: {
                     captain: captain,
                     date: itdate,
@@ -373,8 +383,8 @@ function OrderAdd()
                 document.getElementById('autocomplete').value='';
                 $("#prc").val("");
                 $("#tot").val("");
-                $('#itemlist').load("order_data.php?tabno="+table_no);
-                $('#boxx').load("bill_data.php");
+                $('#itemlist').load("parcel_data.php?tabno="+table_no);
+                $('#boxx').load("parcelBill_data.php");
                 // $('#boxx2').load("shiftTable.php");
             }
         });
@@ -403,14 +413,14 @@ function KotPrint(tabno)
 {
     let log=$.ajax({
         type: "post",
-        url: "ajax/table_master.php",
+        url: "ajax/parcel_master.php",
         data:{
                 kot: tabno,
             },
         cache: false,
         success: function(status)
         {
-            window.location="final_kot.php?tabno="+status;
+            window.location="parcel_kot.php?tabno="+status;
         }
     });
 }
@@ -419,7 +429,7 @@ function cancel_Kot(kotnumber)
 {
     let log=$.ajax({
         type: "post",
-        url: "ajax/table_master.php",
+        url: "ajax/parcel_master.php",
         data:{
                 cancel_Kot: kotnumber,
             },
@@ -427,14 +437,14 @@ function cancel_Kot(kotnumber)
         success: function(status)
         {
             console.log(status);
-            window.location="table_master.php?tabno="+status;
+            window.location="parcel_master.php?tabno="+status;
         }
     });
 }
 
 function printAllItem(tabno)
 {
-    window.location="final_item.php?tabno="+tabno;
+    window.location="parcel_item.php?tabno="+tabno;
 }
 
 function delitm(slno)
@@ -443,7 +453,7 @@ function delitm(slno)
     {
         $.ajax({
             type: "post",
-            url: "ajax/table_master.php",
+            url: "ajax/parcel_master.php",
             data: {
                 itmno: slno,
                 delete: "delete"
@@ -451,7 +461,7 @@ function delitm(slno)
             success: function(status) 
             {
                 // console.log(status);
-                $('#itemlist').load("order_data.php?tabno="+status);
+                $('#itemlist').load("parcel_data.php?tabno="+status);
                 // $('#boxx').load("final_search.php");
             }
         });
@@ -525,7 +535,7 @@ function printData(tab_no,event)
         {
             $('#printData').prop('disabled',true);
             let log=$.ajax({
-                url:"ajax/table_master_save.php",
+                url:"ajax/parcel_master_save.php",
                 method:"POST",
                 // dataType:'json',
                 data:
@@ -539,7 +549,7 @@ function printData(tab_no,event)
                 {
                     if(direct==true)
                     {
-                        window.location="finalInvoice.php?billno="+status+"&back=1&pri=0";
+                        window.location="finalInvoice.php?billno="+status+"&back=1&pri=1";
                     }
                     else
                     {
@@ -561,7 +571,7 @@ function printData(tab_no,event)
 
 function viewData(tabno)
 {
-    $('#itemlist').load("order_data.php?tabno="+tabno);
+    $('#itemlist').load("parcel_data.php?tabno="+tabno);
 }
 
 function settle(event)
@@ -585,7 +595,7 @@ function settle(event)
         data: { billno:billno,paymentMethod: paymentMethod },
         success: function(response) 
         {
-            $('#boxx1').load("bill_setelment.php?order=0");
+            $('#boxx1').load("bill_setelment.php?order=1");
             // console.log(response);
         },
         error: function(jqXHR, textStatus, errorThrown) 
@@ -604,13 +614,12 @@ function editBill(event)
     var tabno = currentRow.querySelector('td:nth-child(2)').textContent;
     $.ajax({
         type: 'POST',
-        url: 'set_session.php',
+        url: 'parcel_session.php',
         data: { billno: billno,tabno:tabno },
         success: function(response) 
         {
-            console.log(response);
-            $('#itemlist').load("order_data.php?tabno="+tabno);
-            $('#boxx').load("bill_data.php");
+            $('#itemlist').load("parcel_data.php?tabno="+tabno);
+            $('#boxx').load("parcelBill_data.php");
             $('#boxx2').remove();
             $('#boxx1').remove();
         }

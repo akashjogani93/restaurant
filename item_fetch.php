@@ -43,9 +43,9 @@ $cat = $_GET['x']; ?>
                             <td><?php echo $row['prc2']; ?></td>
                             <td>
                                 <button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-                                    Edit
+                                    <i class='bx bx-edit-alt'></i>
                                 </button>
-                                <a href="ajax/addcate.php?del=<?php echo $row['slno'];?>" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="ajax/addcate.php?del=<?php echo $row['slno'];?>" class="btn btn-danger btn-sm"><i class='bx bx-trash'></i></a>
                             </td>
                         </tr>
                     <?php

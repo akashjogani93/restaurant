@@ -73,7 +73,7 @@
                 }else
                 {
                     echo '<script>alert("No New Items.!");</script>';
-                    echo '<script>location="table_master.php";</script>';
+                    echo '<script>location="parcel_master.php";</script>';
                 }   
             }   
         ?>
@@ -176,7 +176,7 @@ function myFunction()
    var tab="<?php echo $table_no; ?>";
     window.onafterprint = function(event)
     {
-        window.location.href ="table_master.php?tabno="+tab;
+        window.location.href ="parcel_master.php?tabno="+tab;
     };
 }
 </script>

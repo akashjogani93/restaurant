@@ -25,15 +25,17 @@ if(isset($_POST['catsus']))
     $catsus2=$_POST['catsus'];
     if($cash_type!='Captain')
     {
-        $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable`;";
+        $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable` WHERE `status`=0 AND `type`=0";
     }else
     {
-        $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable` WHERE `capname`='$name';";
+        $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable` WHERE `capname`='$name' AND `status`=0 AND `type`=0;";
     }
     $c=mysqli_query($conn, $query);
     $a = array();
-    if (mysqli_num_rows($c) > 0) {
-        while($row = mysqli_fetch_assoc($c)) { 
+    if (mysqli_num_rows($c) > 0) 
+    {
+        while($row = mysqli_fetch_assoc($c)) 
+        {
             array_push($a,$row['tabno']);
         }
     }
@@ -43,12 +45,11 @@ if(isset($_POST['catsus']))
 
 if(isset($_POST['catsus2']))
 {
-
     $query = "SELECT addtable.table_Name
-        FROM addtable
-        LEFT JOIN temtable
-        ON addtable.table_Name = temtable.tabno
-        WHERE temtable.tabno IS NULL";
+                FROM addtable
+                LEFT JOIN temtable
+                ON addtable.table_Name = temtable.tabno
+            WHERE temtable.tabno IS NULL";
     $c1=mysqli_query($conn, $query);
     $a1 = array();
     if (mysqli_num_rows($c1) > 0) 
@@ -91,7 +92,6 @@ if(isset($_POST['table1']))
     {
         $table2=$_POST['table2'];
     }
-
     mysqli_query($conn,"UPDATE `temtable` SET `tabno`='$table2' WHERE `tabno`='$table1' AND `status`=0");
     mysqli_query($conn,"UPDATE `kot` SET `tabno`='$table2' WHERE `tabno`='$table1'");
     echo json_encode('Table Shifted');
@@ -111,15 +111,6 @@ if(isset($_POST['tabe3']))
 
 if(isset($_POST['search']))
 {
-    // $search = mysqli_real_escape_string($conn,$_POST['search']);
-    // $query = "SELECT DISTINCT `tabno` FROM `temtable` where `tabno` LIKE '%".$search."%'";
-    // $result = mysqli_query($conn,$query);
-    
-    // while($row = mysqli_fetch_array($result) ){
-    //     $response[] = array("value"=>$row['tabno'],"label"=>$row['tabno']);
-    // }
-
-    // echo json_encode($response);
     $search = mysqli_real_escape_string($conn,$_POST['search']);
     $query = "SELECT * FROM `addtable` where `table_Name` LIKE '%".$search."%'";
     $result = mysqli_query($conn,$query);
@@ -129,22 +120,6 @@ if(isset($_POST['search']))
     }
 
     echo json_encode($response);
-
-    // $catsus2=$_POST['catsus'];
-    // if($catsus2=="catsus2")
-    // {
-    //     $query="SELECT DISTINCT `addtable`.`table_Name` AS `tabno` FROM `addtable`;";
-    // }else{
-    //     $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable`;";
-    // }
-    // $c=mysqli_query($conn, $query);
-    // $a = array();
-    // if (mysqli_num_rows($c) > 0) {
-    //     while($row = mysqli_fetch_assoc($c)) { 
-    //         array_push($a,$row['tabno']);
-    //     }
-    // }
-    // echo json_encode($a);
 }
 
 

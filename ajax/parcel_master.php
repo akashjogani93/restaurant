@@ -4,8 +4,8 @@ $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
 $name=$_SESSION['name'];
 
-$editbillno = isset($_SESSION['billno']) ? $_SESSION['billno'] : '';
-$billEdit = isset($_SESSION['billEdit']) ? $_SESSION['billEdit'] : '';
+$editbillno = isset($_SESSION['parcelbillno']) ? $_SESSION['parcelbillno'] : '';
+$billEdit = isset($_SESSION['parcelbillEdit']) ? $_SESSION['parcelbillEdit'] : '';
 
 date_default_timezone_set('Asia/Kolkata');
 include("../dbcon.php");
@@ -91,13 +91,12 @@ if(isset($_POST['item_no']))
 {
     $itmno=$_POST['item_no'];
     $table_no=$_POST['table_no'];
-
 	$a = array();
-	$sql1 = "SELECT `ac` FROM `addtable` WHERE `table_Name`='$table_no'";
-	$result1 = mysqli_query($conn, $sql1);
-	while($row1 = mysqli_fetch_assoc($result1))
-	{
-		$ac=$row1['ac'];
+	// $sql1 = "SELECT `ac` FROM `addtable` WHERE `table_Name`='$table_no'";
+	// $result1 = mysqli_query($conn, $sql1);
+	// while($row1 = mysqli_fetch_assoc($result1))
+	// {
+		$ac='Non Ac';
 		$sql = "SELECT * FROM `item` WHERE `item_code`='$itmno'";
 		$result = mysqli_query($conn, $sql);
 
@@ -121,7 +120,7 @@ if(isset($_POST['item_no']))
 		{
 			array_push($a,'Wrong Code');
 		}
-	}
+	// }
 	echo json_encode($a);
 }
 
@@ -143,11 +142,11 @@ if(isset($_POST['itemname']))
     $itnam=$_POST['itemname'];
     $table_no=$_POST['ite_table_no'];
     $a = array();
-    $sql1 = "SELECT `ac` FROM `addtable` WHERE `table_Name`='$table_no'";
-    $result1 = mysqli_query($conn, $sql1);
-    while($row1 = mysqli_fetch_assoc($result1))
-    {
-        $ac=$row1['ac'];
+    // $sql1 = "SELECT `ac` FROM `addtable` WHERE `table_Name`='$table_no'";
+    // $result1 = mysqli_query($conn, $sql1);
+    // while($row1 = mysqli_fetch_assoc($result1))
+    // {
+        $ac="Non Ac";
         $sql = "SELECT * FROM item WHERE itmnam='$itnam'";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
@@ -166,7 +165,7 @@ if(isset($_POST['itemname']))
                 array_push($a,$row['item_code'],$row['itmnam'],$price);
             }
         }
-    }
+    // }
     echo json_encode($a);
 }
 
@@ -184,7 +183,7 @@ if(isset($_POST['captain']) && isset($_POST['itmnam']))
     $captainCode = $_POST['captainname'];
     $tabno = $_POST['tabno'];
     $current_time = date("h:i A");
-    $type=0;
+    $type=1;
     if($billEdit==true)
     {   
         $status=1;
@@ -236,7 +235,7 @@ if(isset($_POST['kot']))
     $current_date = date('Y-m-d');
     $current_time = date("h:i A");
     $tabno=$_POST['kot'];
-    $type=0;
+    $type=1;
     // $sqlkot = "SELECT `kot_num` AS `kotnumber` FROM `kot` WHERE `date`='$current_date'";
     // $result=mysqli_query($conn, $sqlkot);
     // if(mysqli_num_rows($result) > 0)
@@ -315,7 +314,7 @@ if(isset($_POST['kot']))
 if(isset($_POST['cancel_Kot']))
 {
     $kot=$_POST['cancel_Kot'];
-    $type=0;
+    $type=1;
     $cancel_time = date("h:i A");
     $query="SELECT * FROM `temtable` WHERE `kot_num`='$kot'";
     $exc=mysqli_query($conn,$query);
@@ -364,7 +363,7 @@ if(isset($_POST['delete'],$_POST['itmno']))
         $kot_num=$r['kot_num'];
         $cap_code=$r['cap_code'];
         $time=$r['time'];
-        $sql="INSERT INTO `trash`(`date`, `itemname`, `itmno`, `prc`, `qty`, `tot`, `tabno`, `capname`, `kot_num`, `capcode`, `time`) VALUES ('$date','$itmnam','$itmno','$prc','$qty','$tot','$tabno','$capname','$kot_num','$cap_code','$time')";
+        $sql="INSERT INTO `trash`(`date`, `itemname`, `itmno`, `prc`, `qty`, `tot`, `tabno`, `capname`, `kot_num`, `capcode`,`time`) VALUES ('$date','$itmnam','$itmno','$prc','$qty','$tot','$tabno','$capname','$kot_num','$cap_code','$time')";
         $exc=mysqli_query($conn, $sql);
         if($exc)
         {

@@ -1,6 +1,6 @@
 <?php require_once("header.php"); ?>
 <?php require_once("dbcon.php"); ?>
-<script src="js/table_master.js"></script>
+<script src="js/parcel_master.js"></script>
 <body class="hold-transition skin-blue sidebar-mini">
     <style>
         .top-headerMain
@@ -22,7 +22,7 @@
     </style>
     <div class="content-wrapper">
         <section class="content">
-            <h3 class="top-headerMain">TABLE MASTER</h3>
+            <h3 class="top-headerMain">Parcel Master</h3>
             <div class="row">
                 <div class="col-md-12">
                     <div class="shourtcuts">
@@ -53,8 +53,21 @@
                             }
                         ?>
                         <div class="col-md-2">
-                            <label for="exampleInputFile">Table No</label>
-                            <input type="text" class="form-control" name="tabno" id="table_no" onchange="tab_no(this.value)"/>
+                            <label for="exampleInputFile">Parcel No</label>
+                            <!-- <input type="text" class="form-control" name="tabno" id="table_no" onchange="tab_no(this.value)"/> -->
+                            <select class="form-control" name="tabno" id="table_no" onchange="tab_no(this.value);">
+                                    <option value="">
+                                            SELECT NUMBER
+                                    </option>
+                                <?php 
+                                    for($i=1; $i<=50; $i++)
+                                    {
+                                        ?>
+                                            <option value="<?php echo "PARCEL_$i";?>">
+                                                <?php echo "PARCEL_$i";?>
+                                            </option>
+                                <?php  } ?>
+                            </select>
                             <input type="hidden" class="form-control" name="date" id="datepicker" value="<?php echo date("m/d/Y") ?>" required>
                             <input type="hidden" class="form-control" name="cashType" id="cashType" value="<?php echo $cash_type; ?>">
                         </div>

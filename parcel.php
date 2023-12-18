@@ -129,9 +129,9 @@ input[type="number"]::-webkit-inner-spin-button,
                                 <div class="form-group col-md-2">
                                     <label for="exampleInputFile">Parcel No </label>
                                         <select class="form-control" name="tabno" id="table_no" onchange="tab_no(this.value);">
-                                                <!-- <option value="">
+                                                <option value="">
                                                         SELECT NUMBER
-                                                </option> -->
+                                                </option>
                                             <?php 
                                                 for($i=1; $i<=50; $i++)
                                                 {

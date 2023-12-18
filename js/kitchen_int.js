@@ -323,13 +323,14 @@ class Purchase
                         vm.billEdit=true;
                         vm.editbillno=statuscancel;
                         $('#purdate').prop('readonly', true);
-                        $.ajax({
+                        let log=$.ajax({
                             url: 'ajax/store_all.php',
                             method: 'POST',
                             data:{editid:statuscancel},
                             dataType:'JSON',
                             success(response) 
                             {
+                                console.log(response);
                                 vm.vendorName = response[0].slno;
                                 $('#purdate').val(response[0].purchase_date);
                                 $('#bill').val(response[0].id);
@@ -352,6 +353,7 @@ class Purchase
                                 console.error(error);
                             }
                         });
+                        console.log(log);
 
                         $.ajax({
                             url: 'ajax/store_all.php',
@@ -407,6 +409,8 @@ class Purchase
                         data:{opt:'opt',categoryOption:categoryOption},
                         success(response) {
                             vm1.options = response;
+                            vm1.insideqty='';
+                            $('#insideqty').prop('readonly', false);
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -432,6 +436,15 @@ class Purchase
                             vm2.sellunit = response[0].sellunit;
                             vm2.tax = response[0].tax;
                             vm2.cess = response[0].cess;
+
+                            if(vm2.unit==vm2.sellunit)
+                            {
+                                vm2.insideqty=1;
+                                $('#insideqty').prop('readonly', true);
+                            }else
+                            {
+                                $('#insideqty').prop('readonly', false);
+                            }
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1057,13 +1070,14 @@ class Assets_Product
             dataType:'JSON',
             success:function(response)
             {
-                console.log(response);
+                // console.log(response);
             }
         });
 
         $('#sub').on('click',function()
         {
             var product = $('#product').val();
+            var check='insert';
             if(product=='')
             {
                 $('#product').css('border-color','red');
@@ -1072,15 +1086,15 @@ class Assets_Product
             let log=$.ajax({
                 url:'ajax/store_all.php',
                 type:'POST',
-                data:{assetsProduct:product},
+                data:{assetsProduct:product,check:check},
                 success:function(response)
                 {
-                    console.log(response);
+                    // console.log(response);
                     alert(response);
                     location.reload();
                 }
             });
-            console.log(log);
+            // console.log(log);
         });
 
         $('input').on('focus', function() 
@@ -1105,6 +1119,7 @@ class Asset_purchase
                 nextId: 1,
                 stockList:[],
                 totamt:null,
+                productName:''
             },
             mounted() {
                 this.fetchOptions();
@@ -1146,11 +1161,13 @@ class Asset_purchase
                 addItem()
                 {
                     const vm2=this;
+                    const productItem = this.products.find(cate => cate.id === this.productName);
                     var product=$('#pid').val();
                     var qty=$('#qty').val();
-                    var amount=$('#price').val();
-                    var total=$('#total').val();
+                    var amount=parseFloat($('#price').val());
+                    var total=parseFloat($('#total').val());
                     var inputs=['#pid','#qty','#price'];
+
                     for(var i=0; i <= inputs.length; i++)
                     {
                         if($(inputs[i]).val()=='')
@@ -1160,25 +1177,29 @@ class Asset_purchase
                         }
                     }
                     amount=parseFloat(amount);
-                    const assetPurchase = 
+                    if(qty !=0 && amount !=0)
                     {
-                        id: vm2.nextId++,
-                        product: product,
-                        qty: qty,
-                        price:amount,
-                        total:total,
-                    };
-                    vm2.stockList.push(assetPurchase);
-                    vm2.saveData();
-                    $('#pid').val('');
-                    $('#qty').val('');
-                    $('#price').val('');
-                    $('#total').val('');
+                        const assetPurchase = 
+                        {
+                            id: vm2.nextId++,
+                            product: productItem.product,
+                            productid: productItem.id,
+                            qty: qty,
+                            price:amount.toFixed(2),
+                            total:total.toFixed(2),
+                        };
+                        vm2.stockList.push(assetPurchase);
+                        vm2.saveData();
+                        $('#pid').val('');
+                        $('#qty').val('');
+                        $('#price').val('');
+                        $('#total').val('');
+                    }
                 },
                 saveData()
                 {
                     localStorage.setItem('assetsData', JSON.stringify(this.stockList));
-                    this.totamt = this.stockList.reduce((total, item) => total + parseFloat(item.total), 0);
+                    this.totamt = this.stockList.reduce((total, item) => total + parseFloat(item.total), 0).toFixed(2);
                 },
                 retrieveData()
                 {
@@ -1186,7 +1207,7 @@ class Asset_purchase
                     if (data)
                     {
                         this.stockList = JSON.parse(data);
-                        this.totamt = this.stockList.reduce((total, item) => total + parseFloat(item.total), 0);
+                        this.totamt = this.stockList.reduce((total, item) => total + parseFloat(item.total), 0).toFixed(2);
                     }
                 },
                 clearData()

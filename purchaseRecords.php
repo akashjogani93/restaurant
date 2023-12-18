@@ -12,7 +12,7 @@
                 border-collapse: collapse;
             }
             .table th,
-            .table td 
+            .table td
             {
                 border: 1px solid black;
                 font-size:12px;
@@ -54,7 +54,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php 
+                                        <?php
                                             include("dbcon.php");
                                             $sql = "SELECT * FROM purchase_data";
                                             $retval = mysqli_query($conn,$sql);

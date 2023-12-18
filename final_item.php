@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+// session_start();
 $editbillno = isset($_SESSION['billno']) ? $_SESSION['billno'] : '';
 $billEdit = isset($_SESSION['billEdit']) ? $_SESSION['billEdit'] : '';
 
@@ -187,10 +188,10 @@ function myFunction()
 {
    window.print();
    var tab="<?php echo $table_no; ?>";
-    // window.onafterprint = function(event)
-    // {
+    window.onafterprint = function(event)
+    {
         window.location.href ="table_master.php?tabno="+tab;
-    // };
+    };
 }
 </script>
 </body>

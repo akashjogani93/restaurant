@@ -69,7 +69,7 @@
                                         <div class="form-group col-md-4">
                                             <!-- <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button> -->
                                             <button type="submit" name="view_report" class="btn btn-info" id="search" @click="fetchStock()">View</button>
-                                            <button class="btn btn-danger" onclick="exportTableToPdf1()">PDF</button>
+                                            <button class="btn btn-danger" onclick="generateTable()">PDF</button>
                                             <button class="btn btn-success">Excel</button>
                                         </div>
                                     <!-- </form> -->
@@ -91,7 +91,7 @@
                                     <th>Opening</th>
                                     <th>Purchase</th>
                                     <th>Damage</th>
-                                    <th>Cloasing</th>
+                                    <th>Closing</th>
                                     <th>Amount</th>
                                     <th>Damaged</th>
                                 </tr>
@@ -106,7 +106,7 @@
                                     <td>{{ item.cloasing }}</td>
                                     <td>{{ item.cloasinAmt }}</td>
                                     <td>
-                                        <button class="btn btn-success" @click="handleIssued(index)">Damage</button>
+                                        <button class="btn btn-success" @click="handleIssued(index)"><i class='bx bx-trash-alt'></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -292,22 +292,29 @@
                 handleIssued(index)
                 {
                     this.selectedIndex = index;
-                    this.closingStock = parseFloat(this.stockList[index].cloasing);
+
+                    this.closingStock =this.stockList[index].cloasing;
+                    var closingStock1 = this.closingStock.replace(/,/g, '');
+                    this.closingStock=parseFloat(closingStock1);
+
                     this.pid = parseFloat(this.stockList[index].id);
+
                     this.amount =this.stockList[index].cloasinAmt;
+                    var amount1 = this.amount.replace(/,/g, '');
+                    this.amount=parseFloat(amount1);
+
+                    
                     $('#issuedModal').modal('show');
                 },
                 handleIssuedConfirm()
                 {
                     const vm=this;
-                    var close=this.closingStock;
-                    var amount=this.amount;
-                    let amt = amount.replace(/,/g, '');
+                    var close=parseFloat(this.closingStock);
+                    var amt=this.amount;
                     amt=parseFloat(amt);
                     var per_amt=amt/close;
 
-
-                    var issued=$('#issued').val();
+                    var issued=parseFloat($('#issued').val());
                     var damageAmt=issued*per_amt;
                     var pid=$('#pid').val();
                     if(isNaN(issued)) 
@@ -350,4 +357,58 @@
             }
         });
     </script>
+        <script>
+            function generateTable() 
+            {
+                var fdate=$('#fdate').val();
+                var tdate=$('#tdate').val();
+                var doc = new jsPDF('p', 'pt', 'letter');
+                var y = 20;
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, "Assets Stock From "+fdate+" To "+tdate);
+                doc.autoTable({
+                    html: '#example1',
+                    startY: 40,
+                    startX: 40,
+                    theme: 'grid',
+                    columns: [
+                        {dataKey: 'Sl.No'},
+                        {dataKey: 'Product Name'},
+                        {dataKey: 'Opening'},
+                        {dataKey: 'Purchase'},
+                        {dataKey: 'Damage'},
+                        {dataKey: 'Closing'},
+                        {dataKey: 'Amount'},
+                    ],
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 8,
+                        cellPadding: {horizontal: 5, vertical: 2},
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 8,
+                        lineWidth: 1,
+                    },
+                })
+
+                // doc.setProperties({
+                //     title: 'Product Detailed Report',
+                //     subject: 'This is the Product Detailed Report',
+                //     author: 'Author Name',
+                //     keywords: 'generated, javascript, web 2.0, ajax',
+                //     creator: 'Author Name',
+                //     margins: {
+                //         top: 0,
+                //         bottom: 0,
+                //         left: 0,
+                //         right: 0,
+                //     },
+                //     pageSize: 'letter',
+                // });
+                doc.save('assets_stock');
+            }
+        </script>
 </body>

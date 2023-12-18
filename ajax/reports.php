@@ -27,6 +27,7 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
         $captain=$row['captain'];
         $itmno=$row['itmno'];
         $itmnam=$row['itmnam'];
+        $cashid=$row['cashid'];
         $qty=$row['qty'];
         $prc=$row['prc'];
         $tot=$row['tot'];
@@ -41,7 +42,7 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
                 <td><?php echo $qty; ?></td>
                 <td><?php echo $prc; ?></td>
                 <td><?php echo $tot; ?></td>
-                <td></td>
+                <td><?php echo $cashid;?></td>
                 <td><?php echo $date; ?></td>
                 <td><?php echo $kot_time; ?></td>
             </tr>
@@ -55,7 +56,7 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
     $tdate=$_POST['tdate'];
     $query="SELECT * FROM `invoice` WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'";
     $exc=mysqli_query($conn,$query);
-
+    
     ?>
         <table class="table" id="dayinvoices">
             <thead class="thead-dark" style="background-color: grey; color: white;">
@@ -68,7 +69,14 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
                     <th scope="col">Round Off(-)</th>  
                     <th scope="col">Round Off(+)</th>
                     <th scope="col">Net Amount</th>
-                    <th scope="col">Edit</th>
+                    <?php 
+                        if($cash_type=='Manager')
+                        {
+                    ?>
+                            <th scope="col">Edit</th>
+                    <?php
+                        }
+                    ?>
                 </tr>
             </thead>
             <tbody id="dayData">
@@ -100,9 +108,17 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
                 <td><?php echo $roundminus; ?></td>
                 <td><?php echo $roundplus; ?></td>
                 <td><?php echo $nettot; ?></td>
-                <td>
-                    <button type="button" class="btn btn-danger edit-btn">Edit</button>
-                </td>
+                    <?php 
+                        if($cash_type=='Manager')
+                        {
+                    ?>
+                        <td>
+                            <button type="button" class="btn btn-danger edit-btn">Edit</button>
+                        </td>
+                    <?php
+                        }
+                    ?>
+                
             </tr>
         <?php
     }
@@ -117,7 +133,15 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
                 <th><?php echo number_format($totalminus,2); ?></th>
                 <th><?php echo number_format($totalplus,2); ?></th>
                 <th><?php echo number_format($toatlnet,2); ?></th>
-                <th></th>
+                <?php 
+                        if($cash_type=='Manager')
+                        {
+                    ?>
+                        <th></th>
+                    <?php
+                        }
+                    ?>
+                
             </tr>
         </tfoot>
         </table>

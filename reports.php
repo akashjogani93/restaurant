@@ -7,7 +7,6 @@
             .boxx{
                 background-color:rgba(255, 255, 255, 0.4);
                 margin:20px;
-            
             }
             tr{
                 background-color:rgba(21, 22, 23, 0.06);

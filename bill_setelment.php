@@ -1,6 +1,5 @@
 <table class="table table-bordered table-striped" id="formsettle" >
     <thead>
-        
         <tr>
             <th>Bill No</th>
             <th>Table</th>
@@ -9,7 +8,6 @@
             <th>Edit</th>
             <th>Settle</th>
         </tr>
-
     </thead>
     <tbody id="tbody1">
         <?php
@@ -20,7 +18,7 @@
                 $sql3 = "SELECT * FROM `invoice` WHERE `Status`=0 AND `orde`='Table'";
             }else
             {
-                $sql3 = "SELECT * FROM `tabletot` WHERE `Status`=0 AND `orde`='parcel'";
+                $sql3 = "SELECT * FROM `invoice` WHERE `Status`=0 AND `orde`='Parcel'";
             }
             $result3 = mysqli_query($conn, $sql3);
             if(mysqli_num_rows($result3) > 0)

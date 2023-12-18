@@ -4,12 +4,12 @@ require_once("dbcon.php");
     $cash_id=$_SESSION['id'];
     $name=$_SESSION['name'];
 
-    $billno = isset($_SESSION['billno']) ? $_SESSION['billno'] : '';
-    $billEdit = isset($_SESSION['billEdit']) ? $_SESSION['billEdit'] : '';
+    $billno = isset($_SESSION['parcelbillno']) ? $_SESSION['parcelbillno'] : '';
+    $billEdit = isset($_SESSION['parcelbillEdit']) ? $_SESSION['parcelbillEdit'] : '';
     if($billEdit==true)
     {
         ?>
-            <h3 class="text-center">Edit Bill</h3>
+            <h3 class="text-center">Edit Parcel</h3>
             <table class="table table-bordered table-striped" id="form2">
                 <thead>
                     <tr>
@@ -49,7 +49,7 @@ require_once("dbcon.php");
                                         </select>
                                     </td>
                                     <td>
-                                        <button onclick="printData('<?php echo htmlspecialchars($row3['tabno']); ?>', event)" id="printData" class="btn btn-danger btn-sm edit1 printData"><i class='bx bxs-printer'></i></button>
+                                        <button onclick="printData('<?php echo htmlspecialchars($row3['tabno']); ?>', event)" id="printData" class="btn btn-danger btn-sm edit1 printData">Print</button>
                                     </td>
                                 </tr>
                                 <?php
@@ -62,16 +62,16 @@ require_once("dbcon.php");
     }else
     {
         ?>
-            <h3 class="text-center">Running Table</h3>
+            <h3 class="text-center">Parcel Table</h3>
             <table class="table table-bordered table-striped" id="form2" >
                 <thead>
-                    <tr style="background: #ffff; color: #fff; font-weight: 600;">
+                    <!-- <tr style="background: #ffff; color: #fff; font-weight: 600;">
                         <td colspan="5">
-                            <button onclick="mergeTable()" id="select" class="btn btn-success">Merge Table</button>
+                            <button onclick="mergeTable()" id="select" class="btn btn-success">Merge Parcel</button>
                             <button style="display: none;" onclick="merge()"  class="btn btn-success" id="merge">Merge</button>
                         </td>
                         <td class="blacnk" style="display: none;"></td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <th class="tbl" style="display: none; width:20%">Select</th>
                         <th>Table No</th>
@@ -85,10 +85,10 @@ require_once("dbcon.php");
                 <?php
                     if($cash_type=='Captain')
                     {
-                        $sql3 = "SELECT DISTINCT `tabno`,`capname` FROM `temtable` WHERE `capname`='$name' AND `status`=0 AND `type`=0 ORDER BY `tabno`;";
+                        $sql3 = "SELECT DISTINCT `tabno`,`capname` FROM `temtable` WHERE `capname`='$name' AND `status`=0 AND `type`=1 ORDER BY `tabno`;";
                     }else
                     {
-                        $sql3="SELECT DISTINCT `tabno`,`capname` FROM `temtable` WHERE `status`=0 AND `type`=0 ORDER BY `tabno`";
+                        $sql3="SELECT DISTINCT `tabno`,`capname` FROM `temtable` WHERE `status`=0 AND `type`=1 ORDER BY `tabno`";
                     }   
                     $result3 = mysqli_query($conn, $sql3);
                     if(mysqli_num_rows($result3) > 0)

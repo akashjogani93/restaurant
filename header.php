@@ -51,9 +51,8 @@ body{
                         ?>
                   			<li><a href="home.php"> <img class="logos" src="img/i1.png" alt=""> <span>Dashboard</span></a></li>
                     		<li><a href="item_form.php"><img class="logos" src="img/i2.png" alt=""> <span>Menu Master</span></a></li>
-                    		<!-- <li><a href="table_form.php"><img class="logos" src="img/i3.png" alt=""> <span>Tables Master</span></a></li> -->
                     		<li><a href="table_master.php"><img class="logos" src="img/i3.png" alt=""> <span>Tables Master</span></a></li>
-                    		<!-- <li><a href="parcel.php"><img class="logos" src="img/i4.png" alt=""><span>Parcel</span></a></li> -->
+                    		<li><a href="parcel_master.php"><img class="logos" src="img/i4.png" alt=""><span>Parcel Master</span></a></li>
                     		<li><a href="addtable.php"><img class="logos" src="img/i5.png" alt=""><span>Add Table</span></a></li>
                     		<li><a href="kitchen_kot.php"><img class="logos" src="img/i5.png" alt=""><span>Kitchen-Kot</span></a></li>
                             <li class="treeview">
@@ -91,30 +90,7 @@ body{
                                     <li class="active"><a href="empreg.php"><img class="logos" src="img/circle.png" alt="">Registration</a></li>
                                 </ul>
                             </li>
-                  			<!-- <li class="treeview">
-                              <a href="#">
-                              <img class="logos" src="img/i9.png" alt="">
-                                  <span>Reports</span>
-                                  <span class="pull-right-container">
-                                      <img class="logos" src="img/arrow.png" alt="">
-                                  </span>
-                              </a>
-                                <ul class="treeview-menu">
-                                        <li><a href="singlebill_form.php"><img class="logos" src="img/circle.png" alt="">Single Bill</a></li>
-                                        <li><a href="billdate.php"><img class="logos" src="img/circle.png" alt=""> Bill Datewise</a></li>
-                                        <li><a href="day_calculate.php"><img class="logos" src="img/circle.png" alt=""> <span>Bill Monthwise</span></a></li>
-                                        <li><a href="menu_print.php"><img class="logos" src="img/circle.png" alt=""> <span>Menu Master Records</span></a></li>
-                                        <li><a href="dailyreport.php"><img class="logos" src="img/circle.png" alt=""> <span>Item Wise Report</span></a></li>
-                                        <li><a href="day_amount.php"><img class="logos" src="img/circle.png" alt=""> <span>Day Calculation</span></a></li>
-                                        <li><a href="nc_reports.php"><img class="logos" src="img/circle.png" alt=""> <span>NC Single Bill</span></a></li>
-                                        <li><a href="nc_itemwise.php"><img class="logos" src="img/circle.png" alt=""> <span>NC Item Wise Reports</span></a></li>
-                                        <li><a href="captain_report.php"><img class="logos" src="img/circle.png" alt=""> <span>Captain Report </span></a>
-                                        <li><a href="payment.php"><img class="logos" src="img/circle.png" alt=""> <span>Payments</span></a>
-                                    </li> 
-                                </ul>
-                  			</li> -->
                             <li><a href="reports.php"><img class="logos" src="img/circle.png" alt="">Reports</a></li>
-                            <!-- <li><a href="kot_trash.php"><img class="logos" src="img/i4.png" alt=""><span>KOT Cancelled</span></a></li> -->
                             <li><a href="changepass.php"><img class="logos" src="img/i4.png" alt=""><span>Change Password</span></a></li>
                             <li><a href="logout.php"><img class="logos" src="img/i4.png" alt=""><span>Logout</span></a></li>
                   		<?php    
@@ -128,8 +104,7 @@ body{
                                     img.click();
                                 });
                             </script>
-                  			<!-- <li><a href="home.php"> <img class="logos" src="img/i1.png" alt=""> <span>Dashboard</span></a></li> -->
-                    		<li><a href="table_form.php"><img class="logos" src="img/i3.png" alt=""> <span>Tables Master</span></a></li>
+                    		<li><a href="table_master.php"><img class="logos" src="img/i3.png" alt=""> <span>Tables Master</span></a></li>
                   			<li><a href="logout.php"><img class="logos" src="img/i4.png" alt=""><span>Logout</span></a></li>
                   	<?php	
                     }

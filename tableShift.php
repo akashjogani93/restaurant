@@ -2,12 +2,12 @@
 <table class="table table-bordered table-striped" id="form3" >
     <thead>
         <tr style="background: #ffff; color: #fff; font-weight: 600;">
-            <td colspan="2">
+            <td>
                 <label style="color:black;" for="">From</label>
                 <select class="form-control" name="tabe2" id="tabe2" onload="table()">
                 </select>
             </td>
-            <td colspan="1">
+            <td>
                 <label style="color:black;" for="">To</label>
                 <select class="form-control" name="tabe1" id="tabe1" onload="tables()">
                    <option value="none">None</option>

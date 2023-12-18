@@ -13,7 +13,6 @@ class Reports
 
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
-
     }
     Kot_cancel()
     {
@@ -30,9 +29,8 @@ class Reports
             cache: false,
             success: function(status)
             {
-                // console.log(status);
+                $('#kotdata').empty();
                 $('#kotdata').append(status);
-                // window.location="table_master.php?tabno="+status;
             }
         });
     }

@@ -1,4 +1,8 @@
-<?php require_once("header.php");?>
+<?php
+$editbillno = isset($_SESSION['parcelbillno']) ? $_SESSION['parcelbillno'] : '';
+$billEdit = isset($_SESSION['parcelbillEdit']) ? $_SESSION['parcelbillEdit'] : '';
+
+require_once("header.php");?>
 <body class="hold-transition skin-blue sidebar-mini"onload="myFunction()">
     <div class="wrapper" id="form1">
         <style>
@@ -57,23 +61,31 @@
             require_once("dbcon.php"); 
             if(isset($_GET['tabno']))
             {
+                if($editbillno==true)
+                {
+                    $bill=$editbillno;
+                    $status=1;
+                }else
+                {
+                    $bill=0;
+                    $status=0;
+                }
                 $current_date = date('Y-m-d');
                 $tab1=$_GET['tabno'];
-                $sql="SELECT * FROM `temtable` WHERE `kot_num`='$tab1'";
+                $sql="SELECT * FROM `temtable` WHERE `tabno`='$tab1' AND `status`='$status' AND `billno`='$bill'";
                 $c=mysqli_query($conn, $sql);
                 if (mysqli_num_rows($c) > 0)
                 {
                     $c11=mysqli_query($conn, $sql);
                     while($row11 = mysqli_fetch_assoc($c11)) 
                     {
-
                         $table_no= $row11['tabno'];
                         $cap= $row11['capname'];
                     }
                 }else
                 {
                     echo '<script>alert("No New Items.!");</script>';
-                    echo '<script>location="table_master.php";</script>';
+                    echo '<script>location="table_form.php";</script>';
                 }   
             }   
         ?>
@@ -88,7 +100,7 @@
                                    <b>OYE SHAWA
                                     </h5>
                                   <h5 style="text-align:center;">
-                                  Food KOT</b>
+                                  Parcel Item</b>
                                     </h5>
                                 </div>
                             </div>
@@ -96,7 +108,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="fst" style="">
-                                    <h5>KOT No-<?php echo $tab1; ?></h5>
+                                    <!-- <h5>KOT No-<?php echo $tab1; ?></h5> -->
                                     <h5><?php 
                                             echo $current_date;
                                     ?></h5>
@@ -106,7 +118,7 @@
                        <div class="row">
                             <div class="col-md-12">
                                 <div class="fst" style="">
-                                    <h5>Table No-<?php echo $table_no; ?></h5>
+                                    <h5>Parcel No-<?php echo $table_no; ?></h5>
                                     <h6><?php
                                         date_default_timezone_set('Asia/Kolkata');
                                         $current_time = date("h:i:s A");
@@ -155,7 +167,8 @@
                 </div>
             </section>
         </div>
-    <script type="text/javascript">
+        <!-- </div> -->
+        <script type="text/javascript">
 //    function printcontent(el) {
 //  var w = window.open();
 //           var restorepage = document.body.innerHTML;
@@ -176,9 +189,11 @@ function myFunction()
    var tab="<?php echo $table_no; ?>";
     window.onafterprint = function(event)
     {
-        window.location.href ="table_master.php?tabno="+tab;
+        window.location.href ="parcel_master.php?tabno="+tab;
     };
 }
 </script>
 </body>
+
 </html>
+ 

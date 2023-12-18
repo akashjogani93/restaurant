@@ -88,6 +88,13 @@
                                             <div class="modal-body">
                                                 <div class="box-body form1">
                                                     <div class="form-group col-md-12">
+                                                        <label for="exampleInputFile">Category</label>
+                                                        <select class="form-control" id="cat12Edit" name="catEdit" placeholder="category1" required v-model="catName1">
+                                                            <!-- <option value="">Select</option> -->
+                                                            <option v-for="category in categoys" :value="category.CategoryName">{{ category.CategoryName }}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
                                                         <label for="exampleInputFile">Product Name</label>
                                                         <input type="text" class="form-control" id="editproductname" placeholder="product Name" autocomplete="off">
                                                         <input type="hidden" class="form-control" id="editproductId" placeholder="tableno">
@@ -244,25 +251,21 @@
                     let edittax = $('#edittax').val();
                     let editcess = $('#editcess').val();
                     let oldProduct = $('#oldProduct').val();
+                    let catego=$('#cat12Edit').val();
                     if (edittax === undefined || edittax === "") {
                         edittax = 0;
                     }
                     if (editcess === undefined || editcess === "") {
                         editcess = 0;
                     }
-                    var catName ='CatName';
+                    // var catName ='CatName';
                     if (productName != "")
                     {
-                        // console.log(oldProduct)
-                        // console.log(edittax)
-                        // console.log(editcess)
-                        // console.log(productId)
-                        // return;
                         let log= $.ajax({
                             url: 'ajax/store_all.php',
                             type: "POST",
                             data: {
-                                catName : catName,
+                                catName : catego,
                                 product : productName,
                                 tax:edittax,
                                 cess:editcess,
@@ -300,6 +303,7 @@
                             form[3].value = (chil[6].innerHTML);
                             form[4].value = (chil[1].innerHTML);
                             var cat=chil[2].innerHTML;
+                            $('#cat12Edit').val(cat)
                             // $('#unitchange').val(chil[3].innerHTML);
                         }
                     }

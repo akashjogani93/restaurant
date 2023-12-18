@@ -102,7 +102,7 @@ if(isset($_POST['catName']))
         $id=$_POST['productId'];
         $oldProduct=$_POST['oldProduct'];
         $id = mysqli_real_escape_string($conn, $id);
-        $productUpdate="UPDATE `products` SET `pname`='$product',`tax`='$tax',`cess`='$cess' WHERE `pid`='$id'";
+        $productUpdate="UPDATE `products` SET `pname`='$product',`tax`='$tax',`cess`='$cess',`category`='$catName' WHERE `pid`='$id'";
         $result=mysqli_query($conn,$productUpdate);
     }
 }
@@ -456,18 +456,31 @@ if(isset($_POST['parcelcat']))
     $conn->close();
 }
 
-if(isset($_POST['assetsProduct']))
+if(isset($_POST['assetsProduct']) && isset($_POST['check']))
 {
     $product=$_POST['assetsProduct'];
-
-    $query="INSERT INTO `assetsProduct`(`product`)VALUES('$product')";
-    $exc=mysqli_query($conn,$query);
-    if($exc)
+    $check=$_POST['check'];
+    if($check=='insert')
     {
-        $id=mysqli_insert_id($conn);
-        $inv="INSERT INTO `assetsstock`(`pur_id`,`date`) VALUES ('$id','$currentDate')";
-        $out=mysqli_query($conn,$inv);
-        echo 'Product Added';
+        $query="INSERT INTO `assetsProduct`(`product`)VALUES('$product')";
+        $exc=mysqli_query($conn,$query);
+        if($exc)
+        {
+            $id=mysqli_insert_id($conn);
+            $inv="INSERT INTO `assetsstock`(`pur_id`,`date`) VALUES ('$id','$currentDate')";
+            $out=mysqli_query($conn,$inv);
+            echo 'Product Added';
+        }
+    }else
+    {
+        $idp=$_POST['idp'];
+        // $query="INSERT INTO `assetsProduct`(`product`)VALUES('$product')";
+        $query="UPDATE `assetsProduct` SET `product`='$product' WHERE `id`='$idp'";
+        $exc=mysqli_query($conn,$query);
+        if($exc)
+        {
+            echo 'Product Updated';
+        }
     }
 }
 
@@ -499,14 +512,15 @@ if(isset($_POST['assetsSubmitData']))
         foreach($stockLists as $stock)
         {
             $product=$stock['product'];
+            $productid=$stock['productid'];
             $qty=$stock['qty'];
             $total=$stock['total'];
             $price=$stock['price'];
 
-            $assetspurchasedata="INSERT INTO `assetspurchasedata`(`pur_id`, `amount`, `qty`, `total`,`venId`,`date`) VALUES ('$product','$price','$qty','$total','$insertId','$date')";
+            $assetspurchasedata="INSERT INTO `assetspurchasedata`(`pur_id`, `amount`, `qty`, `total`,`venId`,`date`) VALUES ('$productid','$price','$qty','$total','$insertId','$date')";
             $assetpur=mysqli_query($conn,$assetspurchasedata);
 
-            $qu="INSERT INTO `assetsstock`(`pur_id`, `stock`,`amount`, `date`) VALUES ('$product','$qty','$total','$date')";
+            $qu="INSERT INTO `assetsstock`(`pur_id`, `stock`,`amount`, `date`) VALUES ('$productid','$qty','$total','$date')";
             $exc1=mysqli_query($conn,$qu);
         }
         echo 'Assets Purchased';
@@ -1107,7 +1121,6 @@ if(isset($_POST['addStockToDamage']))
     }
     echo json_encode($rows);
 }
-
 if(isset($_POST['editid']))
 {
     $editid=$_POST['editid'];

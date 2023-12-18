@@ -57,9 +57,10 @@
                             </div>
                         </div>
                     </div>
+                    <div id="app">
                     <div class="row">
                         <div class="box-body">
-                            <div id="app">
+                           
                                 <div class="col-md-2">
                                     <label for="inputPassword3" class="control-label">Name of Product</label>
                                     <input type="text" id="product"  placeholder="Name of Product"  name="p1" class="form-control" required="required" autocomplete="off"/>
@@ -69,7 +70,7 @@
                                         Submit
                                     </button>
                                 </div>
-                            </div>
+                           
                         </div>
                     </div>
                     </br>
@@ -81,7 +82,7 @@
                                         <tr>                                                        
                                             <th>Sl.No</th>
                                             <th>Product Name</th>     
-                                            <!-- <th>Edit</th> -->
+                                            <th>Edit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -98,10 +99,10 @@
                                                     <tr>                                                    
                                                         <td><?php echo $row['id']; ?></td>                                                   
                                                         <td><?php echo $row['product']; ?></td>
-                                                        <!-- <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
+                                                        <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
                                                             Edit
                                                             </button>
-                                                        </td> -->
+                                                        </td>
                                                     </tr>
                                                 <?php
                                             }
@@ -112,37 +113,31 @@
                         </div>
 
                         <!-- Create new Category Module -->
-                        <!-- <div class="modal fade" id="Addcategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
+                        <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-sm" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header bg-success">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel1"><b>Add Category</b></h4>
+                                        <h4 class="modal-title" id="myModalLabel1"><b>Edit Product</b></h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="box-body form1">
                                             <div class="form-group col-md-12">
-                                                <label for="exampleInputFile">Select Type</label>
-                                                <select class="form-control" id="typeCat" name="typeCat" placeholder="Category Type">
-                                                    <option value="">Select</option>
-                                                    <option>Kitchen</option>
-                                                    <option>Bevarages</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label for="exampleInputFile">Category Name</label>
-                                                <input type="text" class="form-control" id="cat1" placeholder="Category">
+                                                <label for="exampleInputFile">Product Name</label>
+                                                <input type="text" class="form-control" id="pro" placeholder="Product Name">
+                                                <input type="hidden" class="form-control" id="idp" placeholder="Product Name">
                                                 <label id="catempty"></label>
                                             </div>
                                         </div>
                                         <div class="box-footer">
-                                            <button id="addcate" class="btn btn-primary">Submit</button>
+                                            <button type="submit" onclick="submit();" id="adduser" class="btn btn-primary">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
+                    </div>
                     </div>
                 </div>
             </section>
@@ -150,8 +145,47 @@
                 $(document).ready(function()
                 {
                     const product_create= new Assets_Product();
+
+                    var app1 = new Vue({
+                    el: '#dynamic-table',
+                    methods: {
+                        editItem : function(e) 
+                        {
+                            var tar = e.currentTarget;
+                            var chil = tar.parentElement.parentElement.children;
+                            var form = $("#category input");
+                            form[0].value = (chil[1].innerHTML);
+                            form[1].value = (chil[0].innerHTML);
+                        }
+                    }
+                    });
+                    
                 });
-        </script>
+
+                function submit()
+                {
+                    $("#empty").fadeIn();
+                    var product = $('#pro').val();
+                    var idp = $('#idp').val();
+                    var check='update';
+                    if(product=='')
+                    {
+                        $('#pro').css('border-color','red');
+                        return;
+                    }
+                    let log=$.ajax({
+                        url:'ajax/store_all.php',
+                        type:'POST',
+                        data:{assetsProduct:product,check:check,idp:idp},
+                        success:function(response)
+                        {
+                            alert(response);
+                            location.reload();
+                        }
+                    });
+                    console.log(log);
+                }
+            </script>
         </div>
     </div>
 </body>

@@ -29,37 +29,22 @@
             border-collapse: collapse;
         }
         .table th,
-        .table td 
+        .table td
         {
             border: 1px solid black;
             padding: 5px;
         }
+        #foodkot{
+            background: green;
+        }
     </style>
-    <script src="js/store_report.js"></script>
+    <script src="js/reports.js"></script>
     <div class="content-wrapper">
         <section class="content">
-            <h3 class="top-headerMain">Purchase Assets</h3>
+            <?php include('buttons.html'); ?>
+            <h3 class="top-headerMain">Kot Cancellation</h3>
             <div class="box box-primary">
                 <div class="box-body form1">
-                    <div class="row">
-                        <div class="col-md-9 assets">
-                            <a class="btn btn-info buga" href="create_assets.php" style="margin-top:27px;">
-                                Create Asset
-                            </a>
-                            <a class="btn btn-info buga" href="purchase_assets.php" style="margin-top:27px;">
-                                Purchase
-                            </a>
-                            <a class="btn btn-info buga" href="stock_assets.php" style="margin-top:27px;">
-                                View Stock
-                            </a>
-                            <a class="btn btn-success buga" href="damage_assets.php" style="margin-top:27px;">
-                                Damage Stock
-                            </a>
-                            <a class="btn btn-info buga" href="purchaseRecord_assets.php" style="margin-top:27px;">
-                                Purchase Records
-                            </a>
-                        </div>
-                    </div></br>
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label for="inputEmail3" class="control-label">From Date</label>
@@ -81,18 +66,23 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <table class="table" id="damange">
+                        <table class="table" id="foodkot1">
                             <thead class="thead-dark">
                                 <tr>
-                                    <!-- <th scope="col">Vendor Name</th>   -->
-                                    <th scope="col">SL.No</th>
-                                    <th scope="col">Product</th>
+                                    <th scope="col">Table</th>
+                                    <th scope="col">Captain Code</th>
+                                    <th scope="col">Captain Name</th>
+                                    <th scope="col">Menu Code</th>
+                                    <th scope="col">Menu Name</th>  
                                     <th scope="col">Qty</th>
-                                    <th scope="col">Amount</th>  
+                                    <th scope="col">Rate</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">UID</th>
                                     <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
                                 </tr>
                             </thead>
-                            <tbody id="damData">
+                            <tbody id="kotdata">
                             </tbody>
                         </table>
                         </div>
@@ -104,12 +94,11 @@
         <script>
             $(document).ready(function()
             {
-                const purchase_report=new Reports();
-                purchase_report.damage_data();
-
+                const kot_cancel=new Reports();
+                kot_cancel.Kot_cancel()
                 $('#search').click(function()
                 {
-                    purchase_report.damage_data();
+                    kot_cancel.Kot_cancel()
                 });
             });
         </script>
@@ -121,18 +110,24 @@
                 var doc = new jsPDF('p', 'pt', 'letter');
                 var y = 20;
                 doc.setLineWidth(2);
-                doc.text(150, y = y + 10, "Assets Stock Damage From "+fdate+" To "+tdate);
+                doc.text(150, y = y + 10, "Food Kot Cancelled From "+fdate+" To "+tdate);
                 doc.autoTable({
-                    html: '#damange',
+                    html: '#foodkot',
                     startY: 40,
                     startX: 40,
                     theme: 'grid',
                     columns: [
-                        {dataKey: 'Sl.No'},
-                        {dataKey: 'Product'},
+                        {dataKey: 'Table'},
+                        {dataKey: 'captain Code'},
+                        {dataKey: 'Captain Name'},
+                        {dataKey: 'Menu Code'},
+                        {dataKey: 'Menu Name'},
                         {dataKey: 'Qty'},
+                        {dataKey: 'Rate'},
                         {dataKey: 'Amount'},
+                        {dataKey: 'UID'},
                         {dataKey: 'Date'},
+                        {dataKey: 'Time'},
                     ],
                     styles: {
                         overflow: 'linebreak',
@@ -162,7 +157,7 @@
                 //     },
                 //     pageSize: 'letter',
                 // });
-                doc.save('damage_assets');
+                doc.save('Kot_cancelled');
             }
         </script>
     </div>

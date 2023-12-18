@@ -7,19 +7,19 @@ $date = date("Y-m-d");
 $time = date('h:i A');
 $gst=5;
 $paymentmode = "Not Setteled";
-$table = "Table";
+$table = "Parcel";
 
 $tabno = $_POST['tabno'];
 $capnam = $_POST['captain'];
 $discount = $_POST['dis'];
 $charge = $_POST['charge'];
-$type=0;
+$type=1;
 
-$billno = isset($_SESSION['billno']) ? $_SESSION['billno'] : '';
-$billEdit = isset($_SESSION['billEdit']) ? $_SESSION['billEdit'] : '';
+$billno = isset($_SESSION['parcelbillno']) ? $_SESSION['parcelbillno'] : '';
+$billEdit = isset($_SESSION['parcelbillEdit']) ? $_SESSION['parcelbillEdit'] : '';
 
-unset($_SESSION['billno']);
-unset($_SESSION['billEdit']);
+unset($_SESSION['parcelbillno']);
+unset($_SESSION['parcelbillEdit']);
 if($billEdit==true)
 {
     $status=1;

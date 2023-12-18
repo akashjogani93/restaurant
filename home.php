@@ -47,7 +47,7 @@
                         </a>
                     </div>
                     <div class=" col-md-3">
-                       <a href="table_form.php">
+                       <a href="table_master.php">
                             <div class="boxx2 col-md-11">
                                 <div class="col-md-8">
                                     <h1>Table Master</h1>

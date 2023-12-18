@@ -147,8 +147,6 @@ th.qty, td.qty{
                       
                        <div class="row" style="margin-bottom:0px;" >
                             <div class="col-md-12" style="padding-right:8px;padding-left:8px !important;" >
-                             
-                              
                                 <center> 
                                     <img src="img/Oyeshava.png" alt="" width="80"  style="object-fit:cover;">
                                     <h5 style="font-size:10px; margin-top:5px;margin-bottom:0px; line-height:0px; font-weight:bold;">1/E, Bauxite Road, B.K, Kangarli, Belagavi, Karnataka 590010</h5>
@@ -333,15 +331,16 @@ function myFunction()
 {
     const urlParams = new URLSearchParams(window.location.search);
     var back = urlParams.get('back');
+    var pri = urlParams.get('pri');
     window.print();
     window.onafterprint = function(event)
     {
-        if(back==1)
-        {
-             window.location.href ="table_master.php";
-        }else
-        {
-             window.location.href ="report_day_Amount.php";
+        if (back == 1 && pri == 0) {
+            window.location.href = "table_master.php";
+        } else if (back == 1 && pri == 1) {
+            window.location.href = "parcel_master.php";
+        } else if (back == 0 && pri == 0) {
+            window.location.href = "report_day_Amount.php";
         }
     };
 }
