@@ -355,7 +355,7 @@ class Purchase
                                 console.error(error);
                             }
                         });
-                        console.log(log);
+                        // console.log(log);
 
                         $.ajax({
                             url: 'ajax/store_all.php',
@@ -377,7 +377,7 @@ class Purchase
                                         qty:item.qty,
                                         insideqty:item.perCaseQty,
                                         pric:item.price,
-                                        baseamt:item.bamt,
+                                        baseamt: parseFloat(item.bamt).toFixed(2),
                                         disc:item.disc,
                                         totalofprice:item.total,
                                         tax:item.tax,
@@ -413,8 +413,8 @@ class Purchase
                             vm1.options = response;
                             // vm.options = response.slice().sort((a, b) => a.pname.localeCompare(b.pname));
 
-                            vm1.insideqty='';
-                            $('#insideqty').prop('readonly', false);
+                            // vm1.insideqty='';
+                            // $('#insideqty').prop('readonly', false);
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -488,7 +488,7 @@ class Purchase
                                     qty: vm2.qty,
                                     insideqty: vm2.insideqty,
                                     pric:vm2.price,
-                                    baseamt:baseval.toFixed(2),
+                                    baseamt:baseval,
                                     disc:disc,
                                     totalofprice:totalofprice,
                                     tax:taxAmt,
@@ -791,7 +791,17 @@ class Purchase
                     this.unit = item.purunit;
                     this.sellunit = item.sellunit;
                     this.qty = item.qty;
-                    this.insideqty=item.insideqty;
+                    // this.insideqty=item.insideqty;
+
+                    if(this.unit==this.sellunit)
+                    {
+                        this.insideqty=1;
+                        $('#insideqty').prop('readonly', true);
+                    }else
+                    {
+                        $('#insideqty').prop('readonly', false);
+                    }
+
                     this.price=item.pric;
                     this.disc=item.disc;
                     this.totalofprice=item.totalofprice;

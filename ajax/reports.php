@@ -32,8 +32,10 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
         $prc=$row['prc'];
         $tot=$row['tot'];
         $kot_time=$row['cancel_time'];
+        $kot_num=$row['kot_num'];
         ?>
             <tr>
+                <td><?php echo $kot_num; ?></td>
                 <td><?php echo $table; ?></td>
                 <td><?php echo $cap_code; ?></td>
                 <td><?php echo $captain; ?></td>
@@ -50,11 +52,18 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
     }
 }
 
-if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']))
+if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']) && isset($_POST['typ']))
 {
     $fdate=$_POST['fdate'];
     $tdate=$_POST['tdate'];
-    $query="SELECT * FROM `invoice` WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'";
+    $typ=$_POST['typ'];
+    if($typ=='All')
+    {
+        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'";
+    }else
+    {
+        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `orde`='$typ' AND `date` BETWEEN '$fdate' AND '$tdate'";
+    }
     $exc=mysqli_query($conn,$query);
     
     ?>
@@ -797,7 +806,39 @@ if(isset($_POST['foodkot']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 {
     $fdate=$_POST['fdate'];
     $tdate=$_POST['tdate'];
-    // $query="SELECT * FROM";
+    $query="SELECT `tabledata`.*,`invoice`.`capname`,`invoice`.`cap_code`,`invoice`.`cashid` FROM `tabledata`,`invoice` WHERE `tabledata`.`billno`=`invoice`.`slno` AND `tabledata`.`kot_num` !=0 ORDER BY `tabledata`.`kot_num`";
+    $exc=mysqli_query($conn,$query);
+    while($row=mysqli_fetch_assoc($exc))
+    {
+        $table=$row['tabno'];
+        $date=$row['date'];
+        $cap_code=$row['cap_code'];
+        $captain=$row['capname'];
+        $itmno=$row['itmno'];
+        $itmnam=$row['itmnam'];
+        $cashid=$row['cashid'];
+        $qty=$row['qty'];
+        $prc=$row['prc'];
+        $tot=$row['tot'];
+        $kot_time=$row['time'];
+        $kot_num=$row['kot_num'];
+        ?>
+            <tr>
+                <td><?php echo $kot_num; ?></td>
+                <td><?php echo $table; ?></td>
+                <td><?php echo $cap_code; ?></td>
+                <td><?php echo $captain; ?></td>
+                <td><?php echo $itmno; ?></td>
+                <td><?php echo $itmnam; ?></td>
+                <td><?php echo $qty; ?></td>
+                <td><?php echo $prc; ?></td>
+                <td><?php echo $tot; ?></td>
+                <td><?php echo $cashid;?></td>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $kot_time; ?></td>
+            </tr>
+        <?php
+    }
 }
 
 

@@ -155,7 +155,7 @@
                                     <th>Discount</th>
                                     <th>Tax Amt</th>
                                     <th>Cess Amt</th>
-                                    <th>Nett Amt</th>
+                                    <th>Net Amt</th>
                                     <th>Expiry</th>
                                     <th>Edit/Delete</th>
                                 </tr>

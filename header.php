@@ -29,7 +29,6 @@ body{
     <div class="wrapper" id="form1">
         <header class="main-header">
             <a href="home.php" class="logo">
-               
                 <span class="logo-lg"><img src="img/logo.png" style="object-fit:contain;width:110px;" alt=""></span>
             </a>
             <nav class="navbar navbar-static-top">
@@ -91,6 +90,14 @@ body{
                                 </ul>
                             </li>
                             <li><a href="reports.php"><img class="logos" src="img/circle.png" alt="">Reports</a></li>
+                            <?php 
+                            if($cash_type=='admin')
+                            {
+                            ?>
+                                <li><a href="manager_edit_bills.php"><img class="logos" src="img/circle.png" alt="">Manager Bills</a></li>
+                            <?php
+                            }
+                            ?>
                             <li><a href="changepass.php"><img class="logos" src="img/i4.png" alt=""><span>Change Password</span></a></li>
                             <li><a href="logout.php"><img class="logos" src="img/i4.png" alt=""><span>Logout</span></a></li>
                   		<?php    

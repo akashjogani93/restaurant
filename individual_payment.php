@@ -108,7 +108,13 @@
                                     <thead v-if="paymentList.length > 0" class="thea">
                                         <tr>
                                             <th class="font-weight-bold text-primary th-texts">Amount To Pay:</th>
-                                            <th class="font-weight-bold text-danger th-amounts">{{ paymentList.length > 0 ? paymentList.reduce((sum, payment) => sum + (parseFloat(payment.amt) - parseFloat(payment.paid)), 0) : 0 }}</th>
+                                            <th class="font-weight-bold text-danger th-amounts">
+                                                {{
+                                                    paymentList.length > 0
+                                                        ? (paymentList.reduce((sum, payment) => sum + (parseFloat(payment.amt) - parseFloat(payment.paid)), 0)).toFixed(2)
+                                                        : 0
+                                                }}
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th class="font-weight-bold text-primary th-texts1">Pay Amount:</th>

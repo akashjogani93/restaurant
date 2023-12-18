@@ -69,6 +69,7 @@
                         <table class="table" id="foodkot1">
                             <thead class="thead-dark">
                                 <tr>
+                                    <th scope="col">Kot No</th>
                                     <th scope="col">Table</th>
                                     <th scope="col">Captain Code</th>
                                     <th scope="col">Captain Name</th>
@@ -117,6 +118,7 @@
                     startX: 40,
                     theme: 'grid',
                     columns: [
+                        {dataKey: 'Kot No'},
                         {dataKey: 'Table'},
                         {dataKey: 'captain Code'},
                         {dataKey: 'Captain Name'},

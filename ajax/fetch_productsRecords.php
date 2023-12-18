@@ -19,6 +19,7 @@ $vendor = $purchaseRow['vendor'];
 $purchaseDate = $purchaseRow['purchase_date'];
 $totalamt = number_format($purchaseRow['totalamt'],2);
 $id = $purchaseRow['id'];
+$bill = $purchaseRow['bill'];
 
 
 // Query the database to fetch the products for the provided ID
@@ -30,7 +31,7 @@ if (!$result) {
 }
 
 // Generate the HTML for the product table
-echo '<center><label>Vendor: ' . $vendor . '</label>&nbsp;&nbsp;<label>Bill No: ' . $id . '</label><br>';
+echo '<center><label>Vendor: ' . $vendor . '</label>&nbsp;&nbsp;<label>Bill No: ' . $bill . '</label><br>';
 echo '<label>Purchase Date: ' . $purchaseDate . '</label><br>';
 echo '<label>Total Amount: ' . $totalamt . '</label></center><br>';
 echo '<table class="table table-striped table-bordered table-hover">';

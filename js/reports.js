@@ -38,13 +38,15 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        var typ=$("#typ").val();
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
             data:{
                     daysale: 'daysale',
                     fdate:fdate,
-                    tdate:tdate
+                    tdate:tdate,
+                    typ:typ
                 },
             cache: false,
             success: function(status)
