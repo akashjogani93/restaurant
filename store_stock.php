@@ -259,14 +259,5 @@
                 // });
                 doc.save('store_stock');
             }
-
-            function exportToExcel() {
-                var table = document.getElementById("example1");
-                TableExport(table, {
-                    formats: ["xlsx"],
-                    filename: "myTableData",
-                    exportButtons: false
-                });
-            }
         </script>
 </body>

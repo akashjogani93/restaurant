@@ -39,7 +39,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="control-label">Sell Unit</label>
+                                        <label for="inputEmail3" class="control-label">Sale Unit</label>
                                         <input type="text" class="form-control" name="sellunit" id="sellunit" readonly="readonly" placeholder="sellunit"> 
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                         <input type="hidden" class="form-control" name="perCaseQty" id="stockid" readonly="readonly" placeholder="perCaseQty">
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="inputEmail3" class="control-label">Sell Qty</label>
+                                        <label for="inputEmail3" class="control-label">Sale Qty</label>
                                         <input type="text" class="form-control" name="pqty" id="uqty" placeholder="Kitchen Qty">
                                     </div>
                                     <div class="form-group col-md-4">

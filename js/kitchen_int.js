@@ -259,7 +259,8 @@ class Purchase
                         method: 'POST',
                         data:{cat:'category'},
                         success(response) {
-                            vm.category = response;
+                            // vm.category = response;
+                            vm.category = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -271,7 +272,8 @@ class Purchase
                         method: 'POST',
                         data:{ven:'ven'},
                         success(response) {
-                            vm.vens = response;
+                            vm.vens = response.slice().sort((a, b) => a.vendor.localeCompare(b.vendor));
+                            // vm.vens = response;
                         },
                         error(xhr, status, error)
                         {
@@ -409,6 +411,8 @@ class Purchase
                         data:{opt:'opt',categoryOption:categoryOption},
                         success(response) {
                             vm1.options = response;
+                            // vm.options = response.slice().sort((a, b) => a.pname.localeCompare(b.pname));
+
                             vm1.insideqty='';
                             $('#insideqty').prop('readonly', false);
                         },
@@ -1998,7 +2002,8 @@ class Stock_table
                         data:{cat:'cat'},
                         success(response) 
                         {
-                            vm.categoys = response;
+                            // vm.categoys = response;
+                            vm.categoys = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -2017,16 +2022,20 @@ class Stock_table
                         data:{stockOpening:'stock',catName1:catName,fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            // console.log(response);
-                            vm.stockList = response;
+                            vm.stockList = response.slice().sort((a, b) => a.name.localeCompare(b.name));
                         },
                         error(xhr, status, error)
                         {
                             console.error(error);
                         }
                     });
-                    // console.log(log);
                 },
+                // sortstocklist() 
+                // {
+                //     console.log(this.stockList);
+                //     // Sort the stockList array by item.name alphabetically
+                //     return this.stockList.slice().sort((a, b) => a.name.localeCompare(b.name));
+                //   },
                 search()
                 {
                     this.fetchStock();

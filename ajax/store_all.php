@@ -308,12 +308,12 @@ if(isset($_POST['cattype']))
     {
         $query="INSERT INTO `beverages`(`pid`, `stock`, `date`) VALUES ('$pid','$uqty','$gdate')";
         $exc = mysqli_query($conn, $query);
-        echo 'Selled';
+        echo 'Sold';
     }else if($cattype=="parcel")
     {
         $query="INSERT INTO `parcelmaterial`(`pid`, `stock`, `date`) VALUES ('$pid','$uqty','$gdate')";
         $exc = mysqli_query($conn, $query);
-        echo 'Selled';
+        echo 'Sold';
     }
     else
     {

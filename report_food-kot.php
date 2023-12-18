@@ -42,7 +42,7 @@
     <div class="content-wrapper">
         <section class="content">
             <?php include('buttons.html'); ?>
-            <h3 class="top-headerMain">Kot Cancellation</h3>
+            <h3 class="top-headerMain">Food Kot</h3>
             <div class="box box-primary">
                 <div class="box-body form1">
                     <div class="row">
@@ -95,10 +95,10 @@
             $(document).ready(function()
             {
                 const kot_cancel=new Reports();
-                kot_cancel.Kot_cancel()
+                kot_cancel.Food_kot()
                 $('#search').click(function()
                 {
-                    kot_cancel.Kot_cancel()
+                    kot_cancel.Food_kot()
                 });
             });
         </script>

@@ -793,6 +793,13 @@ if(isset($_POST['storedData']))
     echo json_encode('running');
 }
 
+if(isset($_POST['foodkot']) && isset($_POST['fdate']) && isset($_POST['tdate']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    // $query="SELECT * FROM";
+}
+
 
 
 

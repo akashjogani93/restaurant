@@ -200,4 +200,24 @@ class Reports
         });
         //console.log(log);
     }
+    Food_kot()
+    {
+        var fdate=$("#fdate").val();
+        var tdate=$("#tdate").val();
+        let log=$.ajax({
+            type: "post",
+            url: "ajax/reports.php",
+            data:{
+                    foodkot: 'foodkot',
+                    fdate:fdate,
+                    tdate:tdate
+                },
+            cache: false,
+            success: function(status)
+            {
+                $('#kotdata').empty();
+                $('#kotdata').append(status);
+            }
+        });
+    }
 }
