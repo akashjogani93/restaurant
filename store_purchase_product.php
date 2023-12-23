@@ -33,6 +33,15 @@
         border: 1px solid black;
         padding: 5px;
     }
+    .shourtcuts{
+            display:flex;
+            margin-bottom:10px;
+            }
+            .shourtcuts > p{
+                margin:0 20px;
+                text-align:center;
+                font-size:11px;
+            }
 </style>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <body class="hold-transition skin-blue sidebar-mini">
@@ -40,9 +49,20 @@
         <div class="wrapper" id="form1"></div>
         <div class="content-wrapper">
             <section class="content-header">
-                <h1>
+                <h3>
                     Purchase Product
-                </h1>
+                </h3>
+                <div class="row">
+                <div class="col-md-12">
+                    <div class="shourtcuts">
+                        <p>Move Feild(Tab)</p>
+                        <p>Back Feild(ALT+Tab)</p>
+                        <p>Submit(Double Enter)</p>
+                        <p>Refresh (ALT+z)</p>
+                        <p>Cancel Bill(ALT+c)</p>
+                        <p>Submit/Update(ALT+s)</p>
+                    </div>
+                </div>
             </section>
             <section class="content">
                 <div class="box box-default">
@@ -70,14 +90,14 @@
                                 <div class="row">
                                     <div class="form-group col-md-3">
                                         <label for="inputEmail3" class="control-label">Select Category</label>
-                                        <select name="pname" id="pid" required class="form-control pname" v-model="categoryOption" @change="categoryChange">
+                                        <select name="pname" id="pid12" required class="form-control pname" v-model="categoryOption" @change="categoryChange">
                                             <option value="">Select Category</option>
                                             <option v-for="cate in category" :value="cate.CategoryName">{{ cate.CategoryName }}</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="inputEmail3" class="control-label">Product Name</label>
-                                        <select name="pname" id="pid" required class="form-control pname" v-model="selectedOption" @change="productChange">
+                                        <select name="pname" id="pid" required class="form-control pname" v-model="selectedOption" @change="productChange" @keydown.tab="focusQty">
                                             <option value="">Select Products</option>
                                             <option v-for="option in options" :value="option.pid">{{ option.pname }}</option>
                                         </select>
@@ -260,6 +280,7 @@
         $(document).ready(function()
         {
             const purchase_datas= new Purchase();
+
             $('#pamt, #totamt, #qty, #bill').keypress(function(event) {
                 var keycode = (event.keyCode ? event.keyCode : event.which);
 
@@ -282,6 +303,35 @@
                     $('#totamt').val(totamt1.toFixed(2));
                 }
             });
+
+            // $('#pid, #totamt, #qty, #bill').keydown(function(event) 
+            // {
+            //     // Check which field has focus
+            //     var activeElementId = document.activeElement.id;
+            //     var nextElementId;
+            //     if (event.which === 9)
+            //     {
+            //         switch (activeElementId) {
+            //             case 'pid':
+            //                 nextElementId = 'qty';
+            //                 break;
+            //             case 'totamt':
+            //                 nextElementId = 'qty';
+            //                 break;
+            //             case 'qty':
+            //                 nextElementId = 'bill';
+            //                 break;
+            //             // Add more cases if needed
+
+            //             // Default case: no change if the focused element is not one of the specified IDs
+            //             default:
+            //                 return;
+            //         }
+
+            //         // Move the cursor to the next field
+            //         $('#' + nextElementId).focus();
+            //     }
+            // });
         });
     </script>
 </body>

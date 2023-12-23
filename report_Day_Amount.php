@@ -161,6 +161,7 @@
                             success:function(status)
                             {
                                 billdata = status;
+                                localStorage.setItem('originalBillData', JSON.stringify(billdata));
                                 updateModal(billdata);
                             }
                         });
@@ -176,10 +177,11 @@
                 $(document).on("click", ".delete-btn", function() {
                     var storedData = JSON.parse(localStorage.getItem('billData')) || { items: [] };
                     var indexToDelete = $(this).data('index');
-                    storedData.items.splice(indexToDelete, 1);
+                    // storedData.items.splice(indexToDelete, 1);
+                    storedData.items[indexToDelete].qty=0;
 
                     // Check if no more items, then hide modal or provide indication
-                    if (storedData.items.length === 0) 
+                    if(storedData.items.filter(item => item.qty > 0).length === 0)  
                     {
                         $('.bd-example-modal-xl').modal('hide');
                     } else {
@@ -192,9 +194,11 @@
                     var indexToUpdate = $(this).data('index');
                     var action = $(this).data('action');
 
-                    if (action === 'increase') {
+                    if (action === 'increase') 
+                    {
                         storedData.items[indexToUpdate].qty++;
-                    } else if (action === 'decrease' && storedData.items[indexToUpdate].qty > 0) {
+                    }else if(action === 'decrease' && storedData.items[indexToUpdate].qty > 1) 
+                    {
                         storedData.items[indexToUpdate].qty--;
                     }
 
@@ -205,20 +209,52 @@
                 $('#saveChanges').on('click',function()
                 {
                     var storedData = JSON.parse(localStorage.getItem('billData'));
+                    var originalBillData = JSON.parse(localStorage.getItem('originalBillData'));
+                    // console.log(storedData.items);
+                    // console.log(originalBillData.items);
+                    var totalQtyIncreased=0;
+                    var totalQtyDecreased=0;
+                    for (let i = 0; i < storedData.items.length; i++)
+                    {
+                        const storedQty = storedData.items[i].qty;
+                        const originalQty = originalBillData.items[i].qty;
+
+                        if (storedQty > originalQty) 
+                        {
+                            const increaseAmount = storedQty - originalQty;
+                            totalQtyIncreased += increaseAmount;
+                            storedData.items[i].increase = increaseAmount;
+                            storedData.items[i].decrease = 0; // Assuming you want to set decrease to 0 for increased items
+                        } else if (storedQty < originalQty) {
+                            const decreaseAmount = originalQty - storedQty;
+                            totalQtyDecreased += decreaseAmount;
+                            storedData.items[i].increase = 0; // Assuming you want to set increase to 0 for decreased items
+                            storedData.items[i].decrease = decreaseAmount;
+                        } else {
+                            storedData.items[i].increase = 0;
+                            storedData.items[i].decrease = 0;
+                        }
+                    }
+                    // console.log(storedData.items);
+                    // console.log(originalBillData.items);
+                    // return;
                     let log=$.ajax({
                             type: "post",
                             url: "ajax/reports.php",
                             dataType: 'json',
                             data: {
                                 storedData: storedData,
+                                originalBillData: originalBillData,
                             },
                             cache: false,
                             success:function(status)
                             {
                                 console.log(status);
+                                $('.bd-example-modal-xl').modal('hide');
+                                day_sales.day_sales();
                             }
                         });
-                    console.log(log);
+                    console.log(log);           
                 });
             });
 
@@ -234,25 +270,28 @@
                 {
                     var totValue = parseFloat(item.tot);
                     var qty = parseFloat(item.qty);
-                    var row = '<tr>' +
-                                    '<td>' + item.itmnam + '</td>' +
-                                    '<td>' + 
-                                        '<button class="quantity-btn" data-action="decrease" data-index="' + index + '"> - </button>&nbsp;&nbsp;' +
-                                        '<span class="quantity">' + qty + '</span>&nbsp;&nbsp;' +
-                                        '<button class="quantity-btn" data-action="increase" data-index="' + index + '"> + </button>&nbsp;&nbsp;' +
-                                    '</td>' +
-                                    '<td>' + item.prc + '</td>' +
-                                    '<td>' + totValue + '</td>' +
-                                    '<td><button class="delete-btn" data-index="' + index + '">Delete</button></td>' +
-                                '</tr>';
-                    totalSum += totValue; 
-                    tbody.append(row);
+                    if (qty > 0) 
+                    {
+                        var row = '<tr>' +
+                                        '<td>' + item.itmnam + '</td>' +
+                                        '<td>' + 
+                                            '<button class="quantity-btn" data-action="decrease" data-index="' + index + '"> - </button>&nbsp;&nbsp;' +
+                                            '<span class="quantity">' + qty + '</span>&nbsp;&nbsp;' +
+                                            '<button class="quantity-btn" data-action="increase" data-index="' + index + '"> + </button>&nbsp;&nbsp;' +
+                                        '</td>' +
+                                        '<td>' + item.prc + '</td>' +
+                                        '<td>' + totValue + '</td>' +
+                                        '<td><button class="delete-btn" data-index="' + index + '">Delete</button></td>' +
+                                    '</tr>';
+                        totalSum += totValue; 
+                        tbody.append(row);
+                    }
                 });
-                var sumRow = '<tr>' +
-                        '<td colspan="2"></td>' +
-                        '<td colspan="2"><strong>Total:</strong></td>' +
-                        '<td>' + totalSum + '</td>' +
-                        '</tr>';
+                var sumRow ='<tr>' +
+                                '<td colspan="2"></td>' +
+                                '<td colspan="2"><strong>Total:</strong></td>' +
+                                '<td>' + totalSum + '</td>' +
+                            '</tr>';
                     tbody.append(sumRow);
                 $('.bd-example-modal-xl').modal('show');
             }

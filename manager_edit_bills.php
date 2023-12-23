@@ -45,19 +45,19 @@
     <script src="js/reports.js"></script>
     <div class="content-wrapper">
         <section class="content">
-            <h3 class="top-headerMain">Daily Sales</h3>
-                <?php include('buttons.html'); ?>
+            <h3 class="top-headerMain">Manager Edited</h3>
+                <?php //include('buttons.html'); ?>
             <div class="box box-primary">
                 <div class="box-body form1">
                     <div class="row">
-                        <div class="form-group col-md-3">
+                        <!-- <div class="form-group col-md-3">
                             <label for="inputEmail3" class="control-label">Invoice From</label>
                             <select name="typ" id="typ" class="form-control">  
                                 <option>All</option>
                                 <option>Table</option>
                                 <option>Parcel</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group col-md-3">
                             <label for="inputEmail3" class="control-label">From Date</label>
                             <input type="date" class="form-control pull-right" name="fdate" id="fdate">
@@ -85,140 +85,27 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl custom-width">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Invoice</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-header">
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="">Invoice Number</label>
-                                        <input type="text" class="form-control" id="editSlno" readonly>
-                                    </div>
-                                </div></br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                    <table class="table" id="editTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Item Name</th>
-                                                <th>Qty</th>
-                                                <th>Prc</th>
-                                                <th>Tot</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
         <!-- <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script> -->
         <script>
             $(document).ready(function()
             {
                 const day_sales=new Reports();
-                day_sales.day_sales();
+                day_sales.managerEdit();
                 $('#search').on('click',function()
                 {
-                    day_sales.day_sales();
+                    day_sales.managerEdit();
                 });
 
                 $('#typ').on('change', function() {
-                    day_sales.day_sales();
+                    day_sales.managerEdit();
                 });
-
                 
-                $(document).on("click", ".edit-btn", function() 
-                {
-                    var billno = $(this).closest('tr').find('td:eq(1)').text();
-                    let billdata=[];
-                    localStorage.removeItem('billData');
-                    let log=$.ajax({
-                            type: "post",
-                            url: "ajax/reports.php",
-                            dataType: 'json',
-                            data: {
-                                billno: billno,
-                            },
-                            cache: false,
-                            success:function(status)
-                            {
-                                billdata = status;
-                                updateModal(billdata);
-                            }
-                        });
-                });
-
                 $("#kotdata tbody").on('dblclick', 'tr', function() 
                 {
                     var currow = $(this).closest('tr');
                     var item_id = currow.find('td:eq(1)').html();
                     window.location.href = 'finalInvoice.php?billno='+item_id+"&back=0";
-                });
-
-                $(document).on("click", ".delete-btn", function() {
-                    var storedData = JSON.parse(localStorage.getItem('billData')) || { items: [] };
-                    var indexToDelete = $(this).data('index');
-                    storedData.items.splice(indexToDelete, 1);
-
-                    // Check if no more items, then hide modal or provide indication
-                    if (storedData.items.length === 0) 
-                    {
-                        $('.bd-example-modal-xl').modal('hide');
-                    } else {
-                        updateModal(storedData);
-                    }
-                });
-
-                $(document).on("click", ".quantity-btn", function() {
-                    var storedData = JSON.parse(localStorage.getItem('billData')) || { items: [] };
-                    var indexToUpdate = $(this).data('index');
-                    var action = $(this).data('action');
-
-                    if (action === 'increase') {
-                        storedData.items[indexToUpdate].qty++;
-                    } else if (action === 'decrease' && storedData.items[indexToUpdate].qty > 0) {
-                        storedData.items[indexToUpdate].qty--;
-                    }
-
-                    storedData.items[indexToUpdate].tot = storedData.items[indexToUpdate].qty * storedData.items[indexToUpdate].prc;
-                    updateModal(storedData);
-                });
-
-                $('#saveChanges').on('click',function()
-                {
-                    var storedData = JSON.parse(localStorage.getItem('billData'));
-                    let log=$.ajax({
-                            type: "post",
-                            url: "ajax/reports.php",
-                            dataType: 'json',
-                            data: {
-                                storedData: storedData,
-                            },
-                            cache: false,
-                            success:function(status)
-                            {
-                                console.log(status);
-                            }
-                        });
-                    console.log(log);
                 });
             });
 
@@ -258,28 +145,29 @@
             }
         </script>
         <script>
-            function generateTable() 
+            function generateTable()
             {
                 var fdate=$('#fdate').val();
                 var tdate=$('#tdate').val();
                 var doc = new jsPDF('p', 'pt', 'letter');
                 var y = 20;
                 doc.setLineWidth(2);
-                doc.text(150, y = y + 10, "Day Food Sale Invoice From "+fdate+" To "+tdate);
+                doc.text(150, y = y + 10, "Invoice Edited From "+fdate+" To "+tdate);
                 doc.autoTable({
-                    html: '#dayinvoices',
+                    html: '#trashInvoice',
                     startY: 40,
                     startX: 40,
                     theme: 'grid',
                     columns: [
-                        {dataKey: 'Invoice Date'},
-                        {dataKey: 'Invoice Number'},
-                        {dataKey: 'Gross Amount'},
-                        {dataKey: 'Discount'},
-                        {dataKey: 'GST Amount'},
-                        {dataKey: 'Round Off(-)'},
-                        {dataKey: 'Round Off(+)'},
-                        {dataKey: 'Net Amount'},
+                        {dataKey: 'Trash Date'},
+                        {dataKey: 'Trash Time'},
+                        {dataKey: 'EditedId'},
+                        {dataKey: 'Itmno'},
+                        {dataKey: 'Itmname'},
+                        {dataKey: 'Qty'},
+                        {dataKey: 'Prc'},
+                        {dataKey: 'Total'},
+                        {dataKey: '(-/+)'},
                     ],
                     styles: {
                         overflow: 'linebreak',
@@ -315,7 +203,7 @@
                 //     },
                 //     pageSize: 'letter',
                 // });
-                doc.save('day_sale');
+                doc.save('trash_invoice');
             }
         </script>
     </div>

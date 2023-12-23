@@ -99,7 +99,7 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
                 $invoice="UPDATE `invoice` SET `date`='$date',`time`='$time',`capname`='$capnam',`cap_code`='$capcode',`gtot`='$gndtot',`discount`='$disPercentage',`discAmt`='$disAmt',`afterDisc`='$amountAfterDiscount',`gst`='$gst',`gstAmt`='$gstAmount',`afterGst`='$amountAfterGst',`roundplus`='$roundPlus',`roundminus`='$roundMinus',`nettot`='$nettot',`cashId`='$cash_id',`orde`='$table',`pmode`='$paymentmode',`tabno`='$tabno' WHERE `slno`='$bill'";
             }else
             {
-                $invoice="INSERT INTO `invoice`(`date`, `time`, `capname`, `cap_code`, `gtot`, `discount`, `discAmt`, `afterDisc`, `gst`, `gstAmt`, `afterGst`, `roundplus`, `roundminus`, `nettot`, `cashId`, `orde`, `pmode`,`tabno`) VALUES ('$date','$time','$capnam','$capcode','$gndtot','$disPercentage','$disAmt','$amountAfterDiscount','$gst','$gstAmount','$amountAfterGst','$roundPlus','$roundMinus','$nettot','$cash_id','$table','$paymentmode','$tabno')";
+                $invoice="INSERT INTO `invoice`(`date`, `time`, `capname`, `cap_code`, `gtot`, `discount`, `discAmt`, `afterDisc`, `gst`, `gstAmt`, `afterGst`, `roundplus`, `roundminus`, `nettot`,`orde`, `pmode`,`tabno`) VALUES ('$date','$time','$capnam','$capcode','$gndtot','$disPercentage','$disAmt','$amountAfterDiscount','$gst','$gstAmount','$amountAfterGst','$roundPlus','$roundMinus','$nettot','$table','$paymentmode','$tabno')";
             }
             $exc=mysqli_query($conn,$invoice);
         }else
@@ -109,7 +109,7 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
                 $invoice="UPDATE `invoice` SET `date`='$date',`time`='$time',`capname`='$capnam',`cap_code`='$capcode',`gtot`=0,`discount`=0,`discAmt`=0,`afterDisc`=0,`gst`=0,`gstAmt`=0,`afterGst`=0,`roundplus`=0,`roundminus`=0,`nettot`=0,`cashId`='$cash_id',`orde`='$table',`pmode`='$paymentmode',`tabno`='$tabno' WHERE `slno`='$bill'";
             }else
             {
-                $invoice="INSERT INTO `invoice`(`date`, `time`, `capname`, `cap_code`, `gtot`, `discount`, `discAmt`, `afterDisc`, `gst`, `gstAmt`, `afterGst`, `roundplus`, `roundminus`, `nettot`, `cashId`, `orde`, `pmode`,`tabno`) VALUES ('$date','$time','$capnam','$capcode',0,0,0,0,'$gst',0,0,0,0,0,'$cash_id','$table','$paymentmode','$tabno')";
+                $invoice="INSERT INTO `invoice`(`date`, `time`, `capname`, `cap_code`, `gtot`, `discount`, `discAmt`, `afterDisc`, `gst`, `gstAmt`, `afterGst`, `roundplus`, `roundminus`, `nettot`,`orde`, `pmode`,`tabno`) VALUES ('$date','$time','$capnam','$capcode',0,0,0,0,'$gst',0,0,0,0,0,'$table','$paymentmode','$tabno')";
             }
             $exc=mysqli_query($conn,$invoice);
         }

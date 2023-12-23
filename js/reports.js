@@ -29,8 +29,8 @@ class Reports
             cache: false,
             success: function(status)
             {
-                $('#kotdata').empty();
-                $('#kotdata').append(status);
+                $('#mainData').empty();
+                $('#mainData').append(status);
             }
         });
     }
@@ -39,6 +39,7 @@ class Reports
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
         var typ=$("#typ").val();
+        // var typ='All';
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -157,6 +158,7 @@ class Reports
                 $('#cashierData').append(status);
             }
         });
+        console.log(log);
     }
     captainData()
     {
@@ -217,8 +219,28 @@ class Reports
             cache: false,
             success: function(status)
             {
-                $('#kotdata').empty();
-                $('#kotdata').append(status);
+                $('#mainData').empty();
+                $('#mainData').append(status);
+            }
+        });
+    }
+    managerEdit()
+    {
+        var fdate=$("#fdate").val();
+        var tdate=$("#tdate").val();
+        let log=$.ajax({
+            type: "post",
+            url: "ajax/reports.php",
+            data:{
+                    managerEdit: 'managerEdit',
+                    fdate:fdate,
+                    tdate:tdate
+                },
+            cache: false,
+            success: function(status)
+            {
+                $('#mainData').empty();
+                $('#mainData').append(status);
             }
         });
     }

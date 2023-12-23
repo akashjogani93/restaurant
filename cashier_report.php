@@ -102,7 +102,7 @@
                     startX: 40,
                     theme: 'grid',
                     columns: [
-                        {dataKey: 'Date'},
+                        // {dataKey: 'Date'},
                         {dataKey: 'UID'},
                         {dataKey: 'Cashier Name'},
                         {dataKey: 'Gross Amount'},

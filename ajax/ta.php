@@ -23,12 +23,12 @@ if(isset($_POST['search']))
 if(isset($_POST['catsus']))
 {
     $catsus2=$_POST['catsus'];
-    if($cash_type!='Captain')
-    {
-        $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable` WHERE `status`=0 AND `type`=0";
-    }else
+    if($cash_type == 'Captain')
     {
         $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable` WHERE `capname`='$name' AND `status`=0 AND `type`=0;";
+    }else
+    {
+        $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable` WHERE `status`=0 AND `type`=0";
     }
     $c=mysqli_query($conn, $query);
     $a = array();
@@ -40,7 +40,6 @@ if(isset($_POST['catsus']))
         }
     }
     echo json_encode($a);
-    
 }
 
 if(isset($_POST['catsus2']))

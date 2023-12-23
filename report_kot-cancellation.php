@@ -66,32 +66,14 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <table class="table" id="foodkot">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">Kot No</th>
-                                    <th scope="col">Table</th>
-                                    <th scope="col">Captain Code</th>
-                                    <th scope="col">Captain Name</th>
-                                    <th scope="col">Menu Code</th>
-                                    <th scope="col">Menu Name</th>  
-                                    <th scope="col">Qty</th>
-                                    <th scope="col">Rate</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">UID</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Time</th>
-                                </tr>
-                            </thead>
-                            <tbody id="kotdata">
-                            </tbody>
-                        </table>
+                        <div id="mainData">
+                        </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script>
+        <!-- <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script> -->
         <script>
             $(document).ready(function()
             {
@@ -113,14 +95,14 @@
                 doc.setLineWidth(2);
                 doc.text(150, y = y + 10, "Food Kot Cancelled From "+fdate+" To "+tdate);
                 doc.autoTable({
-                    html: '#foodkot',
+                    html: '#kot_cancel',
                     startY: 40,
                     startX: 40,
-                    theme: 'grid',>
+                    theme: 'grid',
                     columns: [
                         {dataKey: 'Kot No'},
                         {dataKey: 'Table'},
-                        {dataKey: 'captain Code'},
+                        {dataKey: 'Captain Code'},
                         {dataKey: 'Captain Name'},
                         {dataKey: 'Menu Code'},
                         {dataKey: 'Menu Name'},
@@ -143,6 +125,12 @@
                         fontSize: 8,
                         lineWidth: 1,
                     },
+                    footStyles: {
+                        fontSize: 8,
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        lineWidth: 1,
+                    },
                 })
 
                 // doc.setProperties({
@@ -159,7 +147,7 @@
                 //     },
                 //     pageSize: 'letter',
                 // });
-                doc.save('Kot_cancelled');
+                doc.save('kot_cancel');
             }
         </script>
     </div>

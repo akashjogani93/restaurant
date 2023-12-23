@@ -4,12 +4,31 @@
     <div class="wrapper" id="form1">
         <style>
             .error{color: red;}
+            .shourtcuts{
+            display:flex;
+            margin-bottom:10px;
+            }
+            .shourtcuts > p{
+                margin:0 20px;
+                text-align:center;
+                font-size:11px;
+            }
         </style>
         <div class="content-wrapper">
             <section class="content-header">
-                <h1>
+                <h3>
                     Stock Products
-                </h1>
+                </h3>
+                <div class="row">
+                <div class="col-md-12">
+                    <div class="shourtcuts">
+                        <p>Move Feild(Tab)</p>
+                        <p>Back Feild(ALT+Tab)</p>
+                        <p>Submit(Double Enter)</p>
+                        <p>Refresh (ALT+z)</p>
+                    </div>
+                </div>
+            </div>
             </section>
             <section class="content">
                 <div class="box box-default">
@@ -242,6 +261,13 @@
                 $(document).ready(function()
                 {
                     const product_create= new Product();
+                    $(document).on("keydown", function (e) 
+                    {
+                        if (e.altKey && (e.key === "z" || e.keyCode === 90)) {
+                            e.preventDefault();
+                            window.location='store_product.php';
+                        }
+                    });
                 });
                 function submit()
                 {

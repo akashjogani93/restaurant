@@ -27,7 +27,7 @@
     {
       die('Error: ' . mysqli_error($conn));
     }
-    $sql11="UPDATE `login` SET `user`='$uname',`pass`='$pass',`type`='$type' WHERE `id`='$empid'";
+    $sql11="INSERT INTO `login`(`id`,`user`,`pass`, `type`) VALUES ('$empid','$uname','$pass','$type')";
     if (!mysqli_query($conn,$sql11))
     {
       die('Error: ' . mysqli_error($conn));

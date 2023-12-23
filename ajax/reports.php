@@ -1,4 +1,5 @@
 <?php session_start(); 
+date_default_timezone_set('Asia/Kolkata');
 $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
 $name=$_SESSION['name']; 
@@ -19,6 +20,26 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
 
     $query="SELECT * FROM `kot_cancel` WHERE `date` BETWEEN '$fdate' AND '$tdate'";
     $exc=mysqli_query($conn,$query);
+    ?>
+        <table class="table" id="kot_cancel">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th>Kot No</th>
+                    <th>Table</th>
+                    <th>Captain Code</th>
+                    <th>Captain Name</th>
+                    <th>Menu Code</th>
+                    <th>Menu Name</th>  
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>UID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="kotData">
+    <?php
     while($row=mysqli_fetch_assoc($exc))
     {
         $table=$row['tabno'];
@@ -50,6 +71,10 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
             </tr>
         <?php
     }
+    ?>
+    </tbody>
+    </table>
+    <?php
 }
 
 if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']) && isset($_POST['typ']))
@@ -407,23 +432,11 @@ if(isset($_POST['cashier']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 {
     $fdate=$_POST['fdate'];
     $tdate=$_POST['tdate'];
-    $query = "SELECT `date`, `cashId`,
-                    SUM(`gtot`) as `total_gtot`,
-                    SUM(`discAmt`) as `total_discAmt`,
-                    SUM(`gstAmt`) as `total_gstAmt`,
-                    SUM(`roundplus`) as `total_plus`,
-                    SUM(`roundminus`) as `total_minus`,
-                    SUM(`nettot`) as total_nettot
-                FROM `invoice`
-                WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'
-                GROUP BY `date`, `cashId`";
-
-    $exc=mysqli_query($conn,$query);
     ?>
         <table class="table" id="cashierdd">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
-                    <th scope="col">Date</th>
+                    <!-- <th scope="col">Date</th> -->
                     <th scope="col">UID</th>
                     <th scope="col">Cashier Name</th>
                     <th scope="col">Gross Amount</th>
@@ -435,65 +448,74 @@ if(isset($_POST['cashier']) && isset($_POST['fdate']) && isset($_POST['tdate']))
                 </tr>
             </thead>
             <tbody id="dayData">
-    <?php
-    while($row=mysqli_fetch_assoc($exc))
-    {
-        $Totalgtot=$Totalgtot+$row['total_gtot'];
-        $totaldisc=$totaldisc+$row['total_discAmt'];
-        $totalgst=$totalgst+$row['total_gstAmt'];
-        $totalminus=$totalminus+$row['total_minus'];
-        $totalplus=$totalplus+$row['total_plus'];
-        $toatlnet=$toatlnet+$row['total_nettot'];
-
-        $date=$row['date'];
-        $chashId=$row['cashId'];
-        if($chashId==0)
-        {
-            $cashierName="Admin";
-        }else
-        {
-            $query="SELECT `empname` FROM `empreg` WHERE `cap_code`='$chashId'";
-            $exc=mysqli_query($conn,$query);
-            while($row=mysqli_fetch_assoc($exc))
-            {
-                $cashierName=$row['empname'];
-            }
-        }
-        $total_gtot=number_format($row['total_gtot'],2);
-        $total_discAmt=number_format($row['total_discAmt'],2);
-        $total_gstAmt=number_format($row['total_gstAmt'],2);
-        $total_plus=$row['total_plus'];
-        $total_minus=$row['total_minus'];
-        $total_nettot=number_format($row['total_nettot'],2);
-        ?>
-            <tr>
-                <td><?php echo $date; ?></td>
-                <td><?php echo $chashId; ?></td>
-                <td><?php echo $cashierName; ?></td>
-                <td><?php echo $total_gtot; ?></td>
-                <td><?php echo $total_discAmt; ?></td>
-                <td><?php echo $total_gstAmt; ?></td>
-                <td><?php echo $total_minus; ?></td>
-                <td><?php echo $total_plus; ?></td>
-                <td><?php echo $total_nettot; ?></td>
-            </tr>
+                <?php
+                    $query = "SELECT `cashId`,SUM(`gtot`) AS `total_gtot`,SUM(`discAmt`) AS `total_discAmt`,SUM(`gstAmt`) AS `total_gstAmt`,SUM(`roundplus`) AS `total_plus`,SUM(`roundminus`) AS `total_minus`,SUM(`nettot`) AS `total_nettot` FROM `invoice` WHERE `date` BETWEEN '$fdate' AND '$tdate' AND `status`=1 GROUP BY `cashId`";
+                    $exc=mysqli_query($conn,$query);
+                    if (!$exc) {
+                        die("Error in query: " . mysqli_error($connection));
+                    }
+                    $numRows = mysqli_num_rows($exc);
+                    // echo "Number of rows: " . $numRows;
+                    while ($row = mysqli_fetch_assoc($exc)) 
+                    {
+                        // print_r($row);
+                        $chashId=$row['cashId'];
+                        
+                        if($chashId=='0')
+                        {
+                            $cashierName="Admin";
+                        }
+                        else
+                        {
+                            $query1="SELECT `empname` FROM `empreg` WHERE `cap_code`='$chashId'";
+                            $exc1=mysqli_query($conn,$query1);
+                            while($row1=mysqli_fetch_assoc($exc1))
+                            {
+                                $cashierName=$row1['empname'];
+                            }
+                        }
+                        $Totalgtot=$Totalgtot+$row['total_gtot'];
+                        $totaldisc=$totaldisc+$row['total_discAmt'];
+                        $totalgst=$totalgst+$row['total_gstAmt'];
+                        $totalminus=$totalminus+$row['total_minus'];
+                        $totalplus=$totalplus+$row['total_plus'];
+                        $toatlnet=$toatlnet+$row['total_nettot'];
+                        
+                        $total_gtot=number_format($row['total_gtot'],2);
+                        $total_discAmt=number_format($row['total_discAmt'],2);
+                        $total_gstAmt=number_format($row['total_gstAmt'],2);
+                        $total_plus=$row['total_plus'];
+                        $total_minus=$row['total_minus'];
+                        $total_nettot=number_format($row['total_nettot'],2);
+                        ?>
+                        <tr>
+                            <!-- <td><?php //echo $date; ?></td> -->
+                            <td><?php echo $chashId; ?></td>
+                            <td><?php echo $cashierName; ?></td>
+                            <td><?php echo $total_gtot; ?></td>
+                            <td><?php echo $total_discAmt; ?></td>
+                            <td><?php echo $total_gstAmt; ?></td>
+                            <td><?php echo $total_minus; ?></td>
+                            <td><?php echo $total_plus; ?></td>
+                            <td><?php echo $total_nettot; ?></td>
+                        </tr>
+                        <?php
+                    }
+                ?>
+            </tbody>
+            <tfoot class="thead-dark">
+                <tr>
+                    <th colspan="2"></th>
+                    <th><?php echo number_format($Totalgtot,2); ?></th>
+                    <th><?php echo number_format($totaldisc,2); ?></th>
+                    <th><?php echo number_format($totalgst,2); ?></th>
+                    <th><?php echo number_format($totalminus,2); ?></th>
+                    <th><?php echo number_format($totalplus,2); ?></th>
+                    <th><?php echo number_format($toatlnet,2); ?></th>
+                </tr>
+            </tfoot>
+            </table>
         <?php
-    }
-    ?>
-        </tbody>
-        <tfoot class="thead-dark">
-            <tr>
-                <th colspan="3"></th>
-                <th><?php echo number_format($Totalgtot,2); ?></th>
-                <th><?php echo number_format($totaldisc,2); ?></th>
-                <th><?php echo number_format($totalgst,2); ?></th>
-                <th><?php echo number_format($totalminus,2); ?></th>
-                <th><?php echo number_format($totalplus,2); ?></th>
-                <th><?php echo number_format($toatlnet,2); ?></th>
-            </tr>
-        </tfoot>
-        </table>
-    <?php
 }
 
 if(isset($_POST['captainData']) && isset($_POST['fdate']) && isset($_POST['tdate']))
@@ -666,7 +688,7 @@ if(isset($_POST['billno']))
     $bill=$_POST['billno'];
     $options = array();
     $options['billno'] = $bill;
-    $query="SELECT `slno`,`itmno`,`itmnam`,`qty`,`prc`,`tot` FROM `tabledata` WHERE `billno`='$bill'";
+    $query="SELECT * FROM `tabledata` WHERE `billno`='$bill'";
     $exc=mysqli_query($conn,$query);
     while($row=mysqli_fetch_assoc($exc))
     {
@@ -677,129 +699,108 @@ if(isset($_POST['billno']))
     echo json_encode($options);
 }
 
-if(isset($_POST['storedData']))
+if(isset($_POST['storedData']) && isset($_POST['originalBillData']))
 {
     $cash_id=$_SESSION['id'];
     $data=$_POST['storedData'];
+    $originalBillData=$_POST['originalBillData'];
+
+    $currentDate = date("Y-m-d");
+    $currentTime = date("h:i:s A");
+
     if (isset($data['billno']) && isset($data['items']) && is_array($data['items'])) 
     {
-        $bill = $data['billno'];
-        // Fetch existing data
-        $result = $conn->query("SELECT * FROM tabledata WHERE billno = '$bill'");
-        $existing_data = [];
-        while($row = $result->fetch_assoc()) {
-            $existing_data[$row['slno']] = $row;
-        }
-        $currentDate = date("Y-m-d");
-        $currentTime = date("h:i:s A");
+        $bill = $originalBillData['billno'];
 
-        // Update existing data and delete removed items
-        foreach ($data['items'] as $item) 
+        for($i = 0; $i < count($data['items']); $i++)
         {
-            if (isset($existing_data[$item['slno']])) 
+            $slno = $data['items'][$i]['slno'];
+            $qty = $data['items'][$i]['qty'];
+            $prc = $data['items'][$i]['prc'];
+            $tot=$qty*$prc;
+
+            $date = $data['items'][$i]['date'];
+            $itmno = $data['items'][$i]['itmno'];
+            $itmnam = $data['items'][$i]['itmnam'];
+            $tabno = $data['items'][$i]['tabno'];
+            $time = $data['items'][$i]['time'];
+            $kot_num = $data['items'][$i]['kot_num'];
+
+
+            $oriSlno = $originalBillData['items'][$i]['slno'];
+            $oriqty = $originalBillData['items'][$i]['qty'];
+
+            if($qty < $oriqty && $qty !=0)
             {
-                $updt=$item['qty'];
-                $qty_diff = abs($item['qty'] - $existing_data[$item['slno']]['qty']);
-                $tot_diff = abs($item['tot'] - $existing_data[$item['slno']]['tot']);
-
-                // Update qty and tot
-                $conn->query("UPDATE `tabledata` SET qty = '$item[qty]', tot = '$item[tot]' WHERE slno = '$item[slno]'");
-
-
-                $id=$item['slno'];
-                $result1 = $conn->query("SELECT * FROM tabledata WHERE billno = '$bill' AND `slno`='$id'");
-                while($out = $result1->fetch_assoc()) 
-                {
-                    $date=$out['date'];
-                    $itmno=$out['itmno'];
-                    $itmnam=$out['itmnam'];
-                    $prc=$out['prc'];
-                    $tabno=$out['tabno'];
-                    $time=$out['time'];
-                    $kot_num=$out['kot_num'];
-                    $qty=$out['qty'];
-                    if($qty != $updt)
-                    {
-                        $conn->query("INSERT INTO `trash_bill`(`date`, `itmno`, `itemnam`, `prc`, `qty`, `tot`, `tabno`, `billno`, `time`, `kot_num`, `trashDate`, `trashTime`,`uid`) VALUES ('$date','$itmno','$itmnam','$prc','$qty_diff','$tot_diff','$tabno','$bill','$time','$kot_num','$currentDate','$currentTime','$cash_id')");
-                    }
-                }
+                $decrease = $data['items'][$i]['decrease'];
+                $trashtot=$decrease*$prc;
+                $conn->query("UPDATE `tabledata` SET `qty` = '$qty', `tot` ='$tot' WHERE `slno` = '$slno'");
+                $conn->query("INSERT INTO `trash_bill`(`date`, `itmno`, `itemnam`, `prc`, `qty`, `tot`, `tabno`, `billno`, `time`, `kot_num`, `trashDate`, `trashTime`,`uid`,`qtycheck`) VALUES ('$date','$itmno','$itmnam','$prc','$decrease','$trashtot','$tabno','$bill','$time','$kot_num','$currentDate','$currentTime','$cash_id','decrease')");
+            }else if($qty > $oriqty && $qty !=0)
+            {
+                $increase = $data['items'][$i]['increase'];
+                $trashtot=$increase*$prc;
+                $conn->query("UPDATE `tabledata` SET `qty` = '$qty', `tot` ='$tot' WHERE `slno` = '$slno'");
+                $conn->query("INSERT INTO `trash_bill`(`date`, `itmno`, `itemnam`, `prc`, `qty`, `tot`, `tabno`, `billno`, `time`, `kot_num`, `trashDate`, `trashTime`,`uid`,`qtycheck`) VALUES ('$date','$itmno','$itmnam','$prc','$increase','$trashtot','$tabno','$bill','$time','$kot_num','$currentDate','$currentTime','$cash_id','increase')");
+            }
+            else if($qty==0)
+            {
+                $decrease = $data['items'][$i]['decrease'];
+                $trashtot=$decrease*$prc;
+                $conn->query("DELETE FROM `tabledata` WHERE `slno`='$slno'");
+                $conn->query("INSERT INTO `trash_bill`(`date`, `itmno`, `itemnam`, `prc`, `qty`, `tot`, `tabno`, `billno`, `time`, `kot_num`, `trashDate`, `trashTime`,`uid`,`qtycheck`) VALUES ('$date','$itmno','$itmnam','$prc','$decrease','$trashtot','$tabno','$bill','$time','$kot_num','$currentDate','$currentTime','$cash_id','decrease')");
             }
         }
+        $query1 = $conn->query("SELECT SUM(`tabledata`.tot) AS gtot, `invoice`.discount 
+        FROM `invoice`
+        JOIN `tabledata` ON `invoice`.slno = `tabledata`.billno
+        WHERE `invoice`.slno = '$bill'");
+  while($out = $query1->fetch_assoc())
+  {
+      $gndtot=(float) $out['gtot'];
+      $discount=(float) $out['discount'];
 
-        // Delete removed items
-        foreach ($existing_data as $slno => $item) 
-        {
-            if (!in_array($slno, array_column($data['items'], 'slno'))) 
-            {
-                // Move item to trash
-                $result1 = $conn->query("SELECT * FROM tabledata WHERE billno = '$bill' AND `slno`='$slno'");
-                while($out = $result1->fetch_assoc()) 
-                {
-                    $date=$out['date'];
-                    $itmno=$out['itmno'];
-                    $itmnam=$out['itmnam'];
-                    $prc=$out['prc'];
-                    $tabno=$out['tabno'];
-                    $time=$out['time'];
-                    $kot_num=$out['kot_num'];
-                    $qty=$out['qty'];
-                    $tot=$out['tot'];
-                    $conn->query("INSERT INTO `trash_bill`(`date`, `itmno`, `itemnam`, `prc`, `qty`, `tot`, `tabno`, `billno`, `time`, `kot_num`, `trashDate`, `trashTime`,`uid`) VALUES ('$date','$itmno','$itmnam','$prc','$qty','$tot','$tabno','$bill','$time','$kot_num','$currentDate','$currentTime','$cash_id')");
-                }
+      $discAmt=($gndtot*$discount)/100;
+      $afterDisc=$gndtot-$discAmt;
 
-                // Delete item from tabledata
-                $conn->query("DELETE FROM `tabledata` WHERE slno = '$slno'");
-            }
-        }
+      $gstAmt=($afterDisc*5)/100;
+      $afterGst=$afterDisc+$gstAmt;
+
+      $round = fmod($afterGst, 1);
+
+      $roundMinus=0;
+      $roundPlus=0;
+      if($round < 0.50)
+      {
+          $roundMinus=number_format($round, 2, '.', '');
+      }else
+      {
+          $roundPlus=number_format(1-$round, 2, '.', '');
+      }
+      $nettot=round($afterGst);
+
+      $gndtot = number_format($gndtot, 2, '.', '');
+      $disAmt=number_format($discAmt, 2, '.', '');
+      $amountAfterDiscount=number_format($afterDisc, 2, '.', '');
+      $gstAmt=number_format($gstAmt, 2, '.', '');
+      $afterGst=number_format($afterGst, 2, '.', '');
+      $nettot=number_format($nettot, 2, '.', '');
+
+      $conn->query("UPDATE `invoice` 
+                      SET `gtot` = '$gndtot', 
+                          `discAmt` = '$disAmt',
+                          `afterDisc`='$amountAfterDiscount',
+                          `gstAmt`='$gstAmt',
+                          `afterGst`='$afterGst',
+                          `roundplus`='$roundPlus',
+                          `roundminus`='$roundMinus',
+                          `nettot`='$nettot' WHERE slno = '$bill'");
+  }
     }
-
-    $query1 = $conn->query("SELECT SUM(`tabledata`.tot) AS gtot, `invoice`.discount 
-          FROM `invoice`
-          JOIN `tabledata` ON `invoice`.slno = `tabledata`.billno
-          WHERE `invoice`.slno = '$bill'");
-    while($out = $query1->fetch_assoc())
-    {
-        $gndtot=(float) $out['gtot'];
-        $discount=(float) $out['discount'];
-
-        $discAmt=($gndtot*$discount)/100;
-        $afterDisc=$gndtot-$discAmt;
-
-        $gstAmt=($afterDisc*5)/100;
-        $afterGst=$afterDisc+$gstAmt;
-
-        $round = fmod($afterGst, 1);
-
-        $roundMinus=0;
-        $roundPlus=0;
-        if($round < 0.50)
-        {
-            $roundMinus=number_format($round, 2, '.', '');
-        }else
-        {
-            $roundPlus=number_format(1-$round, 2, '.', '');
-        }
-        $nettot=round($afterGst);
-
-        $gndtot = number_format($gndtot, 2, '.', '');
-        $disAmt=number_format($discAmt, 2, '.', '');
-        $amountAfterDiscount=number_format($afterDisc, 2, '.', '');
-        $gstAmt=number_format($gstAmt, 2, '.', '');
-        $afterGst=number_format($afterGst, 2, '.', '');
-        $nettot=number_format($nettot, 2, '.', '');
-
-        $conn->query("UPDATE `invoice` 
-                        SET `gtot` = '$gndtot', 
-                            `discAmt` = '$disAmt',
-                            `afterDisc`='$amountAfterDiscount',
-                            `gstAmt`='$gstAmt',
-                            `afterGst`='$afterGst',
-                            `roundplus`='$roundPlus',
-                            `roundminus`='$roundMinus',
-                            `nettot`='$nettot' WHERE slno = '$bill'");
-    }
+  
+    $response = array('status' => 'success', 'message' => 'Data processed successfully');
     header('Content-Type: application/json');
-    echo json_encode('running');
+    echo json_encode($response);
 }
 
 if(isset($_POST['foodkot']) && isset($_POST['fdate']) && isset($_POST['tdate']))
@@ -808,6 +809,26 @@ if(isset($_POST['foodkot']) && isset($_POST['fdate']) && isset($_POST['tdate']))
     $tdate=$_POST['tdate'];
     $query="SELECT `tabledata`.*,`invoice`.`capname`,`invoice`.`cap_code`,`invoice`.`cashid` FROM `tabledata`,`invoice` WHERE `tabledata`.`billno`=`invoice`.`slno` AND `tabledata`.`kot_num` !=0 ORDER BY `tabledata`.`kot_num`";
     $exc=mysqli_query($conn,$query);
+    ?>
+        <table class="table" id="food_kot">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th>Kot No</th>
+                    <th>Table</th>
+                    <th>Captain Code</th>
+                    <th>Captain Name</th>
+                    <th>Menu Code</th>
+                    <th>Menu Name</th>  
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>UID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="kotData">
+    <?php
     while($row=mysqli_fetch_assoc($exc))
     {
         $table=$row['tabno'];
@@ -839,9 +860,110 @@ if(isset($_POST['foodkot']) && isset($_POST['fdate']) && isset($_POST['tdate']))
             </tr>
         <?php
     }
+    ?>
+    </tbody>
+    </table>
+    <?php
 }
 
+if(isset($_POST['managerEdit']) && isset($_POST['fdate']) && isset($_POST['tdate']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
 
+    $query="SELECT DISTINCT `billno` FROM `trash_bill` WHERE `trashDate` BETWEEN '$fdate' AND '$tdate'";
+    $exc=mysqli_query($conn,$query);
+    ?>
+        <table class="table" id="trashInvoice">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th scope="col">Trash Date</th>
+                    <th scope="col">Trash Time</th>
+                    <th scope="col">EditedId</th>
+                    <th scope="col">Itmno</th>
+                    <th scope="col">Itmname</th>
+                    <th scope="col">Qty</th>  
+                    <th scope="col">Prc</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">(-/+)</th>
+                </tr>
+            </thead>
+            <tbody id="dayData">
+    <?php
+    while($row1=mysqli_fetch_assoc($exc))
+    {
+        $billno=$row1['billno'];
+        $que="SELECT * FROM `trash_bill` WHERE `billno`='$billno'";
+        $exc1=mysqli_query($conn,$que);
+        $tot1=0;
+        while($row=mysqli_fetch_assoc($exc1))
+        {
+            $invoiceDate=$row['date'];
+            $uid=$row['uid'];
+            $itmno=$row['itmno'];
+            $itmnam=$row['itemnam'];
+            $qty=$row['qty'];
+            $prc=$row['prc'];
+            $tot=$row['tot'];
+            $qtycheck=$row['qtycheck'];
+            $tot1=$tot1+$tot;
+
+            $trashTime=$row['trashTime'];
+            $trashDate=$row['trashDate'];
+
+            ?>
+                <tr>
+                    <td><?php echo $trashDate; ?></td>
+                    <td><?php echo $trashTime; ?></td>
+                    <td><?php echo $uid; ?></td>
+                    <td><?php echo $itmno; ?></td>
+                    <td><?php echo $itmnam; ?></td>
+                    <td><?php echo $qty; ?></td>
+                    <td><?php echo number_format($prc,2); ?></td>
+                    <td><?php echo number_format($tot,2); ?></td>
+                    <td><?php if($qtycheck=='increase'){ echo '+'; }else{ echo '-';}; ?></td>
+                </tr>
+            <?php
+        }
+        $gst=($tot1*5)/100;
+        ?>
+            <tr class="thead-dark" style="background-color: grey; color: white;">
+                <th colspan="6">Invoice Number:<?php echo $billno;?>&nbsp;&nbsp;&nbsp;Invoice Date:<?php echo $invoiceDate; ?></th>
+                <th>Gross Amount</th>
+                <th><?php echo number_format($tot1,2); ?></th>
+                <th></th>
+            </tr>
+            <tr class="thead-dark" style="background-color: grey; color: white;">
+                <th colspan="6"></th>
+                <th>Gst 5%</th>
+                <th><?php echo number_format($gst,2); ?></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td colspan="9"></td>
+            </tr>
+        <?php
+    $toatlnet=$toatlnet+$tot1;
+    }
+    ?>
+    </tbody>
+    <tfoot class="thead-dark">
+        <tr>
+            <th colspan="6">Gross Total</th>
+            <th><?php echo number_format($toatlnet,2); ?></th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th colspan="6">Gst Total</th>
+            <th><?php echo number_format(($toatlnet*5)/100,2); ?></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </tfoot>
+    </table>
+    <?php
+}
 
 
 ?>

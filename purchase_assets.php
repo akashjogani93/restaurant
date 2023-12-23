@@ -167,6 +167,15 @@
         $(document).ready(function()
         {
             const purchase= new Asset_purchase();
+            $('#qty, #price').keypress(function(event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+
+                if ((keycode < 48 || keycode > 57) && keycode !== 46) {
+                    return false; // Prevent non-numeric characters and allow decimal point
+                } else {
+                    return true;
+                }
+            });
         });
     </script>
 </body>

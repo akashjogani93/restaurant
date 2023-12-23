@@ -158,7 +158,7 @@ function subt1()
    }
    if(empname!='' && ty!='')
    {
-        $.ajax({
+        let log=$.ajax({
             type:'POST',
             url:'empregupdate.php',
             data:{
@@ -176,12 +176,14 @@ function subt1()
                 window.location="empreg.php";
             }
         });
+        console.log(log);
    }else{
     alert("Please Fill All Feilds");
    }
 }
 
-function getRowValues(event, empid) {
+function getRowValues(event, empid)
+{
     var row = event.target.closest("tr");
     var cells = Array.from(row.getElementsByTagName("td"));
 
@@ -205,7 +207,6 @@ function getRowValues(event, empid) {
         $("#uname").val(user);
         $("#pass").val(pass);
     }
-
 }
   
   function handleClick(cell) {

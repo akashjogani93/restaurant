@@ -120,7 +120,7 @@
                 var doc = new jsPDF('p', 'pt', 'letter');
                 var y = 20;
                 doc.setLineWidth(2);
-                doc.text(150, y = y + 10, "Beaverages Stock From "+fdate+" To "+tdate);
+                doc.text(150, y = y + 10, "Beverages Stock From "+fdate+" To "+tdate);
                 doc.autoTable({
                     html: '#example1',
                     startY: 40,

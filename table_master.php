@@ -46,7 +46,7 @@
                                 ?>
                                 <div class="form-group col-md-2">
                                     <label for="fname">Captain Name</label>
-                                    <input type="hidden" class="form-control" name="captainname" id="captainname" value="<?php echo $name; ?>" readonly/>
+                                    <input type="hidden" class="form-control" name="captainname" id="captainname" value="<?php echo $cash_id; ?>" readonly/>
                                     <input type="text" class="form-control" name="captain12" id="captain12" value="<?php echo $name; ?>" readonly/>
                                 </div>
                                 <?php

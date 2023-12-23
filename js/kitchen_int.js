@@ -26,7 +26,8 @@ class Product
                 unit:'',
                 sellUnit:'',
                 tax:0,
-                cess:0
+                cess:0,
+                catName1:''
             },
             mounted() {
                 this.fetchOptions();
@@ -41,7 +42,8 @@ class Product
                         data:{cat:'cat'},
                         success(response) 
                         {
-                            vm.categoys = response;
+                            // vm.categoys = response;
+                            vm.categoys = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
                         },
                         error(xhr, status, error) 
                         {
@@ -56,6 +58,19 @@ class Product
 
                     $('input, select').on('focus', function() {
                         $(this).css('border-color', '');
+                    });
+
+                    var enterKeyPressTimestamp = 0;
+                    $("#cess").on("keydown", function (e) {
+                        if (e.key === "Enter" || e.keyCode === 13) {
+                            e.preventDefault();
+                            var currentTime = Date.now();
+                            var timeElapsed = currentTime - enterKeyPressTimestamp;
+                            if (timeElapsed < 500) {
+                                vm.insertProduct();
+                            }
+                            enterKeyPressTimestamp = currentTime;
+                        }
                     });
                 },
                 catemodal()
@@ -324,7 +339,7 @@ class Purchase
                     {
                         vm.billEdit=true;
                         vm.editbillno=statuscancel;
-                        $('#purdate').prop('readonly', true);
+                        // $('#purdate').prop('readonly', true);
                         let log=$.ajax({
                             url: 'ajax/store_all.php',
                             method: 'POST',
@@ -332,7 +347,7 @@ class Purchase
                             dataType:'JSON',
                             success(response) 
                             {
-                                console.log(response);
+                                // console.log(response);
                                 vm.vendorName = response[0].slno;
                                 $('#purdate').val(response[0].purchase_date);
                                 $('#bill').val(response[0].id);
@@ -398,6 +413,42 @@ class Purchase
                             }
                         });
                     }
+
+                    var enterKeyPressTimestamp = 0;
+                    $("#disc").on("keydown", function (e) {
+                        if (e.key === "Enter" || e.keyCode === 13) {
+                            e.preventDefault();
+                            var currentTime = Date.now();
+                            var timeElapsed = currentTime - enterKeyPressTimestamp;
+                            if (timeElapsed < 500) {
+                                vm.addItem();
+                            }
+                            enterKeyPressTimestamp = currentTime;
+                        }
+                    });
+
+                    $(document).on("keydown", function (e) 
+                    {
+                        if (e.altKey && (e.key === "z" || e.keyCode === 90)) {
+                            e.preventDefault();
+                            window.location='store_purchase_product.php';
+                        }else if (e.altKey && (e.key === "c" || e.keyCode === 67)) 
+                        {
+                            e.preventDefault();
+                            vm.clearData();
+                        }else if(e.altKey && (e.key === 's' || e.keyCode === 83)) 
+                        {
+                            e.preventDefault();
+                            var bill=this.billEdit;
+                            if(bill=true)
+                            {
+                                vm.finalUpdateData();
+                            }else
+                            {
+                                vm.submitData();
+                            }
+                        }
+                    });
                 },
                 categoryChange()
                 {
@@ -503,8 +554,8 @@ class Purchase
                                 vm2.saveData();
                                 // vm2.selectedOption = '';
                                 // vm2.categoryOption='';
-                                vm2.unit = '';
-                                vm2.sellunit = '';
+                                // vm2.unit = '';
+                                // vm2.sellunit = '';
                                 vm2.qty = '';
                                 vm2.insideqty= '';
                                 vm2.sellunit = '';
@@ -513,7 +564,7 @@ class Purchase
                                 this.tax='';
                                 this.cess='';
                                 this.amt='';
-                                this.exp='';
+                                // this.exp='';
                                 this.disc=0;
                                 this.totalofprice=0;
                         }else

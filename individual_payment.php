@@ -1,18 +1,18 @@
 <?php require_once("header.php"); ?>
 <style>
-                .error{color: red;}
-                .highlight-row {
-                    background-color: yellow !important;
-                }
-                .th-texts{
-                    padding:10px; font-size:18px;
-                }
-                .th-amounts{
-                    padding:10px; font-size:16px;
-                }
-                .th-texts1{
-                    padding:10px; font-size:18px; background-color:#E4F2F9
-                }
+    .error{color: red;}
+    .highlight-row {
+        background-color: yellow !important;
+    }
+    .th-texts{
+        padding:10px; font-size:18px;
+    }
+    .th-amounts{
+        padding:10px; font-size:16px;
+    }
+    .th-texts1{
+        padding:10px; font-size:18px; background-color:#E4F2F9
+    }
                 .th-amounts1{
                     padding:10px; font-size:16px; background-color:#E4F2F9
                 }

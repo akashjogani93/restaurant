@@ -342,6 +342,7 @@ function OrderAdd()
     var qty = $("#qty").val();
     var prc = $("#prc").val();
     var total = $("#tot").val();
+    // console.log(captain);
     // console.log(captainCode);
     if(qty=="" && qty==0)
     {

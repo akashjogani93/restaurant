@@ -36,7 +36,7 @@ if(mysqli_num_rows($retval)!=0)
         echo '<script>alert("Login successfull");</script>';
 		if($main=='Captain')
 		{
-			echo '<script>location="table_form.php"</script>';
+			echo '<script>location="table_master.php"</script>';
 		}else
 		{
 			echo '<script>location="home.php"</script>';

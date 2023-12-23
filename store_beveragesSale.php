@@ -167,6 +167,16 @@
             var yourDateValue = new Date();
             var formattedDate = yourDateValue.toISOString().substr(0, 10)
             $('#gdate').val(formattedDate);
+
+            $('#uqty').keypress(function(event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+
+                if ((keycode < 48 || keycode > 57)) {
+                    return false; // Prevent non-numeric characters and allow decimal point
+                } else {
+                    return true;
+                }
+            });
             $('#uqty').on('input', function ()
             {
                 let totalqty=$('#sellqty').val();
