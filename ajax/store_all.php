@@ -1020,6 +1020,7 @@ if(isset($_POST['kitchenallStock']))
             $totalPurchaseQty=$row['totalPurchaseQty'];
 
             $cloasingStock=number_format(($row['Opening Stock']+$row['Purchase Stock'])-($row['Issued Stock']+$row['Return Stock']),2);
+            $cloasingStocknum = floatval($cloasingStock);
 
             if($totalPurchaseQty !=0)
             {
@@ -1028,6 +1029,7 @@ if(isset($_POST['kitchenallStock']))
                 $purTotal=$price*$purchaseStock;
                 $retTotal=$price*$returnStock;
                 $issuedTotal=$price*$issuedStock;
+                $cloasingTotal=$price*$cloasingStocknum;
 
             }else
             {
@@ -1036,6 +1038,7 @@ if(isset($_POST['kitchenallStock']))
                 $purTotal=0;
                 $retTotal=0;
                 $issuedTotal=0;
+                $cloasingTotal=0;
             }
 
             $data=[
@@ -1051,7 +1054,8 @@ if(isset($_POST['kitchenallStock']))
                 'opeTotal'=>number_format($opeTotal,2),
                 'purTotal'=>number_format($purTotal,2),
                 'retTotal'=>number_format($retTotal,2),
-                'issuedTotal'=>number_format($issuedTotal,2)
+                'issuedTotal'=>number_format($issuedTotal,2),
+                'cloTotal'=>number_format($cloasingTotal,2)
             ];
             $options[]=$data;
         }

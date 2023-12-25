@@ -119,7 +119,7 @@
                                     <td>{{ item.retur }}</td>
                                     <td>{{ item.retTotal}}</td>
                                     <td>{{ item.cloasing }}</td>
-                                    <td>{{ item.opeTotal}}</td>
+                                    <td>{{ item.cloTotal}}</td>
                                     <td>
                                         <button class="btn btn-success" @click="handleIssued(index)">Issue</button>
                                         <button class="btn btn-info" @click="handleReturn(index)">Return</button>
