@@ -13,21 +13,28 @@
         background-color: red !important;
         color: white;
     }
+    .tablebox{
+            width: 100%;
+            overflow-x: auto;
+        }
     .table>thead
         {
             background-color:grey;
             color:white;
         }
-    .table{
+        .table{
+            width: 100%;
             border-collapse: collapse;
         }
+
         .table th,
         .table td 
         {
             border: 1px solid black;
-            padding: 2px;
+            padding: 5px;
+            text-align: left;
+            white-space: nowrap;
         }
-
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="content-wrapper">
@@ -79,13 +86,21 @@
                                     <th>Sl.No</th>
                                     <th>Item Name</th>
                                     <th>Unit</th>
-                                    <th>Opening Stock</th>
+                                    <th>Avg U/P</th>
+                                    <th>Opening</th>
+                                    <!-- <th>Total</th> -->
                                     <th>Purchase</th>
-                                    <th>Issued Stock</th>
+                                    <th>Price</th>
+                                    <th>Issued</th>
+                                    <th>Price</th>
                                     <th>Return</th>
-                                    <th>Wastage Stock</th>
-                                    <th>Closing Stock</th>
+                                    <th>Price</th>
                                     <th>Wastage</th>
+                                    <th>Price</th>
+                                    <th>Closing</th>
+                                    <th>Price</th>
+                                    <th>Wastage</th>
+
                                 </tr>
                             </thead>
                             <tbody id="tableData">
@@ -93,14 +108,21 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.unit }}</td>
+                                    <td>{{ item.avgprice }}</td>
                                     <td>{{ item.openingStock }}</td>
+                                    <!-- <td>{{ item.opeTotal }}</td> -->
                                     <td>{{ item.stocksum }}</td>
+                                    <td>{{ item.purTotal }}</td>
                                     <td>{{ item.issued }}</td>
+                                    <td>{{ item.issedTotal }}</td>
                                     <td>{{ item.retur }}</td>
+                                    <td>{{ item.returnTotal }}</td>
                                     <td>{{ item.wastage }}</td>
+                                    <td>{{ item.wastotal }}</td>
                                     <td>{{ item.cloasing }}</td>
+                                    <td>{{ item.cloTotal }}</td>
                                     <td>
-                                        <button class="btn btn-success" @click="handlewastage(index)"><i class='bx bx-trash-alt'></i></button>
+                                        <button class="btn btn-success align-center" @click="handlewastage(index)" style="padding: 2px 5px;"><i class='bx bx-trash-alt'></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -222,12 +244,19 @@
                         {dataKey: 'Sl.No'},
                         {dataKey: 'Item Name'},
                         {dataKey: 'Unit'},
-                        {dataKey: 'Opening Stock'},
-                        {dataKey: 'Purchase'},
-                        {dataKey: 'Issued Stock'},
-                        {dataKey: 'Return'},
-                        {dataKey: 'Wastage Stock'},
-                        {dataKey: 'Closing Stock'},
+                        {dataKey:'Avg Unit Price'},
+                        {dataKey:'Opening'},
+                        // {dataKey:'Total'},
+                        {dataKey:'Purchase'},
+                        {dataKey:'Total'},
+                        {dataKey:'Issued'},
+                        {dataKey:'Total'},
+                        {dataKey:'Return'},
+                        {dataKey:'Total'},
+                        {dataKey:'Wastage'},
+                        {dataKey:'Total'},
+                        {dataKey:'Closing'},
+                        {dataKey:'Total'},
                     ],
                     styles: {
                         overflow: 'linebreak',

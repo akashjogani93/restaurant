@@ -8,17 +8,21 @@
         background-color: red !important;
         color: white;
     }
-
     .less-10-days {
         background-color: red !important;
         color: white;
     }
+    .tablebox{
+            width: 100%;
+            overflow-x: auto;
+        }
     .table>thead
         {
             background-color:grey;
             color:white;
         }
         .table{
+            width: 100%;
             border-collapse: collapse;
         }
         .table th,
@@ -26,10 +30,13 @@
         {
             border: 1px solid black;
             padding: 5px;
+            text-align: left;
+            white-space: nowrap;
         }
         #kitchenStock{
             background: green;
         }
+       
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="content-wrapper">
@@ -83,11 +90,17 @@
                                     <th>Slno</th>
                                     <th>Item Name</th>
                                     <th>Unit</th>
-                                    <th>Opening Stock</th>
-                                    <th>Purchase Stock</th>
-                                    <th>Issued Stock</th>
-                                    <th>Return Stock</th>
-                                    <th>Closing Stock</th>
+                                    <th>Avg U/P</th>
+                                    <th>Opening</th>
+                                    <!-- <th>Total</th> -->
+                                    <th>Purchase</th>
+                                    <th>Price</th>
+                                    <th>Issued</th>
+                                    <th>Price</th>
+                                    <th>Return</th>
+                                    <th>Price</th>
+                                    <th>Closing</th>
+                                    <th>Price</th>
                                     <th>Use/Return</th>
                                 </tr>
                             </thead>
@@ -96,11 +109,17 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.unit }}</td>
+                                    <td>{{ item.price }}</td>
                                     <td>{{ item.openingStock }}</td>
+                                    <!-- <td>{{ item.opeTotal}}</td> -->
                                     <td>{{ item.stocksum }}</td>
+                                    <td>{{ item.purTotal}}</td>
                                     <td>{{ item.issued }}</td>
+                                    <td>{{ item.issuedTotal}}</td>
                                     <td>{{ item.retur }}</td>
+                                    <td>{{ item.retTotal}}</td>
                                     <td>{{ item.cloasing }}</td>
+                                    <td>{{ item.opeTotal}}</td>
                                     <td>
                                         <button class="btn btn-success" @click="handleIssued(index)">Issue</button>
                                         <button class="btn btn-info" @click="handleReturn(index)">Return</button>
@@ -225,14 +244,19 @@
                     startX: 40,
                     theme: 'grid',
                     columns: [
-                        {dataKey: 'Sl.No'},
+                        {dataKey: 'Slno'},
                         {dataKey: 'Item Name'},
                         {dataKey: 'Unit'},
-                        {dataKey: 'Opening Stock'},
-                        {dataKey: 'Purchase Stock'},
-                        {dataKey: 'Issued Stock'},
-                        {dataKey: 'Return Stock'},
-                        {dataKey: 'Closing Stock'},
+                        {dataKey: 'Avg U/P'},
+                        {dataKey: 'Opening'},
+                        {dataKey: 'Purchase'},
+                        {dataKey: 'Price'},
+                        {dataKey: 'Issued'},
+                        {dataKey: 'Price'},
+                        {dataKey: 'Return'},
+                        {dataKey: 'Price'},
+                        {dataKey: 'Closing'},
+                        {dataKey: 'Price'},
                     ],
                     styles: {
                         overflow: 'linebreak',

@@ -2090,6 +2090,7 @@ class Stock_table
                             console.error(error);
                         }
                     });
+                    console.log(log);
                 },
                 // sortstocklist() 
                 // {

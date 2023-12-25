@@ -347,12 +347,11 @@ if(isset($_POST['BeaveragesStock']))
     $tdate=$_POST['tdate'];
     $fdate = mysqli_real_escape_string($conn,$fdate);
     $tdate = mysqli_real_escape_string($conn,$tdate);
-    // $sql="SELECT SUM(beverages.stock) AS `stockdata`,`products`.`pname`,`products`.`sellunit` FROM `beverages`,`products` WHERE `beverages`.`pid`=`products`.`pid` AND `beverages`.`date` BETWEEN '$fdate' AND '$tdate'";
-    $sql = "SELECT SUM(beverages.stock) AS stockdata, beverages.date, products.pname, products.sellunit 
-        FROM beverages
-        LEFT JOIN products ON beverages.pid = products.pid
-        WHERE beverages.date BETWEEN '$fdate' AND '$tdate'
-        GROUP BY beverages.pid, beverages.date, products.pname, products.sellunit";
+    $sql="SELECT SUM(beverages.stock) AS stockdata, beverages.date, products.pname, products.sellunit 
+            FROM beverages
+            LEFT JOIN products ON beverages.pid = products.pid
+            WHERE beverages.date BETWEEN '$fdate' AND '$tdate'
+            GROUP BY beverages.pid, beverages.date, products.pname, products.sellunit";
     $result=$conn->query($sql);
     $options=array();
     if($result->num_rows > 0)
@@ -611,7 +610,7 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
     $tdate = mysqli_real_escape_string($conn,$tdate);
     if($cat_name=='')
     {
-        $sql = "SELECT
+        $sql="SELECT
                     p.pname AS 'Product Name',
                     p.sellunit AS 'unit',
                     p.pid AS 'pid',
@@ -623,6 +622,14 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
                     FROM stock s
                     WHERE s.pid = p.pid AND s.date < '$fdate'
                 ), 0) AS 'lastclose',
+                IFNULL((SELECT SUM(total)
+                            FROM stock s
+                            WHERE s.pid = p.pid AND s.date <= '$tdate'
+                        ), 0) AS 'totalPurchasAmount',
+                IFNULL((SELECT SUM(qty)
+                            FROM stock s
+                            WHERE s.pid = p.pid AND s.date <= '$tdate'
+                        ), 0) AS 'totalPurchaseQty',
                 IFNULL((SELECT SUM(s.qty)
                         FROM stock s
                         WHERE s.pid = p.pid AND s.date BETWEEN '$fdate' AND '$tdate'
@@ -652,7 +659,7 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
         ";
     }else
     {
-        $sql = "SELECT
+        $sql="SELECT
                     p.pname AS 'Product Name',
                     p.sellunit AS 'unit',
                     p.pid AS 'pid',
@@ -664,6 +671,14 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
                     FROM stock s
                     WHERE s.pid = p.pid AND s.date < '$fdate'
                 ), 0) AS 'lastclose',
+                IFNULL((SELECT SUM(total)
+                            FROM stock s
+                            WHERE s.pid = p.pid AND s.date <= '$tdate'
+                        ), 0) AS 'totalPurchasAmount',
+                IFNULL((SELECT SUM(qty)
+                            FROM stock s
+                            WHERE s.pid = p.pid AND s.date <= '$tdate'
+                        ), 0) AS 'totalPurchaseQty',
                 IFNULL((SELECT SUM(s.qty)
                         FROM stock s
                         WHERE s.pid = p.pid AND s.date BETWEEN '$fdate' AND '$tdate'
@@ -689,14 +704,17 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
                                 GROUP BY pid) o ON o.pid = ss.pid
                         WHERE ss.pid = p.pid AND ss.date BETWEEN '$fdate' AND '$tdate'
                 ), 0) AS 'Closing Stock'
-            FROM products p
-            WHERE p.category = '$cat_name';
+            FROM products p WHERE p.category ='$cat_name'
         ";
     }
     $result = mysqli_query($conn, $sql);
     while ($row = mysqli_fetch_assoc($result)) 
     {
         $name=$row['Product Name'];
+
+        $totalPurchasAmount=$row['totalPurchasAmount'];
+        $totalPurchaseQty=$row['totalPurchaseQty'];
+
         $unit=$row['unit'];
         $pid=$row['pid'];
         $ope=$row['lastclose']+$row['Opening Stock'];
@@ -707,6 +725,28 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
         $wastageStock=number_format($row['Wastage Stock'],2);
 
         $cloasingStock=number_format(($ope+$row['Purchase Stock']+$row['Return Stock'])-($row['Issued Stock']+$row['Wastage Stock']),2);
+        $cloasingStocknum = floatval($cloasingStock);
+
+        if($totalPurchaseQty !=0)
+        {
+            $cloaQtyAmt=$totalPurchasAmount/$totalPurchaseQty;
+            $cloasingTotal=$cloaQtyAmt*$cloasingStocknum;
+            $wastageTotal=$cloaQtyAmt*$row['Wastage Stock'];
+            $returnTotal=$cloaQtyAmt*$row['Return Stock'];
+            $issuedTotal=$cloaQtyAmt*$row['Issued Stock'];
+            $purTotal=$cloaQtyAmt*$row['Purchase Stock'];
+            $openingTotal=$cloaQtyAmt*$ope;
+        }else
+        {
+            $cloaQtyAmt=0;
+            $cloasingTotal=0;
+            $wastageTotal=0;
+            $returnTotal=0;
+            $issuedTotal=0;
+            $openingTotal=0;
+            $purTotal=0;
+        }
+        
         $data=[
             'name'=>$name,
             'pid'=>$pid,
@@ -716,7 +756,14 @@ if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['f
             'issued'=>$issuedStock,
             'retur'=>$returnStock,
             'wastage'=>$wastageStock,
-            'cloasing'=>$cloasingStock  
+            'cloasing'=>$cloasingStock,
+            'opeTotal'=>number_format($openingTotal,2),
+            'purTotal'=>number_format($purTotal,2),
+            'issedTotal'=>number_format($issuedTotal,2),
+            'returnTotal'=>number_format($returnTotal,2),
+            'wastotal'=>number_format($wastageTotal,2),
+            'cloTotal'=>number_format($cloasingTotal,2),
+            'avgprice'=>number_format($cloaQtyAmt,2)
         ];
         $options[]=$data;
     }
@@ -877,58 +924,6 @@ if(isset($_POST['StockAssetsFetch']))
     $conn->close();
 }
 
-// if(isset($_POST['assetsDamage']))
-// {
-//     $product = $_POST['a_product'];
-//     $qty1 = $_POST['a_qty'];
-//     $id = $_POST['a_id'];
-//     $inputValue = $_POST['a_inputValue'];
-//     // $total = $price * $inputValue;
-    
-//     $lastQty=$qty1-$inputValue;
-//     // $stockTotal=$price*$inputValue;
-
-//         $exc=mysqli_query($conn,"UPDATE `assetsstock` SET `qty`='$lastQty' WHERE `product`='$product'");
-//         if($exc)
-//         {
-//             $affectedRows = mysqli_affected_rows($conn);
-//             if ($affectedRows > 0)
-//             {
-//                 $query="INSERT INTO `assetsdamage`(`product`,`qty`) VALUES('$product','$inputValue')";
-//                 $exc=mysqli_query($conn,$query);
-//                 if($exc)
-//                 {
-//                     echo 'Added To Damage Stock';
-//                 }
-//             }
-//         }
-// }
-
-// wastage Stocks
-// if(isset($_POST['damageStockview']))
-// {
-//     $cat_name='';
-//     if($cat_name=='')
-//     {
-//         $query1 = "SELECT * FROM `assetsdamage`";
-//     }else
-//     {
-//         $query1 = "SELECT * FROM `assetsdamage` WHERE `category`='$cat_name'";
-//     }
-//     $result=$conn->query($query1);
-//     $options=array();
-//     if($result->num_rows > 0)
-//     {
-//         while($row=$result->fetch_assoc())
-//         {
-//             $options[]=$row;
-//         }
-//     }
-//     header('Content-Type: application/json');
-//     echo json_encode($options);
-
-//     $conn->close();
-// }
 
 //use kitchen stock
 if(isset($_POST['damage_pid']))
@@ -989,6 +984,14 @@ if(isset($_POST['kitchenallStock']))
                     FROM store_kitchen ss
                     WHERE ss.pid = p.pid AND ss.date BETWEEN '$fdate' AND '$tdate'
                 ), 0) AS 'Issued Stock',
+                IFNULL((SELECT SUM(total)
+                            FROM stock s
+                            WHERE s.pid = p.pid AND s.date <= '$tdate'
+                        ), 0) AS 'totalPurchasAmount',
+                IFNULL((SELECT SUM(qty)
+                            FROM stock s
+                            WHERE s.pid = p.pid AND s.date <= '$tdate'
+                        ), 0) AS 'totalPurchaseQty',
                 IFNULL((
                     SELECT SUM(ss.stockreturn)
                     FROM store_kitchen ss
@@ -999,7 +1002,6 @@ if(isset($_POST['kitchenallStock']))
             SELECT DISTINCT pid
                 FROM store_kitchen
         );";
-
     $result=$conn->query($sql);
     $options=array();
     if($result->num_rows > 0)
@@ -1014,7 +1016,28 @@ if(isset($_POST['kitchenallStock']))
             $issuedStock=number_format($row['Issued Stock'],2);
             $returnStock=number_format($row['Return Stock'],2);
 
+            $totalPurchasAmount=$row['totalPurchasAmount'];
+            $totalPurchaseQty=$row['totalPurchaseQty'];
+
             $cloasingStock=number_format(($row['Opening Stock']+$row['Purchase Stock'])-($row['Issued Stock']+$row['Return Stock']),2);
+
+            if($totalPurchaseQty !=0)
+            {
+                $price=$totalPurchasAmount/$totalPurchaseQty;
+                $opeTotal=$price*$openingStock;
+                $purTotal=$price*$purchaseStock;
+                $retTotal=$price*$returnStock;
+                $issuedTotal=$price*$issuedStock;
+
+            }else
+            {
+                $price=0;
+                $opeTotal=0;
+                $purTotal=0;
+                $retTotal=0;
+                $issuedTotal=0;
+            }
+
             $data=[
                 'pid'=>$pid,
                 'name'=>$name,
@@ -1023,7 +1046,12 @@ if(isset($_POST['kitchenallStock']))
                 'stocksum'=>$purchaseStock,
                 'issued'=>$issuedStock,
                 'retur'=>$returnStock,
-                'cloasing'=>$cloasingStock  
+                'cloasing'=>$cloasingStock,
+                'price'=>number_format($price,2),
+                'opeTotal'=>number_format($opeTotal,2),
+                'purTotal'=>number_format($purTotal,2),
+                'retTotal'=>number_format($retTotal,2),
+                'issuedTotal'=>number_format($issuedTotal,2)
             ];
             $options[]=$data;
         }
