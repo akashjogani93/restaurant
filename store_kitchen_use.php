@@ -16,7 +16,7 @@
             width: 100%;
             overflow-x: auto;
         }
-    .table>thead
+    .table>thead,tfoot
         {
             background-color:grey;
             color:white;
@@ -36,7 +36,6 @@
         #kitchenStock{
             background: green;
         }
-       
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="content-wrapper">
@@ -70,7 +69,7 @@
                                         <div class="form-group col-md-4">
                                             <!-- <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button> -->
                                             <button type="submit" name="view_report" class="btn btn-info" id="search" @click="stockbyDate()">View</button>
-                                            <button class="btn btn-danger" onclick="generateTable()">PDF</button>
+                                            <button class="btn btn-danger" id="pdfgenerate">PDF</button>
                                             <button class="btn btn-success">Excel</button>
                                         </div>
                                     <!-- </form> -->
@@ -126,6 +125,20 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <td>Purchase:</td>
+                                    <td>{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.purTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Issued:</td>
+                                    <td>{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.issuedTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Return:</td>
+                                    <td>{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.retTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Cloasing:</td>
+                                    <td>{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.cloTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -192,15 +205,39 @@
     <script src="cdn/dataTables.buttons.min.js"></script>
     <script src="cdn/buttons.print.min.js"></script>
     <script src="js/kitchen_int.js"></script>
+    <script src="js/pdfMake.js"></script>
     <script src="html2pdf.js/dist/jspdf.min.js"></script>
     <script>
         $(document).ready(function()
         {
             const kitchen= new Kitchen();
+
+            $('#pdfgenerate').on('click',function()
+            {
+                const pdf= new pdfMake();
+                var header="Kitchen Stock From ";
+                var save="kitchen_stock";
+                columns=[
+                    {dataKey: 'Slno'},
+                    {dataKey: 'Item Name'},
+                    {dataKey: 'Unit'},
+                    {dataKey: 'Avg U/P'},
+                    {dataKey: 'Opening'},
+                    {dataKey: 'Purchase'},
+                    {dataKey: 'Price'},
+                    {dataKey: 'Issued'},
+                    {dataKey: 'Price'},
+                    {dataKey: 'Return'},
+                    {dataKey: 'Price'},
+                    {dataKey: 'Closing'},
+                    {dataKey: 'Price'},
+                    ];
+                pdf.generate(columns,header,save);
+            });
+
             $('#issued').on('input',function()
             {
                 var value = $('#issued').val();
-
                 value = value.replace(/[^0-9.]/g, '');
                 value = value.replace(/(\.[^.]*)\./g, '$1');
                 tdValue = parseFloat($('#closingStock').val());
@@ -228,65 +265,4 @@
             });
         });
     </script>
-
-        <script>
-            function generateTable() 
-            {
-                var fdate=$('#fdate').val();
-                var tdate=$('#tdate').val();
-                var doc = new jsPDF('p', 'pt', 'letter');
-                var y = 20;
-                doc.setLineWidth(2);
-                doc.text(150, y = y + 10, "Kitchen Stock From "+fdate+" To "+tdate);
-                doc.autoTable({
-                    html: '#example1',
-                    startY: 40,
-                    startX: 40,
-                    theme: 'grid',
-                    columns: [
-                        {dataKey: 'Slno'},
-                        {dataKey: 'Item Name'},
-                        {dataKey: 'Unit'},
-                        {dataKey: 'Avg U/P'},
-                        {dataKey: 'Opening'},
-                        {dataKey: 'Purchase'},
-                        {dataKey: 'Price'},
-                        {dataKey: 'Issued'},
-                        {dataKey: 'Price'},
-                        {dataKey: 'Return'},
-                        {dataKey: 'Price'},
-                        {dataKey: 'Closing'},
-                        {dataKey: 'Price'},
-                    ],
-                    styles: {
-                        overflow: 'linebreak',
-                        lineWidth: 1,
-                        fontSize: 8,
-                        cellPadding: {horizontal: 5, vertical: 2},
-                    },
-                    headerStyles: {
-                        fillColor: [128, 128, 128],
-                        textColor: [255, 255, 255],
-                        fontSize: 8,
-                        lineWidth: 1,
-                    },
-                })
-
-                // doc.setProperties({
-                //     title: 'Product Detailed Report',
-                //     subject: 'This is the Product Detailed Report',
-                //     author: 'Author Name',
-                //     keywords: 'generated, javascript, web 2.0, ajax',
-                //     creator: 'Author Name',
-                //     margins: {
-                //         top: 0,
-                //         bottom: 0,
-                //         left: 0,
-                //         right: 0,
-                //     },
-                //     pageSize: 'letter',
-                // });
-                doc.save('kitchen_stock');
-            }
-        </script>
 </body>

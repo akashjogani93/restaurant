@@ -341,31 +341,31 @@ if(isset($_POST['bevcat']))
     $conn->close();
 }
 
-if(isset($_POST['BeaveragesStock']))
-{
-    $fdate=$_POST['fdate'];
-    $tdate=$_POST['tdate'];
-    $fdate = mysqli_real_escape_string($conn,$fdate);
-    $tdate = mysqli_real_escape_string($conn,$tdate);
-    $sql="SELECT SUM(beverages.stock) AS stockdata, beverages.date, products.pname, products.sellunit 
-            FROM beverages
-            LEFT JOIN products ON beverages.pid = products.pid
-            WHERE beverages.date BETWEEN '$fdate' AND '$tdate'
-            GROUP BY beverages.pid, beverages.date, products.pname, products.sellunit";
-    $result=$conn->query($sql);
-    $options=array();
-    if($result->num_rows > 0)
-    {
-        while($row=$result->fetch_assoc())
-        {
-            $options[]=$row;
-        }
-    }
-    header('Content-Type: application/json');
-    echo json_encode($options);
+// if(isset($_POST['BeaveragesStock']))
+// {
+//     $fdate=$_POST['fdate'];
+//     $tdate=$_POST['tdate'];
+//     $fdate = mysqli_real_escape_string($conn,$fdate);
+//     $tdate = mysqli_real_escape_string($conn,$tdate);
+//     $sql="SELECT SUM(beverages.stock) AS stockdata, beverages.date, products.pname, products.sellunit 
+//             FROM beverages
+//             LEFT JOIN products ON beverages.pid = products.pid
+//             WHERE beverages.date BETWEEN '$fdate' AND '$tdate'
+//             GROUP BY beverages.pid, beverages.date, products.pname, products.sellunit";
+//     $result=$conn->query($sql);
+//     $options=array();
+//     if($result->num_rows > 0)
+//     {
+//         while($row=$result->fetch_assoc())
+//         {
+//             $options[]=$row;
+//         }
+//     }
+//     header('Content-Type: application/json');
+//     echo json_encode($options);
 
-    $conn->close();
-}
+//     $conn->close();
+// }
 
 if(isset($_POST['BeaveHistory']))
 {
@@ -389,31 +389,31 @@ if(isset($_POST['BeaveHistory']))
     $conn->close();
 }
 
-if(isset($_POST['materialStock']))
-{
-    $fdate=$_POST['fdate'];
-    $tdate=$_POST['tdate'];
-    $fdate = mysqli_real_escape_string($conn,$fdate);
-    $tdate = mysqli_real_escape_string($conn,$tdate);
-    $sql = "SELECT SUM(parcelmaterial.stock) AS stockdata, parcelmaterial.date, products.pname, products.sellunit 
-        FROM parcelmaterial
-        LEFT JOIN products ON parcelmaterial.pid = products.pid
-        WHERE parcelmaterial.date BETWEEN '$fdate' AND '$tdate'
-        GROUP BY parcelmaterial.pid, parcelmaterial.date, products.pname, products.sellunit";
-    $result=$conn->query($sql);
-    $options=array();
-    if($result->num_rows > 0)
-    {
-        while($row=$result->fetch_assoc())
-        {
-            $options[]=$row;
-        }
-    }
-    header('Content-Type: application/json');
-    echo json_encode($options);
+// if(isset($_POST['materialStock']))
+// {
+//     $fdate=$_POST['fdate'];
+//     $tdate=$_POST['tdate'];
+//     $fdate = mysqli_real_escape_string($conn,$fdate);
+//     $tdate = mysqli_real_escape_string($conn,$tdate);
+//     $sql = "SELECT SUM(parcelmaterial.stock) AS stockdata, parcelmaterial.date, products.pname, products.sellunit 
+//         FROM parcelmaterial
+//         LEFT JOIN products ON parcelmaterial.pid = products.pid
+//         WHERE parcelmaterial.date BETWEEN '$fdate' AND '$tdate'
+//         GROUP BY parcelmaterial.pid, parcelmaterial.date, products.pname, products.sellunit";
+//     $result=$conn->query($sql);
+//     $options=array();
+//     if($result->num_rows > 0)
+//     {
+//         while($row=$result->fetch_assoc())
+//         {
+//             $options[]=$row;
+//         }
+//     }
+//     header('Content-Type: application/json');
+//     echo json_encode($options);
 
-    $conn->close();
-}
+//     $conn->close();
+// }
 
 if(isset($_POST['materialHistory']))
 {
@@ -525,79 +525,6 @@ if(isset($_POST['assetsSubmitData']))
         echo 'Assets Purchased';
     }
 }
-
-//Purchase Stock Details
-// if(isset($_POST['stock']))
-// {
-//     $cat_name=$_POST['catName1'];
-//     if($cat_name=='')
-//     {
-//         // $query1 = "SELECT stock1.*, SUM(kitchen_stock.qty) as total_qty
-//         // FROM stock1
-//         // JOIN kitchen_stock ON stock1.pname = kitchen_stock.pname
-//         // GROUP BY stock1.pname;";
-//         $query1 = "SELECT * FROM `stock1`";
-//     }else
-//     {
-//         $query1 = "SELECT * FROM `stock1` WHERE `category`='$cat_name'";
-//     }
-//     $result=$conn->query($query1);
-//     $options=array();
-//     if($result->num_rows > 0)
-//     {
-//         while($row=$result->fetch_assoc())
-//         {
-
-//             $pname=$row['pname'];
-//             $perCaseQty=$row['perCaseQty'];
-//             $total_qty = 0;
-//             $remain_qty=($row['qty']*$perCaseQty)/100;
-
-//             // $query2="SELECT * FROM `kitchen_data` WHERE `pname`='$pname'";
-//             // $result1=$conn->query($query2);
-//             // while($row1=$result1->fetch_assoc())
-//             // {
-//             //     $total_qty=$row1['qty'];
-//             //     // $remain_qty=$row1['remain_qty'];
-//             // }
-//             // $query2 = "SELECT SUM(qty) As `total_qty` FROM `stock` WHERE `pname`='$pname'";
-//             $query2 = "SELECT SUM(s.qty) AS total_qty
-//            FROM stock s
-//            INNER JOIN purchase_data v ON s.venid = v.id
-//            WHERE s.pname = '$pname'
-//              AND MONTH(v.purchase_date) = MONTH(CURRENT_DATE())
-//              AND YEAR(v.purchase_date) = YEAR(CURRENT_DATE())";
-
-//             $result1=$conn->query($query2);
-//             while($row1=$result1->fetch_assoc())
-//             {
-//                 $total_qty=$row1['total_qty'];
-//             }
-//             $kitchenQty=0;
-//             $remain=0;
-//             // if ($perCaseQty != 0)
-//             // {
-//             //     $kitchenQty=$total_qty/$perCaseQty;
-//             //     $remain=$remain_qty/$perCaseQty;
-//             // }
-//             $row['total_qty'] = number_format($kitchenQty,2);
-//             $row['remain_qty'] = number_format($remain,2);
-//             $row['curMonth'] = number_format($total_qty,2);
-
-
-
-//             $row['qty'] = number_format($row['qty'],2);
-//             $row['issued'] = number_format($row['issued'],2);
-//             $row['remain'] = number_format($row['remain'],2);
-
-//             $options[]=$row;
-//         }
-//     }
-//     header('Content-Type: application/json');
-//     echo json_encode($options);
-
-//     $conn->close();
-// }
 
 if(isset($_POST['stockOpening']) && isset($_POST['catName1']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 {
@@ -965,23 +892,34 @@ if(isset($_POST['kitchenallStock']))
     $tdate=$_POST['tdate'];
     $fdate = mysqli_real_escape_string($conn,$fdate);
     $tdate = mysqli_real_escape_string($conn,$tdate);
+
+    if($_POST['kitchenallStock']=='bevStock')
+    {
+        $tableName='beverages';
+    }else if($_POST['kitchenallStock']=='material')
+    {
+        $tableName='parcelmaterial';
+    }else
+    {
+        $tableName='store_kitchen';
+    }
     $sql = "SELECT
                 p.pname AS 'Product Name',
                 p.pid AS 'pid',
                 p.sellunit AS 'unit',
                 IFNULL((
                     SELECT SUM(ss.stock) - SUM(ss.issued + ss.stockreturn)
-                    FROM store_kitchen ss
+                    FROM $tableName ss
                     WHERE ss.pid = p.pid AND ss.date < '$fdate'
                 ), 0) AS 'Opening Stock',
                 IFNULL((
                     SELECT SUM(ss.stock)
-                    FROM store_kitchen ss
+                    FROM $tableName ss
                     WHERE ss.pid = p.pid AND ss.date BETWEEN '$fdate' AND '$tdate'
                 ), 0) AS 'Purchase Stock',
                 IFNULL((
                     SELECT SUM(ss.issued)
-                    FROM store_kitchen ss
+                    FROM $tableName ss
                     WHERE ss.pid = p.pid AND ss.date BETWEEN '$fdate' AND '$tdate'
                 ), 0) AS 'Issued Stock',
                 IFNULL((SELECT SUM(total)
@@ -994,13 +932,13 @@ if(isset($_POST['kitchenallStock']))
                         ), 0) AS 'totalPurchaseQty',
                 IFNULL((
                     SELECT SUM(ss.stockreturn)
-                    FROM store_kitchen ss
+                    FROM $tableName ss
                     WHERE ss.pid = p.pid AND ss.date BETWEEN '$fdate' AND '$tdate'
                 ), 0) AS 'Return Stock'
             FROM products p
             WHERE p.pid IN (
             SELECT DISTINCT pid
-                FROM store_kitchen
+                FROM $tableName
         );";
     $result=$conn->query($sql);
     $options=array();
@@ -1072,17 +1010,27 @@ if(isset($_POST['kitchenHistory']))
     $fdate=$_POST['fdate'];
     $tdate=$_POST['tdate'];
 
+    if($_POST['kitchenHistory']=='bevhist')
+    {
+        $tableName='beverages';
+    }else if($_POST['kitchenHistory']=="parcelhis")
+    {
+        $tableName='store_kitchen';
+    }else
+    {
+        $tableName='store_kitchen';
+    }
     $result = $conn->query("SELECT
-                            `store_kitchen`.*,
+                            $tableName.*,
                             `products`.`pname`,
                             `products`.`sellunit`
                         FROM
-                            `store_kitchen`,
+                            $tableName,
                             `products`
                         WHERE
-                            `store_kitchen`.`pid` = `products`.`pid`
-                            AND (`store_kitchen`.`stock` != 0 OR `store_kitchen`.`stockreturn` != 0)
-                            AND `store_kitchen`.`date` BETWEEN '$fdate' AND '$tdate'
+                            $tableName.`pid` = `products`.`pid`
+                            AND ($tableName.`stock` != 0 OR $tableName.`stockreturn` != 0 OR $tableName.`issued` != 0)
+                            AND $tableName.`date` BETWEEN '$fdate' AND '$tdate'
                     ");
     $options=array();
     if($result->num_rows > 0)
@@ -1099,13 +1047,22 @@ if(isset($_POST['kitchenHistory']))
 }
 
 //use kitchen stock
-if(isset($_POST['use_pid']))
+if(isset($_POST['issuType']))
 {
     $pid=$_POST['use_pid'];
     $isued=$_POST['use_issued'];
     $currentDate = date('Y-m-d');
-
-    $query="INSERT INTO `store_kitchen`(`pid`,`issued`,`date`) VALUES ('$pid','$isued','$currentDate')";
+    if($_POST['issuType']=='parcel')
+    {
+        $tableName='parcelmaterial';
+    }else if($_POST['issuType']=='bev')
+    {
+        $tableName='beverages';
+    }else
+    {
+        $tableName='store_kitchen';
+    }
+    $query="INSERT INTO $tableName(`pid`,`issued`,`date`) VALUES ('$pid','$isued','$currentDate')";
     $exc = mysqli_query($conn, $query);
     echo 'Issued';
 }
@@ -1140,7 +1097,6 @@ if(isset($_POST['wastage_pid']))
 
     echo 'Added To Wastage';
 }
-
 
 if(isset($_POST['addStockToDamage']))
 {
@@ -1181,8 +1137,6 @@ if(isset($_POST['editfetchstock']))
     }
     echo json_encode($rows);
 }
-
-
 
 //Purchase Update From store_purchase_product
 if(isset($_POST['edit_stockList']))
@@ -1273,4 +1227,32 @@ if(isset($_POST['kitchenstockEdit']))
     }
     echo json_encode($rows);
 }
+
+
+if(isset($_POST['checkStoreBill']) && isset($_POST['stobill_bill']) && isset($_POST['store_vendor']) && isset($_POST['store_venName']) && isset($_POST['store_editid']))
+{
+    $billNo=$_POST['stobill_bill'];
+    $vendorId=$_POST['store_vendor'];
+    $vendorName=$_POST['store_venName'];
+    $editid=$_POST['store_editid'];
+    
+    if($editid=='')
+    {
+        $query="SELECT `bill` FROM `purchase_data` WHERE `venId`='$vendorId' AND `bill`='$billNo'";
+    }else
+    {
+        $query="SELECT `bill` FROM `purchase_data` WHERE `venId`='$vendorId' AND `bill`='$billNo' AND `bill`!='$editid'";
+    }
+    $exc=mysqli_query($conn,$query);
+    if(mysqli_num_rows($exc) > 0)
+    {
+        $status=0;  
+    }else
+    {
+        $status=1;
+    }
+    echo $status;
+}
+
+
 ?>

@@ -71,7 +71,7 @@
                         </a>
                     </div>
                     <div class=" col-md-3">
-                        <a href="parcel.php">
+                        <a href="parcel_master.php">
                             <div class="boxx4 col-md-11">
                                 <div class="col-md-8">
                                     <h1>Parcel Master</h1>

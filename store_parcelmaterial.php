@@ -69,6 +69,34 @@
                         <button type="button" class="btn btn-primary" onclick="addToKitchen()">Add</button>
                     </center>
                 </div>
+                <div class="box box-default">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="container mt-3">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Category</th>
+                                                    <th>Product ID</th>
+                                                    <th>Product Name</th>
+                                                    <th>Sell Unit</th>
+                                                    <th>Total Quantity</th>
+                                                    <th>UQty</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-body">
+                                                <!-- Values will be inserted here dynamically -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
@@ -145,6 +173,18 @@
                         success: function(response) 
                         {
                             alert(response);
+                            let messageContent = "<tr>" +
+                         "<td>" + catename + "</td>" +
+                         "<td>" + pid + "</td>" +
+                         "<td>" + pname + "</td>" +
+                         "<td>" + sellunit + "</td>" +
+                         "<td>" + totalqty + "</td>" +
+                         "<td>" + uqty + "</td>" +
+                         "<td>" + gdate + "</td>" +
+                         "</tr>";
+
+                            // Append the row to the table body
+                            $('#table-body').append(messageContent);
                             for(i=0; input.length>i; i++)
                             {
                                 $(input[i]).val('');

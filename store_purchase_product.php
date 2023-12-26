@@ -42,6 +42,23 @@
                 text-align:center;
                 font-size:11px;
             }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+    }
+    .checkbox-input {
+      width: 20px; /* Set the width of the checkbox */
+      height: 20px; /* Set the height of the checkbox */
+      margin-right: 50px; /* Adjust spacing between checkbox and label */
+      cursor: pointer;
+    }
+    .checkbox-label {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
 </style>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <body class="hold-transition skin-blue sidebar-mini">
@@ -144,7 +161,14 @@
                                         <label for="inputEmail3" class="control-label">Cess</label>
                                         <input type="number" class="form-control" name="cess" id="cess" min="1" placeholder="Cess" v-model="cess" readonly>
                                     </div>
-                                </div>  
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <div class="checkbox-container">
+                                            <input type="checkbox" id="myCheckbox" class="checkbox-input">&nbsp;&nbsp;
+                                            <label for="myCheckbox" class="checkbox-label">Send Direct To Kitchen</label>
+                                        </div>
+                                    </div>
                             </div>  
                         </div>  
                     </div>

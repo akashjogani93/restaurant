@@ -17,7 +17,7 @@
             width: 100%;
             overflow-x: auto;
         }
-    .table>thead
+    .table>thead,tfoot
         {
             background-color:grey;
             color:white;
@@ -67,7 +67,7 @@
                                         </div>
                                     <div class="col-md-3">
                                         <button class="btn btn-success" style="margin-top:23px;" @click="search">Search</button>
-                                        <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
+                                        <button class="btn btn-danger" style="margin-top:23px;" id="pdfgenerate">PDF</button>
                                         <button class="btn btn-success" style="margin-top:23px;" onclick="exportToExcel()">Excel</button>
                                     </div>
                                 </div>
@@ -83,12 +83,14 @@
                         <table id="example1" class="table">
                             <thead>
                                 <tr>
+                                    <!-- <th>Pid</th> -->
                                     <th>Sl.No</th>
                                     <th>Item Name</th>
                                     <th>Unit</th>
                                     <th>Avg U/P</th>
                                     <th>Opening</th>
                                     <!-- <th>Total</th> -->
+                                    <!-- <td>{{ item.opeTotal }}</td> -->
                                     <th>Purchase</th>
                                     <th>Price</th>
                                     <th>Issued</th>
@@ -105,12 +107,12 @@
                             </thead>
                             <tbody id="tableData">
                                 <tr v-for="(item, index) in stockList" :key="item.id">
+                                    <!-- <td>{{ item.pid }}</td> -->
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.unit }}</td>
                                     <td>{{ item.avgprice }}</td>
                                     <td>{{ item.openingStock }}</td>
-                                    <!-- <td>{{ item.opeTotal }}</td> -->
                                     <td>{{ item.stocksum }}</td>
                                     <td>{{ item.purTotal }}</td>
                                     <td>{{ item.issued }}</td>
@@ -126,6 +128,22 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <td>Purchase:</td>
+                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.purTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Issued:</td>
+                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.issedTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Return:</td>
+                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.returnTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Wastage:</td>
+                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.wastotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Cloasing:</td>
+                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.cloTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -165,12 +183,6 @@
     <script src="cdn/dataTables.buttons.min.js"></script>
     <script src="cdn/buttons.print.min.js"></script>
 
-    <!-- <script src="html2pdf.js/dist/html2pdf.bundle.min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script> -->
-    <!-- <script src="path/to/jspdf.plugin.autotable.min.js"></script> -->
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script> -->
     <!-- Include js-xlsx library from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-xlsx/0.17.0/xlsx.core.min.js"></script>
 
@@ -178,11 +190,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
 
     <script src="js/kitchen_int.js"></script>
+    <script src="js/pdfMake.js"></script>
     <script>
         $(document).ready(function()
         {
             const stockdata= new Stock_table();
             stockdata.searchdata();
+            $('#pdfgenerate').on('click',function()
+            {
+                const pdf= new pdfMake();
+                var header="Store Stock From ";
+                var save="Store-stock";
+                columns=[
+                    { dataKey: 'Sl.No'},
+                    { dataKey: 'Item Name'},
+                    { dataKey: 'Unit'},
+                    { dataKey: 'Avg Unit Price'},
+                    { dataKey: 'Opening'},
+                    { dataKey: 'Purchase'},
+                    { dataKey: 'Total'},
+                    { dataKey: 'Issued'},
+                    { dataKey: 'Total'},
+                    { dataKey: 'Return'},
+                    { dataKey: 'Total'},
+                    { dataKey: 'Wastage'},
+                    { dataKey: 'Total'},
+                    { dataKey: 'Closing'},
+                    { dataKey: 'Total'},
+                    ];
+                pdf.generate(columns,header,save);
+            });
 
             $('#wastage').on('input',function()
             {
@@ -226,27 +263,31 @@
                 // console.log(log);
             }
         </script>
-        <script>
+        <!-- <script>
             function generateTable() 
             {
                 var fdate=$('#fdate').val();
                 var tdate=$('#tdate').val();
-                var doc = new jsPDF('p', 'pt', 'letter');
                 var y = 20;
+                var doc = new jsPDF({
+                    unit: 'pt',
+                    format: 'A4',
+                    putOnlyUsedFonts: true,
+                    orientation: 'p',
+                    margin: 0,
+                });
                 doc.setLineWidth(2);
                 doc.text(150, y = y + 10, "Store Stock From "+fdate+" To "+tdate);
                 doc.autoTable({
+                    margin: {top: 40, left: 10, right: 10, bottom: 20},
                     html: '#example1',
-                    startY: 40,
-                    startX: 40,
                     theme: 'grid',
                     columns: [
-                        {dataKey: 'Sl.No'},
+                        {dataKey: 'Sl'},
                         {dataKey: 'Item Name'},
                         {dataKey: 'Unit'},
                         {dataKey:'Avg Unit Price'},
                         {dataKey:'Opening'},
-                        // {dataKey:'Total'},
                         {dataKey:'Purchase'},
                         {dataKey:'Total'},
                         {dataKey:'Issued'},
@@ -261,13 +302,20 @@
                     styles: {
                         overflow: 'linebreak',
                         lineWidth: 1,
-                        fontSize: 8,
-                        cellPadding: {horizontal: 5, vertical: 2},
+                        fontSize: 7,
+                        cellPadding: {horizontal: 4, vertical: 2},
+                        textColor: [0, 0, 0],
                     },
                     headerStyles: {
                         fillColor: [128, 128, 128],
                         textColor: [255, 255, 255],
                         fontSize: 8,
+                        lineWidth: 1,
+                    },
+                    footStyles: {
+                        fontSize: 8,
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
                         lineWidth: 1,
                     },
                 })
@@ -284,9 +332,9 @@
                 //         left: 0,
                 //         right: 0,
                 //     },
-                //     pageSize: 'letter',
+                //     pageSize: 'A4',
                 // });
                 doc.save('store_stock');
             }
-        </script>
+        </script> -->
 </body>

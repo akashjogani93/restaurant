@@ -84,6 +84,7 @@
                                     <th>Item Name</th>
                                     <th>Unit</th>
                                     <th>Qty</th>
+                                    <th>Issued</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
@@ -92,7 +93,8 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.pname }}</td>
                                     <td>{{ item.sellunit }}</td>
-                                    <td>{{ item.stockdata }}</td>
+                                    <td>{{ item.stock }}</td>
+                                    <td>{{ item.issued }}</td>
                                     <td>{{ item.date }}</td>
                                 </tr>
                             </tbody>
@@ -133,6 +135,7 @@
                         {dataKey: 'Item Name'},
                         {dataKey: 'Unit'},
                         {dataKey: 'Qty'},
+                        {dataKey: 'Issued'},
                         {dataKey: 'Date'},
                     ],
                     styles: {

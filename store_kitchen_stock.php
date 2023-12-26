@@ -84,6 +84,7 @@
                                     <th>Item Name</th>
                                     <th>Unit</th>
                                     <th>Purchase Stock</th>
+                                    <th>Issued Stock</th>
                                     <th>Return Stock</th>
                                     <th>Date</th>
                                     <!-- <th>Edit</th> -->
@@ -95,6 +96,7 @@
                                     <td>{{ item.pname }}</td>
                                     <td>{{ item.sellunit }}</td>
                                     <td>{{ item.stock }}</td>
+                                    <td>{{ item.issued }}</td>
                                     <td>{{ item.stockreturn }}</td>
                                     <td>{{ item.date }}</td>
                                     <!-- <td><button class="btn btn-info" @click="handleEdit(index)">Edit</button></td> -->
@@ -190,6 +192,7 @@
                     {dataKey: 'Item Name'},
                     {dataKey: 'Unit'},
                     {dataKey: 'Purchase'},
+                    {dataKey: 'Issued'},
                     {dataKey: 'Return Stock'},
                     {dataKey: 'Date'},
                 ],

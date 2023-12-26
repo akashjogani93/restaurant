@@ -370,7 +370,7 @@ if(isset($_POST['delete'],$_POST['itmno']))
         {
             // $sql1="DELETE FROM `temtable` WHERE `slno`='".$itmno1."'";
             mysqli_query($conn,"DELETE FROM `temtable` WHERE `slno`='$slno'");
-            mysqli_query($conn,"DELETE FROM `kot` WHERE `status`='$slno'");
+            // mysqli_query($conn,"DELETE FROM `kot` WHERE `status`='$slno'");
         }
     }
     echo $tabno;

@@ -451,9 +451,8 @@ function delitm(slno)
             },
             success: function(status) 
             {
-                // console.log(status);
                 $('#itemlist').load("order_data.php?tabno="+status);
-                // $('#boxx').load("final_search.php");
+                $('#boxx').load("bill_data.php");
             }
         });
     } else {

@@ -252,6 +252,7 @@ class Purchase
                 billEdit:false,
                 editbillno:null,
                 stockListdelete:[],
+                editid:''
             },
             mounted() {
                 this.fetchOptions();
@@ -350,8 +351,8 @@ class Purchase
                                 // console.log(response);
                                 vm.vendorName = response[0].slno;
                                 $('#purdate').val(response[0].purchase_date);
-                                $('#bill').val(response[0].id);
-
+                                $('#bill').val(response[0].bill);
+                                vm.editid=response[0].bill;
                                 // vm.gamt=parseFloat(response[0].gamt);
                                 // vm.disctax=parseFloat(response[0].disc);
                                 // vm.totaltax=parseFloat(response[0].tax);
@@ -448,6 +449,71 @@ class Purchase
                                 vm.submitData();
                             }
                         }
+                    });
+
+                    $('#bill').on('input',function()
+                    {
+                        var vendor =$('#ven').val();
+                        var venName = $('#ven :selected').text();
+                        if(vendor=='')
+                        {
+                            alert('Please Select Vendor Name First');
+                            $('#bill').val('');
+                            return;
+                        }
+                    });
+
+                    $('#ven').on('change',function()
+                    {
+                        var bill= $('#bill').val();
+                        var vendor =$('#ven').val();
+                        var venName = $('#ven :selected').text();
+                        $('#bill').val('');
+                        if(vendor=='')
+                        {
+                            alert('Please Select Vendor Name First');
+                            return;
+                        }
+                    });
+                    $('#bill').on('change',function()
+                    {
+                        var edit=vm.billEdit;
+                        var editid=vm.editid;
+                        var bill= $('#bill').val();
+                        var vendor =$('#ven').val();
+                        var venName = $('#ven :selected').text();
+                        if(vendor=='')
+                        {
+                            alert('Please Select Vendor Name First');
+                            $('#bill').val('');
+                            return;
+                        }
+                        if(bill=='')
+                        {
+                            alert('Please Add Bill No');
+                            return;
+                        }
+                        let log=$.ajax({
+                                url: 'ajax/store_all.php',
+                                method: 'POST',
+                                data:{checkStoreBill:'checkStoreBill',
+                                        stobill_bill:bill,
+                                        store_vendor:vendor,
+                                        store_venName:venName,
+                                        store_editid:editid
+                                    },
+                                // dataType:'JSON',
+                                success(response) 
+                                {
+                                    console.log(response);
+                                    if(response==0)
+                                    {
+                                        alert('Bill No is Existed')
+                                        $('#bill').val('');
+                                        return;
+                                    }
+                                }
+                            });
                     });
                 },
                 categoryChange()
@@ -1053,6 +1119,7 @@ class Kitchen
                         url: 'ajax/store_all.php',
                         method: 'POST',
                         data: {
+                            issuType:'kit',
                             use_pid: pid,
                             use_issued: issued,
                         },
@@ -1065,12 +1132,12 @@ class Kitchen
                             console.error(error);
                         }
                     });
+                    this.stockbyDate();
                     $('#issuedModal').modal('hide');
                     this.closingStock='';
                     this.selectedIndex=null;
                     this.pid=null;
                     $('#issued').val('');
-                    this.stockbyDate();
                 },
                 handleReturnConfirm()
                 {
@@ -1097,6 +1164,7 @@ class Kitchen
                             console.error(error);
                         }
                     });
+                    this.stockbyDate()
                     
                     $('#returnModal').modal('hide');
                     
@@ -1108,7 +1176,6 @@ class Kitchen
                     
                     $('#return').val('');
                     
-                    this.stockbyDate()
                 },
                 handleEdit(index)
                 {
@@ -1360,6 +1427,13 @@ class Beaverages
                 bevhis:[],
                 selectedOption:'',
                 categoryOption:'',
+                productQty: '',
+                productUnit: '',
+                closingStock: '',
+                selectedIndex: null,
+                pid:null,
+                editMode: false,
+                editbillno:null
             },
             methods:{
                 fetchOptions()
@@ -1417,8 +1491,8 @@ class Beaverages
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{BeaveragesStock:"bevStock",fdate:fdate,tdate:tdate},
-                        success(response) 
+                        data:{kitchenallStock:"bevStock",fdate:fdate,tdate:tdate},
+                        success(response)
                         {
                             vm.bevstock = response;
                         },
@@ -1445,15 +1519,111 @@ class Beaverages
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{BeaveHistory:"bevhistory",fdate:fdate,tdate:tdate},
+                        data:{kitchenHistory:"bevhist",fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            vm.bevhis = response;
+                            vm.bevhis= response;
                         },
-                        error(xhr, status, error) {
+                        error(xhr, status, error) 
+                        {
                             console.error(error);
                         }
                     });
+                },
+                handleIssued(index) 
+                {
+                    this.selectedIndex = index;
+                    this.closingStock = parseFloat(this.bevstock[index].cloasing);
+                    this.pid = parseFloat(this.bevstock[index].pid);
+                    $('#issuedModal').modal('show');
+                },
+                handleReturn(index) 
+                {
+                    this.selectedIndex = index;
+                    this.closingStock = parseFloat(this.bevstock[index].cloasing);
+                    this.pid = parseFloat(this.bevstock[index].pid);
+                    $('#returnModal').modal('show');
+                },
+                handleIssuedConfirm()
+                {
+                    var close=this.closingStock;
+                    var issued=$('#issued').val();
+                    var pid=$('#pid').val();
+                    if(isNaN(issued)) 
+                    {
+                        return;
+                    }
+                    if(issued==0)
+                    {
+                        return;
+                    }
+                    let log=$.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data: {
+                            issuType:'bev',
+                            use_pid: pid,
+                            use_issued: issued,
+                        },
+                        success: function(response) 
+                        {
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) 
+                        {
+                            console.error(error);
+                        }
+                    });
+                    this.stockbyDate();
+                    $('#issuedModal').modal('hide');
+                    this.closingStock='';
+                    this.selectedIndex=null;
+                    this.pid=null;
+                    $('#issued').val('');
+                    
+                },
+                handleReturnConfirm()
+                {
+                    var close=this.closingStock;
+                    var issued=$('#return').val();
+                    var pid=$('#pid').val();
+                    if(isNaN(issued)) 
+                    {
+                        return;
+                    }
+                    let log=$.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data: {
+                            return_pid: pid,
+                            return_retur: issued,
+                        },
+                        success: function(response) 
+                        {
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) 
+                        {
+                            console.error(error);
+                        }
+                    });
+                    this.stockbyDate()
+                    
+                    $('#returnModal').modal('hide');
+                    
+                    this.closingStock='';
+                    
+                    this.selectedIndex=null;
+                    
+                    this.pid=null;
+                    
+                    $('#return').val('');
+                    
+                },
+                handleEdit(index)
+                {
+                    var stock_id=this.kitchenpurchase[index].stock_id;
+                    window.location="store_kitchen_given.php?stock="+stock_id;
                 }
             },
             mounted()
@@ -1483,6 +1653,13 @@ class parcelMaterial
                 materialhis:[],
                 selectedOption:'',
                 categoryOption:'',
+                productQty: '',
+                productUnit: '',
+                closingStock: '',
+                selectedIndex: null,
+                pid:null,
+                editMode: false,
+                editbillno:null
             },
             methods:{
                 fetchOptions()
@@ -1540,8 +1717,8 @@ class parcelMaterial
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{materialStock:"material",fdate:fdate,tdate:tdate},
-                        success(response) 
+                        data:{kitchenallStock:"material",fdate:fdate,tdate:tdate},
+                        success(response)
                         {
                             vm.material = response;
                         },
@@ -1549,7 +1726,6 @@ class parcelMaterial
                             console.error(error);
                         }
                     });
-                    // console.log(log)
                 },
                 materialHistoru()
                 {
@@ -1569,16 +1745,111 @@ class parcelMaterial
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{materialHistory:"materialHistory",fdate:fdate,tdate:tdate},
+                        data:{kitchenHistory:"parcelhis",fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            vm.materialhis = response;
+                            vm.materialhis= response;
                         },
-                        error(xhr, status, error) {
+                        error(xhr, status, error) 
+                        {
                             console.error(error);
                         }
                     });
                 },
+                handleIssued(index) 
+                {
+                    this.selectedIndex = index;
+                    this.closingStock = parseFloat(this.material[index].cloasing);
+                    this.pid = parseFloat(this.material[index].pid);
+                    $('#issuedModal').modal('show');
+                },
+                handleReturn(index) 
+                {
+                    this.selectedIndex = index;
+                    this.closingStock = parseFloat(this.material[index].cloasing);
+                    this.pid = parseFloat(this.material[index].pid);
+                    $('#returnModal').modal('show');
+                },
+                handleIssuedConfirm()
+                {
+                    var close=this.closingStock;
+                    var issued=$('#issued').val();
+                    var pid=$('#pid').val();
+                    if(isNaN(issued)) 
+                    {
+                        return;
+                    }
+                    if(issued==0)
+                    {
+                        return;
+                    }
+                    let log=$.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data: {
+                            issuType:'parcel',
+                            use_pid: pid,
+                            use_issued: issued,
+                        },
+                        success: function(response) 
+                        {
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) 
+                        {
+                            console.error(error);
+                        }
+                    });
+                    this.stockbyDate();
+                    $('#issuedModal').modal('hide');
+                    this.closingStock='';
+                    this.selectedIndex=null;
+                    this.pid=null;
+                    $('#issued').val('');
+                },
+                handleReturnConfirm()
+                {
+                    var close=this.closingStock;
+                    var issued=$('#return').val();
+                    var pid=$('#pid').val();
+                    if(isNaN(issued)) 
+                    {
+                        return;
+                    }
+                    let log=$.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data: {
+                            return_pid: pid,
+                            return_retur: issued,
+                        },
+                        success: function(response) 
+                        {
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) 
+                        {
+                            console.error(error);
+                        }
+                    });
+                    
+                    $('#returnModal').modal('hide');
+                    
+                    this.closingStock='';
+                    
+                    this.selectedIndex=null;
+                    
+                    this.pid=null;
+                    
+                    $('#return').val('');
+                    
+                    this.stockbyDate()
+                },
+                handleEdit(index)
+                {
+                    var stock_id=this.kitchenpurchase[index].stock_id;
+                    window.location="store_kitchen_given.php?stock="+stock_id;
+                }
             },
             mounted()
             {
@@ -1627,7 +1898,7 @@ class Stock
                 {
                     const vm = this;
                     var catName=this.catName;
-                    $.ajax({
+                    let log=$.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
                         data:{stock:'stock',catName1:catName},
@@ -2083,6 +2354,7 @@ class Stock_table
                         data:{stockOpening:'stock',catName1:catName,fdate:fdate,tdate:tdate},
                         success(response) 
                         {
+                            console.log(response);
                             vm.stockList = response.slice().sort((a, b) => a.name.localeCompare(b.name));
                         },
                         error(xhr, status, error)
