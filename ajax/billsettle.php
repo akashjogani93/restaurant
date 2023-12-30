@@ -14,27 +14,19 @@ if(isset($_POST['billno']) && isset($_POST['paymentMethod']))
 {
     $billno=$_POST['billno'];
     $paymentMethod=$_POST['paymentMethod'];
-    // $temSelect="SELECT `temtable`.*,`kot`.`time` AS `kot_time` FROM `temtable`,`kot` WHERE `temtable`.`billno`='$billno' AND `temtable`.`kot_num`=`kot`.`kot_num` ORDER BY `temtable`.`kot_num`";
-    // $temResult=mysqli_query($conn,$temSelect);
-    // if(mysqli_num_rows($temResult) > 0)
-    // {
-    //     while($row=mysqli_fetch_assoc($temResult))
-    //     {
-            // $kot_time=$row['kot_time'];
-            // $date=$row['date'];
-            // $kot_num=$row['kot_num'];
-            // $itmno=$row['itmno'];
-            // $itmnam=$row['itmnam'];
-            // $qty=$row['qty'];
-            // $tabno=$row['tabno'];
-            // $capname=$row['capname'];
-            // $cap_code=$row['cap_code'];
-            // $slno=$row['slno'];
-            // $kot_history="INSERT INTO `kot_history`(`date`, `itmno`, `itmnam`, `qty`, `tabno`, `capname`, `cap_code`, `kot_num`) VALUES ('$date','$itmno','$itmnam','$qty','$tabno','$capname','$cap_code','$kot_num')";
-            // $resultKot=mysqli_query($conn,$kot_history);
-            // mysqli_query($conn,"DELETE FROM `kot` WHERE `status`='$slno'");
-    //     }
-    // }
+    $temSelect="SELECT * FROM `temtable` WHERE `pid`!=0";
+    $temResult=mysqli_query($conn,$temSelect);
+    if(mysqli_num_rows($temResult) > 0)
+    {
+        while($row=mysqli_fetch_assoc($temResult))
+        {
+            $pid=$row['pid'];
+            $qty=$row['qty'];
+            $date=$row['date'];
+            $beaverages="INSERT INTO `beverages`(`pid`,`date`,`issued`) VALUES ('$pid','$date','$qty')";
+            $resultKot=mysqli_query($conn,$beaverages);
+        }
+    }
 
     $sql1 = "INSERT INTO `tabledata`(`date`,`itmno`,`itmnam`,`prc`,`qty`,`tot`,`tabno`,`billno`,`time`,`kot_num`,`type`) SELECT `date`,`itmno`,`itmnam`,`prc`,SUM(`qty`) as `qty`,SUM(`tot`) AS `tot`,`tabno`,`billno`,`time`,`kot_num`,`type` FROM `temtable` GROUP BY `itmno`,`tabno` HAVING `billno`='$billno'";
     if (!mysqli_query($conn, $sql1)) 

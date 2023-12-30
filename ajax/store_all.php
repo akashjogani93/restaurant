@@ -2,7 +2,24 @@
 include('../dbcon.php');
 $currentDate = date('Y-m-d');
 //store_purchase_product categorys show   and store_product.php category;
-if(isset($_POST['cat']))
+if(isset($_POST['cat']) && isset($_POST['catTypeitem']))
+{
+    $catType=$_POST['catTypeitem'];
+    $sql = "SELECT id,CategoryName FROM categoroy WHERE catType='$catType'";
+    $result = $conn->query($sql);
+    $options = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $options[] = $row;
+        }
+    }
+    // Return the options as JSON response
+    header('Content-Type: application/json');
+    echo json_encode($options);
+    $conn->close();
+}
+
+if(isset($_POST['catStoreStock']))
 {
     $sql = "SELECT id,CategoryName FROM categoroy";
     $result = $conn->query($sql);
@@ -17,6 +34,23 @@ if(isset($_POST['cat']))
     echo json_encode($options);
     $conn->close();
 }
+
+if(isset($_POST['catTypeName']))
+{
+    $sql = "SELECT catType FROM categoroy GROUP BY catType";
+    $result = $conn->query($sql);
+    $options = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $options[] = $row;
+        }
+    }
+    // Return the options as JSON response
+    header('Content-Type: application/json');
+    echo json_encode($options);
+    $conn->close();
+}
+
 
 if(isset($_POST['cateByEdit']))
 {
@@ -83,10 +117,10 @@ if(isset($_POST['catName']))
     {
         $unit = $_POST['unit'];
         $sellUnit = $_POST['sellUnit'];
+        $catType = $_POST['catTypeinsert'];
 
         $unit = mysqli_real_escape_string($conn, $unit);
         $sellUnit = mysqli_real_escape_string($conn, $sellUnit);
-        
         $twoMonthsLater = date('Y-m-d', strtotime('+2 months', strtotime($currentDate)));
 
         $checkQuery = "SELECT * FROM `products` WHERE `pname` = '$product' AND `category` = '$catName'";
@@ -108,6 +142,20 @@ if(isset($_POST['catName']))
                 $stockid = $conn->insert_id;
                 $store_stock="INSERT INTO `store_stock`(`pid`,`date`,`perCaseQty`) VALUES ('$lastInsertedId','$currentDate',1)";
                 $excQuery=mysqli_query($conn,$store_stock);
+
+                if($catType=='Bevarages')
+                {
+                    $cat='Veg';
+                    $prc=$_POST['prc'];
+                    $prc1=$_POST['prc1'];
+                    $itemcode=$_POST['itemcode'];
+                    $sqlitem="INSERT INTO `item`(`item_cat`, `itmnam`,`prc`, `prc2`,`item_code`,`status`,`pid`) VALUES ('$cat','$product','$prc','$prc1','$itemcode',0,'$lastInsertedId')";
+                    $conform=mysqli_query($conn, $sqlitem);
+                    if($conform)
+                    {
+                        // echo 'sucees';
+                    }
+                }
                 echo 0;
             } else
             {

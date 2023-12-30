@@ -105,17 +105,18 @@ if(isset($_POST['item_no']))
 		{
 			while($row = mysqli_fetch_assoc($result))
             {
-					if($ac=='Non Ac')
-					{
-						$price=$row['prc'];
-					}else if($ac=='Ac')
-					{
-						$price=$row['prc2'];
-					}else
-					{
-					    $price=0;
-					}
-				    array_push($a,$row['item_code'],$row['itmnam'],$price);
+                if($ac=='Non Ac')
+                {
+                    $price=$row['prc'];
+                }else if($ac=='Ac')
+                {
+                    $price=$row['prc2'];
+                }else
+                {
+                    $price=0;
+                }
+                $pid=$row['pid'];
+                array_push($a,$row['item_code'],$row['itmnam'],$price,$pid);
 			}
 		}else
 		{
@@ -163,7 +164,8 @@ if(isset($_POST['itemname']))
                 {
                     $price=0;
                 }
-                array_push($a,$row['item_code'],$row['itmnam'],$price);
+                $pid=$row['pid'];
+                array_push($a,$row['item_code'],$row['itmnam'],$price,$pid);
             }
         }
     }
@@ -181,6 +183,7 @@ if(isset($_POST['captain']) && isset($_POST['itmnam']))
     $prc = $_POST['prc'];
     $qty = $_POST['qty'];
     $tot = $_POST['tot'];
+    $pid = $_POST['pid'];
     $captainCode = $_POST['captainname'];
     $tabno = $_POST['tabno'];
     $current_time = date("h:i A");
@@ -207,7 +210,7 @@ if(isset($_POST['captain']) && isset($_POST['itmnam']))
         }
     }else
     {
-            $temInsert="INSERT INTO `temtable`(`date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `capname`, `billno`, `status`, `kot`, `kot_num`,`cap_code`,`time`,`type`) VALUES ('$ymd','$itmno','$itmnam','$prc','$qty','$tot','$tabno','$captain','$bill','$status',0,0,'$captainCode','$current_time','$type')";
+            $temInsert="INSERT INTO `temtable`(`date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `capname`, `billno`, `status`, `kot`, `kot_num`,`cap_code`,`time`,`type`,`pid`) VALUES ('$ymd','$itmno','$itmnam','$prc','$qty','$tot','$tabno','$captain','$bill','$status',0,0,'$captainCode','$current_time','$type','$pid')";
             $temInsertResult=mysqli_query($conn,$temInsert);
             if($temInsertResult)
             {

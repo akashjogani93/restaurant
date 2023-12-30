@@ -47,12 +47,20 @@
             <section class="content">
                 <div id="app">
                     <div class="box box-default">
-                        <div class="row">
+                        <!-- <div class="row"> -->
                             <div class="box-body">
                                 <div id="app">
+                                    <div class="row">
+                                    <div class="col-md-2">
+                                        <label for="inputPassword3" class="control-label">Select Type</label>
+                                        <select class="form-control" id="catType" name="catType" placeholder="category Type" required v-model="catTypeName" @change="catTypeChange">
+                                            <option value="">Select</option>
+                                            <option v-for="category in categoysType" :value="category.catType">{{ category.catType }}</option>
+                                        </select>
+                                    </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword3" class="control-label">Select Category</label>
-                                        <select class="form-control" id="cat12" name="cat" placeholder="category" required v-model="catName">
+                                        <select class="form-control" id="cat12" name="cat" placeholder="category" required v-model="catName" @change="CategoryChange">
                                             <option value="">Select</option>
                                             <option v-for="category in categoys" :value="category.CategoryName">{{ category.CategoryName }}</option>
                                         </select>
@@ -101,15 +109,33 @@
                                         <label for="inputPassword3" class="control-label">Cess</label>
                                         <input type="number" placeholder="cess"  name="cess" id="cess" class="form-control" required="required" autocomplete="off" v-model="cess"/>
                                     </div>
-                                    <div class="col-md-1">
-                                        <button class="btn btn-info" @click="insertProduct" style="margin-top:27px;">
-                                            Submit
-                                        </button>
+                                    </div></br>
+                                    <div class="row" style="display:none;" id="bevcat">
+                                        <div class="col-md-2">
+                                            <label for="inputPassword3" class="control-label">Item Code</label>
+                                            <input type="number" class="form-control" name="itm_code" id="itm_code" onInput="checku()" v-model="itmnam" autocomplete="off">
+                                            <label id="checku"></label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="inputEmail3" class="control-label">Price</label>
+                                            <input type="number" class="form-control" name="prc" id="prc" min="1"  v-model="prc">
+                                        </div>  
+                                        <div class="col-md-2">
+                                            <label for="inputEmail3" class="control-label">AC Price</label>
+                                            <input type="number" class="form-control" name="prc1" id="prc1" min="1"  v-model="prc1">
+                                        </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-sm btn-info" style="margin-top:27px;" @click="catemodal">Creat New Category</button>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div style="display:flex;">
+                                                <button type="button" class="btn btn-sm btn-info" style="margin-top:27px; margin-right:10px;" @click="catemodal">Creat New Category</button>
+                                                <button class="btn btn-info" @click="insertProduct" style="margin-top:27px;">Submit</button>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-1">
+                                            <button class="btn btn-info" @click="insertProduct" style="margin-top:27px;">Submit</button>
+                                        </div> -->
                                     </div>
-
                                     <!-- Category Module -->
                                     <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
                                         <div class="modal-dialog modal-sm" role="document">
@@ -185,7 +211,7 @@
                                     </div>
                                 </div>
                             </div>          
-                        </div>
+                        <!-- </div> -->
                         </br>
                         <!-- <div id="app1"> -->
                         <div class="row">
@@ -223,8 +249,8 @@
                                                             <td><?php echo $row['category']; ?></td>
                                                             <td><?php echo $row['unit']; ?></td>
                                                             <td><?php echo $row['sellunit']; ?></td>
-                                                            <td><?php echo number_format($row['tax'],2); ?></td>
-                                                            <td><?php echo number_format($row['cess'],2); ?></td>
+                                                            <td class="right-align"><?php echo number_format($row['tax'],2); ?></td>
+                                                            <td class="right-align"><?php echo number_format($row['cess'],2); ?></td>
                                                             <td><button @click='editItem($event)' class="btn btn-primary btn-sm">
                                                                 Edit
                                                                 </button>
@@ -287,6 +313,27 @@
                         }
                     });
                 });
+                function checku()
+                {
+                    let itemcode=$("#itm_code").val();
+                    if (itemcode!=0)
+                    {
+                        jQuery.ajax({
+                            url:'ajax/accnum.php',
+                            data:'itm=' +$("#itm_code").val(),
+                            type:"POST",
+                            success:function(data){
+                                $("#checku").html(data);
+                            },
+                            error:function(){}
+                    
+                        });
+                    }else
+                    {
+                        $("#checku").html('<span style="color:red">Not Valid</span>');
+                        $('#sub').prop('disabled',true);
+                    }
+                }
                 function submit()
                 {
                     $("#empty").fadeIn();
@@ -333,28 +380,6 @@
                         $("#empty").fadeOut(1000);
                     }
                 }
-                // var app1 = new Vue({
-                //     el: '#dynamic-table',
-                //     methods: {
-                //         editItem : function(e) 
-                //         {
-                //             var tar = e.currentTarget;
-                //             var chil = tar.parentElement.parentElement.children;
-                //             var form = $("#category input");
-                //             form[0].value = (chil[2].innerHTML);
-                //             form[1].value = (chil[0].innerHTML);
-                //             form[2].value = (chil[6].innerHTML);
-                //             form[3].value = (chil[7].innerHTML);
-                //             form[4].value = (chil[1].innerHTML);
-                //             var cat=chil[3].innerHTML;
-
-                //             var catType=chil[i].innerHTML;
-
-                //             $('#cat12Edit').val(cat)
-                //             // $('#unitchange').val(chil[3].innerHTML);
-                //         }
-                //     }
-                // });
         </script>
         </div>
     </div>

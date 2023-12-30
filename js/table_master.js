@@ -263,6 +263,7 @@ function item_no()
         },
         success: function(data) 
         {
+            console.log(data);
             if(data[0]=='Wrong Code')
             {
                 $("#itmno").css("border", "1px solid orange");
@@ -280,6 +281,7 @@ function item_no()
             }
             $("#autocomplete").val(data[1]);
             $("#prc").val(data[2]);
+            $('#pid').val(data[3]);
             total();
         }
     });
@@ -320,10 +322,11 @@ function store()
         },
         success: function(data) 
         {
-            console.log(data);
+            // console.log(data[3]);
             $("#itmno").val(data[0]);
             $("#itmnam").val(data[1]);
             $("#prc").val(data[2]);
+            $('#pid').val(data[3]);
             total();
         }
     });
@@ -342,6 +345,8 @@ function OrderAdd()
     var qty = $("#qty").val();
     var prc = $("#prc").val();
     var total = $("#tot").val();
+    var pid = $("#pid").val();
+
     // console.log(captain);
     // console.log(captainCode);
     if(qty=="" && qty==0)
@@ -361,6 +366,7 @@ function OrderAdd()
                     itmnam: itname,
                     prc: prc,
                     qty: qty,
+                    pid: pid,
                     tot: total,
                     tabno: table_no,
                     captainname:captainCode
@@ -599,7 +605,7 @@ function settle(event)
             // $('#boxx1').load("final_setelment.php?order="+order);
         }
     });
-    // console.log(log)
+    console.log(log)
 }
 
 function editBill(event)

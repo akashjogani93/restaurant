@@ -14,42 +14,6 @@ function itemload()
     //     $('#itemlist').load("item_fetch.php?x="+y);
     // });
 }
-
-// function submit() 
-// {
-//     $("#empty").fadeIn();
-//     $("#catsus").fadeIn();
-//     let cat = $('#cat1').val();
-//     if (cat != "") 
-//     {
-//         var minLength = 3;
-//         if(cat.length<minLength)
-//         {
-//             $('#empty').html(`<span style='color:red'>This is Short..</span>`);
-//             $("#empty").fadeOut(2000);
-//         }else
-//         {
-//             $.ajax({
-//                 url: 'ajax/addcate.php',
-//                 type: "POST",
-//                 data: {
-//                     cat : cat
-//                 },
-//                 success: function(data) 
-//                 {
-//                     $('#category').modal('hide');
-//                     $('#catsus').html(`<span style='color:green'>Added Category..</span>`);
-//                     $("#catsus").fadeOut(2000);
-//                     itemload()
-//                 }
-//             });
-//         }
-//     }else{
-//         $('#empty').html(`<span style='color:red'>Empty field..</span>`);
-//         $("#empty").fadeOut(1000);
-//     }
-// }
-
 function addmenu()
 {
     $("#empty1").fadeIn();

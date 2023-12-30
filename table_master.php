@@ -100,6 +100,7 @@
                         <div class="col-md-2">
                             <label for="exampleInputFile">Price</label>
                             <input type="number" step="0.01" class="form-control" name="prc" id="prc" disabled="disabled"  required>
+                            <input type="hidden"  class="form-control" name="pid" id="pid" disabled="disabled"  required>
                         </div>
                         <div class="col-md-2">
                             <!-- <label for="exampleInputFile">Total</label> -->

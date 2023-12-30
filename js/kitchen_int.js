@@ -22,13 +22,19 @@ class Product
                 stockList: [],
                 categoys:[], 
                 categoys1:[],
+                categoysType:[],
+                catTypeName:'',
                 catName:'',
                 product:'',
                 unit:'',
                 sellUnit:'',
                 tax:0,
                 cess:0,
-                catName1:''
+                catName1:'',
+                prc:'',
+                prc1:'',
+                itmnam:'',
+                catType:''
             },
             mounted() {
                 this.fetchOptions();
@@ -40,10 +46,10 @@ class Product
                     $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{cat:'cat'},
+                        data:{catTypeName:'cat'},
                         success(response) 
                         {
-                            vm.categoys = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
+                            vm.categoysType = response.slice().sort((a, b) => a.catType.localeCompare(b.catType));
                         },
                         error(xhr, status, error) 
                         {
@@ -115,13 +121,18 @@ class Product
                 },
                 insertProduct()
                 {
+                    const vm=this;
                     var catName=this.catName;
                     var  product=this.product;
                     var unit=this.unit;
                     var sellUnit=this.sellUnit;
                     var tax=this.tax;
                     var cess=this.cess;
-                    if(catName!='' && product!='' && unit!='' && sellUnit!='')
+                    var catType=this.catTypeName;
+                    // console.log(catType);
+                    // console.log(this.prc);
+                    // return;
+                    if(catName!='' && product!='' && unit!='' && sellUnit!='' && catType!='')
                     {
                         let log=$.ajax({
                             url: 'ajax/store_all.php',
@@ -134,6 +145,10 @@ class Product
                                 tax:tax,
                                 cess:cess,
                                 insert:"Insert",
+                                catTypeinsert:catType,
+                                prc:vm.prc,
+                                prc1:vm.prc1,
+                                itemcode:vm.itmnam,
                             },
                             success: function(data) 
                             {
@@ -148,12 +163,16 @@ class Product
                                 }
                             }
                         });
-                        console.log(log);
+                        // console.log(log);
                     }else
                     {
                         if(!catName) 
                         {
                             $('#cat12').css('border-color', 'red');
+                        }
+                        if(!catType) 
+                        {
+                            $('#catType').css('border-color', 'red');
                         }
                         if(!product) 
                         {
@@ -214,6 +233,36 @@ class Product
                             console.error(error);
                         }
                     });
+                },
+                CategoryChange()
+                {
+                    var catName=this.catName;
+                    // console.log(catName);
+                },
+                catTypeChange()
+                {
+                    const vm=this;
+                    var catType=this.catTypeName;
+                    let log=$.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{cat:'cat',catTypeitem:catType},
+                        success(response) 
+                        {
+                            vm.categoys = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
+                        },
+                        error(xhr, status, error) 
+                        {
+                            console.error(error);
+                        }
+                    });
+                    if(catType=='Bevarages')
+                    {
+                        $('#bevcat').show();
+                    }else
+                    {
+                        $('#bevcat').hide();
+                    }
                 }
 
             }
@@ -2392,7 +2441,7 @@ class Stock_table
                     $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{cat:'cat'},
+                        data:{catStoreStock:'cat'},
                         success(response) 
                         {
                             // vm.categoys = response;
