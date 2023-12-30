@@ -324,7 +324,8 @@ class Purchase
                 billEdit:false,
                 editbillno:null,
                 stockListdelete:[],
-                editid:''
+                editid:'',
+                focusQty:'',
             },
             mounted() {
                 this.fetchOptions();
@@ -345,7 +346,7 @@ class Purchase
                     $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
-                        data:{cat:'category'},
+                        data:{catStoreStock:'category'},
                         success(response) {
                             // vm.category = response;
                             vm.category = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
@@ -651,6 +652,8 @@ class Purchase
                     const category=this.categoryOption;
                     if(selectedItem && category) 
                     {
+                        console.log(category);
+                        // return;
                         if(this.unit && this.exp && this.qty && this.qty > 0 && this.insideqty > 0 && this.price > 0)
                         {
                             var checkname=selectedItem.pname;

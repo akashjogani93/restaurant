@@ -26,7 +26,8 @@ class pdfMake
                 cellPadding: {horizontal: 4, vertical: 2},
                 textColor: [0, 0, 0],
             },
-            headerStyles: {
+            headerStyles: 
+            {
                 fillColor: [128, 128, 128],
                 textColor: [255, 255, 255],
                 fontSize: 8,
@@ -38,7 +39,8 @@ class pdfMake
                 textColor: [255, 255, 255],
                 lineWidth: 1,
             },
-            columnStyles:coloumSty
+            columnStyles:coloumSty,
+            showFoot: 'lastPage',
         })
         doc.save(save);
     }

@@ -218,7 +218,25 @@
                     { dataKey: 'Closing'},
                     { dataKey: 'Total'},
                     ];
-                pdf.generate(columns,header,save);
+
+                jsonArray=[
+                        {halign: "left" },
+                        {halign: "left" },
+                        {halign: "left" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                        {halign: "right" },
+                    ];
+                pdf.generate(columns,header,save,jsonArray);
             });
 
             $('#wastage').on('input',function()
