@@ -60,17 +60,15 @@
                     <div id="app">
                     <div class="row">
                         <div class="box-body">
-                           
-                                <div class="col-md-2">
-                                    <label for="inputPassword3" class="control-label">Name of Product</label>
-                                    <input type="text" id="product"  placeholder="Name of Product"  name="p1" class="form-control" required="required" autocomplete="off"/>
-                                </div>
-                                <div class="col-md-1">
-                                    <button class="btn btn-danger" id="sub" style="margin-top:27px;">
-                                        Submit
-                                    </button>
-                                </div>
-                           
+                            <div class="col-md-2">
+                                <label for="inputPassword3" class="control-label">Name of Product</label>
+                                <input type="text" id="product"  placeholder="Name of Product"  name="p1" class="form-control" required="required" autocomplete="off"/>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-danger" id="sub" style="margin-top:27px;">
+                                    Submit
+                                </button>
+                            </div>
                         </div>
                     </div>
                     </br>
@@ -111,7 +109,6 @@
                                 </table>
                             </div>
                         </div>
-
                         <!-- Create new Category Module -->
                         <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-sm" role="document">
@@ -180,10 +177,14 @@
                         success:function(response)
                         {
                             alert(response);
-                            location.reload();
+                            if(response=='Product Updated')
+                            {
+                                $('#category').modal('hide');
+                                location.reload();
+                            }
                         }
                     });
-                    console.log(log);
+                    // console.log(log);
                 }
             </script>
         </div>

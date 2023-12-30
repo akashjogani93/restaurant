@@ -30,7 +30,7 @@
         {
             border: 1px solid black;
             padding: 5px;
-            text-align: left;
+            /* text-align: left; */
             white-space: nowrap;
         }
         #soldMaterial{
@@ -108,17 +108,17 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.unit }}</td>
-                                    <td>{{ item.price }}</td>
-                                    <td>{{ item.openingStock }}</td>
+                                    <td class="right-align">{{ item.price }}</td>
+                                    <td class="right-align">{{ item.openingStock }}</td>
                                     <!-- <td>{{ item.opeTotal}}</td> -->
-                                    <td>{{ item.stocksum }}</td>
-                                    <td>{{ item.purTotal}}</td>
-                                    <td>{{ item.issued }}</td>
-                                    <td>{{ item.issuedTotal}}</td>
+                                    <td class="right-align">{{ item.stocksum }}</td>
+                                    <td class="right-align">{{ item.purTotal}}</td>
+                                    <td class="right-align">{{ item.issued }}</td>
+                                    <td class="right-align">{{ item.issuedTotal}}</td>
                                     <!-- <td>{{ item.retur }}</td>
                                     <td>{{ item.retTotal}}</td> -->
-                                    <td>{{ item.cloasing }}</td>
-                                    <td>{{ item.cloTotal}}</td>
+                                    <td class="right-align">{{ item.cloasing }}</td>
+                                    <td class="right-align">{{ item.cloTotal}}</td>
                                     <td>
                                         <button class="btn btn-success" @click="handleIssued(index)">Issue</button>
                                         <!-- <button class="btn btn-info">Return</button> -->
@@ -129,11 +129,11 @@
                                 <tr>
                                     <td colspan="5"></td>
                                     <td>Purchase:</td>
-                                    <td>{{ material.reduce((sum, item) => sum + parseFloat((item.purTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ material.reduce((sum, item) => sum + parseFloat((item.purTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td>Issued:</td>
-                                    <td>{{ material.reduce((sum, item) => sum + parseFloat((item.issuedTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ material.reduce((sum, item) => sum + parseFloat((item.issuedTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td>Cloasing:</td>
-                                    <td>{{ material.reduce((sum, item) => sum + parseFloat((item.cloTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ material.reduce((sum, item) => sum + parseFloat((item.cloTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td></td>
                                 </tr>
                             </tfoot>

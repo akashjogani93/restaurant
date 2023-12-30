@@ -2,7 +2,7 @@
 
 if(isset($_POST['fetchTable']))
 {
-    $query="SELECT DISTINCT `tabno` FROM `temtable`";
+    $query="SELECT DISTINCT `tabno` FROM `temtable` WHERE `type`=0 AND `billno`=0";
     $result=$conn->query($query);
     $tables=array();
     $parcels=array();
@@ -13,7 +13,7 @@ if(isset($_POST['fetchTable']))
             $tables[]=$row;
         }
     }
-    $query1="SELECT DISTINCT `tabno` FROM `parcel`";
+    $query1="SELECT DISTINCT `tabno` FROM `temtable` WHERE `type`=1 AND `billno`=0";
     $result1=$conn->query($query1);
     if($result1->num_rows > 0)
     {
@@ -36,14 +36,14 @@ if(isset($_POST['tabno']))
     $tabno=mysqli_real_escape_string($conn, $tabno);
     $status=mysqli_real_escape_string($conn, $status);
 
-    if($status==0)
-    {
+    // if($status==0)
+    // {
         $tableName='temtable';
-    }else
-    {
-        $tableName='parcel';
-    }
-    $query="SELECT DISTINCT `kot_num` FROM $tableName WHERE `tabno`='$tabno' AND `kot_num`!=0";
+    // }else
+    // {
+    //     $tableName='parcel';
+    // }
+    $query="SELECT DISTINCT `kot_num` FROM $tableName WHERE `tabno`='$tabno' AND `kot_num`!=0 AND `billno`=0";
     $result=$conn->query($query);
     $kots=array();
     if($result->num_rows > 0)

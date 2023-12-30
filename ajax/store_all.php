@@ -18,6 +18,23 @@ if(isset($_POST['cat']))
     $conn->close();
 }
 
+if(isset($_POST['cateByEdit']))
+{
+    $catType=$_POST['cateByEdit'];
+    $sql = "SELECT id,CategoryName FROM categoroy WHERE catType='$catType'";
+    $result = $conn->query($sql);
+    $options = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $options[] = $row;
+        }
+    }
+    // Return the options as JSON response
+    header('Content-Type: application/json');
+    echo json_encode($options);
+    $conn->close();
+}
+
 //Insert Category from store_product;
 if(isset($_POST['addcat']))
 {
@@ -72,7 +89,7 @@ if(isset($_POST['catName']))
         
         $twoMonthsLater = date('Y-m-d', strtotime('+2 months', strtotime($currentDate)));
 
-        $checkQuery = "SELECT * FROM `products` WHERE `pname` = '$product' AND `category` = '$sellUnit'";
+        $checkQuery = "SELECT * FROM `products` WHERE `pname` = '$product' AND `category` = '$catName'";
         $result=$conn->query($checkQuery);
         if($result->num_rows > 0)
         {
@@ -291,36 +308,39 @@ if(isset($_POST['productKitchenChange']))
 if(isset($_POST['cattype']))
 {
     $cattype = $_POST['cattype'];
-
-    $pid = $_POST['pid'];
-
-    $pqty = $_POST['pqty']; //total stock have
-    $punit = $_POST['punit'];
-
-    $uqty = $_POST['uqty']; //add to kitchen
-    $gdate = $_POST['gdate']; 
+    $kitchenData=$_POST['kitchenData'];
     $currentDate = date('Y-m-d');
+    foreach($kitchenData as $item)
+    {
+        $pid = $item['pid'];
+        $pqty = $item['pqty']; //total stock have
+        $punit = $item['punit'];
 
-    $insertStore="INSERT INTO `store_stock`(`pid`,`issuedStock`,`date`)VALUES('$pid','$uqty','$gdate')";
-    $excinsert=mysqli_query($conn,$insertStore);
-    $insertId=mysqli_insert_id($conn);
-    if($cattype=="bev")
-    {
-        $query="INSERT INTO `beverages`(`pid`, `stock`, `date`) VALUES ('$pid','$uqty','$gdate')";
-        $exc = mysqli_query($conn, $query);
-        echo 'Sold';
-    }else if($cattype=="parcel")
-    {
-        $query="INSERT INTO `parcelmaterial`(`pid`, `stock`, `date`) VALUES ('$pid','$uqty','$gdate')";
-        $exc = mysqli_query($conn, $query);
-        echo 'Sold';
+        $uqty = $item['uqty']; //add to kitchen
+        $gdate = $item['gdate']; 
+
+        $insertStore="INSERT INTO `store_stock`(`pid`,`issuedStock`,`date`)VALUES('$pid','$uqty','$gdate')";
+        $excinsert=mysqli_query($conn,$insertStore);
+        $insertId=mysqli_insert_id($conn);
+        if($cattype=="bev")
+        {
+            $query="INSERT INTO `beverages`(`pid`, `stock`, `date`) VALUES ('$pid','$uqty','$gdate')";
+            $exc = mysqli_query($conn, $query);
+            // echo 'Sold';
+        }else if($cattype=="parcel")
+        {
+            $query="INSERT INTO `parcelmaterial`(`pid`, `stock`, `date`) VALUES ('$pid','$uqty','$gdate')";
+            $exc = mysqli_query($conn, $query);
+            // echo 'Sold';
+        }
+        else
+        {
+            $query="INSERT INTO `store_kitchen`(`pid`,`stock`,`date`,`stock_id`) VALUES ('$pid','$uqty','$gdate','$insertId')";
+            $exc = mysqli_query($conn, $query);
+            // echo 'Added To Kitchen';
+        }
     }
-    else
-    {
-        $query="INSERT INTO `store_kitchen`(`pid`,`stock`,`date`,`stock_id`) VALUES ('$pid','$uqty','$gdate','$insertId')";
-        $exc = mysqli_query($conn, $query);
-        echo 'Added To Kitchen';
-    }
+    echo 'Added To Kitchen';
 }
 
 //show beaverages Category
@@ -461,24 +481,35 @@ if(isset($_POST['assetsProduct']) && isset($_POST['check']))
     $check=$_POST['check'];
     if($check=='insert')
     {
-        $query="INSERT INTO `assetsProduct`(`product`)VALUES('$product')";
-        $exc=mysqli_query($conn,$query);
-        if($exc)
-        {
-            $id=mysqli_insert_id($conn);
-            $inv="INSERT INTO `assetsstock`(`pur_id`,`date`) VALUES ('$id','$currentDate')";
-            $out=mysqli_query($conn,$inv);
-            echo 'Product Added';
+        $checkQuery = "SELECT * FROM `assetsProduct` WHERE `product`='$product'";
+        $checkResult = mysqli_query($conn, $checkQuery);
+        if (mysqli_num_rows($checkResult) > 0) {
+            echo 'Product already exists';
+        } else {
+            $query="INSERT INTO `assetsProduct`(`product`)VALUES('$product')";
+            $exc=mysqli_query($conn,$query);
+            if($exc)
+            {
+                $id=mysqli_insert_id($conn);
+                $inv="INSERT INTO `assetsstock`(`pur_id`,`date`) VALUES ('$id','$currentDate')";
+                $out=mysqli_query($conn,$inv);
+                echo 'Product Added';
+            }
         }
     }else
     {
         $idp=$_POST['idp'];
-        // $query="INSERT INTO `assetsProduct`(`product`)VALUES('$product')";
-        $query="UPDATE `assetsProduct` SET `product`='$product' WHERE `id`='$idp'";
-        $exc=mysqli_query($conn,$query);
-        if($exc)
-        {
-            echo 'Product Updated';
+        $checkQuery = "SELECT * FROM `assetsProduct` WHERE `product`='$product' AND `id` != '$idp'";
+        $checkResult = mysqli_query($conn, $checkQuery);
+        if (mysqli_num_rows($checkResult) > 0) {
+            echo 'Product name already exists';
+        } else {
+            $query="UPDATE `assetsProduct` SET `product`='$product' WHERE `id`='$idp'";
+            $exc=mysqli_query($conn,$query);
+            if($exc)
+            {
+                echo 'Product Updated';
+            }
         }
     }
 }
@@ -1253,6 +1284,4 @@ if(isset($_POST['checkStoreBill']) && isset($_POST['stobill_bill']) && isset($_P
     }
     echo $status;
 }
-
-
 ?>

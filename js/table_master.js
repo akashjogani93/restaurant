@@ -411,6 +411,7 @@ function KotPrint(tabno)
         cache: false,
         success: function(status)
         {
+            console.log(status)
             window.location="final_kot.php?tabno="+status;
         }
     });
@@ -418,17 +419,25 @@ function KotPrint(tabno)
 
 function cancel_Kot(kotnumber)
 {
+    $('#kot_cancelNum').val(kotnumber);
+    $('#category').modal('show');
+}
+function cancel()
+{
+    var kotnumber=$('#kot_cancelNum').val();
+    var reson=$('#cancel_reson').val();
     let log=$.ajax({
         type: "post",
         url: "ajax/table_master.php",
         data:{
                 cancel_Kot: kotnumber,
+                reson:reson
             },
         cache: false,
         success: function(status)
         {
             console.log(status);
-            window.location="table_master.php?tabno="+status;
+            window.location="cancel_kot.php?tabno="+status+"&back=0";
         }
     });
 }
@@ -445,13 +454,16 @@ function delitm(slno)
         $.ajax({
             type: "post",
             url: "ajax/table_master.php",
+            dataType: 'json',
             data: {
                 itmno: slno,
                 delete: "delete"
             },
             success: function(status) 
             {
-                $('#itemlist').load("order_data.php?tabno="+status);
+                var message=status[1];
+
+                $('#itemlist').load("order_data.php?tabno="+status[0]);
                 $('#boxx').load("bill_data.php");
             }
         });
@@ -515,7 +527,6 @@ function printData(tab_no,event)
         var capnameValue = capnameElement ? capnameElement.textContent : '';
         var disPerValue = row.querySelector('.disPer').value;
         var chargebleValue = row.querySelector('#chargeble').value;
-
         if(disPerValue=='%')
         {
             disPerValue=0;
@@ -573,12 +584,6 @@ function settle(event)
     var tabno = currentRow.querySelector('td:nth-child(2)').textContent;
     var amount = currentRow.querySelector('td:nth-child(3)').textContent;
     var paymentMethod = document.getElementById('payment').value;
-
-    // Now you have the values, and you can use them as needed
-    // console.log('billno:', billno);
-    // console.log('tabno:', tabno);
-    // console.log('amount:', amount);
-    // console.log('paymentMethod:', paymentMethod);
     let log=$.ajax({
         type: 'POST',
         url: 'ajax/billsettle.php',

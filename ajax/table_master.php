@@ -237,70 +237,21 @@ if(isset($_POST['kot']))
     $current_time = date("h:i A");
     $tabno=$_POST['kot'];
     $type=0;
-    // $sqlkot = "SELECT `kot_num` AS `kotnumber` FROM `kot` WHERE `date`='$current_date'";
-    // $result=mysqli_query($conn, $sqlkot);
-    // if(mysqli_num_rows($result) > 0)
-    // {
-    //     $sqlkot1 = "SELECT MAX(`kot_num`) AS `kotnumber` FROM `kot` WHERE `date`='$current_date'";
-    //     $result1=mysqli_query($conn, $sqlkot1);
-    //     while($row = mysqli_fetch_array($result1))
-    //     {
-    //         $kotnumber = $row['kotnumber']+1;
-    //     }
-    // }else 
-    // {
-    //     $sqlkot1="SELECT `kot_num` AS `kotnumber` FROM `kot_history` WHERE `date`='$current_date' ";
-    //     $result1=mysqli_query($conn, $sqlkot1);
-    //     if (mysqli_num_rows($result1) > 0)
-    //     {
-    //         $sqlkot2="SELECT MAX(`kot_num`) AS `kotnumber` FROM `kot_history` WHERE `date`='$current_date' ";
-    //         $result2=mysqli_query($conn, $sqlkot2);
-    //         while($row=mysqli_fetch_array($result2))
-    //         {
-    //             $kotnumber=$row['kotnumber']+1;
-    //         }
-    //     }else
-    //     {
-    //         $kotnumber=1;
-    //     }
-    // }
-    $sqlkot = "SELECT `kot_num` AS `kotnumber` FROM `temtable` WHERE `date`='$current_date'";
-    $result=mysqli_query($conn, $sqlkot);
-    if(mysqli_num_rows($result) > 0)
+    $sqlkot="SELECT MAX(kot_num) AS kotnumber
+                FROM (
+                    SELECT kot_num FROM temtable WHERE `date` = '$current_date'
+                    UNION
+                    SELECT kot_num FROM tabledata WHERE `date` = '$current_date'
+                    UNION
+                    SELECT kot_num FROM kot_cancel WHERE `date` = '$current_date'
+                    UNION
+                    SELECT 1 AS kot_num -- Default value if date doesn't match in any table
+                ) AS my_alias;";
+    $result1=mysqli_query($conn, $sqlkot);
+    while($row = mysqli_fetch_array($result1))
     {
-        $sqlkot1 = "SELECT MAX(`kot_num`) AS `kotnumber` FROM `temtable` WHERE `date`='$current_date'";
-        $result1=mysqli_query($conn, $sqlkot1);
-        while($row = mysqli_fetch_array($result1))
-        {
-            $kotnumber = $row['kotnumber']+1;
-        }
-    }else 
-    {
-        $sqlkot1="SELECT `kot_num` AS `kotnumber` FROM `kot_history` WHERE `date`='$current_date' ";
-        $result1=mysqli_query($conn, $sqlkot1);
-        if (mysqli_num_rows($result1) > 0)
-        {
-            $sqlkot2="SELECT MAX(`kot_num`) AS `kotnumber` FROM `kot_history` WHERE `date`='$current_date' ";
-            $result2=mysqli_query($conn, $sqlkot2);
-            while($row=mysqli_fetch_array($result2))
-            {
-                $kotnumber=$row['kotnumber']+1;
-            }
-        }else
-        {
-            $kotnumber=1;
-        }
+        $kotnumber = $row['kotnumber']+1;
     }
-    // $SELECTDATA="SELECT * FROM `temtable` WHERE `kot_num`=0 AND `tabno`='$tabno' AND `status`='$status' AND `billno`='$bill' AND `type`='$type'";
-    // $SELECTRESULT=mysqli_query($conn,$SELECTDATA);
-    // if(mysqli_num_rows($SELECTRESULT) > 0)
-    // {
-    //     while($out=mysqli_fetch_assoc($SELECTRESULT))
-    //     {
-    //         $slno=$out['slno'];
-            // $kotinsert="INSERT INTO `kot`(`date`,`tabno`,`kot_num`,`time`,`status`)VALUES('$current_date','$tabno','$kotnumber','$current_time','$slno')";
-            // $kotInsertResult=mysqli_query($conn,$kotinsert);
-        // }
        $run=mysqli_query($conn, "UPDATE `temtable` SET `kot_num`='$kotnumber' WHERE `tabno`='$tabno' AND `status`='$status' AND `kot_num`=0 AND `billno`='$bill' AND `type`='$type'");
     if($run)
     {
@@ -312,9 +263,10 @@ if(isset($_POST['kot']))
 }
 
 //KOT-Cancel
-if(isset($_POST['cancel_Kot']))
+if(isset($_POST['cancel_Kot']) && isset($_POST['reson']))
 {
     $kot=$_POST['cancel_Kot'];
+    $reson=$_POST['reson'];
     $type=0;
     $cancel_time = date("h:i A");
     $query="SELECT * FROM `temtable` WHERE `kot_num`='$kot'";
@@ -332,13 +284,12 @@ if(isset($_POST['cancel_Kot']))
         $captain = $row['capname'];
         $cap_code = $row['cap_code'];
         $kot_time = $row['time'];
-        $reson = 'none';
+        // $reson = 'none';
         $cancel="INSERT INTO `kot_cancel`(`date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `kot_num`, `captain`, `cap_code`, `kot_time`, `cancel_time`, `reson`,`cashid`,`type`) VALUES ('$date','$itmno','$itmnam','$prc','$qty','$tot','$tabno','$kot','$captain','$cap_code','$kot_time','$cancel_time','$reson','$cash_id','$type')";
         $exc1=mysqli_query($conn,$cancel);
     }
     mysqli_query($conn,"DELETE FROM `temtable` WHERE `kot_num`='$kot'");
-    // mysqli_query($conn,"DELETE FROM `kot` WHERE `kot_num`='$kot'");
-    echo $tabno;
+    echo $kot;
 }
 
 //delelte Item
@@ -346,7 +297,7 @@ if(isset($_POST['delete'],$_POST['itmno']))
 {
     $itmno = $_POST['itmno'];
     $itmno1=$itmno;
-
+    $a=array();
     $sql1="SELECT * FROM `temtable` WHERE `slno`='$itmno'";
     $res=mysqli_query($conn,$sql1);
     while($r=mysqli_fetch_array($res))
@@ -364,16 +315,24 @@ if(isset($_POST['delete'],$_POST['itmno']))
         $kot_num=$r['kot_num'];
         $cap_code=$r['cap_code'];
         $time=$r['time'];
-        $sql="INSERT INTO `trash`(`date`, `itemname`, `itmno`, `prc`, `qty`, `tot`, `tabno`, `capname`, `kot_num`, `capcode`, `time`) VALUES ('$date','$itmnam','$itmno','$prc','$qty','$tot','$tabno','$capname','$kot_num','$cap_code','$time')";
-        $exc=mysqli_query($conn, $sql);
-        if($exc)
+        $query="SELECT * FROM `temtable` WHERE `billno`='$billno' AND `tabno`='$tabno'";
+        $exccheck=mysqli_query($conn,$query);
+        if(mysqli_num_rows($exccheck) > 1)
         {
-            // $sql1="DELETE FROM `temtable` WHERE `slno`='".$itmno1."'";
-            mysqli_query($conn,"DELETE FROM `temtable` WHERE `slno`='$slno'");
-            // mysqli_query($conn,"DELETE FROM `kot` WHERE `status`='$slno'");
+            $sql="INSERT INTO `trash`(`date`, `itemname`, `itmno`, `prc`, `qty`, `tot`, `tabno`, `capname`, `kot_num`, `capcode`, `time`) VALUES ('$date','$itmnam','$itmno','$prc','$qty','$tot','$tabno','$capname','$kot_num','$cap_code','$time')";
+            $exc=mysqli_query($conn, $sql);
+            if($exc)
+            {
+                mysqli_query($conn,"DELETE FROM `temtable` WHERE `slno`='$slno'");
+            }
+            array_push($a,$tabno,'Deleted');
+        }else
+        {
+            array_push($a,$tabno,'You cant Delete');
         }
     }
-    echo $tabno;
+    echo json_encode($a);
+    // echo $tabno;
 }
 
 //merge Table

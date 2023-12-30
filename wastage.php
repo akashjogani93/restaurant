@@ -68,7 +68,7 @@
                                 <tr v-for="(item, index) in stockList" :key="item.id">
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.pname }}</td>
-                                    <td>{{ item.qty }}</td>
+                                    <td class="right-align">{{ parseFloat(item.qty).toFixed(2) }}</td>
                                     <td>{{ item.sellunit }}</td>
                                     <td>{{ item.date }}</td>
                                 </tr>

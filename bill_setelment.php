@@ -3,7 +3,7 @@
         <tr>
             <th>Bill No</th>
             <th>Table</th>
-            <th>Total Amount</th>
+            <th>Total</th>
             <th>Payment</th>
             <th>Edit</th>
             <th>Settle</th>
@@ -34,7 +34,7 @@
                     <tr>
                         <td><?php echo $row3['slno']; ?></td>
                         <td><?php echo $row3['tabno']; ?></td>
-                        <td><?php echo $amount; ?></td>
+                        <td><?php echo number_format($amount,2); ?></td>
                         <td>
                             <select class="form-control" name="payment" id="payment" style="background-color: #4F4557; color: #B0DAFF;">
                             <?php

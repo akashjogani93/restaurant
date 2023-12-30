@@ -93,8 +93,8 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.pname }}</td>
                                     <td>{{ item.sellunit }}</td>
-                                    <td>{{ item.stock }}</td>
-                                    <td>{{ item.issued }}</td>
+                                    <td class="right-align">{{ formatNumber(item.stock) }}</td>
+                                    <td class="right-align">{{ formatNumber(item.issued) }}</td>
                                     <td>{{ item.date }}</td>
                                 </tr>
                             </tbody>
@@ -151,21 +151,6 @@
                         lineWidth: 1,
                     },
                 })
-
-                // doc.setProperties({
-                //     title: 'Product Detailed Report',
-                //     subject: 'This is the Product Detailed Report',
-                //     author: 'Author Name',
-                //     keywords: 'generated, javascript, web 2.0, ajax',
-                //     creator: 'Author Name',
-                //     margins: {
-                //         top: 0,
-                //         bottom: 0,
-                //         left: 0,
-                //         right: 0,
-                //     },
-                //     pageSize: 'letter',
-                // });
                 doc.save('beaverages_history');
             }
     </script>

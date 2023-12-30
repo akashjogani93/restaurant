@@ -70,13 +70,13 @@
                                                         <td><?php echo $row['bill']; ?></td>                                            
                                                         <td><?php echo $row['vendor']; ?></td>
                                                         <td><?php echo $row['purchase_date']; ?></td>
-                                                        <td><?php echo number_format($row['gamt'],2); ?></td>
-                                                        <td><?php echo number_format($row['disc'],2); ?></td>
-                                                        <td><?php echo number_format($row['tax'],2); ?></td>
-                                                        <td><?php echo number_format($row['cessamount'],2); ?></td>
-                                                        <td><?php echo number_format($row['otheramt'],2); ?></td>
-                                                        <td><?php echo number_format($row['totalamt'],2); ?></td>
-                                                        <td><?php echo number_format($row['pamt'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['gamt'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['disc'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['tax'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['cessamount'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['otheramt'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['totalamt'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['pamt'],2); ?></td>
                                                         <td><?php echo $row['remark']; ?></td>
                                                         <td><button  class="btn btn-primary btn-sm" data-toggle="modal" id="view-pro">
                                                                 <i class='bx bx-show'></i>

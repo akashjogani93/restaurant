@@ -30,7 +30,7 @@
         {
             border: 1px solid black;
             padding: 5px;
-            text-align: left;
+            /* text-align: left; */
             white-space: nowrap;
         }
         #kitchenStock{
@@ -108,17 +108,17 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.unit }}</td>
-                                    <td>{{ item.price }}</td>
-                                    <td>{{ item.openingStock }}</td>
+                                    <td class="right-align">{{ item.price }}</td>
+                                    <td class="right-align">{{ item.openingStock }}</td>
                                     <!-- <td>{{ item.opeTotal}}</td> -->
-                                    <td>{{ item.stocksum }}</td>
-                                    <td>{{ item.purTotal}}</td>
-                                    <td>{{ item.issued }}</td>
-                                    <td>{{ item.issuedTotal}}</td>
-                                    <td>{{ item.retur }}</td>
-                                    <td>{{ item.retTotal}}</td>
-                                    <td>{{ item.cloasing }}</td>
-                                    <td>{{ item.cloTotal}}</td>
+                                    <td class="right-align">{{ item.stocksum }}</td>
+                                    <td class="right-align">{{ item.purTotal}}</td>
+                                    <td class="right-align">{{ item.issued }}</td>
+                                    <td class="right-align">{{ item.issuedTotal}}</td>
+                                    <td class="right-align">{{ item.retur }}</td>
+                                    <td class="right-align">{{ item.retTotal}}</td>
+                                    <td class="right-align">{{ item.cloasing }}</td>
+                                    <td class="right-align">{{ item.cloTotal}}</td>
                                     <td>
                                         <button class="btn btn-success" @click="handleIssued(index)">Issue</button>
                                         <button class="btn btn-info" @click="handleReturn(index)">Return</button>
@@ -129,13 +129,13 @@
                                 <tr>
                                     <td colspan="5"></td>
                                     <td>Purchase:</td>
-                                    <td>{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.purTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.purTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td>Issued:</td>
-                                    <td>{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.issuedTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.issuedTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td>Return:</td>
-                                    <td>{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.retTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
-                                    <td>Cloasing:</td>
-                                    <td>{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.cloTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.retTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Closing:</td>
+                                    <td class="right-align">{{ kitchenstock.reduce((sum, item) => sum + parseFloat((item.cloTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td></td>
                                 </tr>
                             </tfoot>
@@ -232,7 +232,12 @@
                     {dataKey: 'Closing'},
                     {dataKey: 'Price'},
                     ];
-                pdf.generate(columns,header,save);
+
+                coloumSty={
+                    3: { align: 'right' },
+                    4: { align: 'right' },
+            },
+                pdf.generate(columns,header,save,coloumSty);
             });
 
             $('#issued').on('input',function()

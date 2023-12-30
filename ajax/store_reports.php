@@ -32,14 +32,14 @@ if(isset($_POST['store_report']) && isset($_POST['fdate']) && isset($_POST['tdat
                 <td><?php echo $category; ?></td>
                 <td><?php echo $pname; ?></td>
                 <td><?php echo $unit; ?></td>
-                <td><?php echo $qty; ?></td>
-                <td><?php echo number_format($price,2); ?></td>
-                <td><?php echo number_format($bamt,2); ?></td>
-                <td><?php echo number_format($disc,2); ?></td>
-                <td><?php echo number_format($tax,2); ?></td>
-                <td><?php echo number_format($cess,2); ?></td>
-                <td><?php echo number_format($total,2); ?></td>
-                <td><?php echo $purchase_date; ?></td>
+                <td class="right-align"><?php echo number_format($qty,2); ?></td>
+                <td class="right-align"><?php echo number_format($price,2); ?></td>
+                <td class="right-align"><?php echo number_format($bamt,2); ?></td>
+                <td class="right-align"><?php echo number_format($disc,2); ?></td>
+                <td class="right-align"><?php echo number_format($tax,2); ?></td>
+                <td class="right-align"><?php echo number_format($cess,2); ?></td>
+                <td class="right-align"><?php echo number_format($total,2); ?></td>
+                <td class="right-align"><?php echo $purchase_date; ?></td>
             </tr>
         <?php
         $i++;
@@ -70,9 +70,9 @@ if(isset($_POST['assets']) && isset($_POST['fdate']) && isset($_POST['tdate']))
             <tr>
                 <td><?php echo $i+1; ?></td>
                 <td><?php echo $product; ?></td>
-                <td><?php echo $qty; ?></td>
-                <td><?php echo number_format($amount,2); ?></td>
-                <td><?php echo number_format($total,2); ?></td>
+                <td class="right-align"><?php echo number_format($qty,2); ?></td>
+                <td class="right-align"><?php echo number_format($amount,2); ?></td>
+                <td class="right-align"><?php echo number_format($total,2); ?></td>
                 <td><?php echo $date; ?></td>
             </tr>
         <?php
@@ -102,8 +102,8 @@ if(isset($_POST['damData']) && isset($_POST['fdate']) && isset($_POST['tdate']))
             <tr>
                 <td><?php echo $i+1; ?></td>
                 <td><?php echo $product; ?></td>
-                <td><?php echo $qty; ?></td>
-                <td><?php echo number_format($amount,2); ?></td>
+                <td class="right-align"><?php echo number_format($qty,2); ?></td>
+                <td class="right-align"><?php echo number_format($amount,2); ?></td>
                 <td><?php echo $date; ?></td>
             </tr>
         <?php

@@ -1,6 +1,6 @@
 class pdfMake
 {
-    generate(headers,labe,save)
+    generate(headers,labe,save,coloumSty)
     {
         var fdate=$('#fdate').val();
         var tdate=$('#tdate').val();
@@ -38,6 +38,7 @@ class pdfMake
                 textColor: [255, 255, 255],
                 lineWidth: 1,
             },
+            columnStyles:coloumSty
         })
         doc.save(save);
     }

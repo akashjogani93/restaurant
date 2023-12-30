@@ -95,11 +95,10 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.pname }}</td>
                                     <td>{{ item.sellunit }}</td>
-                                    <td>{{ item.stock }}</td>
-                                    <td>{{ item.issued }}</td>
-                                    <td>{{ item.stockreturn }}</td>
+                                    <td class="right-align">{{ formatNumber(item.stock) }}</td>
+                                    <td class="right-align">{{ formatNumber(item.issued) }}</td>
+                                    <td class="right-align">{{ formatNumber(item.stockreturn) }}</td>
                                     <td>{{ item.date }}</td>
-                                    <!-- <td><button class="btn btn-info" @click="handleEdit(index)">Edit</button></td> -->
                                 </tr>
                             </tbody>
                         </table>

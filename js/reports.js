@@ -18,6 +18,11 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
+        
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -38,6 +43,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         var typ=$("#typ").val();
         // var typ='All';
         let log=$.ajax({
@@ -62,6 +71,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -82,6 +95,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -102,6 +119,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -122,6 +143,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -143,6 +168,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -164,6 +193,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -185,6 +218,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         var pay=$("#pay").val();
         let log=$.ajax({
             type: "post",
@@ -208,6 +245,10 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -228,6 +269,12 @@ class Reports
     {
         var fdate=$("#fdate").val();
         var tdate=$("#tdate").val();
+
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
+
         let log=$.ajax({
             type: "post",
             url: "ajax/reports.php",
@@ -243,5 +290,31 @@ class Reports
                 $('#mainData').append(status);
             }
         });
+    }
+    loginTime()
+    {
+        var fdate=$("#fdate").val();
+        var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
+        
+        let log=$.ajax({
+            type: "post",
+            url: "ajax/reports.php",
+            data:{
+                    loginTime: 'loginTime',
+                    fdate:fdate,
+                    tdate:tdate
+                },
+            cache: false,
+            success: function(status)
+            {
+                $('#loginTime').empty();
+                $('#loginTime').append(status);
+            }
+        });
+        console.log(log);
     }
 }

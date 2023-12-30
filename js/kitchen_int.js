@@ -21,6 +21,7 @@ class Product
             data:{
                 stockList: [],
                 categoys:[], 
+                categoys1:[],
                 catName:'',
                 product:'',
                 unit:'',
@@ -42,7 +43,6 @@ class Product
                         data:{cat:'cat'},
                         success(response) 
                         {
-                            // vm.categoys = response;
                             vm.categoys = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
                         },
                         error(xhr, status, error) 
@@ -123,7 +123,7 @@ class Product
                     var cess=this.cess;
                     if(catName!='' && product!='' && unit!='' && sellUnit!='')
                     {
-                        $.ajax({
+                        let log=$.ajax({
                             url: 'ajax/store_all.php',
                             type: "POST",
                             data: {
@@ -137,16 +137,18 @@ class Product
                             },
                             success: function(data) 
                             {
+                                console.log(data);
                                 if(data==1)
                                 {
                                     alert("Product Already Added");
                                 }else
                                 {
                                     alert("Product Added");
-                                    location.reload();
+                                    // location.reload();
                                 }
                             }
                         });
+                        console.log(log);
                     }else
                     {
                         if(!catName) 
@@ -179,18 +181,39 @@ class Product
                         }
                     }
                 },
-                editItem() 
+                editItem(pid) 
                 {
-                    console.log('running');
-                    // var tar = e.currentTarget;
-                    // var chil = tar.parentElement.parentElement.children;
-                    // var form = $("#category input");
-                    // console.log(form);
-                    // form[0].value = (chil[1].innerHTML);
-                    // form[1].value = (chil[0].innerHTML);
-                    // var cat=chil[2].innerHTML;
-                    // $('#editcat').val(cat);
-                    // $('#unitchange').val(chil[3].innerHTML);
+                    $('#category').modal('show');
+                    
+                    var tar = pid.currentTarget;
+                    var chil = tar.parentElement.parentElement.children;
+                    var form = $("#category input");
+                    var catType=chil[1].innerHTML;
+                    this.categoryFetchByEdit(catType)
+                    form[0].value = (chil[2].innerHTML);
+                    form[1].value = (chil[0].innerHTML);
+                    form[2].value = (chil[6].innerHTML);
+                    form[3].value = (chil[7].innerHTML);
+                    form[4].value = (chil[1].innerHTML);
+
+                    this.catName1=chil[3].innerHTML;
+                },
+                categoryFetchByEdit(catType)
+                {
+                    const vm=this;
+                    $.ajax({
+                        url: 'ajax/store_all.php',
+                        method: 'POST',
+                        data:{cateByEdit:catType},
+                        success(response) 
+                        {
+                            vm.categoys1 = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
+                        },
+                        error(xhr, status, error) 
+                        {
+                            console.error(error);
+                        }
+                    });
                 }
 
             }
@@ -1023,7 +1046,8 @@ class Kitchen
                         url: 'ajax/store_all.php',
                         method: 'POST',
                         data:{kit:category},
-                        success(response) {
+                        success(response) 
+                        {
                             vm.options = response;
                         },
                         error(xhr, status, error) {
@@ -1045,6 +1069,10 @@ class Kitchen
                     {
                         $('#tdate').css('border-color','red');
                         return;
+                    }
+                    if (new Date(tdate) < new Date(fdate)) {
+                        alert("Please Select Valid Date");
+                        return; // Stop further execution if the condition is not met
                     }
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
@@ -1073,6 +1101,10 @@ class Kitchen
                     {
                         $('#tdate').css('border-color','red');
                         return;
+                    }
+                    if (new Date(tdate) < new Date(fdate)) {
+                        alert("Please Select Valid Date");
+                        return; // Stop further execution if the condition is not met
                     }
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
@@ -1181,7 +1213,11 @@ class Kitchen
                 {
                     var stock_id=this.kitchenpurchase[index].stock_id;
                     window.location="store_kitchen_given.php?stock="+stock_id;
-                }
+                },
+                formatNumber(number) {
+                    // Assuming you want toFixed with 2 decimal places
+                    return parseFloat(number).toFixed(2);
+                },
             }
         });
     }
@@ -1195,16 +1231,16 @@ class Assets_Product
     }
     initializeTabs()
     {
-        let pro=$.ajax({
-            url:'ajax/store_all.php',
-            type:'POST',
-            data:{assetsdata:'get'},
-            dataType:'JSON',
-            success:function(response)
-            {
-                // console.log(response);
-            }
-        });
+        // let pro=$.ajax({
+        //     url:'ajax/store_all.php',
+        //     type:'POST',
+        //     data:{assetsdata:'get'},
+        //     dataType:'JSON',
+        //     success:function(response)
+        //     {
+        //         // console.log(response);
+        //     }
+        // });
 
         $('#sub').on('click',function()
         {
@@ -1221,9 +1257,9 @@ class Assets_Product
                 data:{assetsProduct:product,check:check},
                 success:function(response)
                 {
-                    // console.log(response);
                     alert(response);
-                    location.reload();
+                    // location.reload();
+                    var product = $('#product').val('');
                 }
             });
             // console.log(log);
@@ -1488,6 +1524,10 @@ class Beaverages
                         $('#tdate').css('border-color','red');
                         return;
                     }
+                    if (new Date(tdate) < new Date(fdate)) {
+                        alert("Please Select Valid Date");
+                        return; // Stop further execution if the condition is not met
+                    }
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
@@ -1500,6 +1540,7 @@ class Beaverages
                             console.error(error);
                         }
                     });
+                    console.log(log);
                 },
                 beveragesHis()
                 {
@@ -1515,6 +1556,10 @@ class Beaverages
                     {
                         $('#tdate').css('border-color','red');
                         return;
+                    }
+                    if (new Date(tdate) < new Date(fdate)) {
+                        alert("Please Select Valid Date");
+                        return; // Stop further execution if the condition is not met
                     }
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
@@ -1624,7 +1669,11 @@ class Beaverages
                 {
                     var stock_id=this.kitchenpurchase[index].stock_id;
                     window.location="store_kitchen_given.php?stock="+stock_id;
-                }
+                },
+                formatNumber(number) {
+                    // Assuming you want toFixed with 2 decimal places
+                    return parseFloat(number).toFixed(2);
+                },
             },
             mounted()
             {
@@ -1714,6 +1763,10 @@ class parcelMaterial
                         $('#tdate').css('border-color','red');
                         return;
                     }
+                    if (new Date(tdate) < new Date(fdate)) {
+                        alert("Please Select Valid Date");
+                        return; // Stop further execution if the condition is not met
+                    }
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
@@ -1741,6 +1794,10 @@ class parcelMaterial
                     {
                         $('#tdate').css('border-color','red');
                         return;
+                    }
+                    if (new Date(tdate) < new Date(fdate)) {
+                        alert("Please Select Valid Date");
+                        return; // Stop further execution if the condition is not met
                     }
                     let log= $.ajax({
                         url: 'ajax/store_all.php',
@@ -1849,7 +1906,11 @@ class parcelMaterial
                 {
                     var stock_id=this.kitchenpurchase[index].stock_id;
                     window.location="store_kitchen_given.php?stock="+stock_id;
-                }
+                },
+                formatNumber(number) {
+                    // Assuming you want toFixed with 2 decimal places
+                    return parseFloat(number).toFixed(2);
+                },
             },
             mounted()
             {
@@ -2348,6 +2409,10 @@ class Stock_table
                     var catName=this.catName;
                     var fdate=$("#fdate").val();
                     var tdate=$("#tdate").val();
+                    if (new Date(tdate) < new Date(fdate)) {
+                        alert("Please Select Valid Date");
+                        return; // Stop further execution if the condition is not met
+                    }
                     let log=$.ajax({
                         url: 'ajax/store_all.php',
                         method: 'POST',
@@ -2362,7 +2427,7 @@ class Stock_table
                             console.error(error);
                         }
                     });
-                    console.log(log);
+                    // console.log(log);
                 },
                 // sortstocklist() 
                 // {

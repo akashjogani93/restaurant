@@ -13,6 +13,20 @@
                 text-align:center;
                 font-size:11px;
             }
+            .table>thead
+            {
+                background-color:grey;
+                color:white;
+            }
+            .table{
+                border-collapse: collapse;
+            }
+            .table th,
+            .table td
+            {
+                border: 1px solid black;
+                padding: 5px;
+            }
         </style>
         <div class="content-wrapper">
             <section class="content-header">
@@ -31,155 +45,157 @@
             </div>
             </section>
             <section class="content">
-                <div class="box box-default">
-                    <div class="row">
-                        <div class="box-body">
-                            <div id="app">
-                                <div class="col-md-2">
-                                    <label for="inputPassword3" class="control-label">Select Category</label>
-                                    <select class="form-control" id="cat12" name="cat" placeholder="category" required v-model="catName">
-                                        <option value="">Select</option>
-                                        <option v-for="category in categoys" :value="category.CategoryName">{{ category.CategoryName }}</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="inputPassword3" class="control-label">Name of Product</label>
-                                    <input type="text" id="form-field-1"  placeholder="Name of Product"  name="p1" class="form-control" required="required" autocomplete="off" v-model="product"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="inputPassword3" class="control-label">Purchase Unit</label>
-                                    <select class="form-control" name="unit" v-model="unit" placeholder="Select Unit" id="unit">
-                                        <option value="KG">KG</option>
-                                        <option value="Litre">Litre</option>
-                                        <option value="Box">Box</option>
-                                        <!-- <option value="Gram">Gram</option> -->
-                                        <option value="Pack">Pack</option>
-                                        <option value="Tin">Tin</option>
-                                        <option value="Bottle">Bottle</option>
-                                        <!-- <option value="Bundle">Bundle</option> -->
-                                        <option value="Packet">Packet</option>
-                                        <!-- <option value="Jar">Jar</option> -->
-                                        <option value="Piece">Piece</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="inputPassword3" class="control-label">Sell Unit</label>
-                                    <select class="form-control" name="sellUnit" v-model="sellUnit" placeholder="Select Unit" id="sellUnit">
-                                        <option value="KG">KG</option>
-                                        <option value="Litre">Litre</option>
-                                        <option value="Box">Box</option>
-                                        <!-- <option value="Gram">Gram</option> -->
-                                        <option value="Pack">Pack</option>
-                                        <option value="Tin">Tin</option>
-                                        <option value="Bottle">Bottle</option>
-                                        <!-- <option value="Bundle">Bundle</option> -->
-                                        <option value="Packet">Packet</option>
-                                        <!-- <option value="Jar">Jar</option> -->
-                                        <option value="Piece">Piece</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="inputPassword3" class="control-label">Tax</label>
-                                    <input type="number" placeholder="Tax"  name="tax" id="tax" class="form-control" required="required" autocomplete="off" v-model="tax"/>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="inputPassword3" class="control-label">Cess</label>
-                                    <input type="number" placeholder="cess"  name="cess" id="cess" class="form-control" required="required" autocomplete="off" v-model="cess"/>
-                                </div>
-                                <div class="col-md-1">
-                                    <button class="btn btn-info" @click="insertProduct" style="margin-top:27px;">
-                                        Submit
-                                    </button>
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-sm btn-info" style="margin-top:27px;" @click="catemodal">Creat New Category</button>
-                                </div>
+                <div id="app">
+                    <div class="box box-default">
+                        <div class="row">
+                            <div class="box-body">
+                                <div id="app">
+                                    <div class="col-md-2">
+                                        <label for="inputPassword3" class="control-label">Select Category</label>
+                                        <select class="form-control" id="cat12" name="cat" placeholder="category" required v-model="catName">
+                                            <option value="">Select</option>
+                                            <option v-for="category in categoys" :value="category.CategoryName">{{ category.CategoryName }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="inputPassword3" class="control-label">Name of Product</label>
+                                        <input type="text" id="form-field-1"  placeholder="Name of Product"  name="p1" class="form-control" required="required" autocomplete="off" v-model="product"/>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="inputPassword3" class="control-label">Purchase Unit</label>
+                                        <select class="form-control" name="unit" v-model="unit" placeholder="Select Unit" id="unit">
+                                            <option value="KG">KG</option>
+                                            <option value="Litre">Litre</option>
+                                            <option value="Box">Box</option>
+                                            <!-- <option value="Gram">Gram</option> -->
+                                            <option value="Pack">Pack</option>
+                                            <option value="Tin">Tin</option>
+                                            <option value="Bottle">Bottle</option>
+                                            <!-- <option value="Bundle">Bundle</option> -->
+                                            <option value="Packet">Packet</option>
+                                            <!-- <option value="Jar">Jar</option> -->
+                                            <option value="Piece">Piece</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="inputPassword3" class="control-label">Sell Unit</label>
+                                        <select class="form-control" name="sellUnit" v-model="sellUnit" placeholder="Select Unit" id="sellUnit">
+                                            <option value="KG">KG</option>
+                                            <option value="Litre">Litre</option>
+                                            <option value="Box">Box</option>
+                                            <!-- <option value="Gram">Gram</option> -->
+                                            <option value="Pack">Pack</option>
+                                            <option value="Tin">Tin</option>
+                                            <option value="Bottle">Bottle</option>
+                                            <!-- <option value="Bundle">Bundle</option> -->
+                                            <option value="Packet">Packet</option>
+                                            <!-- <option value="Jar">Jar</option> -->
+                                            <option value="Piece">Piece</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="inputPassword3" class="control-label">Tax</label>
+                                        <input type="number" placeholder="Tax"  name="tax" id="tax" class="form-control" required="required" autocomplete="off" v-model="tax"/>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="inputPassword3" class="control-label">Cess</label>
+                                        <input type="number" placeholder="cess"  name="cess" id="cess" class="form-control" required="required" autocomplete="off" v-model="cess"/>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-info" @click="insertProduct" style="margin-top:27px;">
+                                            Submit
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-sm btn-info" style="margin-top:27px;" @click="catemodal">Creat New Category</button>
+                                    </div>
 
-                                <!-- Category Module -->
-                                <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-                                    <div class="modal-dialog modal-sm" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-success">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"><b>Edit Table</b></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="box-body form1">
-                                                    <div class="form-group col-md-12">
-                                                        <label for="exampleInputFile">Category</label>
-                                                        <select class="form-control" id="cat12Edit" name="catEdit" placeholder="category1" required v-model="catName1">
-                                                            <!-- <option value="">Select</option> -->
-                                                            <option v-for="category in categoys" :value="category.CategoryName">{{ category.CategoryName }}</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-12">
-                                                        <label for="exampleInputFile">Product Name</label>
-                                                        <input type="text" class="form-control" id="editproductname" placeholder="product Name" autocomplete="off">
-                                                        <input type="hidden" class="form-control" id="editproductId" placeholder="tableno">
-                                                    </div>
-                                                    <div class="form-group col-md-12">
-                                                        <label for="inputPassword3" class="control-label">Tax</label>
-                                                        <input type="number" placeholder="Tax"  name="edittax" id="edittax" class="form-control" required="required" autocomplete="off"/>
-                                                    </div>
-                                                    <div class="form-group col-md-12">
-                                                        <label for="inputPassword3" class="control-label">Cess</label>
-                                                        <input type="number" placeholder="cess"  name="editcess" id="editcess" class="form-control" required="required" autocomplete="off"/>
-                                                        <input type="hidden" placeholder="oldProduct"  name="oldProduct" id="oldProduct" class="form-control" required="required" autocomplete="off"/>
-                                                    </div>
-                                                    <!-- <div class="form-group col-md-12">
-                                                        <label for="inputPassword3" class="control-label">Change Category</label>
-                                                        <select class="form-control" id="editcat" name="editcat" placeholder="Type Here" required>
-                                                            <?php
-                                                                include("dbcon.php");
-                                                                $query="SELECT * FROM `categoroy` ORDER BY `id` ASC";
-                                                                $exc=mysqli_query($conn,$query);
-                                                                while($row=mysqli_fetch_assoc($exc))
-                                                                {
-                                                                    $name=$row['CategoryName'];
-                                                                    // echo '<option>'.$name.'</option>';
-                                                                }
-                                                            ?>
-                                                        </select>
-                                                    </div> -->
-                                                    <!-- <div class="form-group col-md-12">
-                                                        <label for="inputPassword3" class="control-label">Change Unit</label>
-                                                        <select class="form-control" id="unitchange" name="unitchange" placeholder="Type Here.." required>
-                                                            <option value="">Select</option>
-                                                            <option value="kg">KG</option>
-                                                            <option value="litre">Litre</option>
-                                                            <option value="box">Box</option>
-                                                            <option value="gram">Gram</option>
-                                                            <option value="pack">Pack</option>
-                                                            <option value="tin">Tin</option>
-                                                            <option value="bottle">Bottle</option>
-                                                            <option value="bundle">Bundle</option>
-                                                            <option value="packet">Packet</option>
-                                                            <option value="jar">Jar</option>
-                                                            <option value="piece">Piece</option>
-                                                        </select>
-                                                    </div> -->
-                                                    <label id="empty"></label>
+                                    <!-- Category Module -->
+                                    <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+                                        <div class="modal-dialog modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-success">
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel"><b>Edit Product</b></h4>
                                                 </div>
-                                                <div class="box-footer">
-                                                    <button type="submit" onclick="submit();" id="adduser" class="btn btn-primary">Submit</button>
+                                                <div class="modal-body">
+                                                    <div class="box-body form1">
+                                                        <div class="form-group col-md-12">
+                                                            <label for="exampleInputFile">Category</label>
+                                                            <select class="form-control" id="cat12Edit" name="catEdit" placeholder="category1" required v-model="catName1">
+                                                                <!-- <option value="">Select</option> -->
+                                                                <option v-for="category in categoys1" :value="category.CategoryName">{{ category.CategoryName }}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label for="exampleInputFile">Product Name</label>
+                                                            <input type="text" class="form-control" id="editproductname" placeholder="product Name" autocomplete="off">
+                                                            <input type="hidden" class="form-control" id="editproductId" placeholder="tableno">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label for="inputPassword3" class="control-label">Tax</label>
+                                                            <input type="number" placeholder="Tax"  name="edittax" id="edittax" class="form-control" required="required" autocomplete="off"/>
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label for="inputPassword3" class="control-label">Cess</label>
+                                                            <input type="number" placeholder="cess"  name="editcess" id="editcess" class="form-control" required="required" autocomplete="off"/>
+                                                            <input type="hidden" placeholder="oldProduct"  name="oldProduct" id="oldProduct" class="form-control" required="required" autocomplete="off"/>
+                                                        </div>
+                                                        <!-- <div class="form-group col-md-12">
+                                                            <label for="inputPassword3" class="control-label">Change Category</label>
+                                                            <select class="form-control" id="editcat" name="editcat" placeholder="Type Here" required>
+                                                                <?php
+                                                                    include("dbcon.php");
+                                                                    $query="SELECT * FROM `categoroy` ORDER BY `id` ASC";
+                                                                    $exc=mysqli_query($conn,$query);
+                                                                    while($row=mysqli_fetch_assoc($exc))
+                                                                    {
+                                                                        $name=$row['CategoryName'];
+                                                                        // echo '<option>'.$name.'</option>';
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div> -->
+                                                        <!-- <div class="form-group col-md-12">
+                                                            <label for="inputPassword3" class="control-label">Change Unit</label>
+                                                            <select class="form-control" id="unitchange" name="unitchange" placeholder="Type Here.." required>
+                                                                <option value="">Select</option>
+                                                                <option value="kg">KG</option>
+                                                                <option value="litre">Litre</option>
+                                                                <option value="box">Box</option>
+                                                                <option value="gram">Gram</option>
+                                                                <option value="pack">Pack</option>
+                                                                <option value="tin">Tin</option>
+                                                                <option value="bottle">Bottle</option>
+                                                                <option value="bundle">Bundle</option>
+                                                                <option value="packet">Packet</option>
+                                                                <option value="jar">Jar</option>
+                                                                <option value="piece">Piece</option>
+                                                            </select>
+                                                        </div> -->
+                                                        <label id="empty"></label>
+                                                    </div>
+                                                    <div class="box-footer">
+                                                        <button type="submit" onclick="submit();" id="adduser" class="btn btn-primary">Submit</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>          
                         </div>
-                    </div>
-                    </br>
-                    <div id="app1">
+                        </br>
+                        <!-- <div id="app1"> -->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="col-md-12">
-                                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                    <table id="dynamic-table" class="table">
                                         <thead>
                                             <tr>                                                        
                                                 <th>Product ID</th>
+                                                <th>Type</th>
                                                 <th>Product Name</th>                                                    
                                                 <th>Product Category</th>                                                 
                                                 <th>Unit</th>                                                 
@@ -191,7 +207,7 @@
                                         </thead>
                                         <tbody>
                                             <?php 
-                                                $sql = "SELECT * FROM `products`";
+                                                $sql = "SELECT `products`.*,`categoroy`.`catType` FROM `products`,`categoroy` WHERE `products`.`category`=`categoroy`.`CategoryName`";
                                                 $retval = mysqli_query($conn,$sql);
                                                 if(! $retval )
                                                 {
@@ -201,14 +217,15 @@
                                                 { 
                                                     ?>
                                                         <tr>                                                    
-                                                            <td><?php echo $row['pid']; ?></td>                                                   
+                                                            <td><?php echo $row['pid']; ?></td>                               
+                                                            <td><?php echo $row['catType']; ?></td>
                                                             <td><?php echo $row['pname']; ?></td>
                                                             <td><?php echo $row['category']; ?></td>
                                                             <td><?php echo $row['unit']; ?></td>
                                                             <td><?php echo $row['sellunit']; ?></td>
-                                                            <td><?php echo $row['tax']; ?></td>
-                                                            <td><?php echo $row['cess']; ?></td>
-                                                            <td><button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#category">
+                                                            <td><?php echo number_format($row['tax'],2); ?></td>
+                                                            <td><?php echo number_format($row['cess'],2); ?></td>
+                                                            <td><button @click='editItem($event)' class="btn btn-primary btn-sm">
                                                                 Edit
                                                                 </button>
                                                             </td>
@@ -256,6 +273,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </section>
             <script>
                 $(document).ready(function()
@@ -301,6 +319,7 @@
                             },
                             success: function(status) 
                             {
+                                // console.log(status);
                                 alert('Updated Successfully');
                                 window.location="store_product.php";
                             },
@@ -308,32 +327,34 @@
                                 console.error("AJAX Error: " + textStatus, errorThrown);
                             }
                         });
-                        console.log(log);
+                        // console.log(log);
                     }else{
                         $('#empty').html(`<span style='color:red'>Empty field..</span>`);
                         $("#empty").fadeOut(1000);
                     }
                 }
+                // var app1 = new Vue({
+                //     el: '#dynamic-table',
+                //     methods: {
+                //         editItem : function(e) 
+                //         {
+                //             var tar = e.currentTarget;
+                //             var chil = tar.parentElement.parentElement.children;
+                //             var form = $("#category input");
+                //             form[0].value = (chil[2].innerHTML);
+                //             form[1].value = (chil[0].innerHTML);
+                //             form[2].value = (chil[6].innerHTML);
+                //             form[3].value = (chil[7].innerHTML);
+                //             form[4].value = (chil[1].innerHTML);
+                //             var cat=chil[3].innerHTML;
 
-                var app1 = new Vue({
-                    el: '#dynamic-table',
-                    methods: {
-                        editItem : function(e) 
-                        {
-                            var tar = e.currentTarget;
-                            var chil = tar.parentElement.parentElement.children;
-                            var form = $("#category input");
-                            form[0].value = (chil[1].innerHTML);
-                            form[1].value = (chil[0].innerHTML);
-                            form[2].value = (chil[5].innerHTML);
-                            form[3].value = (chil[6].innerHTML);
-                            form[4].value = (chil[1].innerHTML);
-                            var cat=chil[2].innerHTML;
-                            $('#cat12Edit').val(cat)
-                            // $('#unitchange').val(chil[3].innerHTML);
-                        }
-                    }
-                });
+                //             var catType=chil[i].innerHTML;
+
+                //             $('#cat12Edit').val(cat)
+                //             // $('#unitchange').val(chil[3].innerHTML);
+                //         }
+                //     }
+                // });
         </script>
         </div>
     </div>

@@ -46,8 +46,7 @@
     <script src="js/reports.js"></script>
     <div class="content-wrapper">
         <section class="content">
-            <?php include('buttons.html'); ?>
-            <h3 class="top-headerMain">Kot Cancellation</h3>
+            <h3 class="top-headerMain">Login Details</h3>
             <div class="box box-primary">
                 <div class="box-body form1">
                     <div class="row">
@@ -62,7 +61,7 @@
                         <div class="form-group col-md-4">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
                             <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
-                            <button class="btn btn-success" style="margin-top:23px;">Excel</button>
+                            <!-- <button class="btn btn-success" style="margin-top:23px;">Excel</button> -->
                         </div>
                     </div>
                 </div>
@@ -71,7 +70,7 @@
                 <div class="box-body form1">
                     <div class="row">
                         <div class="col-md-12">
-                        <div id="mainData" class="tablebox">
+                        <div id="loginTime" class="tablebox">
                         </div>
                         </div>
                     </div>
@@ -83,10 +82,10 @@
             $(document).ready(function()
             {
                 const kot_cancel=new Reports();
-                kot_cancel.Kot_cancel()
+                kot_cancel.loginTime()
                 $('#search').click(function()
                 {
-                    kot_cancel.Kot_cancel()
+                    kot_cancel.loginTime()
                 });
             });
         </script>
@@ -98,25 +97,18 @@
                 var doc = new jsPDF('p', 'pt', 'letter');
                 var y = 20;
                 doc.setLineWidth(2);
-                doc.text(150, y = y + 10, "Food Kot Cancelled From "+fdate+" To "+tdate);
+                doc.text(150, y = y + 10, "Login Details From "+fdate+" To "+tdate);
                 doc.autoTable({
                     html: '#kot_cancel',
                     startY: 40,
                     startX: 40,
                     theme: 'grid',
                     columns: [
-                        {dataKey: 'Kot No'},
-                        {dataKey: 'Table'},
-                        {dataKey: 'Captain Code'},
-                        {dataKey: 'Captain Name'},
-                        {dataKey: 'Menu Code'},
-                        {dataKey: 'Menu Name'},
-                        {dataKey: 'Qty'},
-                        {dataKey: 'Rate'},
-                        {dataKey: 'Amount'},
-                        {dataKey: 'UID'},
-                        {dataKey: 'Date'},
-                        {dataKey: 'Time'},
+                        {dataKey: 'slno'},
+                        {dataKey: 'UserId'},
+                        {dataKey: 'Type'},
+                        {dataKey: 'Login'},
+                        {dataKey: 'Logout'}
                     ],
                     styles: {
                         overflow: 'linebreak',
@@ -152,7 +144,7 @@
                 //     },
                 //     pageSize: 'letter',
                 // });
-                doc.save('kot_cancel');
+                doc.save('login_details');
             }
         </script>
     </div>

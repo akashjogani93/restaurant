@@ -100,11 +100,11 @@
                                 <tr v-for="(item, index) in stockList" :key="item.id">
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.name }}</td>
-                                    <td>{{ item.openingStock }}</td>
-                                    <td>{{ item.stocksum }}</td>
-                                    <td>{{ item.damage }}</td>
-                                    <td>{{ item.cloasing }}</td>
-                                    <td>{{ item.cloasinAmt }}</td>
+                                    <td class="right-align">{{ item.openingStock }}</td>
+                                    <td class="right-align">{{ item.stocksum }}</td>
+                                    <td class="right-align">{{ item.damage }}</td>
+                                    <td class="right-align">{{ item.cloasing }}</td>
+                                    <td class="right-align">{{ item.cloasinAmt }}</td>
                                     <td>
                                         <button class="btn btn-success" @click="handleIssued(index)"><i class='bx bx-trash-alt'></i></button>
                                     </td>

@@ -93,8 +93,8 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.pname }}</td>
                                     <td>{{ item.sellunit }}</td>
-                                    <td>{{ item.stock }}</td>
-                                    <td>{{ item.issued }}</td>
+                                    <td class="right-align">{{ formatNumber(item.stock) }}</td>
+                                    <td class="right-align">{{ formatNumber(item.issued) }}</td>
                                     <td>{{ item.date }}</td>
                                 </tr>
                             </tbody>

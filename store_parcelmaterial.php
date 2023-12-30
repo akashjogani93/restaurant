@@ -7,6 +7,28 @@
     #material{
         background: green;
     }
+    .tablebox{
+            width: 100%;
+            overflow-x: auto;
+        }
+    .table>thead,tfoot
+        {
+            background-color:grey;
+            color:white;
+        }
+        .table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+            /* text-align: left; */
+            white-space: nowrap;
+        }
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div id="app">
@@ -63,11 +85,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="box-footer">
+                    <div class="box-footer">
                     <center>
-                        <button type="button" class="btn btn-primary" onclick="addToKitchen()">Add</button>
+                        <button type="button" class="btn btn-primary" id="addToList">Add To List</button>
+                        <button type="button" class="btn btn-danger" id="updateItem" style="display:none;">Update Item</button>
+                        <button type="button" class="btn btn-danger" id="clea">Clear</button>
                     </center>
+                    </div>
                 </div>
                 <div class="box box-default">
                     <div class="row">
@@ -85,6 +109,7 @@
                                                     <th>Total Quantity</th>
                                                     <th>UQty</th>
                                                     <th>Date</th>
+                                                    <th>Edit</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="table-body">
@@ -97,11 +122,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="box-footer">
+                    <center>
+                        <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                        <button type="button" class="btn btn-danger" id="clear">Clear</button>
+                    </center>
+                </div>
             </section>
         </div>
     </div>
     <script src="vue.min.js"></script>
     <script src="js/kitchen_int.js"></script>
+    <script src="js/web_tables.js"></script>
     <script src="cdn/dataTables.buttons.min.js"></script>
     <script src="cdn/buttons.print.min.js"></script>
     <script>
@@ -123,85 +155,113 @@
             });
         }
 
-        function addToKitchen()
-        {
-            let catename=$('#catename').val();
-            let pid=$('#pid').val();
-            let pname = $('#pid option:selected').text();
-            let sellunit=$('#sellunit').val();
-            let totalqty=$('#sellqty').val();
-            let uqty=$('#uqty').val();
-            let gdate=$('#gdate').val();
-            let input=['#pid','#sellqty','#sellunit','#uqty'];
-            $('.input-field').css('border-color', '');
-            switch (true) 
-            {
-                case !catename:
-                    $('#catename').css('border-color', 'red');
-                    break;
-                case !pid:
-                    $('#pid').css('border-color', 'red');
-                    break;
-                case !totalqty:
-                    $('#pqty').css('border-color', 'red');
-                    break;
-                case !sellunit:
-                    $('#punit').css('border-color', 'red');
-                    break;
-                case !uqty:
-                    $('#uqty').css('border-color', 'red');
-                    break;
-                case !gdate:
-                    $('#gdate').css('border-color', 'red');
-                    break;
-                // case totalqty==0:
-                //     alert('Please Add Stock First');
-                //     $('#sellqty').css('border-color', 'red');
-                //     break;
-                default:
-                    let log= $.ajax({
-                        url: 'ajax/store_all.php',
-                        method: 'POST',
-                        data: {
-                            cattype:'parcel',
-                            pid: pid,
-                            pqty: totalqty,
-                            punit: sellunit,
-                            uqty: uqty,
-                            gdate: gdate,
-                        },
-                        success: function(response) 
-                        {
-                            alert(response);
-                            let messageContent = "<tr>" +
-                         "<td>" + catename + "</td>" +
-                         "<td>" + pid + "</td>" +
-                         "<td>" + pname + "</td>" +
-                         "<td>" + sellunit + "</td>" +
-                         "<td>" + totalqty + "</td>" +
-                         "<td>" + uqty + "</td>" +
-                         "<td>" + gdate + "</td>" +
-                         "</tr>";
+        // function addToKitchen()
+        // {
+        //     let catename=$('#catename').val();
+        //     let pid=$('#pid').val();
+        //     let pname = $('#pid option:selected').text();
+        //     let sellunit=$('#sellunit').val();
+        //     let totalqty=$('#sellqty').val();
+        //     let uqty=$('#uqty').val();
+        //     let gdate=$('#gdate').val();
+        //     let input=['#pid','#sellqty','#sellunit','#uqty'];
+        //     $('.input-field').css('border-color', '');
+        //     switch (true) 
+        //     {
+        //         case !catename:
+        //             $('#catename').css('border-color', 'red');
+        //             break;
+        //         case !pid:
+        //             $('#pid').css('border-color', 'red');
+        //             break;
+        //         case !totalqty:
+        //             $('#pqty').css('border-color', 'red');
+        //             break;
+        //         case !sellunit:
+        //             $('#punit').css('border-color', 'red');
+        //             break;
+        //         case !uqty:
+        //             $('#uqty').css('border-color', 'red');
+        //             break;
+        //         case !gdate:
+        //             $('#gdate').css('border-color', 'red');
+        //             break;
+        //         // case totalqty==0:
+        //         //     alert('Please Add Stock First');
+        //         //     $('#sellqty').css('border-color', 'red');
+        //         //     break;
+        //         default:
+        //             let log= $.ajax({
+        //                 url: 'ajax/store_all.php',
+        //                 method: 'POST',
+        //                 data: {
+        //                     cattype:'parcel',
+        //                     pid: pid,
+        //                     pqty: totalqty,
+        //                     punit: sellunit,
+        //                     uqty: uqty,
+        //                     gdate: gdate,
+        //                 },
+        //                 success: function(response) 
+        //                 {
+        //                     alert(response);
+        //                     let messageContent = "<tr>" +
+        //                  "<td>" + catename + "</td>" +
+        //                  "<td>" + pid + "</td>" +
+        //                  "<td>" + pname + "</td>" +
+        //                  "<td>" + sellunit + "</td>" +
+        //                  "<td>" + totalqty + "</td>" +
+        //                  "<td>" + uqty + "</td>" +
+        //                  "<td>" + gdate + "</td>" +
+        //                  "</tr>";
 
-                            // Append the row to the table body
-                            $('#table-body').append(messageContent);
-                            for(i=0; input.length>i; i++)
-                            {
-                                $(input[i]).val('');
-                            }
-                            // location.reload();
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
-                    break;
-            }
-        }
+        //                     // Append the row to the table body
+        //                     $('#table-body').append(messageContent);
+        //                     for(i=0; input.length>i; i++)
+        //                     {
+        //                         $(input[i]).val('');
+        //                     }
+        //                     // location.reload();
+        //                 },
+        //                 error: function(xhr, status, error) {
+        //                     console.error(error);
+        //                 }
+        //             });
+        //             break;
+        //     }
+        // }
 
         $(document).ready(function()
         {
             const bev = new parcelMaterial();
+
+            let kitchenData = JSON.parse(localStorage.getItem('materialData')) || [];
+            const mainInstance = new Main();
+            mainInstance.retrieve(kitchenData,'materialData');
+
+            $('#addToList').click(function()
+            {
+                mainInstance.addToList(kitchenData,'materialData');
+            });
+
+            $('#updateItem').click(function()
+            {
+                mainInstance.updateToList(kitchenData,'materialData');
+            });
+
+            $('#submit').click(function()
+            {
+                mainInstance.finalSubmit(kitchenData,'materialData','parcel');
+            });
+            $('#clear').click(function()
+            {
+                mainInstance.clear(kitchenData,'materialData');
+            });
+
+            $('#clea').click(function()
+            {
+                mainInstance.inputClear(kitchenData,'materialData');
+            });
 
             var yourDateValue = new Date();
             var formattedDate = yourDateValue.toISOString().substr(0, 10)

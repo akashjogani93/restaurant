@@ -11,17 +11,18 @@ $name=$_SESSION['name'];
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');
-
-
-body{
-    font-family: 'Roboto Mono', monospace;
-}
+    body{
+        font-family: 'Roboto Mono', monospace;
+    }
     .table-striped>tbody>tr:nth-of-type(odd){
         background-color:rgba(255, 255, 255, 0.4);
     }
     .logos{
         width:16px;
         margin-right:6px;
+    }
+    .right-align {
+        text-align: right;
     }
 </style>
 
@@ -78,23 +79,24 @@ body{
                                 </ul>
                             </li>
                     		<li><a href="create_assets.php"><img class="logos" src="img/i5.png" alt=""><span>Assets</span></a></li>
-                            <li class="treeview">
-                                <a href="#">
-                                <img class="logos" src="img/i7.png" alt=""><span>Employees</span>
-                                    <span class="pull-right-container">
-                                    <img class="logos" src="img/arrow.png" alt="">
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li class="active"><a href="empreg.php"><img class="logos" src="img/circle.png" alt="">Registration</a></li>
-                                </ul>
-                            </li>
                             <li><a href="reports.php"><img class="logos" src="img/circle.png" alt="">Reports</a></li>
                             <?php 
                             if($cash_type=='admin')
                             {
                             ?>
+                                <li class="treeview">
+                                    <a href="#">
+                                        <img class="logos" src="img/i7.png" alt=""><span>Employees</span>
+                                            <span class="pull-right-container">
+                                            <img class="logos" src="img/arrow.png" alt="">
+                                        </span>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        <li class="active"><a href="empreg.php"><img class="logos" src="img/circle.png" alt="">Registration</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="manager_edit_bills.php"><img class="logos" src="img/circle.png" alt="">Manager Bills</a></li>
+                                <li><a href="login_time.php"><img class="logos" src="img/circle.png" alt="">Login Details</a></li>
                             <?php
                             }
                             ?>

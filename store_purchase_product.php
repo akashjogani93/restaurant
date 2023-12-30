@@ -162,13 +162,13 @@
                                         <input type="number" class="form-control" name="cess" id="cess" min="1" placeholder="Cess" v-model="cess" readonly>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="form-group col-md-6">
                                         <div class="checkbox-container">
                                             <input type="checkbox" id="myCheckbox" class="checkbox-input">&nbsp;&nbsp;
                                             <label for="myCheckbox" class="checkbox-label">Send Direct To Kitchen</label>
                                         </div>
-                                    </div>
+                                    </div> -->
                             </div>  
                         </div>  
                     </div>

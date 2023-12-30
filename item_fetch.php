@@ -1,8 +1,23 @@
 <?php include('dbcon.php'); 
 $cat = $_GET['x']; ?>
 
-
-<table id="example1" class="table table-bordered table-striped">
+<style>
+     .table>thead,.table>tfoot
+        {
+            background-color:grey;
+            color:white;
+        }
+        .table{
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+        }
+</style>
+<table id="example1" class="table">
     <thead>
         <tr>
             <th>Sl.No.</th>
@@ -39,8 +54,8 @@ $cat = $_GET['x']; ?>
                             <td><?php echo $row['item_code']; ?></td>
                             <!-- <td><?php echo $row['item_cat']; ?></td> -->
                             <td><?php echo $row['itmnam']; ?></td>
-                            <td><?php echo $row['prc']; ?></td>
-                            <td><?php echo $row['prc2']; ?></td>
+                            <td class="right-align"><?php echo number_format($row['prc'],2); ?></td>
+                            <td class="right-align"><?php echo number_format($row['prc2'],2); ?></td>
                             <td>
                                 <button v-on:click="editItem($event)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
                                     <i class='bx bx-edit-alt'></i>
@@ -92,12 +107,14 @@ var app = new Vue({
             var chil = tar.parentElement.parentElement.children;
             var form = $("#editform input");
             console.log(form);
+            var amt=parseFloat(chil[3].innerHTML);
+            var amt1=parseFloat(chil[4].innerHTML);
 			form[0].value = (chil[0].innerHTML);
             // $('#cat12').val(chil[2].innerHTML);
             form[1].value = (chil[1].innerHTML);
 			form[2].value = (chil[2].innerHTML);
-			form[3].value = (chil[3].innerHTML);
-			form[4].value = (chil[4].innerHTML);
+			form[3].value = (amt);
+			form[4].value = (amt1);
 			form[5].value = (chil[1].innerHTML);
         }
     }

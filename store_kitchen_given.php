@@ -8,6 +8,28 @@
     #addKitchen{
         background: green;
     }
+    .tablebox{
+            width: 100%;
+            overflow-x: auto;
+        }
+    .table>thead,tfoot
+        {
+            background-color:grey;
+            color:white;
+        }
+        .table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+            /* text-align: left; */
+            white-space: nowrap;
+        }
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
     <div id="app">
@@ -69,12 +91,15 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="box-footer">
+                    <div class="box-footer">
                     <center>
-                        <button type="button" class="btn btn-primary" onclick="addToKitchen()">Add</button>
+                        <button type="button" class="btn btn-primary" id="addToList">Add To List</button>
+                        <button type="button" class="btn btn-danger" id="updateItem" style="display:none;">Update Item</button>
+                        <button type="button" class="btn btn-danger" id="clea">Clear</button>
                     </center>
                 </div>
+                </div>
+               
                 <div class="box box-default">
                     <div class="row">
                         <div class="col-md-12">
@@ -91,6 +116,7 @@
                                                     <th>Total Quantity</th>
                                                     <th>UQty</th>
                                                     <th>Date</th>
+                                                    <th>Edit</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="table-body">
@@ -103,6 +129,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="box-footer">
+                    <center>
+                        <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                        <button type="button" class="btn btn-danger" id="clear">Clear</button>
+                    </center>
+                </div>
             </section>
         </div>
     </div>
@@ -110,6 +142,7 @@
     <script src="cdn/dataTables.buttons.min.js"></script>
     <script src="cdn/buttons.print.min.js"></script>
     <script src="js/kitchen_int.js"></script>
+    <script src="js/web_tables.js"></script>
     <script>
         function getProductDetails(pid)
         {
@@ -127,14 +160,38 @@
                     $('#sellqty').val(response[0].netStock);
                 }
             });
-            // console.log(log)
         }
     </script>
     <script>
         $(document).ready(function()
         {
+            let kitchenData = JSON.parse(localStorage.getItem('kitchenData')) || [];
             const kitchen= new Kitchen();
+            const mainInstance = new Main();
+            mainInstance.retrieve(kitchenData,'kitchenData');
 
+            $('#addToList').click(function()
+            {
+                mainInstance.addToList(kitchenData,'kitchenData');
+            });
+
+            $('#updateItem').click(function()
+            {
+                mainInstance.updateToList(kitchenData,'kitchenData');
+            });
+
+            $('#submit').click(function()
+            {
+                mainInstance.finalSubmit(kitchenData,'kitchenData','kit');
+            });
+            $('#clear').click(function()
+            {
+                mainInstance.clear(kitchenData,'kitchenData');
+            });
+            $('#clea').click(function()
+            {
+                mainInstance.inputClear(kitchenData,'materialData');
+            });
             $('input').on('focus',function()
             {
                 $("#pid").css("border-color", "");
@@ -164,85 +221,5 @@
                 }
             });
         });
-
-        function addToKitchen()
-        {
-            let catename=$('#catename').val();
-            let pid=$('#pid').val();
-            let pname = $('#pid option:selected').text();
-            let sellunit=$('#sellunit').val();
-            let totalqty=$('#sellqty').val();
-            // let rqty=$('#rqty').val();
-            let uqty=$('#uqty').val();
-
-            let gdate=$('#gdate').val();
-            // let perCaseQty=$('#perCaseQty').val();
-             //    let stockid =$('#stockid').val()
-           
-            let input=['#pid','#sellqty','#sellunit','#uqty'];
-            $('.input-field').css('border-color', '');
-            switch (true) 
-            {
-                case !catename:
-                    $('#catename').css('border-color', 'red');
-                    break;
-                case !pid:
-                    $('#pid').css('border-color', 'red');
-                    break;
-                case !totalqty:
-                    $('#pqty').css('border-color', 'red');
-                    break;
-                case !sellunit:
-                    $('#punit').css('border-color', 'red');
-                    break;
-                case !uqty:
-                    $('#uqty').css('border-color', 'red');
-                    break;
-                case !gdate:
-                    $('#gdate').css('border-color', 'red');
-                    break;
-                // case totalqty==0:
-                //     alert('Please Add Stock First');
-                //     $('#sellqty').css('border-color', 'red');
-                //     break;
-                default:
-                    let log= $.ajax({
-                        url: 'ajax/store_all.php',
-                        method: 'POST',
-                        data: {
-                            cattype:'kit',
-                            pid: pid,
-                            pqty: totalqty,
-                            punit: sellunit,
-                            uqty: uqty,
-                            gdate: gdate,
-                        },
-                        success: function(response) 
-                        {
-                            alert(response);
-                            let messageContent = "<tr>" +
-                         "<td>" + catename + "</td>" +
-                         "<td>" + pid + "</td>" +
-                         "<td>" + pname + "</td>" +
-                         "<td>" + sellunit + "</td>" +
-                         "<td>" + totalqty + "</td>" +
-                         "<td>" + uqty + "</td>" +
-                         "<td>" + gdate + "</td>" +
-                         "</tr>";
-
-                            // Append the row to the table body
-                            $('#table-body').append(messageContent);
-                            for(i=0; input.length>i; i++)
-                            {
-                                $(input[i]).val('');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                        }
-                    });
-                    break;
-            }
-        }
     </script>
 </body>

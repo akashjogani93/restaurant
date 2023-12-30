@@ -203,30 +203,9 @@
                         }, 5000);
                     
                 },
-                // singleKotCli()
-                // {
-                    
-                //     const vm=this;
-                //     vm.alldata=[];
-                //     for (const kot of this.kots)
-                //     {
-                //         const kotNum = kot.kot_num;
-                //         const url = 'ajax/kots_kitchen.php';
-                //         const postData = { kotNum: kotNum };
-                //         $.post(url,postData)
-                //         .done(data => {
-                //                 console.log(data);
-                //             })
-                //             .fail(function(jqXHR,textStatus,errorThrown)
-                //             {
-                //                 console.error("AJAX error:", textStatus, errorThrown);
-                //             });
-                //     }
-                // },
             },
             mounted(){
                 this.fetchTables();
-                // this.singleTableCli();
             }
         });
     </script>

@@ -36,6 +36,7 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
                     <th>UID</th>
                     <th>Date</th>
                     <th>Time</th>
+                    <th>Reson</th>
                 </tr>
             </thead>
             <tbody id="kotData">
@@ -54,6 +55,7 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
         $tot=$row['tot'];
         $kot_time=$row['cancel_time'];
         $kot_num=$row['kot_num'];
+        $reson=$row['reson'];
         ?>
             <tr>
                 <td><?php echo $kot_num; ?></td>
@@ -62,12 +64,13 @@ if(isset($_POST['cancelkot']) && isset($_POST['fdate']) && isset($_POST['tdate']
                 <td><?php echo $captain; ?></td>
                 <td><?php echo $itmno; ?></td>
                 <td><?php echo $itmnam; ?></td>
-                <td><?php echo $qty; ?></td>
-                <td><?php echo $prc; ?></td>
-                <td><?php echo $tot; ?></td>
+                <td class="right-align"><?php echo number_format($qty,2); ?></td>
+                <td class="right-align"><?php echo number_format($prc,2); ?></td>
+                <td class="right-align"><?php echo number_format($tot,2); ?></td>
                 <td><?php echo $cashid;?></td>
                 <td><?php echo $date; ?></td>
                 <td><?php echo $kot_time; ?></td>
+                <td><?php echo $reson; ?></td>
             </tr>
         <?php
     }
@@ -136,12 +139,12 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
             <tr>
                 <td><?php echo $date; ?></td>
                 <td><?php echo $slno; ?></td>
-                <td><?php echo $gtot; ?></td>
-                <td><?php echo $discAmt; ?></td>
-                <td><?php echo $gstAmt; ?></td>
-                <td><?php echo $roundminus; ?></td>
-                <td><?php echo $roundplus; ?></td>
-                <td><?php echo $nettot; ?></td>
+                <td class="right-align"><?php echo $gtot; ?></td>
+                <td class="right-align"><?php echo $discAmt; ?></td>
+                <td class="right-align"><?php echo $gstAmt; ?></td>
+                <td class="right-align"><?php echo $roundminus; ?></td>
+                <td class="right-align"><?php echo $roundplus; ?></td>
+                <td class="right-align"><?php echo $nettot; ?></td>
                     <?php 
                         if($cash_type=='Manager')
                         {
@@ -161,12 +164,12 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         <tfoot class="thead-dark" id="tfoot">
             <tr>
                 <th colspan="2"></th>
-                <th><?php echo number_format($Totalgtot,2); ?></th>
-                <th><?php echo number_format($totaldisc,2); ?></th>
-                <th><?php echo number_format($totalgst,2); ?></th>
-                <th><?php echo number_format($totalminus,2); ?></th>
-                <th><?php echo number_format($totalplus,2); ?></th>
-                <th><?php echo number_format($toatlnet,2); ?></th>
+                <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
+                <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalgst,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
+                <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
                 <?php 
                         if($cash_type=='Manager')
                         {
@@ -244,13 +247,13 @@ if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']
             <tr>
                 <td><?php echo $date; ?></td>
                 <td><?php echo $start_id.' To '.$end_id; ?></td>
-                <td><?php echo $gtot; ?></td>
-                <td><?php echo $disc; ?></td>
-                <td><?php echo number_format($gst,2); ?></td>
-                <td><?php echo number_format($gst,2); ?></td>
-                <td><?php echo $roundminus; ?></td>
-                <td><?php echo $roundplus; ?></td>
-                <td><?php echo $nettot; ?></td>
+                <td class="right-align"><?php echo $gtot; ?></td>
+                <td class="right-align"><?php echo $disc; ?></td>
+                <td class="right-align"><?php echo number_format($gst,2); ?></td>
+                <td class="right-align"><?php echo number_format($gst,2); ?></td>
+                <td class="right-align"><?php echo $roundminus; ?></td>
+                <td class="right-align"><?php echo $roundplus; ?></td>
+                <td class="right-align"><?php echo $nettot; ?></td>
             </tr>
         <?php
     }
@@ -259,13 +262,13 @@ if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']
         <tfoot class="thead-dark">
             <tr>
                 <th colspan="2"></th>
-                <th><?php echo number_format($Totalgtot,2); ?></th>
-                <th><?php echo number_format($totaldisc,2); ?></th>
-                <th><?php echo number_format($totalgst/2,2); ?></th>
-                <th><?php echo number_format($totalgst/2,2); ?></th>
-                <th><?php echo number_format($totalminus,2); ?></th>
-                <th><?php echo number_format($totalplus,2); ?></th>
-                <th><?php echo number_format($toatlnet,2); ?></th>
+                <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
+                <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalgst/2,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalgst/2,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
+                <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
             </tr>
         </tfoot>
     </table>
@@ -325,9 +328,9 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
                         <tr>
                             <td style="width:10%;"><?php echo $item_code[$i]; ?></td>
                             <td style="width:60%;"><?php echo $productNames[$i]; ?></td>
-                            <td style="width:10%;"><?php echo number_format($prc[$i],2); ?></td>
-                            <td style="width:10%;"><?php echo number_format($quantities[$i],2); ?></td>
-                            <td style="width:10%;"><?php echo number_format($tot[$i],2); ?></td>
+                            <td style="width:10%;" class="right-align"><?php echo number_format($prc[$i],2); ?></td>
+                            <td style="width:10%;" class="right-align"><?php echo number_format($quantities[$i],2); ?></td>
+                            <td style="width:10%;" class="right-align"><?php echo number_format($tot[$i],2); ?></td>
                         </tr>
                     <?php
                     }
@@ -336,7 +339,7 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
                 <tfoot class="thead-dark">
                     <tr>
                         <th colspan="4"></th>
-                        <th><?php echo number_format($gtot,2);?></th>
+                        <th class="right-align"><?php echo number_format($gtot,2);?></th>
                     </tr>
                 </tfoot>
             </table>
@@ -369,7 +372,7 @@ if(isset($_POST['menuQty']) && isset($_POST['fdate']) && isset($_POST['tdate']))
             <tr>
                 <td><?php echo $row['itmno']; ?></td>
                 <td><?php echo $row['itmnam']; ?></td>
-                <td><?php echo $row['total_qty']; ?></td>
+                <td class="right-align"><?php echo number_format($row['total_qty'],2); ?></td>
             </tr>
         <?php
     }
@@ -492,12 +495,12 @@ if(isset($_POST['cashier']) && isset($_POST['fdate']) && isset($_POST['tdate']))
                             <!-- <td><?php //echo $date; ?></td> -->
                             <td><?php echo $chashId; ?></td>
                             <td><?php echo $cashierName; ?></td>
-                            <td><?php echo $total_gtot; ?></td>
-                            <td><?php echo $total_discAmt; ?></td>
-                            <td><?php echo $total_gstAmt; ?></td>
-                            <td><?php echo $total_minus; ?></td>
-                            <td><?php echo $total_plus; ?></td>
-                            <td><?php echo $total_nettot; ?></td>
+                            <td class="right-align"><?php echo $total_gtot; ?></td>
+                            <td class="right-align"><?php echo $total_discAmt; ?></td>
+                            <td class="right-align"><?php echo $total_gstAmt; ?></td>
+                            <td class="right-align"><?php echo $total_minus; ?></td>
+                            <td class="right-align"><?php echo $total_plus; ?></td>
+                            <td class="right-align"><?php echo $total_nettot; ?></td>
                         </tr>
                         <?php
                     }
@@ -506,12 +509,12 @@ if(isset($_POST['cashier']) && isset($_POST['fdate']) && isset($_POST['tdate']))
             <tfoot class="thead-dark">
                 <tr>
                     <th colspan="2"></th>
-                    <th><?php echo number_format($Totalgtot,2); ?></th>
-                    <th><?php echo number_format($totaldisc,2); ?></th>
-                    <th><?php echo number_format($totalgst,2); ?></th>
-                    <th><?php echo number_format($totalminus,2); ?></th>
-                    <th><?php echo number_format($totalplus,2); ?></th>
-                    <th><?php echo number_format($toatlnet,2); ?></th>
+                    <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
+                    <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
+                    <th class="right-align"><?php echo number_format($totalgst,2); ?></th>
+                    <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
+                    <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
+                    <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
                 </tr>
             </tfoot>
             </table>
@@ -574,12 +577,12 @@ if(isset($_POST['captainData']) && isset($_POST['fdate']) && isset($_POST['tdate
                 <td><?php echo $date; ?></td>
                 <td><?php echo $chashId; ?></td>
                 <td><?php echo $capname; ?></td>
-                <td><?php echo $total_gtot; ?></td>
-                <td><?php echo $total_discAmt; ?></td>
-                <td><?php echo $total_gstAmt; ?></td>
-                <td><?php echo $total_minus; ?></td>
-                <td><?php echo $totalplus; ?></td>
-                <td><?php echo $total_nettot; ?></td>
+                <td class="right-align"><?php echo $total_gtot; ?></td>
+                <td class="right-align"><?php echo $total_discAmt; ?></td>
+                <td class="right-align"><?php echo $total_gstAmt; ?></td>
+                <td class="right-align"><?php echo $total_minus; ?></td>
+                <td class="right-align"><?php echo $totalplus; ?></td>
+                <td class="right-align"><?php echo $total_nettot; ?></td>
             </tr>
         <?php
     }
@@ -588,12 +591,12 @@ if(isset($_POST['captainData']) && isset($_POST['fdate']) && isset($_POST['tdate
             <tfoot class="thead-dark">
                 <tr>
                     <th colspan="3"></th>
-                    <th><?php echo number_format($Totalgtot,2); ?></th>
-                    <th><?php echo number_format($totaldisc,2); ?></th>
-                    <th><?php echo number_format($totalgst,2); ?></th>
-                    <th><?php echo number_format($totalminus,2); ?></th>
-                    <th><?php echo number_format($totalplus,2); ?></th>
-                    <th><?php echo number_format($toatlnet,2); ?></th>
+                    <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
+                    <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
+                    <th class="right-align"><?php echo number_format($totalgst,2); ?></th>
+                    <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
+                    <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
+                    <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
                 </tr>
             </tfoot>
         </table>
@@ -655,13 +658,13 @@ if(isset($_POST['paymentMode']) && isset($_POST['fdate']) && isset($_POST['tdate
             <tr>
                 <td><?php echo $date; ?></td>
                 <td><?php echo $slno; ?></td>
-                <td><?php echo $gtot; ?></td>
-                <td><?php echo $discAmt; ?></td>
-                <td><?php echo $gstAmt; ?></td>
-                <td><?php echo $roundminus; ?></td>
-                <td><?php echo $roundplus; ?></td>
-                <td><?php echo $nettot; ?></td>
-                <td><?php echo $pmod; ?></td>
+                <td class="right-align"><?php echo $gtot; ?></td>
+                <td class="right-align"><?php echo $discAmt; ?></td>
+                <td class="right-align"><?php echo $gstAmt; ?></td>
+                <td class="right-align"><?php echo $roundminus; ?></td>
+                <td class="right-align"><?php echo $roundplus; ?></td>
+                <td class="right-align"><?php echo $nettot; ?></td>
+                <td class="right-align"><?php echo $pmod; ?></td>
             </tr>
         <?php
     }
@@ -670,12 +673,12 @@ if(isset($_POST['paymentMode']) && isset($_POST['fdate']) && isset($_POST['tdate
         <tfoot class="thead-dark">
             <tr>
                 <th colspan="2"></th>
-                <th><?php echo number_format($Totalgtot,2); ?></th>
-                <th><?php echo number_format($totaldisc,2); ?></th>
-                <th><?php echo number_format($totalgst,2); ?></th>
-                <th><?php echo number_format($totalminus,2); ?></th>
-                <th><?php echo number_format($totalplus,2); ?></th>
-                <th><?php echo number_format($toatlnet,2); ?></th>
+                <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
+                <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalgst,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
+                <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
                 <th></th>
             </tr>
         </tfoot>
@@ -851,9 +854,9 @@ if(isset($_POST['foodkot']) && isset($_POST['fdate']) && isset($_POST['tdate']))
                 <td><?php echo $captain; ?></td>
                 <td><?php echo $itmno; ?></td>
                 <td><?php echo $itmnam; ?></td>
-                <td><?php echo $qty; ?></td>
-                <td><?php echo $prc; ?></td>
-                <td><?php echo $tot; ?></td>
+                <td class="right-align"><?php echo number_format($qty,2); ?></td>
+                <td class="right-align"><?php echo number_format($prc,2); ?></td>
+                <td class="right-align"><?php echo number_format($tot,2); ?></td>
                 <td><?php echo $cashid;?></td>
                 <td><?php echo $date; ?></td>
                 <td><?php echo $kot_time; ?></td>
@@ -918,9 +921,9 @@ if(isset($_POST['managerEdit']) && isset($_POST['fdate']) && isset($_POST['tdate
                     <td><?php echo $uid; ?></td>
                     <td><?php echo $itmno; ?></td>
                     <td><?php echo $itmnam; ?></td>
-                    <td><?php echo $qty; ?></td>
-                    <td><?php echo number_format($prc,2); ?></td>
-                    <td><?php echo number_format($tot,2); ?></td>
+                    <td class="right-align"><?php echo number_format($qty,2); ?></td>
+                    <td class="right-align"><?php echo number_format($prc,2); ?></td>
+                    <td class="right-align"><?php echo number_format($tot,2); ?></td>
                     <td><?php if($qtycheck=='increase'){ echo '+'; }else{ echo '-';}; ?></td>
                 </tr>
             <?php
@@ -930,13 +933,13 @@ if(isset($_POST['managerEdit']) && isset($_POST['fdate']) && isset($_POST['tdate
             <tr class="thead-dark" style="background-color: grey; color: white;">
                 <th colspan="6">Invoice Number:<?php echo $billno;?>&nbsp;&nbsp;&nbsp;Invoice Date:<?php echo $invoiceDate; ?></th>
                 <th>Gross Amount</th>
-                <th><?php echo number_format($tot1,2); ?></th>
+                <th class="right-align"><?php echo number_format($tot1,2); ?></th>
                 <th></th>
             </tr>
             <tr class="thead-dark" style="background-color: grey; color: white;">
                 <th colspan="6"></th>
                 <th>Gst 5%</th>
-                <th><?php echo number_format($gst,2); ?></th>
+                <th class="right-align"><?php echo number_format($gst,2); ?></th>
                 <th></th>
             </tr>
             <tr>
@@ -950,13 +953,13 @@ if(isset($_POST['managerEdit']) && isset($_POST['fdate']) && isset($_POST['tdate
     <tfoot class="thead-dark">
         <tr>
             <th colspan="6">Gross Total</th>
-            <th><?php echo number_format($toatlnet,2); ?></th>
+            <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
             <th></th>
             <th></th>
         </tr>
         <tr>
             <th colspan="6">Gst Total</th>
-            <th><?php echo number_format(($toatlnet*5)/100,2); ?></th>
+            <th class="right-align"><?php echo number_format(($toatlnet*5)/100,2); ?></th>
             <th></th>
             <th></th>
         </tr>
@@ -965,5 +968,51 @@ if(isset($_POST['managerEdit']) && isset($_POST['fdate']) && isset($_POST['tdate
     <?php
 }
 
+//store_purchase_product categorys show   and store_product.php category;
+if(isset($_POST['loginTime']) && isset($_POST['fdate']) && isset($_POST['tdate']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+
+    $query="SELECT `log_info`.*,`login`.`type` FROM `log_info`,`login` WHERE `log_info`.`userid`=`login`.`id`";
+    $exc=mysqli_query($conn,$query);
+    ?>
+        <table class="table" id="kot_cancel">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th>slno</th>
+                    <th>UserId</th>
+                    <th>Type</th>
+                    <!-- <th>Name</th> -->
+                    <th>Login</th>
+                    <th>Logout</th>  
+                </tr>
+            </thead>
+            <tbody id="kotData">
+    <?php
+    $i=1;
+    while($row=mysqli_fetch_assoc($exc))
+    {
+        $userid=$row['userid'];
+        $logintime=$row['logintime'];
+        $logouttime=$row['logouttime'];
+        $type=$row['type'];
+        $empname=$row['userid'];
+        ?>
+            <tr>
+                <td><?php echo $i++; ?></td>
+                <td><?php echo $userid; ?></td>
+                <td><?php echo $type; ?></td>
+                <!-- <td><?php echo $empname; ?></td> -->
+                <td><?php echo $logintime; ?></td>
+                <td><?php echo $logouttime; ?></td>
+            </tr>
+        <?php
+    }
+    ?>
+    </tbody>
+    </table>
+    <?php
+}
 
 ?>

@@ -32,7 +32,7 @@
         {
             border: 1px solid black;
             padding: 5px;
-            text-align: left;
+            /* text-align: left; */
             white-space: nowrap;
         }
 </style>
@@ -68,7 +68,7 @@
                                     <div class="col-md-3">
                                         <button class="btn btn-success" style="margin-top:23px;" @click="search">Search</button>
                                         <button class="btn btn-danger" style="margin-top:23px;" id="pdfgenerate">PDF</button>
-                                        <button class="btn btn-success" style="margin-top:23px;" onclick="exportToExcel()">Excel</button>
+                                        <!-- <button class="btn btn-success" style="margin-top:23px;" onclick="exportToExcel()">Excel</button> -->
                                     </div>
                                 </div>
                             </div>
@@ -111,18 +111,18 @@
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.unit }}</td>
-                                    <td>{{ item.avgprice }}</td>
-                                    <td>{{ item.openingStock }}</td>
-                                    <td>{{ item.stocksum }}</td>
-                                    <td>{{ item.purTotal }}</td>
-                                    <td>{{ item.issued }}</td>
-                                    <td>{{ item.issedTotal }}</td>
-                                    <td>{{ item.retur }}</td>
-                                    <td>{{ item.returnTotal }}</td>
-                                    <td>{{ item.wastage }}</td>
-                                    <td>{{ item.wastotal }}</td>
-                                    <td>{{ item.cloasing }}</td>
-                                    <td>{{ item.cloTotal }}</td>
+                                    <td class="right-align">{{ item.avgprice }}</td>
+                                    <td class="right-align">{{ item.openingStock }}</td>
+                                    <td class="right-align">{{ item.stocksum }}</td>
+                                    <td class="right-align">{{ item.purTotal }}</td>
+                                    <td class="right-align">{{ item.issued }}</td>
+                                    <td class="right-align">{{ item.issedTotal }}</td>
+                                    <td class="right-align">{{ item.retur }}</td>
+                                    <td class="right-align">{{ item.returnTotal }}</td>
+                                    <td class="right-align">{{ item.wastage }}</td>
+                                    <td class="right-align">{{ item.wastotal }}</td>
+                                    <td class="right-align">{{ item.cloasing }}</td>
+                                    <td class="right-align">{{ item.cloTotal }}</td>
                                     <td>
                                         <button class="btn btn-success align-center" @click="handlewastage(index)" style="padding: 2px 5px;"><i class='bx bx-trash-alt'></i></button>
                                     </td>
@@ -132,15 +132,15 @@
                                 <tr>
                                     <td colspan="5"></td>
                                     <td>Purchase:</td>
-                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.purTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ stockList.reduce((sum, item) => sum + parseFloat((item.purTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td>Issued:</td>
-                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.issedTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ stockList.reduce((sum, item) => sum + parseFloat((item.issedTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td>Return:</td>
-                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.returnTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ stockList.reduce((sum, item) => sum + parseFloat((item.returnTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td>Wastage:</td>
-                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.wastotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
-                                    <td>Cloasing:</td>
-                                    <td>{{ stockList.reduce((sum, item) => sum + parseFloat((item.cloTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td class="right-align">{{ stockList.reduce((sum, item) => sum + parseFloat((item.wastotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
+                                    <td>Closing:</td>
+                                    <td class="right-align">{{ stockList.reduce((sum, item) => sum + parseFloat((item.cloTotal || '0').replace(/,/g, '')), 0).toFixed(2) }}</td>
                                     <td></td>
                                 </tr>
                             </tfoot>

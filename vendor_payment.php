@@ -76,10 +76,10 @@
                                                         <td><?php echo $row['slno']; ?></td>                                                   
                                                         <td><?php echo $row['vendor']; ?></td>
                                                         <td><?php echo $row['mobile']; ?></td>
-                                                        <td><?php echo number_format($row['total_amt'],2); ?></td>
-                                                        <td><?php echo number_format($row['total_paid'],2); ?></td>
-                                                        <td><?php echo number_format($row['total_disc'],2); ?></td>
-                                                        <td><?php echo number_format($row['total_amt']-$row['total_paid'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['total_amt'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['total_paid'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['total_disc'],2); ?></td>
+                                                        <td class="right-align"><?php echo number_format($row['total_amt']-$row['total_paid'],2); ?></td>
                                                     </tr>
                                                 <?php
                                             }

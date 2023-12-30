@@ -2,6 +2,12 @@
 ini_set('display_errors', 1);
 session_start();
 // $na1=$_POST["uname"];
+
+date_default_timezone_set('Asia/Kolkata');
+
+// Fetch the current date and time
+
+
 $na2=$_POST["pass"];
 $user=$_POST["user"];
 
@@ -33,6 +39,10 @@ if(mysqli_num_rows($retval)!=0)
 
 	if($row['user']==$user && $row['pass']==$na2)
 	{  
+		$currentDateTime = date('Y-m-d H:i:s');
+		$query="INSERT INTO `log_info`(`userid`, `logintime`) VALUES ('$id','$currentDateTime')";
+		$exc=mysqli_query($conn,$query);
+
         echo '<script>alert("Login successfull");</script>';
 		if($main=='Captain')
 		{
@@ -43,12 +53,6 @@ if(mysqli_num_rows($retval)!=0)
 		}
         exit;
 	}
-	// if($row['user']==$user && $row['pass']==$na2 && $row['type']=="Cashier")
-	// {  
-    //     echo '<script>alert("Login successfull");</script>';
-    //     echo '<script>location="home.php"</script>';
-    //     exit;
-	// }
 }
 	
 echo '<script>alert("Login Unsucessfull");</script>';

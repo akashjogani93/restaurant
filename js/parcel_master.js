@@ -427,17 +427,25 @@ function KotPrint(tabno)
 
 function cancel_Kot(kotnumber)
 {
+    $('#kot_cancelNum').val(kotnumber);
+    $('#category').modal('show');
+}
+function cancel()
+{
+    var kotnumber=$('#kot_cancelNum').val();
+    var reson=$('#cancel_reson').val();
     let log=$.ajax({
         type: "post",
-        url: "ajax/parcel_master.php",
+        url: "ajax/table_master.php",
         data:{
                 cancel_Kot: kotnumber,
+                reson:reson
             },
         cache: false,
         success: function(status)
         {
             console.log(status);
-            window.location="parcel_master.php?tabno="+status;
+            window.location="cancel_kot.php?tabno="+status+"&back=0";
         }
     });
 }
@@ -447,6 +455,28 @@ function printAllItem(tabno)
     window.location="parcel_item.php?tabno="+tabno;
 }
 
+// function delitm(slno)
+// {
+//     if (slno != "") 
+//     {
+//         $.ajax({
+//             type: "post",
+//             url: "ajax/parcel_master.php",
+//             data: {
+//                 itmno: slno,
+//                 delete: "delete"
+//             },
+//             success: function(status) 
+//             {
+//                 // console.log(status);
+//                 $('#itemlist').load("parcel_data.php?tabno="+status);
+//                 // $('#boxx').load("final_search.php");
+//             }
+//         });
+//     } else {
+//         alert("Please Select Item");
+//     }
+// }
 function delitm(slno)
 {
     if (slno != "") 
@@ -454,22 +484,23 @@ function delitm(slno)
         $.ajax({
             type: "post",
             url: "ajax/parcel_master.php",
+            dataType: 'json',
             data: {
                 itmno: slno,
                 delete: "delete"
             },
             success: function(status) 
             {
-                // console.log(status);
-                $('#itemlist').load("parcel_data.php?tabno="+status);
-                // $('#boxx').load("final_search.php");
+                var message=status[1];
+
+                $('#itemlist').load("parcel_data.php?tabno="+status[0]);
+                $('#boxx').load("parcelBill_data.php");
             }
         });
     } else {
         alert("Please Select Item");
     }
 }
-
 //merge Table Button
 function mergeTable() 
 {

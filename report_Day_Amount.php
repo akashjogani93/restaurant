@@ -167,11 +167,10 @@
                         });
                 });
 
-                $("#kotdata tbody").on('dblclick', 'tr', function() 
-                {
+                $(document).on("#dayinvoices tbody").on('dblclick', 'tr', function() {
                     var currow = $(this).closest('tr');
                     var item_id = currow.find('td:eq(1)').html();
-                    window.location.href = 'finalInvoice.php?billno='+item_id+"&back=0";
+                    window.location.href = 'finalInvoice.php?billno=' + item_id + "&back=0&pri=0";
                 });
 
                 $(document).on("click", ".delete-btn", function() {

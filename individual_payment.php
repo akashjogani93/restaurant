@@ -94,11 +94,11 @@
                                     <tr v-for="(item, index) in paymentList" :key="item.id" :class= "{'highlight-row':item.settle==1}">
                                         <!-- <td>{{ index + 1 }}</td> -->
                                         <td>{{ item.date }}</td>
-                                        <td>{{ item.amt }}</td>
-                                        <td>{{ item.paid }}</td>
+                                        <td class="right-align">{{ item.amt }}</td>
+                                        <td class="right-align">{{ item.paid }}</td>
                                         <!-- <td>{{ item.remain }}</td> -->
-                                        <td>{{ item.remain }}</td>
-                                        <td>{{ item.disc }}</td>
+                                        <td class="right-align">{{ item.remain }}</td>
+                                        <td class="right-align">{{ item.disc }}</td>
                                         <!-- <td>{{ item.settle }}</td> -->
                                     </tr>
                                 </tbody>

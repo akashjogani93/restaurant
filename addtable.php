@@ -2,7 +2,22 @@
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper" id="form1">
         <style>
-        .error{color: red;}</style>
+        .error{color: red;}
+        .table>thead,.table>tfoot
+        {
+            background-color:grey;
+            color:white;
+        }
+        .table{
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+        }
+        </style>
        
         <div class="content-wrapper">
             <section class="content-header">
@@ -85,7 +100,7 @@
                             </div>
                             <div class="col-md-12">
                                 <!--<div class="table-header">Detail / Per Month </div>-->
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                <table id="dynamic-table" class="table">
                                     <thead>
                                         <tr>                                                        
                                             <th>SlNo.</th>

@@ -19,6 +19,21 @@
         label{
             font-size:12px;
         }
+
+        /* .table>thead,.table>tfoot
+        {
+            background-color:grey;
+            color:white;
+        }
+        .table{
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td 
+        {
+            border: 1px solid black;
+            padding: 5px;
+        } */
     </style>
     <div class="content-wrapper">
         <section class="content">
@@ -119,6 +134,36 @@
                                     <div class="boxx1" id="boxx1">
                                                 
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-success">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel1"><b>Cancel Kot</b></h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box-body form1">
+                                    <div class="form-group col-md-12">
+                                        <label for="exampleInputFile">KOT No</label>
+                                        <input type="text" class="form-control" id="kot_cancelNum" placeholder="Kot Number" readonly>
+                                        <!-- <label id="catempty"></label> -->
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="exampleInputFile">Reason</label>
+                                        <select name="cancel_reson" id="cancel_reson" class="form-control">
+                                            <option>Order Cancelled</option>
+                                            <option>Item Is Not Available</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="submit" onclick="cancel();" id="adduser" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
                         </div>
