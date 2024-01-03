@@ -1102,7 +1102,7 @@ if(isset($_POST['kitchenHistory']))
         $tableName='beverages';
     }else if($_POST['kitchenHistory']=="parcelhis")
     {
-        $tableName='store_kitchen';
+        $tableName='parcelmaterial';
     }else
     {
         $tableName='store_kitchen';
