@@ -92,7 +92,7 @@ if(isset($_POST['table1']))
         $table2=$_POST['table2'];
     }
     mysqli_query($conn,"UPDATE `temtable` SET `tabno`='$table2' WHERE `tabno`='$table1' AND `status`=0");
-    mysqli_query($conn,"UPDATE `kot` SET `tabno`='$table2' WHERE `tabno`='$table1'");
+    // mysqli_query($conn,"UPDATE `kot` SET `tabno`='$table2' WHERE `tabno`='$table1'");
     echo json_encode('Table Shifted');
 }
 

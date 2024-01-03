@@ -137,6 +137,7 @@
                         $('#boxx').load("bill_data.php");
                     }
                 });
+                // console.log(log);
             }
         }
     }

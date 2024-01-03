@@ -72,8 +72,8 @@ if(isset($_POST['delete'],$_POST['itmno']))
         
        
     }
-$sql2="DELETE FROM `kot` WHERE `id`='".$kot."'";
-mysqli_query($conn, $sql2);
+// $sql2="DELETE FROM `kot` WHERE `id`='".$kot."'";
+// mysqli_query($conn, $sql2);
 
 $sql1="DELETE FROM `temtable` WHERE `slno`='".$itmno1."'";
 mysqli_query($conn, $sql1);
@@ -132,7 +132,7 @@ if(isset($_POST['tabno'],$_POST['merge'],$_POST['x']))
     {
         $id = $table[$i];
         mysqli_query($conn, "UPDATE `temtable` SET `tabno`='$merge',`capname`='$capname' WHERE `tabno` = '$id';");
-        mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge',`capname`='$capname'WHERE `tabno` = '$id';");
+        // mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge',`capname`='$capname'WHERE `tabno` = '$id';");
     }
 }
 
