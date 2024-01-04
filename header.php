@@ -1,5 +1,6 @@
 <?php session_start(); 
 include('link.php');
+require_once("dbcon.php"); 
 if(!isset($_SESSION['tye']))
 {
      echo "<script>alert('Please login first');window.location = 'index.php';</script>";
@@ -8,6 +9,36 @@ if(!isset($_SESSION['tye']))
 $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
 $name=$_SESSION['name'];
+
+$query = "SELECT * FROM `dayshedule` ORDER BY id DESC LIMIT 1";
+$runi=mysqli_query($conn,$query);
+if(mysqli_num_rows($runi) > 0)
+{
+    while($rowid=mysqli_fetch_assoc($runi))
+    {
+        $sheduleid=$rowid['shedule'];
+        $sheduledate=$rowid['date'];
+    }
+}else
+{
+    $sheduleid=0;
+    $sheduledate='';
+}
+
+$_SESSION['sheduleid']=$sheduleid;
+$_SESSION['sheduledate']=$sheduledate;
+$sheduleidday=$_SESSION['sheduleid'];
+
+if($cash_type=='admin' || $cash_type=='Manager')
+{
+}else
+{   
+    if($sheduleidday==0)
+    {
+        echo '<script>alert("Day Is Closed");</script>';
+        echo '<script>location="logout.php";</script>';
+    }
+}
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');

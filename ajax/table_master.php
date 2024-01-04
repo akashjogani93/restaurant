@@ -3,6 +3,7 @@ session_start();
 $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
 $name=$_SESSION['name'];
+$sheduledate=$_SESSION['sheduledate'];
 
 $editbillno = isset($_SESSION['billno']) ? $_SESSION['billno'] : '';
 $billEdit = isset($_SESSION['billEdit']) ? $_SESSION['billEdit'] : '';
@@ -176,7 +177,8 @@ if(isset($_POST['itemname']))
 if(isset($_POST['captain']) && isset($_POST['itmnam']))
 {
     $date = $_POST['date'];
-    $ymd = DateTime::createFromFormat('m/d/Y', $date)->format('Y-m-d');
+    // $ymd = DateTime::createFromFormat('m/d/Y', $sheduledate)->format('Y-m-d');
+    $ymd=$sheduledate;
     $itmno = $_POST['itmno'];
     $itmnam = $_POST['itmnam'];
     $captain = $_POST['captain'];
@@ -236,7 +238,6 @@ if(isset($_POST['kot']))
         $bill=0;
     }
 
-    $current_date = date('Y-m-d');
     $current_time = date("h:i A");
     $tabno=$_POST['kot'];
     $type=0;
@@ -367,7 +368,35 @@ if(isset($_POST['tabno'],$_POST['merge'],$_POST['x']))
     {
         $id = $table[$i];
         mysqli_query($conn, "UPDATE `temtable` SET `tabno`='$merge',`capname`='$capname',`cap_code`='$cap_code' WHERE `tabno` = '$id' `status`=0;");
-        mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge',`capname`='$capname',`cap_code`='$cap_code' WHERE `tabno` = '$id';");
+        // mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge',`capname`='$capname',`cap_code`='$cap_code' WHERE `tabno` = '$id';");
+    }
+}
+
+if(isset($_POST['dayShedule'],$_POST['userid']))
+{
+    $dayShedule = $_POST['dayShedule'];
+    $userid = $_POST['userid'];
+    $time = date("h:i A");
+    $query="INSERT INTO `dayshedule`(`date`, `time`, `userid`, `shedule`) VALUES ('$dayShedule','$time','$userid',1)";
+    $exc=mysqli_query($conn,$query);
+    if($exc)
+    {
+        echo 'Day Sheduled';
+    }
+}
+
+if(isset($_POST['dayclose'],$_POST['userid']))
+{
+    $dayShedule = $_POST['dayclose'];
+    $userid = $_POST['userid'];
+    $time = date("h:i A");
+    $query="INSERT INTO `dayshedule`(`date`, `time`, `userid`, `shedule`) VALUES ('$dayShedule','$time','$userid',0)";
+    $exc=mysqli_query($conn,$query);
+    if($exc)
+    {
+        unset($_SESSION['sheduledate']);
+        unset($_SESSION['sheduleid']);
+        echo 'Day Closed';
     }
 }
 ?>

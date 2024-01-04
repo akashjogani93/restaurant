@@ -159,7 +159,7 @@ class Product
                                 }else
                                 {
                                     alert("Product Added");
-                                    // location.reload();
+                                    location.reload();
                                 }
                             }
                         });

@@ -34,7 +34,7 @@
             border: 1px solid black;
             padding: 5px;
         }
-        #dailysale{
+        #dailyinvoice{
             background: green;
         }
         @media (min-width: 768px){
@@ -134,19 +134,18 @@
             $(document).ready(function()
             {
                 const day_sales=new Reports();
-                day_sales.day_sales();
+                day_sales.day_invoice();
                 $('#search').on('click',function()
                 {
-                    day_sales.day_sales();
+                    day_sales.day_invoice();
                 });
 
                 $('#typ').on('change', function() {
-                    day_sales.day_sales();
+                    day_sales.day_invoice();
                 });
 
                 
-                // $(document).on("click", ".edit-btn", function() 
-                $(document).on("#dayinvoices tbody").on('dblclick', 'tr', function() 
+                $(document).on("click", ".edit-btn", function() 
                 {
                     var billno = $(this).closest('tr').find('td:eq(1)').text();
                     let billdata=[];
@@ -161,26 +160,20 @@
                             cache: false,
                             success:function(status)
                             {
-                                // var billno = status.billno;
                                 billdata = status;
                                 localStorage.setItem('originalBillData', JSON.stringify(billdata));
-                                if(status.billno !='')
-                                {
-                                    updateModal(billdata);
-                                }
+                                updateModal(billdata);
                             }
                         });
                 });
 
-                // $(document).on("#dayinvoices tbody").on('dblclick', 'tr', function() 
-                // {
-                //     var currow = $(this).closest('tr');
-                //     var item_id = currow.find('td:eq(1)').html();
-                //     window.location.href = 'finalInvoice.php?billno=' + item_id + "&back=0&pri=0";
-                // });
+                $(document).on("#dayinvoices tbody").on('dblclick', 'tr', function() {
+                    var currow = $(this).closest('tr');
+                    var item_id = currow.find('td:eq(1)').html();
+                    window.location.href = 'finalInvoice.php?billno=' + item_id + "&back=0&pri=0";
+                });
 
-                $(document).on("click", ".delete-btn", function() 
-                {
+                $(document).on("click", ".delete-btn", function() {
                     var storedData = JSON.parse(localStorage.getItem('billData')) || { items: [] };
                     var indexToDelete = $(this).data('index');
                     // storedData.items.splice(indexToDelete, 1);

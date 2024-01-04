@@ -385,6 +385,7 @@ function OrderAdd()
                 // $('#boxx2').load("shiftTable.php");
             }
         });
+        console.log(log);
     }
     else
     {

@@ -1,5 +1,11 @@
 <?php require_once("header.php"); ?>
-<?php require_once("dbcon.php"); ?>
+<?php require_once("dbcon.php"); 
+     if($sheduleidday==0)
+     {
+        echo '<script>alert("First Shedule Day");</script>';
+        echo '<script>location="home.php";</script>';
+     }
+?>
 <script src="js/parcel_master.js"></script>
 <body class="hold-transition skin-blue sidebar-mini">
     <style>

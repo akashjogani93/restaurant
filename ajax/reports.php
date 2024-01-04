@@ -87,10 +87,10 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
     $typ=$_POST['typ'];
     if($typ=='All')
     {
-        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'";
+        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `pmode`='Cash' AND `date` BETWEEN '$fdate' AND '$tdate'";
     }else
     {
-        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `orde`='$typ' AND `date` BETWEEN '$fdate' AND '$tdate'";
+        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `pmode`='Cash' AND `orde`='$typ' AND `date` BETWEEN '$fdate' AND '$tdate'";
     }
     $exc=mysqli_query($conn,$query);
     
@@ -106,14 +106,6 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
                     <th scope="col">Round Off(-)</th>  
                     <th scope="col">Round Off(+)</th>
                     <th scope="col">Net Amount</th>
-                    <?php 
-                        if($cash_type=='Manager')
-                        {
-                    ?>
-                            <th scope="col">Edit</th>
-                    <?php
-                        }
-                    ?>
                 </tr>
             </thead>
             <tbody id="dayData">
@@ -145,17 +137,6 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
                 <td class="right-align"><?php echo $roundminus; ?></td>
                 <td class="right-align"><?php echo $roundplus; ?></td>
                 <td class="right-align"><?php echo $nettot; ?></td>
-                    <?php 
-                        if($cash_type=='Manager')
-                        {
-                    ?>
-                        <td>
-                            <button type="button" class="btn btn-danger edit-btn">Edit</button>
-                        </td>
-                    <?php
-                        }
-                    ?>
-                
             </tr>
         <?php
     }
@@ -170,15 +151,84 @@ if(isset($_POST['daysale']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
                 <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
                 <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
                 <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
-                <?php 
-                        if($cash_type=='Manager')
-                        {
-                    ?>
-                        <th></th>
-                    <?php
-                        }
-                    ?>
-                
+            </tr>
+        </tfoot>
+        </table>
+    <?php
+}
+
+
+if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) && isset($_POST['typ']))
+{
+    $fdate=$_POST['fdate'];
+    $tdate=$_POST['tdate'];
+    $typ=$_POST['typ'];
+    if($typ=='All')
+    {
+        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `date` BETWEEN '$fdate' AND '$tdate'";
+    }else
+    {
+        $query="SELECT * FROM `invoice` WHERE `status`=1 AND `orde`='$typ' AND `date` BETWEEN '$fdate' AND '$tdate'";
+    }
+    $exc=mysqli_query($conn,$query);
+    
+    ?>
+        <table class="table" id="dayinvoices">
+            <thead class="thead-dark" style="background-color: grey; color: white;">
+                <tr>
+                    <th scope="col">Invoice Date</th>
+                    <th scope="col">Invoice Number</th>
+                    <th scope="col">Gross Amount</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">GST Amount</th>
+                    <th scope="col">Round Off(-)</th>  
+                    <th scope="col">Round Off(+)</th>
+                    <th scope="col">Net Amount</th>
+                </tr>
+            </thead>
+            <tbody id="dayData">
+    <?php
+    while($row=mysqli_fetch_assoc($exc))
+    {
+        $Totalgtot=$Totalgtot+$row['gtot'];
+        $totaldisc=$totaldisc+$row['discAmt'];
+        $totalgst=$totalgst+$row['gstAmt'];
+        $totalminus=$totalminus+$row['roundminus'];
+        $totalplus=$totalplus+$row['roundplus'];
+        $toatlnet=$toatlnet+$row['nettot'];
+
+        $date=$row['date'];
+        $slno=$row['slno'];
+        $gtot=number_format($row['gtot'],2);
+        $discAmt=number_format($row['discAmt'],2);
+        $gstAmt=number_format($row['gstAmt'],2);
+        $roundplus=$row['roundplus'];
+        $roundminus=$row['roundminus'];
+        $nettot=number_format($row['nettot'],2);
+        ?>
+            <tr>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $slno; ?></td>
+                <td class="right-align"><?php echo $gtot; ?></td>
+                <td class="right-align"><?php echo $discAmt; ?></td>
+                <td class="right-align"><?php echo $gstAmt; ?></td>
+                <td class="right-align"><?php echo $roundminus; ?></td>
+                <td class="right-align"><?php echo $roundplus; ?></td>
+                <td class="right-align"><?php echo $nettot; ?></td>
+            </tr>
+        <?php
+    }
+    ?>
+        </tbody>
+        <tfoot class="thead-dark" id="tfoot">
+            <tr>
+                <th colspan="2"></th>
+                <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
+                <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalgst,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
+                <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
+                <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
             </tr>
         </tfoot>
         </table>
@@ -691,11 +741,15 @@ if(isset($_POST['billno']))
     $bill=$_POST['billno'];
     $options = array();
     $options['billno'] = $bill;
-    $query="SELECT * FROM `tabledata` WHERE `billno`='$bill'";
-    $exc=mysqli_query($conn,$query);
-    while($row=mysqli_fetch_assoc($exc))
+
+    if($cash_type=='Manager')
     {
-        $options['items'][] = $row;
+        $query="SELECT * FROM `tabledata` WHERE `billno`='$bill'";
+        $exc=mysqli_query($conn,$query);
+        while($row=mysqli_fetch_assoc($exc))
+        {
+            $options['items'][] = $row;
+        }
     }
 
     header('Content-Type: application/json');

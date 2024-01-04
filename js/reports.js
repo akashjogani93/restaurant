@@ -67,6 +67,34 @@ class Reports
         });
         console.log(log);
     }
+    day_invoice()
+    {
+        var fdate=$("#fdate").val();
+        var tdate=$("#tdate").val();
+        if (new Date(tdate) < new Date(fdate)) {
+            alert("Please Select Valid Date");
+            return; // Stop further execution if the condition is not met
+        }
+        var typ=$("#typ").val();
+        // var typ='All';
+        let log=$.ajax({
+            type: "post",
+            url: "ajax/reports.php",
+            data:{
+                    invoice: 'invoice',
+                    fdate:fdate,
+                    tdate:tdate,
+                    typ:typ
+                },
+            cache: false,
+            success: function(status)
+            {
+                $('#mainData').empty();
+                $('#mainData').append(status);
+            }
+        });
+        console.log(log);
+    }
     month_sales()
     {
         var fdate=$("#fdate").val();

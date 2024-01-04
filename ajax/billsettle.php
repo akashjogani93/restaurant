@@ -2,6 +2,7 @@
 include("../dbcon.php");
 $cash_type=$_SESSION['tye'];
 $cash_id=$_SESSION['id'];
+$sheduledate=$_SESSION['sheduledate'];
 // if(isset($_POST['x']) && isset($_POST['x1']))
 // {
 //     $bill = $_POST['x'];

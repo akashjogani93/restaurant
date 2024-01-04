@@ -361,7 +361,7 @@ function myFunction(pritername)
         } else if (back == 1 && pri == 1) {
             window.location.href = "parcel_master.php";
         } else if (back == 0 && pri == 0) {
-            window.location.href = "report_day_Amount.php";
+            window.location.href = "report_day_invoice.php";
         }
     // };
 }

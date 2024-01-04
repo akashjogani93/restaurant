@@ -6,7 +6,7 @@ $name=$_SESSION['name'];
 
 $editbillno = isset($_SESSION['parcelbillno']) ? $_SESSION['parcelbillno'] : '';
 $billEdit = isset($_SESSION['parcelbillEdit']) ? $_SESSION['parcelbillEdit'] : '';
-
+$sheduledate=$_SESSION['sheduledate'];
 date_default_timezone_set('Asia/Kolkata');
 include("../dbcon.php");
 
@@ -173,7 +173,8 @@ if(isset($_POST['itemname']))
 if(isset($_POST['captain']) && isset($_POST['itmnam']))
 {
     $date = $_POST['date'];
-    $ymd = DateTime::createFromFormat('m/d/Y', $date)->format('Y-m-d');
+    // $ymd = DateTime::createFromFormat('m/d/Y', $sheduledate)->format('Y-m-d');
+    $ymd=$sheduledate;
     $itmno = $_POST['itmno'];
     $itmnam = $_POST['itmnam'];
     $captain = $_POST['captain'];
@@ -376,7 +377,7 @@ if(isset($_POST['tabno'],$_POST['merge'],$_POST['x']))
     {
         $id = $table[$i];
         mysqli_query($conn, "UPDATE `temtable` SET `tabno`='$merge',`capname`='$capname',`cap_code`='$cap_code' WHERE `tabno` = '$id' `status`=0;");
-        mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge',`capname`='$capname',`cap_code`='$cap_code' WHERE `tabno` = '$id';");
+        // mysqli_query($conn, "UPDATE `kot` SET `tabno`='$merge',`capname`='$capname',`cap_code`='$cap_code' WHERE `tabno` = '$id';");
     }
 }
 ?>
