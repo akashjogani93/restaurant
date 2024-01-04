@@ -140,6 +140,20 @@
                         </div>
                     </div>
                 </div>
+                <!-- <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="..." class="rounded mr-2" alt="...">
+                    <strong class="mr-auto">Bootstrap</strong>
+                    <small class="text-muted">11 mins ago</small>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
+                </div>
+                </div> -->
+
                 <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog modal-sm" role="document">
                         <div class="modal-content">
@@ -153,6 +167,7 @@
                                     <div class="form-group col-md-12">
                                         <label for="exampleInputFile">KOT No</label>
                                         <input type="text" class="form-control" id="kot_cancelNum" placeholder="Kot Number" readonly>
+                                        <input type="hidden" class="form-control" id="kot_Tabno" placeholder="Kot Number" readonly>
                                         <!-- <label id="catempty"></label> -->
                                     </div>
                                     <div class="form-group col-md-12">

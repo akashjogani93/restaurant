@@ -266,33 +266,47 @@ if(isset($_POST['kot']))
 }
 
 //KOT-Cancel
-if(isset($_POST['cancel_Kot']) && isset($_POST['reson']))
+if(isset($_POST['cancel_Kot']) && isset($_POST['reson']) && isset($_POST['tabno']))
 {
     $kot=$_POST['cancel_Kot'];
     $reson=$_POST['reson'];
+    $tabno=$_POST['tabno'];
     $type=0;
     $cancel_time = date("h:i A");
-    $query="SELECT * FROM `temtable` WHERE `kot_num`='$kot'";
-    $exc=mysqli_query($conn,$query);
-    while($row=mysqli_fetch_array($exc))
+
+    $countKotsQuery = "SELECT COUNT(DISTINCT `kot_num`) AS num_kots FROM `temtable` WHERE `tabno`='$tabno'";
+    $excCountKots = mysqli_query($conn, $countKotsQuery);
+    if($excCountKots)
     {
-        $slno = $row['slno'];
-        $date = $row['date'];
-        $itmno = $row['itmno'];
-        $itmnam = $row['itmnam'];
-        $prc = $row['prc'];
-        $qty = $row['qty'];
-        $tot = $row['tot'];
-        $tabno = $row['tabno'];
-        $captain = $row['capname'];
-        $cap_code = $row['cap_code'];
-        $kot_time = $row['time'];
-        // $reson = 'none';
-        $cancel="INSERT INTO `kot_cancel`(`date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `kot_num`, `captain`, `cap_code`, `kot_time`, `cancel_time`, `reson`,`cashid`,`type`) VALUES ('$date','$itmno','$itmnam','$prc','$qty','$tot','$tabno','$kot','$captain','$cap_code','$kot_time','$cancel_time','$reson','$cash_id','$type')";
-        $exc1=mysqli_query($conn,$cancel);
+        // Fetch the result
+        $countKotsRow = mysqli_fetch_assoc($excCountKots);
+        if($countKotsRow['num_kots'] > 1)
+        {
+            //  $countKotsRow['num_kots'];
+            $query="SELECT * FROM `temtable` WHERE `kot_num`='$kot'";
+            $exc=mysqli_query($conn,$query);
+            while($row=mysqli_fetch_array($exc))
+            {
+                $slno = $row['slno'];
+                $date = $row['date'];
+                $itmno = $row['itmno'];
+                $itmnam = $row['itmnam'];
+                $prc = $row['prc'];
+                $qty = $row['qty'];
+                $tot = $row['tot'];
+                $tabno = $row['tabno'];
+                $captain = $row['capname'];
+                $cap_code = $row['cap_code'];
+                $kot_time = $row['time'];
+                // $reson = 'none';
+                $cancel="INSERT INTO `kot_cancel`(`date`, `itmno`, `itmnam`, `prc`, `qty`, `tot`, `tabno`, `kot_num`, `captain`, `cap_code`, `kot_time`, `cancel_time`, `reson`,`cashid`,`type`) VALUES ('$date','$itmno','$itmnam','$prc','$qty','$tot','$tabno','$kot','$captain','$cap_code','$kot_time','$cancel_time','$reson','$cash_id','$type')";
+                $exc1=mysqli_query($conn,$cancel);
+            }
+            mysqli_query($conn,"DELETE FROM `temtable` WHERE `kot_num`='$kot'");
+            echo  $countKotsRow['num_kots'];
+        }
     }
-    mysqli_query($conn,"DELETE FROM `temtable` WHERE `kot_num`='$kot'");
-    echo $kot;
+    
 }
 
 //delelte Item

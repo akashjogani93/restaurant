@@ -13,7 +13,7 @@ use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
 ?>
 
-<body class="hold-transition skin-blue sidebar-mini"onload="myFunction()" >
+<body class="hold-transition skin-blue sidebar-mini"onload="myFunction('EPSON TM-T82 Receipt')" >
     <div class="wrapper" id="form1">
     <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap');
@@ -327,14 +327,35 @@ th.qty, td.qty{
     <script src="jquery.PrintArea.js"></script>
     <script type="text/javascript">
 
-function myFunction()
+function myFunction(pritername)
 {
     const urlParams = new URLSearchParams(window.location.search);
     var back = urlParams.get('back');
     var pri = urlParams.get('pri');
     window.print();
-    window.onafterprint = function(event)
-    {
+    
+
+    // if (window.print) {
+    //     // Use silent printing option (true) for direct printing
+    //     const printOptions = {
+    //         silent: true,
+    //         printerName: pritername,
+    //     };
+
+    //     // Print the document
+    //     window.print({ printOptions })
+    //         .then(() => {
+    //             console.log('Document sent to printer successfully.');
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error printing document:', error);
+    //         });
+    // } else {
+    //     console.error('Printing not supported in this browser.');
+    // }
+
+    // window.onafterprint = function(event)
+    // {
         if (back == 1 && pri == 0) {
             window.location.href = "table_master.php";
         } else if (back == 1 && pri == 1) {
@@ -342,9 +363,34 @@ function myFunction()
         } else if (back == 0 && pri == 0) {
             window.location.href = "report_day_Amount.php";
         }
-    };
+    // };
 }
 
+// Function to print a document to a specific printer
+function printDocument(printerName) {
+    if (navigator.print) {
+        // Use silent printing option (true) for direct printing
+        const printOptions = {
+            silent: true,
+            printerName: printerName,
+        };
+
+        // Print the document
+        navigator.print.print({ printOptions })
+            .then(() => {
+                console.log('Document sent to printer successfully.');
+            })
+            .catch((error) => {
+                console.error('Error printing document:', error);
+            });
+    } else {
+        console.error('Printing not supported in this browser.');
+    }
+}
+
+// Example usage:
+// Replace 'YourPrinterName' with the actual name of the printer you want to use
+// printDocument('YourPrinterName');
 </script> 
 </body>
 

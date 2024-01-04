@@ -425,27 +425,35 @@ function KotPrint(tabno)
     });
 }
 
-function cancel_Kot(kotnumber)
+function cancel_Kot(kotnumber,tabno)
 {
     $('#kot_cancelNum').val(kotnumber);
+    $('#kot_Tabno').val(tabno);
     $('#category').modal('show');
 }
 function cancel()
 {
     var kotnumber=$('#kot_cancelNum').val();
     var reson=$('#cancel_reson').val();
+    var tabno=$('#kot_Tabno').val();
     let log=$.ajax({
         type: "post",
         url: "ajax/table_master.php",
         data:{
                 cancel_Kot: kotnumber,
-                reson:reson
+                reson:reson,
+                tabno:tabno,
             },
         cache: false,
         success: function(status)
         {
-            console.log(status);
-            window.location="cancel_kot.php?tabno="+status+"&back=0";
+            if(status > 1)
+            {
+                window.location="cancel_kot.php?tabno="+kotnumber+"&back=1";
+            }else
+            {
+                $('#category').modal('hide');
+            }
         }
     });
 }

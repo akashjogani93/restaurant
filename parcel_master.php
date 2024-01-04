@@ -150,6 +150,7 @@
                                     <div class="form-group col-md-12">
                                         <label for="exampleInputFile">KOT No</label>
                                         <input type="text" class="form-control" id="kot_cancelNum" placeholder="Kot Number" readonly>
+                                        <input type="hidden" class="form-control" id="kot_Tabno" placeholder="Kot Number" readonly>
                                         <!-- <label id="catempty"></label> -->
                                     </div>
                                     <div class="form-group col-md-12">

@@ -187,8 +187,8 @@ function myFunction()
    window.print();
    var tab="<?php echo $table_no; ?>";
    var back="<?php echo $back; ?>";
-    window.onafterprint = function(event)
-    {
+    // window.onafterprint = function(event)
+    // {
         if(back==0)
         {
             window.location.href ="table_master.php?tabno="+tab;
@@ -196,7 +196,7 @@ function myFunction()
         {
             window.location.href ="parcel_master.php?tabno="+tab;
         }
-    };
+    // };
 }
 </script>
 </body>

@@ -51,7 +51,7 @@ if(mysqli_num_rows($CONFORM)>0)
                                         {
                                             echo $kot_num; 
                                             ?>
-                                            <button onclick="cancel_Kot(this.value)" value="<?php echo $kot_num; ?>" class="btn btn-info" style="position:relative; left:50px; font-size:10px;">Cancel KOT</button>
+                                            <button onclick="cancel_Kot(this.value,'<?php echo $table_no; ?>')" value="<?php echo $kot_num; ?>" class="btn btn-info" style="position:relative; left:50px; font-size:10px;">Cancel KOT</button>
                                             <a href="parcel_kot.php?tabno=<?php echo $kot_num; ?>" style="position:relative; left:50px; font-size:10px;" class="btn btn-danger">Print</a>
                                             <?php
                                         }
