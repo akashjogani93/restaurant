@@ -129,7 +129,8 @@ if(isset($_POST['item_no']))
 
 
 //search item no
-if(isset($_POST['itemnamedata'])){
+if(isset($_POST['itemnamedata']))
+{
     $search = mysqli_real_escape_string($conn,$_POST['itemnamedata']);
     $query = "SELECT * FROM `item` where `itmnam` LIKE '%".$search."%'";
     $result = mysqli_query($conn,$query);
@@ -237,17 +238,17 @@ if(isset($_POST['kot']))
         $status=0;
         $bill=0;
     }
-
+    
     $current_time = date("h:i A");
     $tabno=$_POST['kot'];
     $type=0;
     $sqlkot="SELECT MAX(kot_num) AS kotnumber
                 FROM (
-                    SELECT kot_num FROM temtable WHERE `date` = '$current_date'
+                    SELECT kot_num FROM temtable WHERE `date` = '$sheduledate'
                     UNION
-                    SELECT kot_num FROM tabledata WHERE `date` = '$current_date'
+                    SELECT kot_num FROM tabledata WHERE `date` = '$sheduledate'
                     UNION
-                    SELECT kot_num FROM kot_cancel WHERE `date` = '$current_date'
+                    SELECT kot_num FROM kot_cancel WHERE `date` = '$sheduledate'
                     UNION
                     SELECT 1 AS kot_num -- Default value if date doesn't match in any table
                 ) AS my_alias;";

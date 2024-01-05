@@ -266,11 +266,11 @@ if(isset($_POST['kot']))
     // }
     $sqlkot="SELECT MAX(kot_num) AS kotnumber
                 FROM (
-                    SELECT kot_num FROM temtable WHERE `date` = '$current_date'
+                    SELECT kot_num FROM temtable WHERE `date` = '$sheduledate'
                     UNION
-                    SELECT kot_num FROM tabledata WHERE `date` = '$current_date'
+                    SELECT kot_num FROM tabledata WHERE `date` = '$sheduledate'
                     UNION
-                    SELECT kot_num FROM kot_cancel WHERE `date` = '$current_date'
+                    SELECT kot_num FROM kot_cancel WHERE `date` = '$sheduledate'
                     UNION
                     SELECT 1 AS kot_num -- Default value if date doesn't match in any table
                 ) AS my_alias;";
