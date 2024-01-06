@@ -22,7 +22,7 @@ class pdfMake
             styles: {
                 overflow: 'linebreak',
                 lineWidth: 1,
-                fontSize: 7,
+                fontSize: 6,
                 cellPadding: {horizontal: 4, vertical: 2},
                 textColor: [0, 0, 0],
             },
@@ -30,11 +30,11 @@ class pdfMake
             {
                 fillColor: [128, 128, 128],
                 textColor: [255, 255, 255],
-                fontSize: 8,
+                fontSize: 7,
                 lineWidth: 1,
             },
             footStyles: {
-                fontSize: 8,
+                fontSize: 7,
                 fillColor: [128, 128, 128],
                 textColor: [255, 255, 255],
                 lineWidth: 1,

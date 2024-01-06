@@ -294,7 +294,7 @@ if(isset($_POST['stockList']))
             $stockData="INSERT INTO `stock`(`qty`,`venid`,`price`,`total`,`bamt`,`tax`,`disc`,`cess`,`perCaseQty`,`pid`,`exp`,`date`) VALUES ('$qty', '$vendorId', '$pric', '$amt','$baseamt','$tax','$discamt','$cess','$insideqty','$pid','$exp','$purchasedDate')";
             $stock1exc=mysqli_query($conn,$stockData);
 
-            if($category == 'Meat & sea food ' || $category == 'Vegitables' || $category == 'Dairy')
+            if($category == 'Meat & Sea Food ' || $category == 'Vegitables' || $category == 'Chicken ' || $category == 'Dairy Fresh')
             {
                 $insertStore="INSERT INTO `store_stock`(`pid`,`issuedStock`,`date`)VALUES('$pid','$qty','$purchasedDate')";
                 $excinsert=mysqli_query($conn,$insertStore);

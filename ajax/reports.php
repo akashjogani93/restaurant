@@ -176,7 +176,6 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         <table class="table" id="dayinvoices">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
-                    <th scope="col">Invoice Date</th>
                     <th scope="col">Invoice Number</th>
                     <th scope="col">Gross Amount</th>
                     <th scope="col">Discount</th>
@@ -184,6 +183,7 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
                     <th scope="col">Round Off(-)</th>  
                     <th scope="col">Round Off(+)</th>
                     <th scope="col">Net Amount</th>
+                    <th scope="col">Invoice Date</th>
                 </tr>
             </thead>
             <tbody id="dayData">
@@ -207,7 +207,6 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         $nettot=number_format($row['nettot'],2);
         ?>
             <tr>
-                <td><?php echo $date; ?></td>
                 <td><?php echo $slno; ?></td>
                 <td class="right-align"><?php echo $gtot; ?></td>
                 <td class="right-align"><?php echo $discAmt; ?></td>
@@ -215,6 +214,7 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
                 <td class="right-align"><?php echo $roundminus; ?></td>
                 <td class="right-align"><?php echo $roundplus; ?></td>
                 <td class="right-align"><?php echo $nettot; ?></td>
+                <td><?php echo $date; ?></td>
             </tr>
         <?php
     }

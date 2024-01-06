@@ -45,6 +45,8 @@ use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
     margin:0;
     font-size:12px;
     color:black;
+letter-spacing:0.2px;
+word-spacing:0.4px;
 
 }
 
@@ -52,10 +54,12 @@ use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
         text-align: right!important;
         padding:2px !important;
         padding:0 !important;
-        font-size:10px;
+        font-size:11px;
         font-weight:bold !important; 
         margin:0;
         color:black;
+	letter-spacing:0.2px;
+word-spacing:0.4px;
 
 }
 th.qty, td.qty{
@@ -149,9 +153,9 @@ th.qty, td.qty{
                             <div class="col-md-12" style="padding-right:8px;padding-left:8px !important;" >
                                 <center> 
                                     <img src="img/Oyeshava.png" alt="" width="80"  style="object-fit:cover;">
-                                    <h5 style="font-size:10px; margin-top:5px;margin-bottom:0px; line-height:0px; font-weight:bold;">1/E, Bauxite Road, B.K, Kangarli, Belagavi, Karnataka 590010</h5>
+                                    <h5 style="font-size:10px; margin-top:5px;margin-bottom:0px;  font-weight:bold;">1/E, Bauxite Road, B.K, Kangarli, Belagavi, Karnataka 590010</h5>
                                     <b style="font-size:9px; margin-top:0px; font-weight:bold;margin-bottom:0px;line-height:0px;">7676801529 | www.oyeshawa.in | info@oyeshawa.in </b>
-                                    <p style="font-size:8px;margin-top:-3px; font-weight: bold;"> GST : 29AYAPC2895D1ZJ</p>
+                                    <p style="font-size:8px;margin-top:-3px; font-weight: bold;"> GST : 29AVDPK6618E1ZJ</p>
                                 </center>  
                             </div>
                        </div>
@@ -259,7 +263,7 @@ th.qty, td.qty{
                                             }
                                         ?>
                                         <tr style="border-top:1px solid black; border-bottom:1px solid black;">
-                                            <th colspan="4"><b style="font-size:12px;">TOTAL AMOUNT</b></th>
+                                            <th colspan="4"><b style="font-size:12px;padding-right:30px;">TOTAL AMOUNT</b></th>
                                             <td><b style="font-size:12px;"><?php echo number_format($nettot,2); ?></b></td>
                                         </tr>
                                     </tbody>

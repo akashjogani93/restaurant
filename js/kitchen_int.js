@@ -680,7 +680,7 @@ class Purchase
                                     qty: vm2.qty,
                                     insideqty: vm2.insideqty,
                                     pric:vm2.price,
-                                    baseamt:basevalue,
+                                    baseamt:baseval,
                                     disc:disc,
                                     totalofprice:totalofprice,
                                     tax:taxAmt,

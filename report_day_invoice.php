@@ -353,6 +353,21 @@
                 //     },
                 //     pageSize: 'letter',
                 // });
+
+
+                  // var pdfDataUri = doc.output('datauristring');
+
+                // // Open a new window with about:blank URL
+                // var printWindow = window.open('about:blank', '_blank');
+
+                // // Set content of the new window with the PDF data URI
+                // if (printWindow) {
+                //     printWindow.document.write('<html><head><title>Print</title></head><body><embed width="100%" height="100%" type="application/pdf" src="' + pdfDataUri + '"></body></html>');
+                //     printWindow.document.close();
+
+                //     // Optionally, focus on the print window
+                //     printWindow.focus();
+                // }
                 doc.save('day_sale');
             }
         </script>

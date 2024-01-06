@@ -129,8 +129,7 @@ if(isset($_POST['item_no']))
 
 
 //search item no
-if(isset($_POST['itemnamedata']))
-{
+if(isset($_POST['itemnamedata'])){
     $search = mysqli_real_escape_string($conn,$_POST['itemnamedata']);
     $query = "SELECT * FROM `item` where `itmnam` LIKE '%".$search."%'";
     $result = mysqli_query($conn,$query);
@@ -238,7 +237,7 @@ if(isset($_POST['kot']))
         $status=0;
         $bill=0;
     }
-    
+
     $current_time = date("h:i A");
     $tabno=$_POST['kot'];
     $type=0;
