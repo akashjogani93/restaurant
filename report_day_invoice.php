@@ -37,6 +37,7 @@
         #dailyinvoice{
             background: green;
         }
+
         @media (min-width: 768px){
         .modal-dialog {
             width: 1000px !important; /* Adjust the percentage as needed */
@@ -69,7 +70,7 @@
                         <div class="form-group col-md-3">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
                             <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
-                            <button class="btn btn-success" style="margin-top:23px;">Excel</button>
+                            <button class="btn btn-danger" style="margin-top:23px;" onclick="printTable()">Print</button>
                         </div>
                     </div>
                 </div>
@@ -169,7 +170,7 @@
 
                 $(document).on("#dayinvoices tbody").on('dblclick', 'tr', function() {
                     var currow = $(this).closest('tr');
-                    var item_id = currow.find('td:eq(1)').html();
+                    var item_id = currow.find('td:eq(0)').html();
                     window.location.href = 'finalInvoice.php?billno=' + item_id + "&back=0&pri=0";
                 });
 
@@ -339,37 +340,162 @@
                     },
                 })
 
-                // doc.setProperties({
-                //     title: 'Product Detailed Report',
-                //     subject: 'This is the Product Detailed Report',
-                //     author: 'Author Name',
-                //     keywords: 'generated, javascript, web 2.0, ajax',
-                //     creator: 'Author Name',
-                //     margins: {
-                //         top: 0,
-                //         bottom: 0,
-                //         left: 0,
-                //         right: 0,
-                //     },
-                //     pageSize: 'letter',
-                // });
+            //       // var pdfDataUri = doc.output('datauristring');
 
+            //     // // Open a new window with about:blank URL
+            //     // var printWindow = window.open('about:blank', '_blank');
 
-                  // var pdfDataUri = doc.output('datauristring');
+            //     // // Set content of the new window with the PDF data URI
+            //     // if (printWindow) {
+            //     //     printWindow.document.write('<html><head><title>Print</title></head><body><embed width="100%" height="100%" type="application/pdf" src="' + pdfDataUri + '"></body></html>');
+            //     //     printWindow.document.close();
 
-                // // Open a new window with about:blank URL
-                // var printWindow = window.open('about:blank', '_blank');
-
-                // // Set content of the new window with the PDF data URI
-                // if (printWindow) {
-                //     printWindow.document.write('<html><head><title>Print</title></head><body><embed width="100%" height="100%" type="application/pdf" src="' + pdfDataUri + '"></body></html>');
-                //     printWindow.document.close();
-
-                //     // Optionally, focus on the print window
-                //     printWindow.focus();
-                // }
+            //     //     // Optionally, focus on the print window
+            //     //     printWindow.focus();
+            //     // }
                 doc.save('day_sale');
             }
+            function generatePrint() 
+            {
+                var fdate=$('#fdate').val();
+                var tdate=$('#tdate').val();
+                // var doc = new jsPDF('p', 'pt');
+                // var doc = new jsPDF('p', 'mm', [80, 297]);
+                var y = 20;
+                var dayInvoicesData = $('#dayinvoices').html();
+                console.log(dayInvoicesData);
+
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, fdate+" To "+tdate);
+                doc.autoTable({
+                    margin: {top: 40, left: 10, right: 10, bottom: 20},
+                    html: '#dayinvoices',
+                    theme: 'grid',
+                    columns: [
+                        {header: 'SL.No',dataKey: 'Invoice Number'},
+                        {header: 'Gamt',dataKey: 'Gross Amount'},
+                        {header: 'Dis',dataKey: 'Discount'},
+                        {header: 'GST',dataKey: 'GST Amount'},
+                        {header: 'RO(-)',dataKey: 'Round Off(-)'},
+                        {header: 'RO(+)',dataKey: 'Round Off(+)'},
+                        {header: 'Net',dataKey: 'Net Amount'},
+                        // {dataKey: 'Invoice Date'},
+                    ],
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 6,
+                        cellPadding: {horizontal: 5, vertical: 2},
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 6,
+                        lineWidth: 1,
+                    },
+                    footStyles: {
+                        fontSize: 6,
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        lineWidth: 1,
+                    },
+                    columnStyles: {
+                        'Invoice Number': { halign: 'left'},
+                        'Gross Amount': { halign: 'right' },
+                        'Discount': { halign: 'right' },
+                        'GST Amount': { halign: 'right' },
+                        'Round Off(-)': { halign: 'right' },
+                        'Round Off(+)': { halign: 'right' },
+                        'Net Amount': { halign: 'right' },
+                        'Invoice Date': { halign: 'right' },
+                    },
+                    
+                    showFoot: 'lastPage',
+                })
+
+                  var pdfDataUri = doc.output('datauristring');
+
+                // Open a new window with about:blank URL
+                var printWindow = window.open('about:blank', '_blank');
+
+                // Set content of the new window with the PDF data URI
+                if (printWindow) {
+                    printWindow.document.write('<html><head><title>Print</title></head><body><embed width="100%" height="100%" type="application/pdf" src="' + pdfDataUri + '"></body></html>');
+                    printWindow.document.close();
+
+                    // Optionally, focus on the print window
+                    printWindow.focus();
+                }
+                // doc.save('day_sale');
+            }
+            
         </script>
+        <script>
+    function printTable() {
+        var fdate = $('#fdate').val();
+        var tdate = $('#tdate').val();
+        var tableToPrint = document.getElementById('dayinvoices');
+
+        if (tableToPrint) {
+            // Create a new window
+            var printWindow = window.open('', '_blank');
+
+            // Create a style element with print-specific styles
+            var printStyles = `
+                body {
+                    margin: 2px;
+                    text-align: center;
+                    font-family: 'Roboto Mono', monospace;
+                }
+                @page {
+                    size: auto;
+                    margin: 0;
+                    /* Hide date and time */
+                    @bottom-right {
+                        content: '';
+                    }
+                }
+                h6 {
+                    font-size: 10px;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                    text-align: center; /* Center the h6 element */
+                }
+                table {
+                    border-collapse: collapse;
+                    width: 90%; /* Adjust the width as needed */
+                    margin: 0 auto; /* Center the table */
+                }
+                table>thead>tr>th {
+                    font-weight: 600;
+                    color: black;
+                }
+                th, td {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 3px;
+                    font-size: 9px;
+                    font-weight: 600;
+                }
+                @media print {
+                    table td:last-child,
+                    table th:last-child {
+                        display: none;
+                    }
+                }
+            `;
+
+            printWindow.document.write(`<html><head><title>Print</title><style>${printStyles}</style></head><body>`);
+            printWindow.document.write(`<h6>Date ${fdate} TO ${tdate}</h6>`);
+            printWindow.document.write(tableToPrint.outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        } else {
+            console.error('Table with ID dayinvoices not found.');
+        }
+    }
+</script>
+
     </div>
 </body>
