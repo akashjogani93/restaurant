@@ -122,13 +122,13 @@ th.qty, td.qty{
                 $cpaname=$row['capname'];
                 $tabno=$row['tabno'];
                 $status=$row['status'];
-                $gtot=$row['gtot'];
-                $discount=$row['discount'];
-                $discAmt=$row['discAmt'];
-                $gstAmt=$row['gstAmt']/2;
-                $roundplus=$row['roundplus'];
-                $roundminus=$row['roundminus'];
-                $nettot=$row['nettot'];
+                $gtot=(float) $row['gtot'];
+                $discount=(float) $row['discount'];
+                $discAmt=(float) $row['discAmt'];
+                $gstAmt=(float) ($row['gstAmt']/2);
+                $roundplus=(float) $row['roundplus'];
+                $roundminus=(float) $row['roundminus'];
+                $nettot=(float) $row['nettot'];
                 $userid=$row['cashId'];
             }
             if($status==0)
@@ -195,7 +195,12 @@ th.qty, td.qty{
                                     </thead>
                                     <tbody>
                                         <?php 
-                                            $sql = "SELECT itmnam,prc,SUM(qty) as total_qty, SUM(tot) as total_tot FROM $table WHERE `tabno`='$tabno' AND `billno`= $billno GROUP BY `itmnam`";
+                                    
+					$sql = "SELECT itmnam, prc, SUM(qty) as total_qty, SUM(tot) as total_tot 
+                                                        FROM $table 
+                                                           WHERE `tabno`='$tabno' AND `billno`= $billno 
+                                                            GROUP BY `itmnam` 
+                                                        ORDER BY slno ASC";
                                             $result = mysqli_query($conn, $sql);
                                             if (mysqli_num_rows($result) > 0)
                                             {
@@ -226,7 +231,7 @@ th.qty, td.qty{
                                                 echo '<tr>
                                                 <th colspan="1"></th>
                                                     <th colspan="3">Discount('.$discount.'%): </th>
-                                                    <td>'.-number_format($discAmt,2).'</td>
+                                                    <td>-'.number_format($discAmt,2).'</td>
                                                 </tr>';
                                             }
                                         ?>

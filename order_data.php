@@ -98,9 +98,14 @@ if(mysqli_num_rows($CONFORM)>0)
                         </table>
                     <?php
                 }
+		$mainTotalSum=number_format($sum,2);
+                $gstTotal=(($sum*5)/100);
+                $finalInvoice=$sum+$gstTotal;
                 ?>
-                    <div style="display:flex; padding:0 20px; justify-content:space-between; float:right;">
-                        <h4 style="color:green;">Total Basic Amount :<?php echo number_format($sum,2); ?></h4>
+                    <div style="padding:0 20px; justify-content:space-between; float:right;">
+                        <h4 style="color:green;">Total Basic Amount :<?php echo $mainTotalSum ?></h4>
+                        <h4 style="color:green;">Total GSTAmt :<?php echo number_format($gstTotal,2); ?></h4>
+                        <h4 style="color:green;">Final Invoice :<?php echo number_format($finalInvoice,2); ?></h4>
                     </div>
                 <?php
 }

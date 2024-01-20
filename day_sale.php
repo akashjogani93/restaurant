@@ -37,6 +37,7 @@
         #dailyinvoice{
             background: green;
         }
+
         @media (min-width: 768px){
         .modal-dialog {
             width: 1000px !important; /* Adjust the percentage as needed */
@@ -169,7 +170,7 @@
 
                 $(document).on("#dayinvoices tbody").on('dblclick', 'tr', function() {
                     var currow = $(this).closest('tr');
-                    var item_id = currow.find('td:eq(1)').html();
+                    var item_id = currow.find('td:eq(0)').html();
                     window.location.href = 'finalInvoice.php?billno=' + item_id + "&back=0&pri=0";
                 });
 
@@ -339,25 +340,97 @@
                     },
                 })
 
-                // doc.setProperties({
-                //     title: 'Product Detailed Report',
-                //     subject: 'This is the Product Detailed Report',
-                //     author: 'Author Name',
-                //     keywords: 'generated, javascript, web 2.0, ajax',
-                //     creator: 'Author Name',
-                //     margins: {
-                //         top: 0,
-                //         bottom: 0,
-                //         left: 0,
-                //         right: 0,
-                //     },
-                //     pageSize: 'letter',
-                // });
+            //       // var pdfDataUri = doc.output('datauristring');
+
+            //     // // Open a new window with about:blank URL
+            //     // var printWindow = window.open('about:blank', '_blank');
+
+            //     // // Set content of the new window with the PDF data URI
+            //     // if (printWindow) {
+            //     //     printWindow.document.write('<html><head><title>Print</title></head><body><embed width="100%" height="100%" type="application/pdf" src="' + pdfDataUri + '"></body></html>');
+            //     //     printWindow.document.close();
+
+            //     //     // Optionally, focus on the print window
+            //     //     printWindow.focus();
+            //     // }
                 doc.save('day_sale');
             }
-        </script>
+            // function generatePrint() 
+            // {
+            //     var fdate=$('#fdate').val();
+            //     var tdate=$('#tdate').val();
+            //     // var doc = new jsPDF('p', 'pt');
+            //     // var doc = new jsPDF('p', 'mm', [80, 297]);
+            //     var y = 20;
+            //     var dayInvoicesData = $('#dayinvoices').html();
+            //     console.log(dayInvoicesData);
 
-	<script>
+            //     doc.setLineWidth(2);
+            //     doc.text(150, y = y + 10, fdate+" To "+tdate);
+            //     doc.autoTable({
+            //         margin: {top: 40, left: 10, right: 10, bottom: 20},
+            //         html: '#dayinvoices',
+            //         theme: 'grid',
+            //         columns: [
+            //             {header: 'SL.No',dataKey: 'Invoice Number'},
+            //             {header: 'Gamt',dataKey: 'Gross Amount'},
+            //             {header: 'Dis',dataKey: 'Discount'},
+            //             {header: 'GST',dataKey: 'GST Amount'},
+            //             {header: 'RO(-)',dataKey: 'Round Off(-)'},
+            //             {header: 'RO(+)',dataKey: 'Round Off(+)'},
+            //             {header: 'Net',dataKey: 'Net Amount'},
+            //             // {dataKey: 'Invoice Date'},
+            //         ],
+            //         styles: {
+            //             overflow: 'linebreak',
+            //             lineWidth: 1,
+            //             fontSize: 6,
+            //             cellPadding: {horizontal: 5, vertical: 2},
+            //         },
+            //         headerStyles: {
+            //             fillColor: [128, 128, 128],
+            //             textColor: [255, 255, 255],
+            //             fontSize: 6,
+            //             lineWidth: 1,
+            //         },
+            //         footStyles: {
+            //             fontSize: 6,
+            //             fillColor: [128, 128, 128],
+            //             textColor: [255, 255, 255],
+            //             lineWidth: 1,
+            //         },
+            //         columnStyles: {
+            //             'Invoice Number': { halign: 'left'},
+            //             'Gross Amount': { halign: 'right' },
+            //             'Discount': { halign: 'right' },
+            //             'GST Amount': { halign: 'right' },
+            //             'Round Off(-)': { halign: 'right' },
+            //             'Round Off(+)': { halign: 'right' },
+            //             'Net Amount': { halign: 'right' },
+            //             'Invoice Date': { halign: 'right' },
+            //         },
+                    
+            //         showFoot: 'lastPage',
+            //     })
+
+            //       var pdfDataUri = doc.output('datauristring');
+
+            //     // Open a new window with about:blank URL
+            //     var printWindow = window.open('about:blank', '_blank');
+
+            //     // Set content of the new window with the PDF data URI
+            //     if (printWindow) {
+            //         printWindow.document.write('<html><head><title>Print</title></head><body><embed width="100%" height="100%" type="application/pdf" src="' + pdfDataUri + '"></body></html>');
+            //         printWindow.document.close();
+
+            //         // Optionally, focus on the print window
+            //         printWindow.focus();
+            //     }
+            //     // doc.save('day_sale');
+            // }
+            
+        </script>
+        <script>
             function printTable() 
             {
                 var fdate = $('#fdate').val();
@@ -402,23 +475,12 @@
                             border: 1px solid #dddddd;
                             text-align: left;
                             padding: 3px;
-                            font-size: 9px;
+                            font-size: 8px;
                             font-weight: 600;
                         }
                         @media print {
-				table td:first-child,
-                            table th:first-child,
-				table tfoot td:first-child,
-        			table tfoot th:first-child,
-                            table td:nth-child(5),
-                            table th:nth-child(5),
-                            table tfoot td:nth-child(5),
-                            table td:nth-child(6),
-                            table th:nth-child(6),
-                            table tfoot td:nth-child(6),
-                            table td:nth-child(7),
-                            table th:nth-child(7),
-                            table tfoot td:nth-child(7) {
+                            table td:last-child,
+                            table th:last-child {
                                 display: none;
                             }
                         }
@@ -435,5 +497,6 @@
                 }
             }
         </script>
+
     </div>
 </body>

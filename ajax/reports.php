@@ -176,14 +176,14 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         <table class="table" id="dayinvoices">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
-                    <th scope="col">I-NO</th>
-                    <th scope="col">Gamt</th>
-                    <th scope="col">Dis</th>
-                    <th scope="col">GST</th>
-                    <th scope="col">RO(-)</th>  
-                    <th scope="col">RO(+)</th>
-                    <th scope="col">Net</th>
                     <th scope="col">Invoice Date</th>
+                    <th scope="col">Invoice Number</th>
+                    <th scope="col">Gross Amount</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">GST Amount</th>
+                    <th scope="col">Round Off(-)</th>  
+                    <th scope="col">Round Off(+)</th>
+                    <th scope="col">Net Amount</th>
                 </tr>
             </thead>
             <tbody id="dayData">
@@ -207,6 +207,7 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         $nettot=number_format($row['nettot'],2);
         ?>
             <tr>
+                <td><?php echo $date; ?></td>
                 <td><?php echo $slno; ?></td>
                 <td class="right-align"><?php echo $gtot; ?></td>
                 <td class="right-align"><?php echo $discAmt; ?></td>
@@ -214,7 +215,6 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
                 <td class="right-align"><?php echo $roundminus; ?></td>
                 <td class="right-align"><?php echo $roundplus; ?></td>
                 <td class="right-align"><?php echo $nettot; ?></td>
-                <td><?php echo $date; ?></td>
             </tr>
         <?php
     }
@@ -222,14 +222,13 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         </tbody>
         <tfoot class="thead-dark" id="tfoot">
             <tr>
-                <th></th>
+                <th colspan="2"></th>
                 <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
                 <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
                 <th class="right-align"><?php echo number_format($totalgst,2); ?></th>
                 <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
                 <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
                 <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
-                <th></th>
             </tr>
         </tfoot>
         </table>
