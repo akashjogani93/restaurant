@@ -215,7 +215,9 @@ class Product
                     form[3].value = (chil[7].innerHTML);
                     form[4].value = (chil[1].innerHTML);
 
-                    this.catName1=chil[3].innerHTML;
+                    // console.log(chil[3].innerText);
+                    this.catName1=chil[3].innerText;
+                    // console.log(this.catName1);
                 },
                 categoryFetchByEdit(catType)
                 {
@@ -226,7 +228,7 @@ class Product
                         data:{cateByEdit:catType},
                         success(response) 
                         {
-                            vm.categoys1 = response.slice().sort((a, b) => a.CategoryName.localeCompare(b.CategoryName));
+                            vm.categoys1 = response.slice().sort((a, b) => a.CategoryName.trim().localeCompare(b.CategoryName.trim()));
                         },
                         error(xhr, status, error) 
                         {

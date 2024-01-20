@@ -151,7 +151,8 @@
                                                             <label for="exampleInputFile">Category</label>
                                                             <select class="form-control" id="cat12Edit" name="catEdit" placeholder="category1" required v-model="catName1">
                                                                 <!-- <option value="">Select</option> -->
-                                                                <option v-for="category in categoys1" :value="category.CategoryName">{{ category.CategoryName }}</option>
+                                                                <!-- <option v-for="category in categoys1" :value="category.CategoryName">{{ category.CategoryName }}</option> -->
+                                                                <option v-for="category in categoys1" :value="category.CategoryName.trim()">{{ category.CategoryName.trim() }}</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-12">

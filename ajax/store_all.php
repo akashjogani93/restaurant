@@ -59,7 +59,8 @@ if(isset($_POST['cateByEdit']))
     $result = $conn->query($sql);
     $options = array();
     if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) 
+        {
             $options[] = $row;
         }
     }
@@ -293,8 +294,6 @@ if(isset($_POST['stockList']))
 
             $stockData="INSERT INTO `stock`(`qty`,`venid`,`price`,`total`,`bamt`,`tax`,`disc`,`cess`,`perCaseQty`,`pid`,`exp`,`date`) VALUES ('$qty', '$vendorId', '$pric', '$amt','$baseamt','$tax','$discamt','$cess','$insideqty','$pid','$exp','$purchasedDate')";
             $stock1exc=mysqli_query($conn,$stockData);
-
-		$stock1exc=mysqli_query($conn,$stockData);
             $categoryTrim=trim($category);
             if($categoryTrim == 'Meat & Sea Food' || $categoryTrim == 'Vegitable' || $categoryTrim == 'Chicken' || $categoryTrim == 'Dairy Fresh')
             {
