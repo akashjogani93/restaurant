@@ -7,12 +7,12 @@
                 <select class="form-control" name="tabe2" id="tabe2" onload="table()">
                 </select>
             </td>
-            <td>
+            <!-- <td>
                 <label style="color:black;" for="">To</label>
                 <select class="form-control" name="tabe1" id="tabe1" onload="tables()">
                    <option value="none">None</option>
                 </select>
-            </td>
+            </td> -->
             <td>
                 <label style="color:black;" for="">Table To</label>
                 <input class="form-control" type="text" id="latebill" name="latebill">
@@ -73,72 +73,104 @@
         });
         // console.log(log);
     }
+
+    $('#latebill').on('input',function()
+    {
+        var tab=$(this).val();
+        var tabUpperCase = tab.toUpperCase();
+        $(this).val(tabUpperCase);
+    });
+
     function shiftTable()
     {
         let tabe2=$("#tabe2").val();
-        let tabe1=$("#tabe1").val();
-        let tabe3='';
-        let tocheck=false;
-        if(tabe1=="none")
-        {
-            tabe3=$("#latebill").val();
-           if(tabe3=='')
-           {
-                $("#latebill").css('border-color','red');
-                return;
-           }else
-           {
-                let sam=$.ajax({
-                    url: 'ajax/ta.php',
-                    type: "POST",
-                    dataType: 'json',
-                    data: {
-                        tabe3 : tabe3,
-                    },
-                    success: function(data)
-                    {
-                        if(data=='Match found')
-                        {
-                            $("#latebill").css('border-color','red');
-                        }else
-                        {
-                            $("#latebill").css('border-color','');
-                            tocheck=true;
-                            to_check(tocheck)
-                        }
-                    }
-                });
-                // console.log(sam);
-           }    
-        }else
-        {
-            $("#latebill").css('border-color','');
-            tocheck=true;
-            to_check(tocheck)
-        }
-        
-        function to_check()
-        {
-            if(tabe2 !='' && tabe1 !='' && tocheck==true)
+        // let tabe1=$("#tabe1").val();
+        let latebill=$("#latebill").val()
+
+        let log = $.ajax({
+            url: 'ajax/ta.php',
+            type: "POST",
+            dataType: 'json',
+            data: {
+                table1 : tabe2,
+                latebill : latebill,
+            },
+            success: function(data)
             {
-                let log = $.ajax({
-                    url: 'ajax/ta.php',
-                    type: "POST",
-                    dataType: 'json',
-                    data: {
-                        table1 : tabe2,
-                        table2 : tabe1,
-                        latebill : tabe3,
-                    },
-                    success: function(data)
-                    {
-                        $('#boxx2').load("tableShift.php");
-                        $('#itemlist').load("order_data.php?tabno="+tabe1);
-                        $('#boxx').load("bill_data.php");
-                    }
-                });
-                // console.log(log);
+                if(data=='Match found')
+                {
+                    $("#latebill").css('border-color','red');
+                }else
+                {
+                    $('#boxx2').load("tableShift.php");
+                    $('#itemlist').load("order_data.php?tabno="+latebill);
+                    $('#boxx').load("bill_data.php");
+                }
+                
             }
-        }
+        });
+        // let tabe3='';
+        // let tocheck=false;
+        // if(tabe1=="none")
+        // {
+            // tabe3=$("#latebill").val();
+            // if(tabe3=='')
+            // {
+            //         $("#latebill").css('border-color','red');
+            //         return;
+            // }else
+            // {
+            //         let sam=$.ajax({
+            //             url: 'ajax/ta.php',
+            //             type: "POST",
+            //             dataType: 'json',
+            //             data: {
+            //                 tabe3 : tabe3,
+            //             },
+            //             success: function(data)
+            //             {
+                            // if(data=='Match found')
+                            // {
+                            //     $("#latebill").css('border-color','red');
+                            // }else
+                            // {
+                            //     $("#latebill").css('border-color','');
+                            //     tocheck=true;
+                            //     to_check(tocheck)
+                            // }
+            //             }
+            //         });
+            //         // console.log(sam);
+            // }    
+        // }else
+        // {
+            // $("#latebill").css('border-color','');
+            // tocheck=true;
+            // to_check(tocheck)
+        // }
+        
+        // function to_check()
+        // {
+        //     if(tabe2 !='' && tabe1 !='' && tocheck==true)
+        //     {
+                // let log = $.ajax({
+                //     url: 'ajax/ta.php',
+                //     type: "POST",
+                //     dataType: 'json',
+                //     data: {
+                //         table1 : tabe2,
+                //         table2 : tabe1,
+                //         latebill : tabe3,
+                //     },
+                //     success: function(data)
+                //     {
+                //         $('#boxx2').load("tableShift.php");
+                //         $('#itemlist').load("order_data.php?tabno="+tabe1);
+                //         $('#boxx').load("bill_data.php");
+                //     }
+                // });
+        //         // console.log(log);
+        //     }
+        // }
     }
 </script>

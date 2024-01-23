@@ -82,18 +82,17 @@ if(isset($_POST['catsus1']))
 if(isset($_POST['table1']))
 {
    $table1=$_POST['table1'];
-   $table2=$_POST['table2'];
-
-    if($table2=="none")
+   $table2=trim($_POST['latebill']);
+    $result = $conn->query("SELECT * FROM `temtable` WHERE `tabno` = '$table2' AND `status`=0");
+    if ($result->num_rows > 0) 
     {
-        $table2=$_POST['latebill'];
-    }else
+        echo json_encode('Match found');
+    } else 
     {
-        $table2=$_POST['table2'];
+        mysqli_query($conn,"UPDATE `temtable` SET `tabno`='$table2' WHERE `tabno`='$table1' AND `status`=0");
+        echo json_encode('Table Shifted');
     }
-    mysqli_query($conn,"UPDATE `temtable` SET `tabno`='$table2' WHERE `tabno`='$table1' AND `status`=0");
-    // mysqli_query($conn,"UPDATE `kot` SET `tabno`='$table2' WHERE `tabno`='$table1'");
-    echo json_encode('Table Shifted');
+   
 }
 
 if(isset($_POST['tabe3']))
@@ -128,7 +127,7 @@ if(isset($_POST['shifttables']))
 {
     $shifttables=$_POST['shifttables'];
     $tabno=$_POST['tabno'];
-    $query="SELECT DISTINCT `table_Name` AS `tabno` FROM `addtable` WHERE `table_Name`!='$tabno';";
+    $query="SELECT DISTINCT `tabno` AS `tabno` FROM `temtable` WHERE `tabno`!='$tabno' AND `status`=0;";
     $c=mysqli_query($conn, $query);
     $a = array();
     if (mysqli_num_rows($c) > 0) {

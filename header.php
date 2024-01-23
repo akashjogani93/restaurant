@@ -83,8 +83,8 @@ if($cash_type=='admin' || $cash_type=='Manager')
                   			<li><a href="home.php"> <img class="logos" src="img/i1.png" alt=""> <span>Dashboard</span></a></li>
                     		<li><a href="item_form.php"><img class="logos" src="img/i2.png" alt=""> <span>Menu Master</span></a></li>
                     		<li><a href="table_master.php"><img class="logos" src="img/i3.png" alt=""> <span>Tables Master</span></a></li>
-                    		<li><a href="parcel_master.php"><img class="logos" src="img/i4.png" alt=""><span>Parcel Master</span></a></li>
-                    		<li><a href="addtable.php"><img class="logos" src="img/i5.png" alt=""><span>Add Table</span></a></li>
+                    		<!-- <li><a href="parcel_master.php"><img class="logos" src="img/i4.png" alt=""><span>Parcel Master</span></a></li> -->
+                    		<!-- <li><a href="addtable.php"><img class="logos" src="img/i5.png" alt=""><span>Add Table</span></a></li> -->
                     		<li><a href="kitchen_kot.php"><img class="logos" src="img/i5.png" alt=""><span>Kitchen-Kot</span></a></li>
                             <li class="treeview">
                                 <a href="#">

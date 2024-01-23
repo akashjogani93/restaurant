@@ -30,33 +30,33 @@ $(document).ready(function()
     $("#table_no").focus();
 
     $(function() {
-        $("#table_no").autocomplete({
-            source: function (request, response)
-            {
-                let log= $.ajax({
-                    url: "ajax/table_master.php",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        search: request.term,
-                    },
-                    success: function (data)
-                    {
-                        response(data);
-                    },
-                });
-            },
-            select: function (event, ui)
-            {
-                $("#table_no").val(ui.item.label);
-                return false;
-            },
-            focus: function (event, ui) 
-            {
-                $("#table_no").val(ui.item.label);
-                return false;
-            },
-        });
+        // $("#table_no").autocomplete({
+        //     source: function (request, response)
+        //     {
+        //         let log= $.ajax({
+        //             url: "ajax/table_master.php",
+        //             type: "post",
+        //             dataType: "json",
+        //             data: {
+        //                 search: request.term,
+        //             },
+        //             success: function (data)
+        //             {
+        //                 response(data);
+        //             },
+        //         });
+        //     },
+        //     select: function (event, ui)
+        //     {
+        //         $("#table_no").val(ui.item.label);
+        //         return false;
+        //     },
+        //     focus: function (event, ui) 
+        //     {
+        //         $("#table_no").val(ui.item.label);
+        //         return false;
+        //     },
+        // });
         $("#captain12").autocomplete({
             source: function (request, response)
             {
@@ -207,6 +207,13 @@ $("#itmno").on("keydown", function (e) {
     $('#qty').on('input',function(e)
     {
         total();
+    });
+
+    $('#table_no').on('input',function()
+    {
+        var tab=$(this).val();
+        var tabUpperCase = tab.toUpperCase();
+        $(this).val(tabUpperCase);
     });
 });
 

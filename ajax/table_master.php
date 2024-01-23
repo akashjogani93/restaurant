@@ -46,16 +46,16 @@ if(isset($_POST['tabName']))
 {
     $search = $_POST['tabName'];
     $response="none";
-    $query = "SELECT * FROM `addtable` WHERE `table_Name`='$search'";
-    $result = mysqli_query($conn,$query);
-    if(mysqli_num_rows($result) > 0)
-    {
-        while($row = mysqli_fetch_array($result) )
-        {
-            $response=$row['table_Name'];
+    // $query = "SELECT * FROM `addtable` WHERE `table_Name`='$search'";
+    // $result = mysqli_query($conn,$query);
+    // if(mysqli_num_rows($result) > 0)
+    // {
+    //     while($row = mysqli_fetch_array($result) )
+    //     {
+    //         $response=$row['table_Name'];
             if($cash_type=='Captain')
             {
-                $query1="SELECT * FROM `temtable` WHERE `capname`!='$name' AND `tabno`='$response'";
+                $query1="SELECT * FROM `temtable` WHERE `capname`!='$name' AND `tabno`='$search'";
                 $result1 = mysqli_query($conn,$query1);
                 $rows=mysqli_num_rows($result1);
                 if($rows > 0)
@@ -65,9 +65,12 @@ if(isset($_POST['tabName']))
                         $response="none";
                     }
                 }
+            }else
+            {
+                $response = $_POST['tabName'];
             }
-        }
-    }
+    //     }
+    // }
     echo json_encode($response);
 }
 
@@ -94,11 +97,11 @@ if(isset($_POST['item_no']))
     $table_no=$_POST['table_no'];
 
 	$a = array();
-	$sql1 = "SELECT `ac` FROM `addtable` WHERE `table_Name`='$table_no'";
-	$result1 = mysqli_query($conn, $sql1);
-	while($row1 = mysqli_fetch_assoc($result1))
-	{
-		$ac=$row1['ac'];
+	// $sql1 = "SELECT `ac` FROM `addtable` WHERE `table_Name`='$table_no'";
+	// $result1 = mysqli_query($conn, $sql1);
+	// while($row1 = mysqli_fetch_assoc($result1))
+	// {
+	// 	$ac=$row1['ac'];
 		$sql = "SELECT * FROM `item` WHERE `item_code`='$itmno'";
 		$result = mysqli_query($conn, $sql);
 
@@ -106,16 +109,16 @@ if(isset($_POST['item_no']))
 		{
 			while($row = mysqli_fetch_assoc($result))
             {
-                if($ac=='Non Ac')
-                {
+                // if($ac=='Non Ac')
+                // {
                     $price=$row['prc'];
-                }else if($ac=='Ac')
-                {
-                    $price=$row['prc2'];
-                }else
-                {
-                    $price=0;
-                }
+                // }else if($ac=='Ac')
+                // {
+                //     $price=$row['prc2'];
+                // }else
+                // {
+                //     $price=0;
+                // }
                 $pid=$row['pid'];
                 array_push($a,$row['item_code'],$row['itmnam'],$price,$pid);
 			}
@@ -123,7 +126,7 @@ if(isset($_POST['item_no']))
 		{
 			array_push($a,'Wrong Code');
 		}
-	}
+	// }
 	echo json_encode($a);
 }
 
@@ -145,31 +148,31 @@ if(isset($_POST['itemname']))
     $itnam=$_POST['itemname'];
     $table_no=$_POST['ite_table_no'];
     $a = array();
-    $sql1 = "SELECT `ac` FROM `addtable` WHERE `table_Name`='$table_no'";
-    $result1 = mysqli_query($conn, $sql1);
-    while($row1 = mysqli_fetch_assoc($result1))
-    {
-        $ac=$row1['ac'];
+    // $sql1 = "SELECT `ac` FROM `addtable` WHERE `table_Name`='$table_no'";
+    // $result1 = mysqli_query($conn, $sql1);
+    // while($row1 = mysqli_fetch_assoc($result1))
+    // {
+    //     $ac=$row1['ac'];
         $sql = "SELECT * FROM item WHERE itmnam='$itnam'";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while($row = mysqli_fetch_assoc($result))
             {
-                if($ac=='Non Ac')
-                {
+                // if($ac=='Non Ac')
+                // {
                     $price=$row['prc'];
-                }else if($ac=='Ac')
-                {
-                    $price=$row['prc2'];
-                }else
-                {
-                    $price=0;
-                }
+                // }else if($ac=='Ac')
+                // {
+                    // $price=$row['prc2'];
+                // }else
+                // {
+                //     $price=0;
+                // }
                 $pid=$row['pid'];
                 array_push($a,$row['item_code'],$row['itmnam'],$price,$pid);
             }
         }
-    }
+    // }
     echo json_encode($a);
 }
 
@@ -187,7 +190,8 @@ if(isset($_POST['captain']) && isset($_POST['itmnam']))
     $tot = $_POST['tot'];
     $pid = $_POST['pid'];
     $captainCode = $_POST['captainname'];
-    $tabno = $_POST['tabno'];
+    $tabno_uppercase = strtoupper($_POST['tabno']);
+    $tabno = trim($tabno_uppercase);
     $current_time = date("h:i A");
     $type=0;
     if($billEdit==true)

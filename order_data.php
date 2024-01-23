@@ -179,6 +179,13 @@ function shift()
         item_no.push($(this).val());
     });
     var table=$('#shifttables').val();
+    // console.log(table);
+    if (table === null || table === undefined || table === '')
+    {
+        console.log('New Table Is Not Not Selected');
+        return;
+    }
+
     if (item_no.length >= 1) 
     {
         let log=$.ajax({

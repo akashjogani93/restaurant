@@ -75,7 +75,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class=" col-md-3">
+                    <!-- <div class=" col-md-3">
                         <a href="parcel_master.php">
                             <div class="boxx4 col-md-11">
                                 <div class="col-md-8">
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
+                    </div> -->
                 </div><br>
                 <?php 
                     if($cash_type=='Manager')
