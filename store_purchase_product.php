@@ -356,6 +356,22 @@
             //         $('#' + nextElementId).focus();
             //     }
             // });
+
+            $('#pid, #qty').keydown(function(event) 
+            {
+                var elementId = event.target.id;
+                if (event.which === 9) 
+                {
+                    event.preventDefault();
+                    if(elementId=='pid')
+                    {
+                        $('#qty').focus();
+                    }else if(elementId=='qty')
+                    {
+                        $('#price').focus();
+                    }                    
+                }
+            });
         });
     </script>
 </body>

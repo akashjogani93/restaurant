@@ -590,6 +590,18 @@ class Purchase
                                 }
                             });
                     });
+
+                    var bill=vm.billEdit;
+                    $('#price').keydown(function(event)
+                    {
+                        if(event.which === 13)
+                        {
+                            if(bill=true)
+                            {
+                                vm.addItem();
+                            }
+                        }
+                    });
                 },
                 categoryChange()
                 {
@@ -602,11 +614,7 @@ class Purchase
                         method: 'POST',
                         data:{opt:'opt',categoryOption:categoryOption},
                         success(response) {
-                            vm1.options = response;
-                            // vm.options = response.slice().sort((a, b) => a.pname.localeCompare(b.pname));
-
-                            // vm1.insideqty='';
-                            // $('#insideqty').prop('readonly', false);
+                            vm1.options = response.sort((a, b) => a.pname.localeCompare(b.pname));
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -957,6 +965,8 @@ class Purchase
                     
                     this.gamt=this.stockList.reduce((baseamt,item) =>baseamt + parseFloat(item.baseamt), 0);
                     this.gamt =this.gamt.toFixed(2);
+
+                    $('#pid').focus();
                 },
                 deleteItem(index) 
                 {
@@ -1134,7 +1144,8 @@ class Kitchen
                         data:{kitchenallStock:"kitchen_allStock",fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            vm.kitchenstock = response;
+                            vm.kitchenstock =response.sort((a, b) => a.name.localeCompare(b.name));
+                            // vm.kitchenstock = response;
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1588,7 +1599,9 @@ class Beaverages
                         data:{kitchenallStock:"bevStock",fdate:fdate,tdate:tdate},
                         success(response)
                         {
-                            vm.bevstock = response;
+                            // vm.bevstock = response;
+                            vm.bevstock =response.sort((a, b) => a.name.localeCompare(b.name));
+
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1827,7 +1840,9 @@ class parcelMaterial
                         data:{kitchenallStock:"material",fdate:fdate,tdate:tdate},
                         success(response)
                         {
-                            vm.material = response;
+                            // vm.material = response;
+                            vm.material =response.sort((a, b) => a.name.localeCompare(b.name));
+                            
                         },
                         error(xhr, status, error) {
                             console.error(error);
