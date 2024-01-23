@@ -54,8 +54,8 @@
                             <label for="inputEmail3" class="control-label">Invoice From</label>
                             <select name="typ" id="typ" class="form-control">  
                                 <option>All</option>
-                                <option>Table</option>
-                                <option>Parcel</option>
+                                <!-- <option>Table</option>
+                                <option>Parcel</option> -->
                             </select>
                         </div>
                         <div class="form-group col-md-3">
@@ -395,24 +395,21 @@
                             margin: 0 auto; /* Center the table */
                         }
                         table>thead>tr>th {
-                            font-weight: 600;
-                            color: black;
+                            font-weight: 500;
+                            color:black;
                         }
                         th, td {
                             border: 1px solid #dddddd;
                             text-align: left;
                             padding: 3px;
-                            font-size: 9px;
-                            font-weight: 600;
+                            font-size: 10px;
+                            font-weight: 500;
                         }
                         @media print {
-				table td:first-child,
+				            table td:first-child,
                             table th:first-child,
-				table tfoot td:first-child,
-        			table tfoot th:first-child,
-                            table td:nth-child(5),
-                            table th:nth-child(5),
-                            table tfoot td:nth-child(5),
+                            table tfoot td:first-child,
+                            table tfoot th:first-child,
                             table td:nth-child(6),
                             table th:nth-child(6),
                             table tfoot td:nth-child(6),
@@ -421,6 +418,14 @@
                             table tfoot td:nth-child(7) {
                                 display: none;
                             }
+                        }
+
+                        td:last-child, th:last-child,
+                        td:nth-child(3), th:nth-child(3),
+                        td:nth-child(4), th:nth-child(4),
+                        td:nth-child(5), th:nth-child(5)
+                        {
+                            text-align: right; /* Right-align the content in the last column */
                         }
                     `;
 

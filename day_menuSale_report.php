@@ -57,7 +57,8 @@
                         <div class="form-group col-md-4">
                             <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button>
                             <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
-                            <button class="btn btn-success" style="margin-top:23px;">Excel</button>
+                            <button class="btn btn-danger" style="margin-top:23px;" onclick="printTable()">Print</button>
+                            <!-- <button class="btn btn-success" style="margin-top:23px;">Excel</button> -->
                         </div>
                     </div>
                 </div>
@@ -149,6 +150,73 @@
                 //     pageSize: 'letter',
                 // });
                 doc.save('food_sale');
+            }
+        </script>
+
+        <script>
+            function printTable() 
+            {
+                var fdate = $('#fdate').val();
+                var tdate = $('#tdate').val();
+                var tableToPrint = document.getElementById('dayMenusale');
+
+                if (tableToPrint) {
+                    // Create a new window
+                    var printWindow = window.open('', '_blank');
+
+                    // Create a style element with print-specific styles
+                    var printStyles = `
+                        body {
+                            margin: 2px;
+                            text-align: center;
+                            font-family: 'Roboto Mono', monospace;
+                        }
+                        @page {
+                            size: auto;
+                            margin: 0;
+                            /* Hide date and time */
+                            @bottom-right {
+                                content: '';
+                            }
+                        }
+                        h6 {
+                            font-size: 10px;
+                            font-weight: bold;
+                            margin-bottom: 5px;
+                            text-align: center; /* Center the h6 element */
+                        }
+                        table {
+                            border-collapse: collapse;
+                            width: 90%; /* Adjust the width as needed */
+                            margin: 0 auto; /* Center the table */
+                        }
+                        table>thead>tr>th {
+                            font-weight: 500;
+                            color:black;
+                        }
+                        th, td {
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 3px;
+                            font-size: 10px;
+                            font-weight: 500;
+                        }
+
+                        td:last-child, th:last-child
+                        {
+                            text-align: right; /* Right-align the content in the last column */
+                        }
+                    `;
+
+                    printWindow.document.write(`<html><head><title>Print</title><style>${printStyles}</style></head><body>`);
+                    printWindow.document.write(`<h6>Date ${fdate} TO ${tdate}</h6>`);
+                    printWindow.document.write(tableToPrint.outerHTML);
+                    printWindow.document.write('</body></html>');
+                    printWindow.document.close();
+                    printWindow.print();
+                } else {
+                    console.error('Table with ID dayinvoices not found.');
+                }
             }
         </script>
     </div>

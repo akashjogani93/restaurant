@@ -176,14 +176,14 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         <table class="table" id="dayinvoices">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
-                    <th scope="col">Invoice Date</th>
-                    <th scope="col">Invoice Number</th>
-                    <th scope="col">Gross Amount</th>
-                    <th scope="col">Discount</th>
-                    <th scope="col">GST Amount</th>
-                    <th scope="col">Round Off(-)</th>  
-                    <th scope="col">Round Off(+)</th>
-                    <th scope="col">Net Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Bill</th>
+                    <th scope="col">Gr Amt</th>
+                    <th scope="col">Disc</th>
+                    <th scope="col">GST</th>
+                    <th scope="col">RO(-)</th>  
+                    <th scope="col">RO(+)</th>
+                    <th scope="col">Net</th>
                 </tr>
             </thead>
             <tbody id="dayData">
@@ -222,7 +222,8 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         </tbody>
         <tfoot class="thead-dark" id="tfoot">
             <tr>
-                <th colspan="2"></th>
+                <th></th>
+                <th>Total:</th>
                 <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
                 <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
                 <th class="right-align"><?php echo number_format($totalgst,2); ?></th>
