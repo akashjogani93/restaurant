@@ -15,15 +15,16 @@ var app = new Vue({
         }
     }
 });
-$(function () {
+$(function () 
+{
     $("#dynamic-table").DataTable({
         columnDefs: [
             { targets: [4, 5], orderable: false } // Disable sorting for columns 2 and 3
          ]
-        });
+    });
 });
 
-function submit() 
+function submit()
 {
     $("#empty").fadeIn();
     // $("#catsus").fadeIn();

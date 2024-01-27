@@ -357,7 +357,7 @@
             //     }
             // });
 
-            $('#pid, #qty').keydown(function(event) 
+            $('#pid, #qty, #disc').keydown(function(event) 
             {
                 var elementId = event.target.id;
                 if (event.which === 9) 
@@ -369,7 +369,10 @@
                     }else if(elementId=='qty')
                     {
                         $('#price').focus();
-                    }                    
+                    }else if(elementId=='disc')
+                    {
+                        $('#disc').focus();
+                    }                  
                 }
             });
         });

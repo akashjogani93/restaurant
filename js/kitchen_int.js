@@ -592,7 +592,7 @@ class Purchase
                     });
 
                     var bill=vm.billEdit;
-                    $('#price').keydown(function(event)
+                    $('#price, #disc').keydown(function(event)
                     {
                         if(event.which === 13)
                         {
