@@ -48,23 +48,22 @@
                             <div class="box-body">
                                 <div class="row">
                                     <!-- <form class="form-horizontal" method="post" action="kitchen_given.php"> -->
-                                        <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">From Date</label>
-                                            <div class="col-sm-8">
-                                                <input type="date" class="form-control pull-right" name="from_date" id="fdate">
-                                            </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="inputEmail3" class="control-label">From Date</label>
+                                            <input type="date" class="form-control pull-right" name="from_date" id="fdate">
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">To Date</label>
-                                            <div class="col-sm-8">
-                                                <input type="date" class="form-control pull-right" name="to_date" id="tdate">
-                                            </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="inputEmail3" class="control-label">To Date</label>
+                                            <input type="date" class="form-control pull-right" name="to_date" id="tdate">
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <!-- <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button> -->
+                                        <div class="form-group col-md-2" style="margin-top:25px;">
                                             <button type="submit" name="view_report" class="btn btn-info" id="search" @click="beveragesHis()">View</button>
                                             <button class="btn btn-danger" onclick="generateTable()">PDF</button>
-                                            <button class="btn btn-success">Excel</button>
+                                            <!-- <button class="btn btn-success">Excel</button> -->
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="inputEmail3" class="control-label">search</label>
+                                            <input type="text" class="form-control pull-right" name="sear1" id="sear1" v-model="sear1">
                                         </div>
                                     <!-- </form> -->
                                 </div>

@@ -167,6 +167,19 @@
                 mainInstance.addToList(kitchenData,'beaveragesData');
             });
 
+            $('#uqty, #gdate').keydown(function (event) 
+            {
+                if (event.which === 13) {
+                    if ($('#addToList').is(':visible')) 
+                    {
+                        mainInstance.addToList(kitchenData, 'kitchenData');
+                    } else if ($('#updateItem').is(':visible')) 
+                    {
+                        mainInstance.updateToList(kitchenData, 'kitchenData');
+                    }
+                }
+            });
+
             $('#updateItem').click(function()
             {
                 mainInstance.updateToList(kitchenData,'beaveragesData');
@@ -215,6 +228,28 @@
                         $(this).val('');
                         $("#pid").css("border-color", "red");
                         break;
+                }
+            });
+            $('#catename, #pid, #uqty, #gdate').keydown(function(event) 
+            {
+                var elementId = event.target.id;
+                if (event.which === 9)
+                {
+                    event.preventDefault();
+                    if(elementId=='catename')
+                    {
+                        $('#pid').focus();
+                    }else if(elementId=='pid')
+                    {
+                        $('#uqty').focus();
+                    }else if(elementId=='uqty')
+                    {
+                        $('#gdate').focus();
+                    }
+                    // else if(elementId=='gdate')
+                    // {
+                    //     $('#gdate').focus();
+                    // }                  
                 }
             });
         });  

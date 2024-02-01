@@ -175,6 +175,19 @@
                 mainInstance.addToList(kitchenData,'kitchenData');
             });
 
+            $('#uqty, #gdate').keydown(function (event) 
+            {
+                if (event.which === 13) {
+                    if ($('#addToList').is(':visible')) 
+                    {
+                        mainInstance.addToList(kitchenData, 'kitchenData');
+                    } else if ($('#updateItem').is(':visible')) 
+                    {
+                        mainInstance.updateToList(kitchenData, 'kitchenData');
+                    }
+                }
+            });
+
             $('#updateItem').click(function()
             {
                 mainInstance.updateToList(kitchenData,'kitchenData');
@@ -184,6 +197,7 @@
             {
                 mainInstance.finalSubmit(kitchenData,'kitchenData','kit');
             });
+
             $('#clear').click(function()
             {
                 mainInstance.clear(kitchenData,'kitchenData');
@@ -196,6 +210,7 @@
             {
                 $("#pid").css("border-color", "");
             });
+
             var yourDateValue = new Date();
             var formattedDate = yourDateValue.toISOString().substr(0, 10)
             $('#gdate').val(formattedDate);
@@ -218,6 +233,29 @@
                         $(this).val('');
                         $("#pid").css("border-color", "red");
                         break;
+                }
+            });
+
+            $('#catename, #pid, #uqty, #gdate').keydown(function(event) 
+            {
+                var elementId = event.target.id;
+                if (event.which === 9)
+                {
+                    event.preventDefault();
+                    if(elementId=='catename')
+                    {
+                        $('#pid').focus();
+                    }else if(elementId=='pid')
+                    {
+                        $('#uqty').focus();
+                    }else if(elementId=='uqty')
+                    {
+                        $('#gdate').focus();
+                    }
+                    // else if(elementId=='gdate')
+                    // {
+                    //     $('#gdate').focus();
+                    // }                  
                 }
             });
         });

@@ -54,23 +54,23 @@
                             <div class="box-body">
                                 <div class="row">
                                     <!-- <form class="form-horizontal" method="post" action="kitchen_given.php"> -->
-                                        <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">From Date</label>
-                                            <div class="col-sm-8">
-                                                <input type="date" class="form-control pull-right" name="from_date" id="fdate">
-                                            </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="inputEmail3" class="control-label">From Date</label>
+                                            <input type="date" class="form-control pull-right" name="from_date" id="fdate">
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label for="inputEmail3" class="col-sm-4 control-label">To Date</label>
-                                            <div class="col-sm-8">
-                                                <input type="date" class="form-control pull-right" name="to_date" id="tdate">
-                                            </div>
+                                            <label for="inputEmail3" class="control-label">To Date</label>
+                                            <input type="date" class="form-control pull-right" name="to_date" id="tdate">
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-2" style="margin-top:25px;">
                                             <!-- <button class="btn btn-success" style="margin-top:23px;" id="search">SEARCH</button> -->
                                             <button type="submit" name="view_report" class="btn btn-info" id="search" @click="stockbyDate()">View</button>
                                             <button class="btn btn-danger" id="pdfgenerate">PDF</button>
-                                            <button class="btn btn-success">Excel</button>
+                                            <!-- <button class="btn btn-success">Excel</button> -->
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="inputEmail3" class="control-label">search</label>
+                                            <input type="text" class="form-control pull-right" name="sear" id="sear" v-model="sear">
                                         </div>
                                     <!-- </form> -->
                                 </div>

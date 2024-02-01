@@ -125,6 +125,7 @@ class Main
                 }
                 break;
             }
+            $('#catename').focus();
             this.retrieve(kitchenData,itemName);
     }
     updateToList(kitchenData,itemName)

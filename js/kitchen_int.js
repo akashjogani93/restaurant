@@ -662,24 +662,23 @@ class Purchase
                     const category=this.categoryOption;
                     if(selectedItem && category) 
                     {
-                        console.log(category);
-                        // return;
                         if(this.unit && this.exp && this.qty && this.qty > 0 && this.insideqty > 0 && this.price > 0)
                         {
                             var checkname=selectedItem.pname;
-                            var checkprice=parseFloat(this.price);
+                            var checkprice=parseFloat(this.price);   //price of item
+                            let baseval=this.price*parseFloat(this.qty); //price into qty
+                            let disc=parseFloat(vm2.disc);  //discount of item
+                            let totalofprice=parseFloat(this.totalofprice); //after discount
 
-                            let baseval=this.price*parseFloat(this.qty);
-                            let disc=parseFloat(vm2.disc);
-                            let totalofprice=parseFloat(this.totalofprice);
+                            let taxper = (totalofprice*parseFloat(this.tax))/100; // tax per
+                            let cessamt = (totalofprice*parseFloat(this.cess))/100; //cess per
+                            let tot=totalofprice+taxper+cessamt; //main total
 
-                            let taxper = (totalofprice*parseFloat(this.tax))/100;
-                            let cessamt = (totalofprice*parseFloat(this.cess))/100;
-                            let tot=totalofprice+taxper+cessamt;
                             let total1 = tot.toFixed(2);
                             let basevalue =baseval.toFixed(2);
                             let taxAmt =taxper.toFixed(2);
                             let cessAmt =cessamt.toFixed(2);
+
                             const newItem = {
                                     id: vm2.nextId++,
                                     name: selectedItem.pname,
@@ -699,23 +698,16 @@ class Purchase
                                     exp:this.exp,
                                     taxper:vm2.tax,
                                     cessper:vm2.cess,
-                                   
                                 };
                                 vm2.stockList.push(newItem);
                                 vm2.saveData();
-                                // vm2.selectedOption = '';
-                                // vm2.categoryOption='';
-                                // vm2.unit = '';
-                                // vm2.sellunit = '';
                                 vm2.qty = '';
                                 vm2.insideqty= '';
                                 vm2.sellunit = '';
                                 vm2.price = '';
-                                // vm2.categoryOption='';
                                 this.tax='';
                                 this.cess='';
                                 this.amt='';
-                                // this.exp='';
                                 this.disc=0;
                                 this.totalofprice=0;
                         }else
@@ -781,7 +773,6 @@ class Purchase
                     const vendorName = $('#ven').val();
                     const paymentmode = $('#paymentmode').val();
                     const venItem = this.vens.find(ven => ven.slno === this.vendorName);
-                    // const category=this.categoryOption;
                     const purchasedDate = $('input[name="purdate"]').val();
                     const totamt = $('input[name="totamt"]').val(); //net amt
                     const discamt = $('input[name="disc-amt"]').val();
@@ -1048,6 +1039,8 @@ class Kitchen
                 productQty: '',
                 productUnit: '',
                 closingStock: '',
+                sear:'',
+                sear1:'',
                 selectedIndex: null,
                 pid:null,
                 editMode: false,
@@ -1076,7 +1069,8 @@ class Kitchen
                         method: 'POST',
                         data:{kitcencat:"kitcencat"},
                         success(response) {
-                            vm.categorys = response;
+                            // vm.categorys = response;
+                            vm.categorys = response.sort((a, b) => a.category.localeCompare(b.category));
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1100,6 +1094,8 @@ class Kitchen
                             }
                         });
                     }
+                    $('#sear').on('keyup', this.stockbyDate);
+                    $('#sear1').on('keyup', this.kitchenHistory);
                 },
                 categoryChange()
                 {
@@ -1112,7 +1108,9 @@ class Kitchen
                         data:{kit:category},
                         success(response) 
                         {
-                            vm.options = response;
+                            // vm.options = response;
+                            vm.options = response.sort((a, b) => a.pname.localeCompare(b.pname));
+
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1124,6 +1122,7 @@ class Kitchen
                     const vm=this;
                     var fdate=$('#fdate').val();
                     var tdate=$('#tdate').val();
+                    const sear = vm.sear.toLowerCase();
                     if(fdate=='')
                     {
                         $('#fdate').css('border-color', 'red');
@@ -1144,8 +1143,13 @@ class Kitchen
                         data:{kitchenallStock:"kitchen_allStock",fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            vm.kitchenstock =response.sort((a, b) => a.name.localeCompare(b.name));
-                            // vm.kitchenstock = response;
+                            // vm.kitchenstock =response.sort((a, b) => a.name.localeCompare(b.name));
+                            vm.kitchenstock = response.filter(item => {
+                                return (
+                                    item.name.toLowerCase().includes(sear) ||
+                                    item.unit.toLowerCase().includes(sear)
+                                );
+                            }).sort((a, b) => a.name.localeCompare(b.name));
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1157,6 +1161,7 @@ class Kitchen
                     const vm=this;
                     var fdate=$('#fdate').val();
                     var tdate=$('#tdate').val();
+                    const sear = vm.sear1.toLowerCase();
                     if(fdate=='')
                     {
                         $('#fdate').css('border-color', 'red');
@@ -1177,7 +1182,12 @@ class Kitchen
                         data:{kitchenHistory:"kitchenHistory",fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            vm.kitchenpurchase= response;
+                            // vm.kitchenpurchase= response;
+                            vm.kitchenpurchase = response.filter(item => {
+                                return (
+                                    item.pname.toLowerCase().includes(sear)
+                                );
+                            }).sort((a, b) => a.pname.localeCompare(b.pname));
                         },
                         error(xhr, status, error) 
                         {
@@ -1525,6 +1535,8 @@ class Beaverages
                 options:[],
                 categorys:[],
                 bevstock:[],
+                sear:'',
+                sear1:'',
                 bevhis:[],
                 selectedOption:'',
                 categoryOption:'',
@@ -1550,12 +1562,16 @@ class Beaverages
                         method: 'POST',
                         data:{bevcat:"bevcat"},
                         success(response) {
-                            vm.categorys = response;
+                            // vm.categorys = response;
+                            vm.categorys = response.sort((a, b) => a.category.localeCompare(b.category));
+
                         },
                         error(xhr, status, error) {
                             console.error(error);
                         }
                     });
+                    $('#sear').on('keyup', this.stockbyDate);
+                    $('#sear1').on('keyup', this.beveragesHis);
                 },
                 categoryChange()
                 {
@@ -1567,7 +1583,9 @@ class Beaverages
                         method: 'POST',
                         data:{kit:category},
                         success(response) {
-                            vm.options = response;
+                            // vm.options = response;
+                            vm.options = response.sort((a, b) => a.pname.localeCompare(b.pname));
+
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1579,6 +1597,8 @@ class Beaverages
                     const vm=this;
                     var fdate=$('#fdate').val();
                     var tdate=$('#tdate').val();
+                    const sear = vm.sear.toLowerCase();
+
                     if(fdate=='')
                     {
                         $('#fdate').css('border-color', 'red');
@@ -1600,7 +1620,13 @@ class Beaverages
                         success(response)
                         {
                             // vm.bevstock = response;
-                            vm.bevstock =response.sort((a, b) => a.name.localeCompare(b.name));
+                            // vm.bevstock =response.sort((a, b) => a.name.localeCompare(b.name));
+                            vm.bevstock = response.filter(item => {
+                                return (
+                                    item.name.toLowerCase().includes(sear) ||
+                                    item.unit.toLowerCase().includes(sear)
+                                );
+                            }).sort((a, b) => a.name.localeCompare(b.name));
 
                         },
                         error(xhr, status, error) {
@@ -1614,6 +1640,8 @@ class Beaverages
                     const vm=this;
                     var fdate=$('#fdate').val();
                     var tdate=$('#tdate').val();
+                    const sear = vm.sear1.toLowerCase();
+
                     if(fdate=='')
                     {
                         $('#fdate').css('border-color', 'red');
@@ -1634,7 +1662,12 @@ class Beaverages
                         data:{kitchenHistory:"bevhist",fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            vm.bevhis= response;
+                            // vm.bevhis= response;
+                            vm.bevhis = response.filter(item => {
+                                return (
+                                    item.pname.toLowerCase().includes(sear)
+                                );
+                            }).sort((a, b) => a.pname.localeCompare(b.pname));
                         },
                         error(xhr, status, error) 
                         {
@@ -1766,6 +1799,8 @@ class parcelMaterial
                 options:[],
                 categorys:[],
                 material:[],
+                sear:'',
+                sear1:'',
                 materialhis:[],
                 selectedOption:'',
                 categoryOption:'',
@@ -1792,11 +1827,14 @@ class parcelMaterial
                         data:{parcelcat:"parcelcat"},
                         success(response) {
                             vm.categorys = response;
+                            vm.categorys = response.sort((a, b) => a.category.localeCompare(b.category));
                         },
                         error(xhr, status, error) {
                             console.error(error);
                         }
                     });
+                    $('#sear').on('keyup', this.stockbyDate);
+                    $('#sear1').on('keyup', this.materialHistoru);
                 },
                 categoryChange()
                 {
@@ -1809,6 +1847,7 @@ class parcelMaterial
                         data:{kit:category},
                         success(response) {
                             vm.options = response;
+                            vm.options = response.sort((a, b) => a.pname.localeCompare(b.pname));
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1820,6 +1859,7 @@ class parcelMaterial
                     const vm=this;
                     var fdate=$('#fdate').val();
                     var tdate=$('#tdate').val();
+                    const sear = vm.sear.toLowerCase();
                     if(fdate=='')
                     {
                         $('#fdate').css('border-color', 'red');
@@ -1841,8 +1881,13 @@ class parcelMaterial
                         success(response)
                         {
                             // vm.material = response;
-                            vm.material =response.sort((a, b) => a.name.localeCompare(b.name));
-                            
+                            // vm.material =response.sort((a, b) => a.name.localeCompare(b.name));
+                            vm.material = response.filter(item => {
+                                return (
+                                    item.name.toLowerCase().includes(sear) ||
+                                    item.unit.toLowerCase().includes(sear)
+                                );
+                            }).sort((a, b) => a.name.localeCompare(b.name));
                         },
                         error(xhr, status, error) {
                             console.error(error);
@@ -1854,6 +1899,8 @@ class parcelMaterial
                     const vm=this;
                     var fdate=$('#fdate').val();
                     var tdate=$('#tdate').val();
+                    const sear = vm.sear1.toLowerCase();
+
                     if(fdate=='')
                     {
                         $('#fdate').css('border-color', 'red');
@@ -1874,7 +1921,12 @@ class parcelMaterial
                         data:{kitchenHistory:"parcelhis",fdate:fdate,tdate:tdate},
                         success(response) 
                         {
-                            vm.materialhis= response;
+                            // vm.materialhis= response;
+                            vm.materialhis = response.filter(item => {
+                                return (
+                                    item.pname.toLowerCase().includes(sear)
+                                );
+                            }).sort((a, b) => a.pname.localeCompare(b.pname));
                         },
                         error(xhr, status, error) 
                         {

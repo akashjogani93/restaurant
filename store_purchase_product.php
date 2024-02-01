@@ -144,7 +144,13 @@
                                     <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Price Per Unit</label>
                                         <input type="number" class="form-control" name="price" id="price" min="1" placeholder="Price Per Unit" v-model="price">
+                                        <!-- <input type="radio" id="option1" name="options" value="option1" checked>
+                                        <label for="option1">No GST</label>
+                                        <input type="radio" id="option2" name="options" value="option2">
+                                        <label for="option2">With GST</label> -->
                                     </div>
+                                    <!-- <div class="form-group col-md-2">
+                                    </div> -->
                                     <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Disc</label>
                                         <input type="number" class="form-control" name="disc" id="disc" min="1" placeholder="Discount" v-model="disc">
@@ -163,12 +169,15 @@
                                     </div>
                                 </div>
                                 <!-- <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <div class="checkbox-container">
-                                            <input type="checkbox" id="myCheckbox" class="checkbox-input">&nbsp;&nbsp;
-                                            <label for="myCheckbox" class="checkbox-label">Send Direct To Kitchen</label>
-                                        </div>
-                                    </div> -->
+                                    <div class="form-group col-md-2">
+                                        <label for="inputEmail3" class="control-label">Tax Amt</label>
+                                        <input type="number" class="form-control" name="taxtaxamt" id="taxtaxamt" min="1" placeholder="Tax Amt" v-model="taxtaxamt" readonly>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="inputEmail3" class="control-label">Cess Amt</label>
+                                        <input type="number" class="form-control" name="cesstaxamt" id="cesstaxamt" min="1" placeholder="Cess Amt" v-model="cesstaxamt" readonly>
+                                    </div>
+                                </div> -->
                             </div>  
                         </div>  
                     </div>
