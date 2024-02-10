@@ -114,7 +114,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="inputEmail3" class="control-label">Product Name</label>
-                                        <select name="pname" id="pid" required class="form-control pname" v-model="selectedOption" @change="productChange" @keydown.tab="focusQty">
+                                        <select name="pname" id="pid" required class="form-control pname" v-model="selectedOption" @change="productChange">
                                             <option value="">Select Products</option>
                                             <option v-for="option in options" :value="option.pid">{{ option.pname }}</option>
                                         </select>
@@ -144,20 +144,20 @@
                                     <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Price Per Unit</label>
                                         <input type="number" class="form-control" name="price" id="price" min="1" placeholder="Price Per Unit" v-model="price">
-                                        <!-- <input type="radio" id="option1" name="options" value="option1" checked>
+                                        <input type="radio" id="option1" name="options" value="0" checked>
                                         <label for="option1">No GST</label>
-                                        <input type="radio" id="option2" name="options" value="option2">
-                                        <label for="option2">With GST</label> -->
+                                        <input type="radio" id="option2" name="options" value="1">
+                                        <label for="option2">With GST</label>
                                     </div>
                                     <!-- <div class="form-group col-md-2">
                                     </div> -->
                                     <div class="form-group col-md-2">
-                                        <label for="inputEmail3" class="control-label">Disc</label>
-                                        <input type="number" class="form-control" name="disc" id="disc" min="1" placeholder="Discount" v-model="disc">
-                                    </div>
-                                    <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Total</label>
                                         <input type="number" class="form-control" name="pricetotal" id="pricetotal" min="1" placeholder="Price Total Amout" v-model="totalofprice" readonly>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="inputEmail3" class="control-label">Disc</label>
+                                        <input type="number" class="form-control" name="disc" id="disc" min="1" placeholder="Discount" v-model="disc">
                                     </div>
                                     <div class="form-group col-md-1">
                                         <label for="inputEmail3" class="control-label">Tax</label>
@@ -168,7 +168,7 @@
                                         <input type="number" class="form-control" name="cess" id="cess" min="1" placeholder="Cess" v-model="cess" readonly>
                                     </div>
                                 </div>
-                                <!-- <div class="row">
+                                <div class="row">
                                     <div class="form-group col-md-2">
                                         <label for="inputEmail3" class="control-label">Tax Amt</label>
                                         <input type="number" class="form-control" name="taxtaxamt" id="taxtaxamt" min="1" placeholder="Tax Amt" v-model="taxtaxamt" readonly>
@@ -177,7 +177,11 @@
                                         <label for="inputEmail3" class="control-label">Cess Amt</label>
                                         <input type="number" class="form-control" name="cesstaxamt" id="cesstaxamt" min="1" placeholder="Cess Amt" v-model="cesstaxamt" readonly>
                                     </div>
-                                </div> -->
+                                    <div class="form-group col-md-2">
+                                        <label for="inputEmail3" class="control-label">Net Amt</label>
+                                        <input type="number" class="form-control" name="addnetAmt" id="addnetAmt" min="1" placeholder="Nett Amt" v-model="addnetAmt" readonly>
+                                    </div>
+                                </div>
                             </div>  
                         </div>  
                     </div>
@@ -366,24 +370,24 @@
             //     }
             // });
 
-            $('#pid, #qty, #disc').keydown(function(event) 
-            {
-                var elementId = event.target.id;
-                if (event.which === 9) 
-                {
-                    event.preventDefault();
-                    if(elementId=='pid')
-                    {
-                        $('#qty').focus();
-                    }else if(elementId=='qty')
-                    {
-                        $('#price').focus();
-                    }else if(elementId=='disc')
-                    {
-                        $('#disc').focus();
-                    }                  
-                }
-            });
+            // $('#pid, #qty, #disc').keydown(function(event) 
+            // {
+            //     var elementId = event.target.id;
+            //     if (event.which === 9) 
+            //     {
+            //         event.preventDefault();
+            //         if(elementId=='pid')
+            //         {
+            //             $('#qty').focus();
+            //         }else if(elementId=='qty')
+            //         {
+            //             $('#price').focus();
+            //         }else if(elementId=='disc')
+            //         {
+            //             $('#disc').focus();
+            //         }                  
+            //     }
+            // });
         });
     </script>
 </body>

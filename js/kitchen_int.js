@@ -318,7 +318,10 @@ class Purchase
                 gamt:null,
                 totaltax:null,
                 totalcess:null,
+                addnetAmt:0,
                 disctax:null,
+                taxtaxamt:0,
+                cesstaxamt:0,
                 // other:null,
                 disc:0,
                 totalofprice:0,
@@ -377,27 +380,23 @@ class Purchase
                         $(this).css('border-color', '');
                     });
 
-                    $('#price, #disc, #qty').on('input',function(e)
-                    {
-                        var price=parseFloat($('#price').val());
-                        var disc=$('#disc').val();
-                        var qty=parseFloat($('#qty').val());
+                    // $('#price, #disc, #qty').on('input',function(e)
+                    // {
+                        
+                    // });
 
-                        var amt=price*qty;
-                        var total=amt-disc;
-                        if(disc >amt)
-                        {
-                            vm.disc=amt.toFixed(2);
-                            vm.totalofprice=0;
-                        }else if(disc <= amt)
-                        {
-                            vm.totalofprice=total.toFixed(2);
-                        }else
-                        {
-                            $('#disc').val(0)
-                            vm.totalofprice=total.toFixed(2);
-                        }
+                    $('#price, #disc, #qty').on('input', function() 
+                    {
+                        vm.calculateValues();
                     });
+                    
+                    $('input[type="radio"][name="options"]').change(function() 
+                    {
+                        // console.log('running');
+
+                        vm.calculateValues();
+                    });
+                    
 
                     let log= $('#pamt,#totamt').on('input', function()
                     {
@@ -655,6 +654,59 @@ class Purchase
                         }
                     });
                 },
+                calculateValues()
+                {
+                    console.log('running');
+                    const vm=this;
+                    var NOGST = $('#option1').is(':checked');  
+                    var WITHGST = $('#option2').is(':checked'); 
+                    
+                    var price=parseFloat($('#price').val());
+                    var disc=$('#disc').val();
+                    var qty=parseFloat($('#qty').val());
+                    var TAX=parseFloat($('#tax').val());
+                    var CESS=parseFloat($('#cess').val());
+                    // Log which option is checked
+                    if (typeof vm !== 'undefined' && typeof vm.tax !== 'undefined' && typeof vm.cess !== 'undefined') 
+                    {
+                        if (NOGST) 
+                        {
+                            var basePrice=price;
+                        }else if(WITHGST)
+                        {
+                            var basePrice = price / ((100 + TAX + CESS) / 100);
+                        }
+                        var amt=basePrice*qty;
+                        var total=amt-disc;
+                        if(disc >amt)
+                        {
+                            vm.disc=amt.toFixed(2);
+                            vm.totalofprice=0;
+                            vm.taxtaxamt=0;
+                            vm.cesstaxamt=0;
+                            vm.addnetAmt=0;
+
+                        }else if(disc <= amt)
+                        {
+                            vm.totalofprice=parseFloat(total).toFixed(2);
+
+                            vm.taxtaxamt = ((total*TAX)/100).toFixed(2); // tax per
+                            vm.cesstaxamt = ((total*CESS)/100).toFixed(2); //cess per
+                            var taxper = (total*TAX)/100; // tax per
+                            var cessper = (total*CESS)/100; //cess per
+                            vm.addnetAmt=(total+taxper+cessper).toFixed(2);
+                        }else
+                        {
+                            $('#disc').val(0)
+                            vm.totalofprice=parseFloat(total).toFixed(2);
+                            vm.taxtaxamt = ((total*TAX)/100).toFixed(2); // tax per
+                            vm.cesstaxamt = ((total*CESS)/100).toFixed(2); //cess per
+                            var taxper = (total*TAX)/100; // tax per
+                            var cessper = (total*CESS)/100; //cess per
+                            vm.addnetAmt=(total+taxper+cessper).toFixed(2);
+                        }
+                    }
+                },
                 addItem()
                 {
                     const vm2 = this;
@@ -664,15 +716,36 @@ class Purchase
                     {
                         if(this.unit && this.exp && this.qty && this.qty > 0 && this.insideqty > 0 && this.price > 0)
                         {
-                            var checkname=selectedItem.pname;
-                            var checkprice=parseFloat(this.price);   //price of item
-                            let baseval=this.price*parseFloat(this.qty); //price into qty
-                            let disc=parseFloat(vm2.disc);  //discount of item
-                            let totalofprice=parseFloat(this.totalofprice); //after discount
 
-                            let taxper = (totalofprice*parseFloat(this.tax))/100; // tax per
-                            let cessamt = (totalofprice*parseFloat(this.cess))/100; //cess per
-                            let tot=totalofprice+taxper+cessamt; //main total
+                            var NOGST = $('#option1').is(':checked');  
+                            var WITHGST = $('#option2').is(':checked'); 
+                            var TAX=parseFloat(this.tax);
+                            var CESS=parseFloat(this.cess);
+                            var checkprice=parseFloat(this.price);
+                            if (NOGST) 
+                            {
+                                var price=parseFloat(checkprice);
+                                console.log(price);
+                            }else if(WITHGST)
+                            {
+                                var price = (checkprice / ((100 + TAX + CESS) / 100));
+                            }
+                            var checkname=selectedItem.pname;
+                            let disc=parseFloat(vm2.disc);
+                            let totalofprice=parseFloat(this.totalofprice);
+                            let baseval=totalofprice+disc;
+
+                            let taxper=parseFloat(vm2.taxtaxamt);
+                            let cessamt=parseFloat(vm2.cesstaxamt);
+                            let tot=parseFloat(vm2.addnetAmt);
+
+                            // let baseval=this.price*parseFloat(this.qty); //price into qty
+                            // let disc=parseFloat(vm2.disc);  //discount of item
+                            // let totalofprice=parseFloat(this.totalofprice); //after discount
+
+                            // let taxper = (totalofprice*parseFloat(this.tax))/100; // tax per
+                            // let cessamt = (totalofprice*parseFloat(this.cess))/100; //cess per
+                            // let tot=totalofprice+taxper+cessamt; //main total
 
                             let total1 = tot.toFixed(2);
                             let basevalue =baseval.toFixed(2);
@@ -688,7 +761,7 @@ class Purchase
                                     sellunit: vm2.sellunit,
                                     qty: vm2.qty,
                                     insideqty: vm2.insideqty,
-                                    pric:vm2.price,
+                                    pric:price.toFixed(2),
                                     baseamt:basevalue,
                                     disc:disc,
                                     totalofprice:totalofprice,
@@ -705,11 +778,15 @@ class Purchase
                                 vm2.insideqty= '';
                                 vm2.sellunit = '';
                                 vm2.price = '';
+                                vm2.taxtaxamt=0;
+                                vm2.cesstaxamt=0;
+                                vm2.addnetAmt=0;
                                 this.tax='';
                                 this.cess='';
                                 this.amt='';
                                 this.disc=0;
                                 this.totalofprice=0;
+                                $('#option1').prop('checked', true);
                         }else
                         {
                             if(!this.unit)
@@ -767,6 +844,7 @@ class Purchase
                     this.saveData();
                     this.vendorName='';
                     localStorage.removeItem('stockListData');
+                    window.location="store_purchase_product.php";
                 },
                 submitData()
                 {
@@ -1006,6 +1084,9 @@ class Purchase
                     this.tax=item.taxper;
                     this.cess=item.cessper;
                     this.editMode = true;
+                    this.taxtaxamt=item.tax;
+                    this.cesstaxamt=item.cessAmt;
+                    this.addnetAmt=item.amt;
                 },
                 updateItem(index)
                 {
