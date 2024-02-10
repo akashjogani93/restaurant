@@ -15,7 +15,7 @@ if(isset($_POST['billno']) && isset($_POST['paymentMethod']))
 {
     $billno=$_POST['billno'];
     $paymentMethod=$_POST['paymentMethod'];
-    $temSelect="SELECT * FROM `temtable` WHERE `pid`!=0";
+    $temSelect="SELECT * FROM `temtable` WHERE `pid`!=0 AND 'billno'='$billno'";
     $temResult=mysqli_query($conn,$temSelect);
     if(mysqli_num_rows($temResult) > 0)
     {
