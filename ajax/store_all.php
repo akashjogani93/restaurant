@@ -325,11 +325,16 @@ if (isset($_POST['productKitchenChange'])) {
 }
 
 //adding a Kitchen in store_kitchen_given.php
-if (isset($_POST['cattype'])) {
+if (isset($_POST['cattype'])) 
+{
     $cattype = $_POST['cattype'];
     $kitchenData = $_POST['kitchenData'];
     $currentDate = date('Y-m-d');
-    foreach ($kitchenData as $item) {
+
+    $description = $_POST['description'];
+
+    foreach ($kitchenData as $item)
+    {
         $pid = $item['pid'];
         $pqty = $item['pqty']; //total stock have
         $punit = $item['punit'];
@@ -349,7 +354,7 @@ if (isset($_POST['cattype'])) {
             $exc = mysqli_query($conn, $query);
             // echo 'Sold';
         } else {
-            $query = "INSERT INTO `store_kitchen`(`pid`,`stock`,`date`,`stock_id`) VALUES ('$pid','$uqty','$gdate','$insertId')";
+            $query = "INSERT INTO `store_kitchen`(`pid`,`stock`,`date`,`stock_id`,`description`) VALUES ('$pid','$uqty','$gdate','$insertId','$description')";
             $exc = mysqli_query($conn, $query);
             // echo 'Added To Kitchen';
         }

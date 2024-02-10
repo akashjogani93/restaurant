@@ -198,7 +198,7 @@ class Main
             $('#updateItem').hide();
             this.retrieve(kitchenData,itemName);
     }
-    finalSubmit(kitchenData,itemName,cattype)
+    finalSubmit(kitchenData,itemName,cattype,description)
     {
         const vm=this;
         let log= $.ajax({
@@ -208,19 +208,21 @@ class Main
             {
                 cattype:cattype,
                 kitchenData: kitchenData,
+                description:description,
             },
             success(response) 
             {
                 alert('Added List To Stock');
                 localStorage.removeItem(itemName);
                 location.reload();
-                // vm.retrieve(kitchenData,itemName);
+                vm.retrieve(kitchenData,itemName);
             },
             error(xhr, status, error) 
             {
                 console.error(error);
             }
         });
+        console.log(log);
     }
     clear(kitchenData,itemName)
     {

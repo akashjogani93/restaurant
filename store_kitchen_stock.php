@@ -85,6 +85,7 @@
                                     <th>Issued Stock</th>
                                     <th>Return Stock</th>
                                     <th>Date</th>
+                                    <th>Description</th>
                                     <!-- <th>Edit</th> -->
                                 </tr>
                             </thead>
@@ -97,6 +98,7 @@
                                     <td class="right-align">{{ formatNumber(item.issued) }}</td>
                                     <td class="right-align">{{ formatNumber(item.stockreturn) }}</td>
                                     <td>{{ item.date }}</td>
+                                    <td>{{ item.description }}</td>
                                 </tr>
                             </tbody>
                         </table>

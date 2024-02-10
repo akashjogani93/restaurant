@@ -147,7 +147,7 @@
                                         <input type="radio" id="option1" name="options" value="0" checked>
                                         <label for="option1">No GST</label>
                                         <input type="radio" id="option2" name="options" value="1">
-                                        <label for="option2">With GST</label>
+                                        <label for="option2">GST</label>
                                     </div>
                                     <!-- <div class="form-group col-md-2">
                                     </div> -->
@@ -370,24 +370,24 @@
             //     }
             // });
 
-            // $('#pid, #qty, #disc').keydown(function(event) 
-            // {
-            //     var elementId = event.target.id;
-            //     if (event.which === 9) 
-            //     {
-            //         event.preventDefault();
-            //         if(elementId=='pid')
-            //         {
-            //             $('#qty').focus();
-            //         }else if(elementId=='qty')
-            //         {
-            //             $('#price').focus();
-            //         }else if(elementId=='disc')
-            //         {
-            //             $('#disc').focus();
-            //         }                  
-            //     }
-            // });
+            $('#pid, #qty, #disc').keydown(function(event) 
+            {
+                var elementId = event.target.id;
+                if (event.which === 9) 
+                {
+                    event.preventDefault();
+                    if(elementId=='pid')
+                    {
+                        $('#qty').focus();
+                    }else if(elementId=='qty')
+                    {
+                        $('#price').focus();
+                    }else if(elementId=='disc')
+                    {
+                        $('#disc').focus();
+                    }                  
+                }
+            });
         });
     </script>
 </body>

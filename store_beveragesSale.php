@@ -172,10 +172,10 @@
                 if (event.which === 13) {
                     if ($('#addToList').is(':visible')) 
                     {
-                        mainInstance.addToList(kitchenData, 'kitchenData');
+                        mainInstance.addToList(kitchenData, 'beaveragesData');
                     } else if ($('#updateItem').is(':visible')) 
                     {
-                        mainInstance.updateToList(kitchenData, 'kitchenData');
+                        mainInstance.updateToList(kitchenData, 'beaveragesData');
                     }
                 }
             });
@@ -187,7 +187,7 @@
 
             $('#submit').click(function()
             {
-                mainInstance.finalSubmit(kitchenData,'beaveragesData','bev');
+                mainInstance.finalSubmit(kitchenData,'beaveragesData','bev','description');
             });
             $('#clear').click(function()
             {

@@ -130,10 +130,17 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <center>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <center><input type="text" id="description" class="form-control" placeholder="Description" style="border: 1px solid black; width:40%;"></center>
+                    </div>
+                </div></br>
+                <div class="row">
+                    <center><div class="col-sm-12">
                         <button type="button" class="btn btn-primary" id="submit">Submit</button>
                         <button type="button" class="btn btn-danger" id="clear">Clear</button>
-                    </center>
+                    </div></center>
+                </div>
                 </div>
             </section>
         </div>
@@ -195,7 +202,8 @@
 
             $('#submit').click(function()
             {
-                mainInstance.finalSubmit(kitchenData,'kitchenData','kit');
+                var description=$('#description').val();
+                mainInstance.finalSubmit(kitchenData,'kitchenData','kit',description);
             });
 
             $('#clear').click(function()

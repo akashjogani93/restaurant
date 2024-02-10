@@ -246,13 +246,14 @@
 
             $('#uqty, #gdate').keydown(function (event) 
             {
-                if (event.which === 13) {
+                if (event.which === 13) 
+                {
                     if ($('#addToList').is(':visible')) 
                     {
-                        mainInstance.addToList(kitchenData, 'kitchenData');
+                        mainInstance.addToList(kitchenData, 'materialData');
                     } else if ($('#updateItem').is(':visible')) 
                     {
-                        mainInstance.updateToList(kitchenData, 'kitchenData');
+                        mainInstance.updateToList(kitchenData, 'materialData');
                     }
                 }
             });
@@ -264,7 +265,7 @@
 
             $('#submit').click(function()
             {
-                mainInstance.finalSubmit(kitchenData,'materialData','parcel');
+                mainInstance.finalSubmit(kitchenData,'materialData','parcel','description');
             });
             $('#clear').click(function()
             {
