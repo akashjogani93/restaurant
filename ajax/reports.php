@@ -865,7 +865,7 @@ if(isset($_POST['foodkot']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 {
     $fdate=$_POST['fdate'];
     $tdate=$_POST['tdate'];
-    $query="SELECT `tabledata`.*,`invoice`.`capname`,`invoice`.`cap_code`,`invoice`.`cashid` FROM `tabledata`,`invoice` WHERE `tabledata`.`billno`=`invoice`.`slno` AND `tabledata`.`kot_num` !=0 ORDER BY `tabledata`.`kot_num`";
+    $query="SELECT `tabledata`.*,`invoice`.`capname`,`invoice`.`cap_code`,`invoice`.`cashid` FROM `tabledata`,`invoice` WHERE `tabledata`.`billno`=`invoice`.`slno` AND `tabledata`.`kot_num` !=0  AND `tabledata`.`date` BETWEEN '$fdate' AND '$tdate' ORDER BY `tabledata`.`kot_num`";
     $exc=mysqli_query($conn,$query);
     ?>
         <table class="table" id="food_kot">
