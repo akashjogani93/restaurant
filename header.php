@@ -61,7 +61,9 @@ if($cash_type=='admin' || $cash_type=='Manager')
     <div class="wrapper" id="form1">
         <header class="main-header">
             <a href="home.php" class="logo">
-                <span class="logo-lg"><img src="img/logo.png" style="object-fit:contain;width:110px;" alt=""></span>
+                <span class="logo-lg">
+                    <img src="img/logo.png" style="object-fit:contain;width:110px;" alt="">
+            </span>
             </a>
             <nav class="navbar navbar-static-top">
                 <img src="img/slide1.png" alt="" width="35px" height="35px" data-toggle="offcanvas" role="button" id="myImage">
