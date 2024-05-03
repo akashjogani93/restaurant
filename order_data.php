@@ -25,7 +25,7 @@ if(mysqli_num_rows($CONFORM)>0)
     {
     ?>
         <div style="display:flex; padding:0 20px;">
-            <select class="form-control" style="float-right; width:150px;margin-top:10px;" name="shifttables" id="shifttables" onload="shifttables()">
+            <select class="form-control" style="float-right; width:150px;margin-top:10px; display: none;" name="shifttables" id="shifttables" onload="shifttables()">
             </select>
             <button onclick="shiftitem()" id="select11" class="btn btn-info" style="float-right; margin-top:10px; margin-left:10px; font-size:10px;">Item Shift</button>
             <button style="display: none; padding:6px 20px; float-right; margin-top:10px; margin-left:10px; font-size:10px;" class="btn btn-info shift2" onclick="shift()">Shift</button>
@@ -143,6 +143,7 @@ function shiftitem()
     $('.tbl1').css("display", "block");
     $('.shift2').css("display", "block");
     $('#select11').css("display", "none");
+    $('#shifttables').css("display", "block");
 }
 
 function shifttables()

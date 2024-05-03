@@ -106,10 +106,10 @@ if(!empty($tabno) && !empty($capnam) && $discount!='')
         {
             if($billEdit==true)
             {
-                $invoice="UPDATE `invoice` SET `date`='$sheduledate',`time`='$time',`capname`='$capnam',`cap_code`='$capcode',`gtot`=0,`discount`=0,`discAmt`=0,`afterDisc`=0,`gst`=0,`gstAmt`=0,`afterGst`=0,`roundplus`=0,`roundminus`=0,`nettot`=0,`cashId`='$cash_id',`orde`='$table',`pmode`='$paymentmode',`tabno`='$tabno' WHERE `slno`='$bill'";
+                $invoice="UPDATE `invoice` SET `date`='$sheduledate',`time`='$time',`capname`='$capnam',`cap_code`='$capcode',`gtot`='$gndtot',`discount`=100,`discAmt`='$gndtot',`afterDisc`='$gndtot',`gst`=0,`gstAmt`=0,`afterGst`=0,`roundplus`=0,`roundminus`=0,`nettot`=0,`cashId`='$cash_id',`orde`='$table',`pmode`='$paymentmode',`tabno`='$tabno' WHERE `slno`='$bill'";
             }else
             {
-                $invoice="INSERT INTO `invoice`(`date`, `time`, `capname`, `cap_code`, `gtot`, `discount`, `discAmt`, `afterDisc`, `gst`, `gstAmt`, `afterGst`, `roundplus`, `roundminus`, `nettot`,`orde`, `pmode`,`tabno`) VALUES ('$sheduledate','$time','$capnam','$capcode',0,0,0,0,'$gst',0,0,0,0,0,'$table','$paymentmode','$tabno')";
+                $invoice="INSERT INTO `invoice`(`date`, `time`, `capname`, `cap_code`, `gtot`, `discount`, `discAmt`, `afterDisc`, `gst`, `gstAmt`, `afterGst`, `roundplus`, `roundminus`, `nettot`,`orde`, `pmode`,`tabno`) VALUES ('$sheduledate','$time','$capnam','$capcode','$gndtot',100,'$gndtot','$gndtot','$gst',0,0,0,0,0,'$table','$paymentmode','$tabno')";
             }
             $exc=mysqli_query($conn,$invoice);
         }

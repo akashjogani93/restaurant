@@ -171,19 +171,18 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         $query="SELECT * FROM `invoice` WHERE `status`=1 AND `orde`='$typ' AND `date` BETWEEN '$fdate' AND '$tdate'";
     }
     $exc=mysqli_query($conn,$query);
-    
     ?>
         <table class="table" id="dayinvoices">
             <thead class="thead-dark" style="background-color: grey; color: white;">
                 <tr>
                     <th scope="col">Date</th>
                     <th scope="col">Bill</th>
-                    <th scope="col">Gr Amt</th>
+                    <th scope="col">Total</th>
                     <th scope="col">Disc</th>
-                    <th scope="col">GST</th>
-                    <th scope="col">RO(-)</th>  
-                    <th scope="col">RO(+)</th>
-                    <th scope="col">Net</th>
+                    <th scope="col">GST(5%)</th>
+                    <th scope="col">Roundoff(-)</th>  
+                    <th scope="col">Roundoff(+)</th>
+                    <th scope="col">Grand Total</th>
                 </tr>
             </thead>
             <tbody id="dayData">
@@ -219,6 +218,7 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
         <?php
     }
     ?>
+
         </tbody>
         <tfoot class="thead-dark" id="tfoot">
             <tr>
@@ -232,7 +232,148 @@ if(isset($_POST['invoice']) && isset($_POST['fdate']) && isset($_POST['tdate']) 
                 <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
             </tr>
         </tfoot>
+        <?php 
+            $query1="SELECT
+                        SUM(CASE WHEN pmode = 'Cash' THEN gtot ELSE 0 END) AS cash_total,
+                        SUM(CASE WHEN pmode = 'Card' THEN gtot ELSE 0 END) AS card_total,
+                        SUM(CASE WHEN pmode = 'Online' THEN gtot ELSE 0 END) AS online_cash_total,
+                        SUM(CASE WHEN pmode = 'NC' THEN gtot ELSE 0 END) AS nc_total,
+                        SUM(CASE WHEN pmode = 'Cash' THEN discAmt ELSE 0 END) AS cash_discAmt,
+                        SUM(CASE WHEN pmode = 'Card' THEN discAmt ELSE 0 END) AS card_discAmt,
+                        SUM(CASE WHEN pmode = 'Online' THEN discAmt ELSE 0 END) AS online_discAmt,
+                        SUM(CASE WHEN pmode = 'NC' THEN discAmt ELSE 0 END) AS nc_disc,
+                        SUM(CASE WHEN pmode = 'Cash' THEN gstAmt ELSE 0 END) AS cash_gstAmt,
+                        SUM(CASE WHEN pmode = 'Card' THEN gstAmt ELSE 0 END) AS card_gstAmt,
+                        SUM(CASE WHEN pmode = 'Online' THEN gstAmt ELSE 0 END) AS online_gstAmt,
+                        SUM(CASE WHEN pmode = 'NC' THEN gstAmt ELSE 0 END) AS nc_gst,
+                        SUM(CASE WHEN pmode = 'Cash' THEN roundminus ELSE 0 END) AS cash_roundminus,
+                        SUM(CASE WHEN pmode = 'Card' THEN roundminus ELSE 0 END) AS card_roundminus,
+                        SUM(CASE WHEN pmode = 'Online' THEN roundminus ELSE 0 END) AS online_roundminus,
+                        SUM(CASE WHEN pmode = 'NC' THEN roundminus ELSE 0 END) AS nc_roundminus,
+                        SUM(CASE WHEN pmode = 'Cash' THEN roundplus ELSE 0 END) AS cash_roundplus,
+                        SUM(CASE WHEN pmode = 'Card' THEN roundplus ELSE 0 END) AS card_roundplus,
+                        SUM(CASE WHEN pmode = 'Online' THEN roundplus ELSE 0 END) AS online_roundplus,
+                        SUM(CASE WHEN pmode = 'NC' THEN roundplus ELSE 0 END) AS nc_roundplus,
+                        SUM(CASE WHEN pmode = 'Cash' THEN nettot ELSE 0 END) AS cash_nettot,
+                        SUM(CASE WHEN pmode = 'Card' THEN nettot ELSE 0 END) AS card_nettot,
+                        SUM(CASE WHEN pmode = 'Online' THEN nettot ELSE 0 END) AS online_nettot,
+                        SUM(CASE WHEN pmode = 'NC' THEN nettot ELSE 0 END) AS nc_nettotal
+                    FROM 
+                        `invoice`
+                    WHERE 
+                        `status` = 1 AND `date` BETWEEN '$fdate' AND '$tdate'";
+            $exc1=mysqli_query($conn,$query1);
+        ?>
+
         </table>
+            <table class="table" id="dayinvoicescashor">
+                <thead class="thead-dark" style="background-color: grey; color: white;">
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Disc</th>
+                        <th scope="col">GST(5%)</th>
+                        <th scope="col">Roundoff(-)</th>
+                        <th scope="col">Roundoff(+)</th>
+                        <!-- <th scope="col">Card</th>
+                        <th scope="col">Disc</th>
+                        <th scope="col">GST</th>
+                        <th scope="col">RO(-)</th>
+                        <th scope="col">RO(+)</th>
+                        <th scope="col">Online</th>
+                        <th scope="col">Disc</th>
+                        <th scope="col">GST</th>
+                        <th scope="col">RO(-)</th>
+                        <th scope="col">RO(+)</th> -->
+                        <th scope="col">Grand Total</th> 
+                    </tr>
+                </thead>
+                <tbody id="dayDatacash">
+                    <?php 
+                        while($row1=mysqli_fetch_assoc($exc1))
+                        {
+                            $cash_total=$row1['cash_total'];
+                            $card_total=$row1['card_total'];
+                            $online_cash_total=$row1['online_cash_total'];
+                            $nc_total=$row1['nc_total'];
+
+                            $cash_discAmt=$row1['cash_discAmt'];
+                            $card_discAmt=$row1['card_discAmt'];
+                            $online_discAmt=$row1['online_discAmt'];
+                            $nc_disc=$row1['nc_disc'];
+
+                            $cash_gstAmt=$row1['cash_gstAmt'];
+                            $card_gstAmt=$row1['card_gstAmt'];
+                            $online_gstAmt=$row1['online_gstAmt'];
+                            $nc_gst=$row1['nc_gst'];
+                            
+                            $cash_roundminus=$row1['cash_roundminus'];
+                            $card_roundminus=$row1['card_roundminus'];
+                            $online_roundminus=$row1['online_roundminus'];
+                            $nc_roundminus=$row1['nc_roundminus'];
+
+                            $cash_roundplus=$row1['cash_roundplus'];
+                            $card_roundplus=$row1['card_roundplus'];
+                            $online_roundplus=$row1['online_roundplus'];
+                            $nc_roundplus=$row1['nc_roundplus'];
+
+                            $cash_nettot=$row1['cash_nettot'];
+                            $card_nettot=$row1['card_nettot'];
+                            $online_nettot=$row1['online_nettot'];
+                            $nc_nettotal=$row1['nc_nettotal'];
+                            ?>
+                            <tr>
+                                <td><?php echo "Cash"; ?></td>
+                                <td class="right-align"><?php echo number_format($cash_total,2); ?></td>
+                                <td class="right-align"><?php echo number_format($cash_discAmt,2); ?></td>
+                                <td class="right-align"><?php echo number_format($cash_gstAmt,2); ?></td>
+                                <td class="right-align"><?php echo number_format($cash_roundminus,2); ?></td>
+                                <td class="right-align"><?php echo number_format($cash_roundplus,2); ?></td>
+                                <td class="right-align"><?php echo number_format($cash_nettot,2); ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "Card"; ?></td>
+                                <td class="right-align"><?php echo number_format($card_total,2); ?></td>
+                                <td class="right-align"><?php echo number_format($card_discAmt,2); ?></td>
+                                <td class="right-align"><?php echo number_format($card_gstAmt,2); ?></td>
+                                <td class="right-align"><?php echo number_format($card_roundminus,2); ?></td>
+                                <td class="right-align"><?php echo number_format($card_roundplus,2); ?></td>
+                                <td class="right-align"><?php echo number_format($card_nettot,2); ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "Online"; ?></td>
+                                <td class="right-align"><?php echo number_format($online_cash_total,2); ?></t>
+                                <td class="right-align"><?php echo number_format($online_discAmt,2); ?></td>
+                                <td class="right-align"><?php echo number_format($online_gstAmt,2); ?></td>
+                                <td class="right-align"><?php echo number_format($online_roundminus,2); ?></td>
+                                <td class="right-align"><?php echo number_format($online_roundplus,2); ?></td>
+                                <td class="right-align"><?php echo number_format($online_nettot,2); ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo "NC"; ?></td>
+                                <td class="right-align"><?php echo number_format($nc_total,2); ?></t>
+                                <td class="right-align"><?php echo number_format($nc_disc,2); ?></td>
+                                <td class="right-align"><?php echo number_format($nc_gst,2); ?></td>
+                                <td class="right-align"><?php echo number_format($nc_roundminus,2); ?></td>
+                                <td class="right-align"><?php echo number_format($nc_roundplus,2); ?></td>
+                                <td class="right-align"><?php echo number_format($nc_nettotal,2); ?></td>
+                            </tr>
+                            <?php
+                        }
+                    ?>
+                </tbody>
+                <tfoot class="thead-dark" id="tfoot">
+                    <tr>
+                        <th></th>
+                        <th class="right-align"><?php echo number_format($Totalgtot,2); ?></th>
+                        <th class="right-align"><?php echo number_format($totaldisc,2); ?></th>
+                        <th class="right-align"><?php echo number_format($totalgst,2); ?></th>
+                        <th class="right-align"><?php echo number_format($totalminus,2); ?></th>
+                        <th class="right-align"><?php echo number_format($totalplus,2); ?></th>
+                        <th class="right-align"><?php echo number_format($toatlnet,2); ?></th>
+                    </tr>
+                </tffot>
+            </table>
     <?php
 }
 
@@ -302,8 +443,8 @@ if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']
                 <td class="right-align"><?php echo $disc; ?></td>
                 <td class="right-align"><?php echo number_format($gst,2); ?></td>
                 <td class="right-align"><?php echo number_format($gst,2); ?></td>
-                <td class="right-align"><?php echo $roundminus; ?></td>
-                <td class="right-align"><?php echo $roundplus; ?></td>
+                <td class="right-align"><?php echo number_format($roundminus,2); ?></td>
+                <td class="right-align"><?php echo number_format($roundplus,2); ?></td>
                 <td class="right-align"><?php echo $nettot; ?></td>
             </tr>
         <?php
@@ -325,7 +466,6 @@ if(isset($_POST['monthsale']) && isset($_POST['fdate']) && isset($_POST['tdate']
     </table>
     <?php
 }
-
 if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 {
     $fdate=$_POST['fdate'];
@@ -347,12 +487,13 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
                 i.slno";
     $exc=mysqli_query($conn,$query);
     $net=0;
+    $index=1;
     while($row=mysqli_fetch_assoc($exc))
     {
         $gtot=$row['gtot'];
         $net=$net+$gtot;
         ?>
-            <table class="table" id="kotdata" style="width:100%;">
+            <table class="table" id="<?php echo "kotdata".$index; ?>" style="width:100%;">
                 <thead class="thead-dark">
                     <tr>
                         <th>Itme No</th>
@@ -395,19 +536,47 @@ if(isset($_POST['dayFoodInvoice']) && isset($_POST['fdate']) && isset($_POST['td
                 </tfoot>
             </table>
         <?php
+        $index++;
     }
+    $query1 = "SELECT SUM(gtot) AS total_gtot
+                    , SUM(discAmt) AS total_discAmt
+                    , SUM(gstAmt) AS total_Gst
+                    , SUM(roundplus) AS total_roundPlus
+                    , SUM(roundminus) AS total_roundMinus
+                    , SUM(nettot) AS nettot_total FROM invoice i WHERE i.status = 1 AND i.date BETWEEN '$fdate' AND '$tdate'";
+    $exc1=mysqli_query($conn,$query1);
     ?>
-        <table class="table" id="kotdata" style="width:100%;">
+        <table class="table" id="<?php echo "kotdata".$index; ?>" style="width:100%;">
             <thead class="thead-dark">
                 <tr>
-                    <th colspan="4"></th>
-                    <th><?php echo "Grand Total:".$net;?></th>
+                    <th>Total</th>
+                    <th>Discount</th>
+                    <th>GST(5%)</th>
+                    <th>Roundoff(-)</th>
+                    <th>Roundoff(+)</th>
+                    <th>Grand Total</th>
                 </tr>
             <thead>
+            <tbody>
+                <?php
+                    while($row1=mysqli_fetch_assoc($exc1))
+                    {
+                        ?>
+                        <tr>
+                            <td><?php echo number_format($row1['total_gtot'],2);?></td>
+                            <td><?php echo number_format($row1['total_discAmt'],2);?></td>
+                            <td><?php echo number_format($row1['total_Gst'],2);?></td>
+                            <td><?php echo number_format($row1['total_roundMinus'],2);?></td>
+                            <td><?php echo number_format($row1['total_roundPlus'],2);?></td>
+                            <td><?php echo number_format($row1['nettot_total'],2);?></td>
+                        </tr>
+                        <?php
+                    }
+                ?>
+            </tbody>
         </table>
     <?php
 }
-
 if(isset($_POST['menuQty']) && isset($_POST['fdate']) && isset($_POST['tdate']))
 {
     $fdate=$_POST['fdate'];
@@ -538,8 +707,8 @@ if(isset($_POST['cashier']) && isset($_POST['fdate']) && isset($_POST['tdate']))
                         $total_gtot=number_format($row['total_gtot'],2);
                         $total_discAmt=number_format($row['total_discAmt'],2);
                         $total_gstAmt=number_format($row['total_gstAmt'],2);
-                        $total_plus=$row['total_plus'];
-                        $total_minus=$row['total_minus'];
+                        $total_plus=number_format($row['total_plus'],2);
+                        $total_minus=number_format($row['total_minus'],2);
                         $total_nettot=number_format($row['total_nettot'],2);
                         ?>
                         <tr>

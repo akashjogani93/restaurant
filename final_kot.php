@@ -1,6 +1,31 @@
 <?php require_once("header.php");?>
+<?php  
+        require_once("dbcon.php"); 
+        if(isset($_GET['tabno']))
+        {
+            $current_date = date('Y-m-d');
+            $tab1=$_GET['tabno'];
+            $sql="SELECT * FROM `temtable` WHERE `kot_num`='$tab1'";
+            $c=mysqli_query($conn, $sql);
+            if (mysqli_num_rows($c) > 0)
+            {
+                $c11=mysqli_query($conn, $sql);
+                while($row11 = mysqli_fetch_assoc($c11)) 
+                {
+
+                    $table_no= $row11['tabno'];
+                    $cap= $row11['capname'];
+                }
+            }else
+            {
+                echo '<script>alert("No New Items.!");</script>';
+                echo '<script>location="table_master.php";</script>';
+            }   
+        }   
+    ?>
 <body class="hold-transition skin-blue sidebar-mini"onload="myFunction()">
-    <div class="wrapper" id="form1">
+    <?php
+        /*?><div class="wrapper" id="form1">
         <style>
             body{
                 background-color:white;
@@ -53,30 +78,7 @@
             border-bottom:solid 2px #000;
         }
         </style>
-        <?php  
-            require_once("dbcon.php"); 
-            if(isset($_GET['tabno']))
-            {
-                $current_date = date('Y-m-d');
-                $tab1=$_GET['tabno'];
-                $sql="SELECT * FROM `temtable` WHERE `kot_num`='$tab1'";
-                $c=mysqli_query($conn, $sql);
-                if (mysqli_num_rows($c) > 0)
-                {
-                    $c11=mysqli_query($conn, $sql);
-                    while($row11 = mysqli_fetch_assoc($c11)) 
-                    {
-
-                        $table_no= $row11['tabno'];
-                        $cap= $row11['capname'];
-                    }
-                }else
-                {
-                    echo '<script>alert("No New Items.!");</script>';
-                    echo '<script>location="table_master.php";</script>';
-                }   
-            }   
-        ?>
+        
         <div class="content-wrapper">
             <section class="content">
                 <div class="box" >
@@ -170,9 +172,12 @@
 //         w.close();
 //   window.location="table_form.php";
 //     }
+*/
+    ?>
+<script>
 function myFunction() 
 {
-   window.print();
+//    window.print();
    var tab="<?php echo $table_no; ?>";
     // window.onafterprint = function(event)
     // {

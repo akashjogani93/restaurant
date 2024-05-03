@@ -26,31 +26,24 @@
                 while($row3 = mysqli_fetch_assoc($result3)) 
                 {
                     $amount=$row3['nettot'];
-                    if ($amount == 0) 
-                    {
-                        echo '<script>document.getElementById("payment").disabled = true;</script>';
-                    }
+                    // if ($amount == 0) 
+                    // {
+                    //     echo '<script>document.getElementById("payment").disabled = true;</script>';
+                    // }
                     ?>
                     <tr>
                         <td><?php echo $row3['slno']; ?></td>
                         <td><?php echo $row3['tabno']; ?></td>
                         <td><?php echo number_format($amount,2); ?></td>
                         <td>
-                            <select class="form-control" name="payment" id="payment" style="background-color: #4F4557; color: #B0DAFF;">
-                            <?php
-                                 if($amount == 0) 
-                                 {
-                                    echo '<option style="background-color: #333; color: #B0DAFF;">NC</option>';
-                                 }else
-                                 {
-
-                                 ?>
+                            <select class="form-control" name="payment" id="payment" style="background-color: #4F4557; color: #B0DAFF;" <?php echo ($row3['nettot'] == 0) ? 'disabled' : ''; ?>>
+                                <?php if ($row3['nettot'] == 0): ?>
+                                    <option style="background-color: #333; color: #B0DAFF;">NC</option>
+                                <?php else: ?>
                                     <option style="background-color: #333; color: #B0DAFF;">Cash</option>
                                     <option style="background-color: #333; color: #B0DAFF;">Online</option>
                                     <option style="background-color: #333; color: #B0DAFF;">Card</option>
-                                    <?php
-                                 }
-                                 ?>
+                                <?php endif; ?>
                             </select>
                         </td>
                         <td><button id="edit" class="btn btn-info" onclick="editBill(event)">Edit</button></td>

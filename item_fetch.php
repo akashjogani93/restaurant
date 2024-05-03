@@ -124,7 +124,9 @@ $(function() {
         $("#example1").DataTable({
             columnDefs: [
             { targets: [5], orderable: false } // Disable sorting for columns 2 and 3
-         ]
+         ],
+         "lengthMenu": [ [1, 10, 100, -1], [1, 10, 100, "All"] ],
+        "pageLength": 10
         });
     });
 // console.log(app);

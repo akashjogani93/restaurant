@@ -1,5 +1,5 @@
 <?php
-    require_once("header.php"); 
+    require_once("header.php");
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -296,6 +296,7 @@
             }
         </script>
         <script>
+            
             function generateTable() 
             {
                 var fdate=$('#fdate').val();
@@ -339,6 +340,48 @@
                     },
                 })
 
+                doc.autoTable({
+                    html: '#dayinvoicescashor',
+                    startY: doc.lastAutoTable.finalY + 20, // Start table below the first one
+                    theme: 'grid',
+                    // columns: [
+                    //     {dataKey: 'Cash'},
+                    //     {dataKey: 'Disc'},
+                    //     {dataKey: 'GST'},
+                    //     {dataKey: 'RO(-)'},
+                    //     {dataKey: 'RO(+)'},
+                    //     {dataKey: 'Card'},
+                    //     {dataKey: 'Disc'},
+                    //     {dataKey: 'GST'},
+                    //     {dataKey: 'RO(-)'},
+                    //     {dataKey: 'RO(+)'},
+                    //     {dataKey: 'Online'},
+                    //     {dataKey: 'Disc'},
+                    //     {dataKey: 'GST'},
+                    //     {dataKey: 'RO(-)'},
+                    //     {dataKey: 'RO(+)'},
+                    //     {dataKey: 'Net'}
+                    // ],
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 7,
+                        cellPadding: { horizontal: 5, vertical: 2 },
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 7,
+                        lineWidth: 1,
+                    },
+                    footStyles: {
+                        fontSize: 7,
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        lineWidth: 1,
+                    },
+                });
+
                 // doc.setProperties({
                 //     title: 'Product Detailed Report',
                 //     subject: 'This is the Product Detailed Report',
@@ -357,7 +400,7 @@
             }
         </script>
 
-	<script>
+	    <script>
             function printTable() 
             {
                 var fdate = $('#fdate').val();

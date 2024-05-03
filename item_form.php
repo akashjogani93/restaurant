@@ -8,7 +8,7 @@
         </style>
         
         <?php require_once("dbcon.php"); ?>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
         <div class="content-wrapper">
             <section class="content">
                 <h2>Menu Master</h2>
@@ -50,7 +50,7 @@
                                 <!-- have to check-->   
                                 <div class="col-md-3">
                                     <button type="submit" onclick="addmenu()" class="btn btn-primary" id="sub" style="margin-top:25px;">Submit</button>
-                                    <!-- <button type="button" data-toggle="modal" style="margin-top:25px;" data-target="#category" class="btn btn-warning">ADD Category</button> -->
+                                    <button class="btn btn-danger" style="margin-top:23px;" onclick="generateTable()">PDF</button>
                                 </div>
                             </div>
                         <!-- </form> -->
@@ -133,7 +133,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- add category Modal-->
                     <!-- <div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
                         <div class="modal-dialog modal-sm" role="document">
@@ -167,9 +166,77 @@
     </div>
 
 
-    
+    <script src="html2pdf.js-master/dist/html2pdf.bundle.min.js"></script>
     <!-- <script src="conn.js"></script> -->
     <script src="js/item_fetch.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>     -->
+    <script>
+            function generateTable() 
+            {
+                // var fdate=$('#fdate').val();
+                // var tdate=$('#tdate').val();
+                var lastColumn = $('#example1 th:last-child, #example1 td:last-child');
+                var lastColumnIndex = lastColumn.index() + 1;
+                lastColumn.hide();
+                var doc = new jsPDF('p', 'pt', 'letter');
+                var y = 20;
+                doc.setLineWidth(2);
+                doc.text(150, y = y + 10, "Menu Master");
+                doc.autoTable({
+                    html: '#example1',
+                    startY: 40,
+                    startX: 40,
+                    theme: 'grid',
+                    // columns: [
+                    //     {dataKey: 'slno'},
+                    //     {dataKey: 'Item Code'},
+                    //     {dataKey: 'Menu Name'},
+                    //     {dataKey: 'Discount'},
+                    //     {dataKey: 'Price'},
+                    //     {dataKey: 'Ac Price'},
+                    // ],
+                    styles: {
+                        overflow: 'linebreak',
+                        lineWidth: 1,
+                        fontSize: 8,
+                        cellPadding: {horizontal: 5, vertical: 2},
+                    },
+                    headerStyles: {
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        fontSize: 8,
+                        lineWidth: 1,
+                    },
+                    footStyles: {
+                        fontSize: 8,
+                        fillColor: [128, 128, 128],
+                        textColor: [255, 255, 255],
+                        lineWidth: 1,
+                    },
+                    columnStyles: {
+                        // Exclude the last column (index starts from 0)
+                        5: { // Change '5' to the index of the column you want to exclude
+                            visible: false // Set the column to invisible
+                        }
+                    }
+                })
+                lastColumn.show();
+                // doc.setProperties({
+                //     title: 'Product Detailed Report',
+                //     subject: 'This is the Product Detailed Report',
+                //     author: 'Author Name',
+                //     keywords: 'generated, javascript, web 2.0, ajax',
+                //     creator: 'Author Name',
+                //     margins: {
+                //         top: 0,
+                //         bottom: 0,
+                //         left: 0,
+                //         right: 0,
+                //     },
+                //     pageSize: 'letter',
+                // });
+                doc.save('menu_master');
+            }
+        </script>
 </body>
 </html>

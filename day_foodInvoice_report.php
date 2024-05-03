@@ -118,13 +118,13 @@
                             startY: y,
                             startX: 40,
                             theme: 'grid',
-                            columns: [
+                           /* columns: [
                                 { dataKey: 'Itme No' },
                                 { dataKey: 'Item Name' },
                                 { dataKey: 'Rate' },
                                 { dataKey: 'Qty' },
                                 { dataKey: 'Amount' },
-                            ],
+                            ],*/
                             styles: {
                                 overflow: 'linebreak',
                                 lineWidth: 1,

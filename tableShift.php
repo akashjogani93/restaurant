@@ -1,5 +1,11 @@
-<h4 class="text-center">Shift Table</h4> 
-<table class="table table-bordered table-striped" id="form3" >
+<!-- <h4 class="text-center">Shift Table</h4> -->
+<div class="row">
+    <div class="col-md-offset-9 col-md-2">
+        <button class="btn btn-info" style="margin:5px 0; float:right" onclick="showTable()" id="showTable">Shift Table</button>
+        <button class="btn btn-info" style="margin:5px 0; display:none; float:right" id="hideTable" onclick="hideTable()">Hide</button>
+    </div>
+</div>
+<table class="table table-bordered table-striped" id="form3" style="display:none;">
     <thead>
         <tr style="background: #ffff; color: #fff; font-weight: 600;">
             <td>
@@ -172,5 +178,19 @@
         //         // console.log(log);
         //     }
         // }
+    }
+
+    function showTable()
+    {
+        $('#form3').show();
+        $('#hideTable').show();
+        $('#showTable').hide();
+    }
+
+    function hideTable()
+    {
+        $('#form3').hide();
+        $('#hideTable').hide();
+        $('#showTable').show();
     }
 </script>

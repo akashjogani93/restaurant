@@ -5,6 +5,7 @@
         echo '<script>alert("First Shedule Day");</script>';
         echo '<script>location="home.php";</script>';
     }
+    $_SESSION['sheduledate']=$sheduledate;
 ?>
 <script src="js/table_master.js"></script>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -44,6 +45,7 @@
     <div class="content-wrapper">
         <section class="content">
             <h3 class="top-headerMain">TABLE MASTER</h3>
+            <h3 class="top-headerMain">Shedule Date <?php echo $sheduledate;?></h3>
             <div class="row">
                 <div class="col-md-12">
                     <div class="shourtcuts">
